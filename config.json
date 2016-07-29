@@ -1,0 +1,16 @@
+{
+	"template_dir": "pages", 
+	"content_dir": "data",
+	"output_dir": "site",
+
+	"server": { 
+		"port": 9009
+	},
+
+	"bundles": {
+		"/css/all.css": [
+			"/css/main.css",
+			"/css/github-markdown.css"
+		]	
+	}
+}

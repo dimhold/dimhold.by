@@ -1,0 +1,13 @@
+{
+  "name": "dimhold.by",
+  "description": "dimhold's site",
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/dimhold/dimhold.by.git"
+  },
+  "version": "0.0.1",
+  "dependencies": {
+    "punch": "0.5.46"
+  }
+}
