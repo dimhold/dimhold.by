@@ -1,0 +1,73 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm">
+      <div class="btn-group" role="group">
+        <a class="btn btn-lg btn-outline-dark" href="https://finviz.com/futures_charts.ashx">Finiz</a>
+        <a class="btn btn-lg btn-outline-dark" href="https://ru.investing.com/equities/americas">Investing</a>
+        <a class="btn btn-lg btn-outline-dark" href="https://investbrothers.ru/stata/stata_cb/stata_fed/">Статистика США от InvestBrothers</a>
+        <a class="btn btn-lg btn-outline-dark" href="https://www.comon.ru/user/Dr_Vas-ka/blog/post.aspx?index1=110598">Блог Василия Олейникова</a>
+        <a class="btn btn-lg btn-outline-dark" href="https://banki24.by/exchange/currencymarket">Торги на бирже НБРБ</a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm">
+      <h3>
+        {% include finance/finiz-link.html ticker="atvi" title="Blizzard (ATVI):" %}
+      </h3>
+      {% include finance/finiz.html ticker="atvi" interval="d" %}
+      {% include finance/finiz.html ticker="atvi" interval="w" %}
+      {% include finance/finiz.html ticker="atvi" interval="m" %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <h3>
+        {% include finance/finiz-link.html ticker="ba" title="Boeing (BA):" %}
+      </h3>
+      {% include finance/finiz.html ticker="ba" interval="d" %}
+      {% include finance/finiz.html ticker="ba" interval="w" %}
+      {% include finance/finiz.html ticker="ba" interval="m" %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <h3>
+        {% include finance/finiz-link.html ticker="t" title="AT&T (T):" %}
+      </h3>
+      {% include finance/finiz.html ticker="t" interval="d" %}
+      {% include finance/finiz.html ticker="t" interval="w" %}
+      {% include finance/finiz.html ticker="t" interval="m" %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <h3>
+        {% include finance/finiz-link.html ticker="ko" title="Coca-cola (KO):" %}
+      </h3>
+      {% include finance/finiz.html ticker="ko" interval="d" %}
+      {% include finance/finiz.html ticker="ko" interval="w" %}
+      {% include finance/finiz.html ticker="ko" interval="m" %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <h3>
+        {% include finance/finiz-link.html ticker="mcd" title="McDonald's (MCD):" %}
+      </h3>
+      {% include finance/finiz.html ticker="mcd" interval="d" %}
+      {% include finance/finiz.html ticker="mcd" interval="w" %}
+      {% include finance/finiz.html ticker="mcd" interval="m" %}
+    </div>
+  </div>
+
+
+
+
+</div>
