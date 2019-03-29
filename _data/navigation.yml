@@ -1,6 +1,8 @@
-- name: Home
-  link: /
 - name: About
-  link: /about
+  link: /
+- name: Blog
+  link: /Blog
+- name: Tools
+  link: /tools
 - name: Finance
   link: /finance
