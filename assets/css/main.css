@@ -1,12 +1,19 @@
+.finiz-widget-container {
+  float: left;
+}
 
- .finiz-widget-container {
-   float: left;
- }
+a, a:active, a:focus, a:hover {
+  color: #29bab5;
+}
 
- .text-primary {
- 	color: #29bab5 !important;
- }
+.text-primary {
+  color: #29bab5 !important;
+}
 
- .bg-primary {
- 	background-color: #29bab5 !important;
- }
+.bg-primary {
+  background-color: #29bab5 !important;
+}
+
+.social-icons a:hover {
+  background-color: #29bab5;
+}
