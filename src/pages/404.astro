@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import { en, ru, be } from '../i18n';
+---
+
+<Base t={en} title={`404 — ${en.notFound.title}`} description={en.notFound.text}>
+  <main id="main" class="nf">
+    <p class="mono">404</p>
+    <h1>{en.notFound.title}</h1>
+    <p class="mono">{ru.notFound.title} · {be.notFound.title}</p>
+    <p>
+      <a href="/">{en.notFound.home}</a>
+    </p>
+  </main>
+</Base>

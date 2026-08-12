@@ -1,0 +1,151 @@
+---
+import '@fontsource-variable/rubik';
+import '@fontsource-variable/jetbrains-mono';
+import '@fontsource-variable/caveat';
+import '../styles/global.css';
+import type { Dictionary } from '../i18n';
+import { dictionaries, socials } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+  title?: string;
+  description?: string;
+}
+
+const { t, title = t.metaTitle, description = t.metaDescription } = Astro.props;
+
+const site = Astro.site!;
+const canonical = new URL(t.path, site);
+const ogImage = new URL('/og.png', site);
+const ogLocale = { en: 'en_US', ru: 'ru_RU', be: 'be_BY' }[t.lang];
+const alternates = Object.values(dictionaries).map((d) => ({
+  lang: d.lang,
+  href: new URL(d.path, site).href,
+}));
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Dmitriy Semenkevich',
+  url: site.href,
+  email: 'mailto:dimhold@gmail.com',
+  jobTitle: 'Full-stack engineer, co-founder of Adlega',
+  worksFor: { '@type': 'Organization', name: 'Adlega', url: 'https://adlega.com' },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Belarusian State University of Informatics and Radioelectronics',
+  },
+  address: { '@type': 'PostalAddress', addressLocality: 'Minsk', addressCountry: 'BY' },
+  sameAs: socials.map((s) => s.href),
+};
+---
+
+<!doctype html>
+<html lang={t.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- The chameleon: date → deterministic palette, artifact and day phase.
+         Runs before first paint so there is no flash. Same date, same site. -->
+    <script is:inline>
+      (function () {
+        try {
+          var qs = new URLSearchParams(location.search).get('seed');
+          var now = new Date();
+          var pad = function (n) {
+            return (n < 10 ? '0' : '') + n;
+          };
+          var today = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+          var seed = qs && /^\d{4}-\d{2}-\d{2}$/.test(qs) ? qs : today;
+          var h = 1779033703 ^ seed.length;
+          for (var i = 0; i < seed.length; i++) {
+            h = Math.imul(h ^ seed.charCodeAt(i), 3432918353);
+            h = (h << 13) | (h >>> 19);
+          }
+          var t = (h ^= h >>> 16) >>> 0;
+          var rand = function () {
+            t += 0x6d2b79f5;
+            var r = Math.imul(t ^ (t >>> 15), 1 | t);
+            r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+            return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+          };
+          var palettes = [
+            ['#e96d45', '#b84a28', '#fdeae2'],
+            ['#d6456b', '#a92e4f', '#fbe3ea'],
+            ['#e0921f', '#a96a0d', '#fcefd8'],
+            ['#2fa893', '#1d7a6a', '#ddf3ee'],
+            ['#8a6fd8', '#6549b0', '#ece6fa'],
+            ['#7fa344', '#5d7d2b', '#ecf3da'],
+            ['#3e8ed9', '#2a67a8', '#e0eefb'],
+            ['#c95e92', '#a03e70', '#f9e5f0'],
+          ];
+          var p = palettes[Math.floor(rand() * palettes.length)];
+          var artifact = Math.floor(rand() * 10);
+          var d = document.documentElement;
+          d.style.setProperty('--accent', p[0]);
+          d.style.setProperty('--accent-deep', p[1]);
+          d.style.setProperty('--accent-wash', p[2]);
+          var hrs = now.getHours();
+          var phase = hrs < 6 ? 'night' : hrs < 11 ? 'morning' : hrs < 17 ? 'day' : hrs < 22 ? 'evening' : 'night';
+          d.dataset.phase = phase;
+          var stored = null;
+          try {
+            stored = localStorage.getItem('lamp');
+          } catch (e) {}
+          var dark = stored
+            ? stored === 'night'
+            : phase === 'night' || matchMedia('(prefers-color-scheme: dark)').matches;
+          d.dataset.mode = dark ? 'night' : 'day';
+          window.__daily = { seed: seed, artifact: artifact, accent: p[0], deep: p[1], wash: p[2], phase: phase };
+        } catch (e) {}
+      })();
+    </script>
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Dmitriy Semenkevich" />
+    <link rel="canonical" href={canonical.href} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={site.href} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdf8f1" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#221c2e" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="dimhold.by" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@dimhold" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage.href} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+
+    {
+      import.meta.env.PROD && (
+        <script is:inline>
+          {`!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_t8RHvpk8yo28MVUJM3s6ejwWWmaXdJGacrtt2Ed4YvHW',{api_host:'https://eu.i.posthog.com',ui_host:'https://eu.posthog.com',defaults:'2025-05-24',persistence:'memory',person_profiles:'identified_only'});
+if(window.__daily){posthog.register({site_seed:window.__daily.seed,site_artifact:window.__daily.artifact,site_phase:window.__daily.phase});}`}
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.skipLink}</a>
+    <div class="page">
+      <slot />
+    </div>
+  </body>
+</html>
