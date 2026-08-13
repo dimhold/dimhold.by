@@ -30,6 +30,9 @@ const SKIN = 0xf2c9a8;
 const HAIR = 0x3a2e28;
 const DARK = 0x352e40;
 
+/** Where to freeze the bundled Avaturn/Mixamo clip (seconds) — its calmest frame. */
+const FREEZE_AT = 0;
+
 function std(color: number | string, opts: Partial<THREE.MeshStandardMaterialParameters> = {}) {
   return new THREE.MeshStandardMaterial({ color: new THREE.Color(color), roughness: 0.65, ...opts });
 }
@@ -306,7 +309,12 @@ export async function mountHero(container: HTMLElement, opts: HeroOptions): Prom
 
   let eyes: { white: THREE.Mesh; pupil: THREE.Mesh }[] = [];
   let headBone: THREE.Object3D | null = null;
+  let headRest: THREE.Euler | null = null;
   let usingGlb = false;
+  let mixer: THREE.AnimationMixer | null = null;
+  let danceAction: THREE.AnimationAction | null = null;
+  let danceUntil = 0;
+  let frozenTime = FREEZE_AT;
 
   try {
     const head = await fetch('/avatar.glb', { method: 'HEAD' });
@@ -327,7 +335,38 @@ export async function mountHero(container: HTMLElement, opts: HeroOptions): Prom
       model.scale.setScalar(scale);
       model.position.y = -box.min.y * scale;
       avatar.add(model);
-      headBone = model.getObjectByName('Head') ?? model.getObjectByName('head') ?? null;
+      model.traverse((o) => {
+        if (!headBone && /head/i.test(o.name)) headBone = o;
+      });
+      const realClip = gltf.animations.length && gltf.animations[0]!.duration > 0.5;
+      if (realClip && !opts.reduced) {
+        // freeze the bundled clip on its first frame for a calm stance;
+        // the full dance is saved for the every-4th-poke easter egg
+        mixer = new THREE.AnimationMixer(model);
+        const clip = gltf.animations[0]!;
+        danceAction = mixer.clipAction(clip);
+        danceAction.play();
+        danceAction.paused = true;
+        // freeze on the calmest frame of the bundled clip; ?pose= overrides for tuning
+        const poseParam = parseFloat(new URLSearchParams(location.search).get('pose') ?? '');
+        frozenTime = Number.isFinite(poseParam) ? Math.min(poseParam, clip.duration - 0.01) : FREEZE_AT;
+        danceAction.time = frozenTime;
+        mixer.update(0);
+        (window as any).__scene = { clipDuration: clip.duration, frozenAt: danceAction.time };
+      }
+      if (!realClip || opts.reduced) {
+        // no usable animation: relax the T-pose into a natural stance
+        const rot = (name: string, x: number, y: number, z: number) => {
+          const b = model.getObjectByName(name);
+          if (b) b.rotation.set(b.rotation.x + x, b.rotation.y + y, b.rotation.z + z);
+        };
+        rot('LeftArm', 1.38, 0, 0);
+        rot('RightArm', 1.38, 0, 0);
+        rot('LeftForeArm', 0.18, 0, 0);
+        rot('RightForeArm', 0.18, 0, 0);
+      }
+      if (headBone) headRest = (headBone as THREE.Object3D).rotation.clone();
+      (window as any).__scene = Object.assign((window as any).__scene ?? {}, { model });
       usingGlb = true;
     }
   } catch {
@@ -376,7 +415,14 @@ export async function mountHero(container: HTMLElement, opts: HeroOptions): Prom
       squash.x = 0.78;
       squash.v = -2.5;
       hop.v = 3.2;
-      if (pokes % 4 === 0) spinBoost.v = 14;
+      if (pokes % 4 === 0) {
+        if (danceAction) {
+          danceAction.paused = false;
+          danceUntil = performance.now() + 4200;
+        } else {
+          spinBoost.v = 14;
+        }
+      }
       (window as any).posthog?.capture('avatar_poked', { pokes, using_glb: usingGlb });
     }
     dragging = true;
@@ -422,6 +468,12 @@ export async function mountHero(container: HTMLElement, opts: HeroOptions): Prom
     last = nowMs;
     const t = nowMs / 1000;
 
+    mixer?.update(dt);
+    if (danceAction && !danceAction.paused && nowMs > danceUntil) {
+      danceAction.paused = true;
+      danceAction.time = frozenTime;
+    }
+
     tickSpring(squash, dt);
     tickSpring(hop, dt);
     tickSpring(spinBoost, dt);
@@ -432,12 +484,20 @@ export async function mountHero(container: HTMLElement, opts: HeroOptions): Prom
     const sy = squash.x;
     const sxz = 1 / Math.sqrt(Math.max(sy, 0.05));
     avatar.scale.set(sxz, sy, sxz);
-    avatar.position.y = Math.max(hop.x, 0) * 0.4 + (opts.reduced ? 0 : Math.sin(t * 1.7) * 0.02);
+    avatar.position.y = Math.max(hop.x, 0) * 0.4 + (opts.reduced || usingGlb ? 0 : Math.sin(t * 1.7) * 0.02);
     avatar.rotation.y = rotTarget + spinBoost.x + (opts.reduced ? 0 : lookY * 0.7);
     avatar.rotation.x = opts.reduced ? 0 : lookX * 0.25;
 
     if (headBone && !opts.reduced) {
-      headBone.rotation.set(lookX * 0.5, lookY * 0.9, 0);
+      if (mixer) {
+        // the mixer re-poses the head every frame; nudge on top of it
+        headBone.rotation.x += lookX * 0.45;
+        headBone.rotation.y += lookY * 0.8;
+      } else if (headRest) {
+        headBone.rotation.set(headRest.x + lookX * 0.5, headRest.y + lookY * 0.9, headRest.z);
+      } else {
+        headBone.rotation.set(lookX * 0.5, lookY * 0.9, 0);
+      }
     }
 
     if (eyes.length && !opts.reduced) {
