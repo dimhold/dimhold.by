@@ -136,27 +136,35 @@ a {
 }
 
 .nav-blog {
-  font-family: var(--font-hand);
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
   text-decoration: none;
-  transform: rotate(-2deg);
-  transition: color 150ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: var(--accent-wash);
+  transition: background-color 150ms ease, color 150ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .nav-blog:hover {
-  color: var(--accent-deep);
-  transform: rotate(-4deg) scale(1.08);
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-1px);
 }
 
 .nav-blog[aria-current='page'] {
-  color: var(--accent-deep);
+  background: var(--accent);
+  color: #fff;
+}
+
+html[data-mode='night'] .nav-blog {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 html[data-mode='night'] .nav-blog:hover,
 html[data-mode='night'] .nav-blog[aria-current='page'] {
-  color: var(--accent);
+  background: var(--accent);
+  color: #1c1410;
 }
 
 .langs {
@@ -240,12 +248,9 @@ html[data-mode='night'] .lamp:hover {
 }
 
 .greeting {
-  font-family: var(--font-hand);
-  font-size: clamp(1.5rem, 2.6vw, 1.9rem);
   font-weight: 600;
+  font-size: 1.05rem;
   color: var(--accent-deep);
-  transform: rotate(-1.4deg);
-  display: inline-block;
 }
 
 html[data-mode='night'] .greeting {
@@ -401,10 +406,10 @@ html[data-mode='night'] .link-plain {
 }
 
 .scene-hint {
-  font-family: var(--font-hand);
-  font-size: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   color: var(--muted);
-  transform: rotate(-2deg);
 }
 
 @media (max-width: 52rem) {
@@ -497,9 +502,9 @@ html[data-mode='night'] .link-plain {
 }
 
 .card-tag {
-  margin-top: 0.15rem;
-  font-family: var(--font-hand);
-  font-size: 1.35rem;
+  margin-top: 0.3rem;
+  font-weight: 600;
+  font-size: 1.02rem;
   color: var(--accent-deep);
 }
 
@@ -539,8 +544,11 @@ html[data-mode='night'] .toy {
 }
 
 .toy-title {
-  font-family: var(--font-hand);
-  font-size: 1.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--accent-deep);
 }
 
@@ -715,9 +723,15 @@ html[data-mode='night'] .contact-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), var(--surface) 70%);
 }
 
+.contact-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
 .contact-lede {
   max-width: 46ch;
-  margin: 0 auto;
+  margin: 0.6rem auto 0;
   font-size: 1.1rem;
 }
 
@@ -858,12 +872,12 @@ html[data-mode] .signature.reveal-mask.in {
 
 .wr-row {
   display: grid;
-  grid-template-columns: 10rem minmax(0, 1fr) auto;
+  grid-template-columns: 9rem minmax(0, 1fr) auto;
   gap: 1.2rem;
-  align-items: baseline;
-  padding: 0.9rem 0.4rem;
+  align-items: start;
+  padding: 1.05rem 0.5rem;
   text-decoration: none;
-  border-radius: 12px;
+  border-radius: 14px;
   transition: background-color 150ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -878,19 +892,38 @@ html[data-mode] .signature.reveal-mask.in {
 
 .wr-date {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--muted);
   white-space: nowrap;
+  padding-top: 0.3rem;
 }
 
 .wr-title {
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.wr-row:hover .wr-title {
+  color: var(--accent-deep);
+}
+
+html[data-mode='night'] .wr-row:hover .wr-title {
+  color: var(--accent);
+}
+
+.wr-desc {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 60ch;
+  text-wrap: pretty;
 }
 
 .wr-arrow {
   color: var(--accent);
   font-weight: 700;
+  padding-top: 0.2rem;
 }
 
 .wr-all {

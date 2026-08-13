@@ -53,6 +53,34 @@ const posts = (await postsFor(t.lang)).slice(0, 3);
     </div>
   </section>
 
+  {
+    posts.length > 0 && (
+      <section class="section" aria-labelledby="writing-label">
+        <div class="section-head reveal">
+          <h2 id="writing-label">{t.blog.label}</h2>
+          <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+            <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="wr-list">
+          {posts.map((p) => (
+            <a class="wr-row reveal" href={postPath(p)}>
+              <span class="wr-date">{fmtDate(p.data.date, t.lang)}</span>
+              <span>
+                <span class="wr-title">{p.data.title}</span>
+                <p class="wr-desc">{p.data.description}</p>
+              </span>
+              <span class="wr-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          ))}
+        </div>
+        <a class="link-plain wr-all reveal" href={langBase(t.lang)}>{t.blog.all}</a>
+      </section>
+    )
+  }
+
   <section class="section" aria-labelledby="work-label">
     <div class="section-head reveal">
       <h2 id="work-label">{t.work.label}</h2>
@@ -107,34 +135,9 @@ const posts = (await postsFor(t.lang)).slice(0, 3);
     </div>
   </section>
 
-  {
-    posts.length > 0 && (
-      <section class="section" aria-labelledby="writing-label">
-        <div class="section-head reveal">
-          <h2 id="writing-label">{t.blog.label}</h2>
-          <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
-            <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-          </svg>
-        </div>
-        <div class="wr-list">
-          {posts.map((p) => (
-            <a class="wr-row reveal" href={postPath(p)}>
-              <span class="wr-date">{fmtDate(p.data.date, t.lang)}</span>
-              <span class="wr-title">{p.data.title}</span>
-              <span class="wr-arrow" aria-hidden="true">
-                →
-              </span>
-            </a>
-          ))}
-        </div>
-        <a class="link-plain wr-all reveal" href={langBase(t.lang)}>{t.blog.all}</a>
-      </section>
-    )
-  }
-
   <section class="section" aria-labelledby="contact-label">
     <div class="contact-card reveal">
-      <h2 id="contact-label" class="greeting">{t.contact.label}</h2>
+      <h2 id="contact-label" class="contact-title">{t.contact.label}</h2>
       <p class="contact-lede">{t.contact.lede}</p>
       <a class="contact-email" href={`mailto:${t.contact.email}`} data-magnet>{t.contact.email}</a>
       <div class="contact-links">
