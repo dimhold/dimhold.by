@@ -17,4 +17,9 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
   build: { inlineStylesheets: 'auto' },
+  markdown: {
+    shikiConfig: {
+      themes: { light: 'vitesse-light', dark: 'vitesse-dark' },
+    },
+  },
 });

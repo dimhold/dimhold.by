@@ -2,43 +2,21 @@
 import { Image } from 'astro:assets';
 import portrait from '../assets/dmitriy-semenkevich.jpg';
 import type { Dictionary } from '../i18n';
-import { dictionaries, socials } from '../i18n';
+import { socials } from '../i18n';
+import { postsFor, postPath, langBase, fmtDate } from '../lib/blog';
+import Masthead from './Masthead.astro';
+import SiteFooter from './SiteFooter.astro';
 
 interface Props {
   t: Dictionary;
 }
 
 const { t } = Astro.props;
-const year = new Date().getFullYear();
-const langs = Object.values(dictionaries).map((d) => ({
-  code: d.lang.toUpperCase(),
-  href: d.path,
-  current: d.lang === t.lang,
-}));
 const intlLocale = { en: 'en-US', ru: 'ru-RU', be: 'be-BY' }[t.lang];
+const posts = (await postsFor(t.lang)).slice(0, 3);
 ---
 
-<header class="masthead">
-  <a class="wordmark" href={t.path}>dimhold<span class="dot">.</span>by</a>
-  <nav class="langs" aria-label={t.langLabel}>
-    {
-      langs.map((l) =>
-        l.current ? (
-          <a href={l.href} aria-current="page">
-            {l.code}
-          </a>
-        ) : (
-          <a href={l.href}>{l.code}</a>
-        ),
-      )
-    }
-  </nav>
-  <button class="lamp" data-lamp aria-label={t.lampLabel} title={t.lampLabel}>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M9 18h6M10 21h4M12 3a6 6 0 0 1 3.6 10.8c-.6.5-.6 1.2-.6 2.2h-6c0-1-.1-1.7-.7-2.2A6 6 0 0 1 12 3Z"></path>
-    </svg>
-  </button>
-</header>
+<Masthead t={t} />
 
 <main id="main">
   <section class="hero">
@@ -129,28 +107,30 @@ const intlLocale = { en: 'en-US', ru: 'ru-RU', be: 'be-BY' }[t.lang];
     </div>
   </section>
 
-  <section class="section" aria-labelledby="record-label">
-    <div class="section-head reveal">
-      <h2 id="record-label">{t.record.label}</h2>
-      <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
-        <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
-      </svg>
-    </div>
-    <div class="record">
-      {
-        t.record.entries.map((entry) => (
-          <div class="record-row reveal">
-            <span class="record-years">{entry.years}</span>
-            <div>
-              <p class="record-title">{entry.title}</p>
-              <p class="record-note">{entry.note}</p>
-            </div>
-          </div>
-        ))
-      }
-    </div>
-    <p class="stack-line reveal">{t.record.stack}</p>
-  </section>
+  {
+    posts.length > 0 && (
+      <section class="section" aria-labelledby="writing-label">
+        <div class="section-head reveal">
+          <h2 id="writing-label">{t.blog.label}</h2>
+          <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+            <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div class="wr-list">
+          {posts.map((p) => (
+            <a class="wr-row reveal" href={postPath(p)}>
+              <span class="wr-date">{fmtDate(p.data.date, t.lang)}</span>
+              <span class="wr-title">{p.data.title}</span>
+              <span class="wr-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          ))}
+        </div>
+        <a class="link-plain wr-all reveal" href={langBase(t.lang)}>{t.blog.all}</a>
+      </section>
+    )
+  }
 
   <section class="section" aria-labelledby="contact-label">
     <div class="contact-card reveal">
@@ -170,15 +150,4 @@ const intlLocale = { en: 'en-US', ru: 'ru-RU', be: 'be-BY' }[t.lang];
   </section>
 </main>
 
-<footer class="footer">
-  <span class="signature reveal-mask" aria-hidden="true">Dmitriy</span>
-  <div class="footer-rows">
-    <span>{t.footer.colophon}</span>
-    <span>{t.hero.seedLine} · seed <span data-seed></span></span>
-    <span>© {year} Dmitriy Semenkevich</span>
-  </div>
-</footer>
-
-<script>
-  import '../scripts/site';
-</script>
+<SiteFooter t={t} />

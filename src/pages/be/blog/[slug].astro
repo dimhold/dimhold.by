@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import PostPage from '../../../components/PostPage.astro';
+import { be } from '../../../i18n';
+import { postPath, translationsOf, langBase } from '../../../lib/blog';
+import type { Post } from '../../../lib/blog';
+import type { Lang } from '../../../i18n';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft && data.lang === 'be');
+  return posts.map((post) => ({ params: { slug: post.data.translationKey }, props: { post } }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const translations = await translationsOf(post);
+const alternates = translations.map((p) => ({ lang: p.data.lang, href: postPath(p) }));
+const langHrefs: Partial<Record<Lang, string>> = {};
+for (const l of ['en', 'ru', 'be'] as const) {
+  const hit = translations.find((p) => p.data.lang === l);
+  langHrefs[l] = hit ? postPath(hit) : langBase(l);
+}
+---
+
+<Base
+  t={be}
+  title={`${post.data.title} — Dmitriy Semenkevich`}
+  description={post.data.description}
+  alternates={alternates}
+  ogType="article"
+>
+  <PostPage t={be} post={post} langHrefs={langHrefs} />
+</Base>

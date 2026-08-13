@@ -1,0 +1,43 @@
+---
+import type { Dictionary } from '../i18n';
+import { postsFor, postPath, readingMinutes, fmtDate } from '../lib/blog';
+import Masthead from './Masthead.astro';
+import SiteFooter from './SiteFooter.astro';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const posts = await postsFor(t.lang);
+const langHrefs = { en: '/blog/', ru: '/ru/blog/', be: '/be/blog/' };
+---
+
+<Masthead t={t} blogActive langHrefs={langHrefs} />
+
+<main id="main" class="blog-page">
+  <header class="section-head">
+    <h1 class="blog-title">{t.blog.label}</h1>
+    <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+      <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+    </svg>
+  </header>
+
+  <div class="post-list">
+    {
+      posts.map((p) => (
+        <a class="post-card reveal" href={postPath(p)}>
+          <span class="post-card-date">{fmtDate(p.data.date, t.lang)}</span>
+          <h2 class="post-card-title">{p.data.title}</h2>
+          <p class="post-card-desc">{p.data.description}</p>
+          <span class="post-card-meta">
+            {readingMinutes(p.body)} {t.blog.min}
+            {p.data.lang !== t.lang && ` · ${p.data.lang.toUpperCase()}`}
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</main>
+
+<SiteFooter t={t} />

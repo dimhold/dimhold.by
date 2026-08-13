@@ -10,18 +10,27 @@ interface Props {
   t: Dictionary;
   title?: string;
   description?: string;
+  /** Language alternates for this page; defaults to the three home pages. */
+  alternates?: { lang: string; href: string }[];
+  ogType?: string;
 }
 
-const { t, title = t.metaTitle, description = t.metaDescription } = Astro.props;
+const {
+  t,
+  title = t.metaTitle,
+  description = t.metaDescription,
+  alternates: alternatesProp,
+  ogType = 'profile',
+} = Astro.props;
 
 const site = Astro.site!;
-const canonical = new URL(t.path, site);
+const canonical = new URL(Astro.url.pathname, site);
 const ogImage = new URL('/og.png', site);
 const ogLocale = { en: 'en_US', ru: 'ru_RU', be: 'be_BY' }[t.lang];
-const alternates = Object.values(dictionaries).map((d) => ({
-  lang: d.lang,
-  href: new URL(d.path, site).href,
-}));
+const alternates = (
+  alternatesProp ?? Object.values(dictionaries).map((d) => ({ lang: d.lang, href: d.path }))
+).map((a) => ({ lang: a.lang, href: new URL(a.href, site).href }));
+const xDefault = alternates.find((a) => a.lang === 'en')?.href;
 
 const personLd = {
   '@context': 'https://schema.org',
@@ -107,7 +116,8 @@ const personLd = {
     <meta name="author" content="Dmitriy Semenkevich" />
     <link rel="canonical" href={canonical.href} />
     {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
-    <link rel="alternate" hreflang="x-default" href={site.href} />
+    {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
+    <link rel="alternate" type="application/rss+xml" title="dimhold.by" href="/rss.xml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -115,7 +125,7 @@ const personLd = {
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdf8f1" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#221c2e" />
 
-    <meta property="og:type" content="profile" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="dimhold.by" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -147,5 +157,8 @@ if(window.__daily){posthog.register({site_seed:window.__daily.seed,site_artifact
     <div class="page">
       <slot />
     </div>
+    <script>
+      import '../scripts/site';
+    </script>
   </body>
 </html>

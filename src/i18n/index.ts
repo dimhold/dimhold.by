@@ -23,6 +23,16 @@ export interface Dictionary {
   langLabel: string;
   skipLink: string;
   lampLabel: string;
+  nav: {
+    blog: string;
+  };
+  blog: {
+    label: string;
+    all: string;
+    title: string;
+    description: string;
+    min: string;
+  };
   hero: {
     greeting: string;
     role: string;
@@ -60,9 +70,6 @@ export interface Dictionary {
     lede: string;
     email: string;
   };
-  footer: {
-    colophon: string;
-  };
   notFound: {
     title: string;
     text: string;
@@ -79,6 +86,17 @@ export const en: Dictionary = {
   langLabel: 'Language',
   skipLink: 'Skip to content',
   lampLabel: 'Toggle the lamp',
+  nav: {
+    blog: 'writing',
+  },
+  blog: {
+    label: 'Writing',
+    all: 'all essays →',
+    title: 'Writing — Dmitriy Semenkevich',
+    description:
+      'Essays and build logs by Dmitriy Semenkevich: AI products that don’t guess, financial engines, web experiments.',
+    min: 'min read',
+  },
   hero: {
     greeting: 'hi, I’m',
     role: 'Full-stack engineer · Co-founder of Adlega',
@@ -176,9 +194,6 @@ export const en: Dictionary = {
     lede: 'Consulting, product feedback, interesting problems — the inbox is open.',
     email: 'dimhold@gmail.com',
   },
-  footer: {
-    colophon: 'Built by hand with Astro & three.js. No cookies.',
-  },
   notFound: {
     title: 'Page not found',
     text: 'Nothing lives at this address.',
@@ -195,6 +210,17 @@ export const ru: Dictionary = {
   langLabel: 'Язык',
   skipLink: 'К содержанию',
   lampLabel: 'Переключить лампу',
+  nav: {
+    blog: 'блог',
+  },
+  blog: {
+    label: 'Статьи',
+    all: 'все статьи →',
+    title: 'Статьи — Dmitriy Semenkevich',
+    description:
+      'Статьи и билд-логи Дмитрия Семенкевича: ИИ-продукты, которые не угадывают, финансовые движки, веб-эксперименты.',
+    min: 'мин чтения',
+  },
   hero: {
     greeting: 'привет, я',
     role: 'Фулстек-инженер · Сооснователь Adlega',
@@ -292,9 +318,6 @@ export const ru: Dictionary = {
     lede: 'Консалтинг, фидбек по продукту, интересные задачи — почта открыта.',
     email: 'dimhold@gmail.com',
   },
-  footer: {
-    colophon: 'Собрано руками на Astro и three.js. Без cookies.',
-  },
   notFound: {
     title: 'Страница не найдена',
     text: 'По этому адресу ничего нет.',
@@ -311,6 +334,17 @@ export const be: Dictionary = {
   langLabel: 'Мова',
   skipLink: 'Да зместу',
   lampLabel: 'Пераключыць лямпу',
+  nav: {
+    blog: 'блог',
+  },
+  blog: {
+    label: 'Артыкулы',
+    all: 'усе артыкулы →',
+    title: 'Артыкулы — Dmitriy Semenkevich',
+    description:
+      'Артыкулы і білд-логі Дзмітрыя Семянкевіча: ШІ-прадукты, якія не гадаюць, фінансавыя рухавікі, веб-эксперыменты.',
+    min: 'хв чытання',
+  },
   hero: {
     greeting: 'прывітанне, я',
     role: 'Фулстэк-інжынер · Сузаснавальнік Adlega',
@@ -407,9 +441,6 @@ export const be: Dictionary = {
     label: 'Скажыце прывітанне',
     lede: 'Кансалтынг, фідбэк па прадукце, цікавыя задачы — пошта адкрытая.',
     email: 'dimhold@gmail.com',
-  },
-  footer: {
-    colophon: 'Сабрана рукамі на Astro і three.js. Без cookies.',
   },
   notFound: {
     title: 'Старонка не знойдзена',

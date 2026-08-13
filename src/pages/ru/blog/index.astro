@@ -1,0 +1,15 @@
+---
+import Base from '../../../layouts/Base.astro';
+import BlogIndex from '../../../components/BlogIndex.astro';
+import { ru } from '../../../i18n';
+
+const alternates = [
+  { lang: 'en', href: '/blog/' },
+  { lang: 'ru', href: '/ru/blog/' },
+  { lang: 'be', href: '/be/blog/' },
+];
+---
+
+<Base t={ru} title={ru.blog.title} description={ru.blog.description} alternates={alternates} ogType="website">
+  <BlogIndex t={ru} />
+</Base>
