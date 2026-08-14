@@ -13,29 +13,29 @@
   --accent-deep: #b84a28;
   --accent-wash: #fdeae2;
 
-  /* light world */
-  --bg: #fdf8f1;
+  /* light world — white and airy */
+  --bg: #ffffff;
   --surface: #ffffff;
-  --ink: #362e40;
-  --muted: #6f6680;
-  --line: #ece3d8;
-  --shadow: 0 2px 6px rgba(72, 50, 30, 0.06), 0 12px 32px rgba(72, 50, 30, 0.08);
-  --shadow-lift: 0 4px 10px rgba(72, 50, 30, 0.08), 0 20px 48px rgba(72, 50, 30, 0.13);
+  --ink: #33304a;
+  --muted: #6d6a80;
+  --line: #e9e8f0;
+  --shadow: 0 1px 3px rgba(45, 40, 80, 0.05), 0 10px 30px rgba(45, 40, 80, 0.07);
+  --shadow-lift: 0 4px 10px rgba(45, 40, 80, 0.07), 0 20px 44px rgba(45, 40, 80, 0.12);
 
   /* sky (hero backdrop), re-tinted per phase */
-  --sky-a: #dceefb;
-  --sky-b: #fdf8f1;
+  --sky-a: #e6f2fc;
+  --sky-b: #ffffff;
 
   color-scheme: light;
 }
 
 html[data-phase='morning'] {
-  --sky-a: #fde8d8;
-  --sky-b: #fdf8f1;
+  --sky-a: #fdeede;
+  --sky-b: #ffffff;
 }
 html[data-phase='evening'] {
-  --sky-a: #fbdcc8;
-  --sky-b: #f6ecf3;
+  --sky-a: #fce4d6;
+  --sky-b: #fff8fb;
 }
 
 html[data-mode='night'] {
@@ -70,6 +70,14 @@ body {
   min-height: 100svh;
   -webkit-font-smoothing: antialiased;
   transition: background-color 400ms ease, color 400ms ease;
+}
+
+/* real-Minsk weather lives on this canvas */
+.weather-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
 }
 
 ::selection {
@@ -311,6 +319,12 @@ html[data-mode='night'] .chip-accent {
   max-width: 56ch;
   text-wrap: pretty;
   color: var(--ink);
+}
+
+.lead2 {
+  margin-top: 0.7rem;
+  font-size: 1rem;
+  color: var(--muted);
 }
 
 .cta-row {
@@ -626,6 +640,140 @@ html[data-mode='night'] .toy-title {
   .toy-controls {
     grid-template-columns: 1fr;
   }
+}
+
+/* ——— project shelf ——— */
+
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1.1rem;
+  align-items: start;
+}
+
+.shelf-item {
+  display: block;
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.05rem 1.2rem;
+  box-shadow: var(--shadow);
+  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 250ms ease;
+}
+
+.shelf-item:nth-child(3n + 1) {
+  transform: rotate(-0.6deg);
+}
+
+.shelf-item:nth-child(3n + 2) {
+  transform: rotate(0.4deg);
+}
+
+.shelf-item:nth-child(3n) {
+  transform: rotate(0.8deg) translateY(3px);
+}
+
+.shelf-item:hover {
+  transform: rotate(0deg) translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+
+.shelf-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.shelf-name {
+  font-weight: 700;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+}
+
+a.shelf-item:hover .shelf-name {
+  color: var(--accent-deep);
+}
+
+html[data-mode='night'] a.shelf-item:hover .shelf-name {
+  color: var(--accent);
+}
+
+.shelf-years {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.shelf-note {
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.shelf-status {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+}
+
+.shelf-status[data-status='alive'] {
+  background: #e3f4e6;
+  color: #1e7a35;
+}
+
+.shelf-status[data-status='wip'] {
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.shelf-status[data-status='shipped'] {
+  background: #e5eefb;
+  color: #2a5da8;
+}
+
+.shelf-status[data-status='dead'] {
+  background: var(--line);
+  color: var(--muted);
+}
+
+.shelf-status[data-status='exp'] {
+  background: #f0e6fa;
+  color: #7040ad;
+}
+
+html[data-mode='night'] .shelf-status[data-status='alive'] {
+  background: rgba(72, 187, 106, 0.16);
+  color: #7fd694;
+}
+
+html[data-mode='night'] .shelf-status[data-status='wip'] {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--accent);
+}
+
+html[data-mode='night'] .shelf-status[data-status='shipped'] {
+  background: rgba(94, 146, 235, 0.16);
+  color: #8fb4f0;
+}
+
+html[data-mode='night'] .shelf-status[data-status='dead'] {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+}
+
+html[data-mode='night'] .shelf-status[data-status='exp'] {
+  background: rgba(160, 108, 230, 0.16);
+  color: #c9a6f2;
 }
 
 /* ——— record ——— */

@@ -15,6 +15,16 @@ export interface RecordEntry {
   note: string;
 }
 
+export type ShelfStatus = 'alive' | 'wip' | 'shipped' | 'dead' | 'exp';
+
+export interface ShelfItem {
+  name: string;
+  years: string;
+  note: string;
+  status: ShelfStatus;
+  href?: string;
+}
+
 export interface Dictionary {
   lang: Lang;
   path: string;
@@ -38,6 +48,7 @@ export interface Dictionary {
     role: string;
     chips: string[];
     lead: string;
+    lead2: string;
     ctaEmail: string;
     ctaAdlega: string;
     photoAlt: string;
@@ -46,10 +57,26 @@ export interface Dictionary {
     seedLine: string;
     seedTomorrow: string;
   };
+  weather: {
+    line: string;
+    conditions: {
+      clear: string;
+      clouds: string;
+      fog: string;
+      rain: string;
+      snow: string;
+      thunder: string;
+    };
+  };
   artifacts: string[];
   work: {
     label: string;
     items: WorkItem[];
+  };
+  shelf: {
+    label: string;
+    statuses: Record<ShelfStatus, string>;
+    items: ShelfItem[];
   };
   toy: {
     title: string;
@@ -99,9 +126,11 @@ export const en: Dictionary = {
   },
   hero: {
     greeting: 'hi, I’m',
-    role: 'Full-stack engineer · Co-founder of Adlega',
-    chips: ['full-stack engineer', 'co-founder @ Adlega', 'Minsk'],
-    lead: 'Fifteen years building software where a wrong number costs real money: payments infrastructure, a device trade-in platform running in 16,000 retail stores. Since 2024 — Adlega, an AI CFO for SaaS founders, built on one rule: the AI never does the math.',
+    role: 'Full-stack engineer · Co-founder of Adlega · Minsk',
+    chips: ['engineer · 15 years', 'co-founder @ Adlega', 'Minsk'],
+    lead: 'Fifteen years building software where a wrong number costs real money: payments, a device trade-in platform in 16,000 stores — and now Adlega, an AI CFO with one rule: the AI never does the math.',
+    lead2:
+      'Between releases I poke at the digital world — experiments, new tools, pop-science rabbit holes. This site is my workshop.',
     ctaEmail: 'Write me',
     ctaAdlega: 'See Adlega',
     photoAlt: 'Portrait of Dmitriy Semenkevich',
@@ -109,6 +138,17 @@ export const en: Dictionary = {
     artifactLabel: 'today’s artifact',
     seedLine: 'this site is deterministic',
     seedTomorrow: 'peek at tomorrow →',
+  },
+  weather: {
+    line: 'in Minsk right now',
+    conditions: {
+      clear: 'clear',
+      clouds: 'cloudy',
+      fog: 'fog',
+      rain: 'rain',
+      snow: 'snow',
+      thunder: 'a thunderstorm',
+    },
   },
   artifacts: [
     'a mug of coffee',
@@ -123,7 +163,7 @@ export const en: Dictionary = {
     'a balloon',
   ],
   work: {
-    label: 'What I’m building',
+    label: 'Building now',
     items: [
       {
         title: 'Adlega',
@@ -136,15 +176,55 @@ export const en: Dictionary = {
           'The design decision that defines the product: the AI never does the math. Agents interview the founder, fill the model, explain any number and run goal-seek — “how do I triple my MRR?” — but every figure comes from a deterministic engine, tested to stay within 0.5% of the hand-built Excel model it replaced.',
         ],
       },
+    ],
+  },
+  shelf: {
+    label: 'The shelf',
+    statuses: {
+      alive: 'alive',
+      wip: 'in progress',
+      shipped: 'shipped',
+      dead: 'dead',
+      exp: 'experiment',
+    },
+    items: [
       {
-        title: 'Belun',
-        tag: 'ninety small tools that respect your files',
-        meta: 'side project',
+        name: 'Belun',
+        years: '2025 —',
+        note: '90+ browser utilities; no servers, no accounts, files never leave your machine.',
+        status: 'alive',
         href: 'https://belun.app',
-        linkLabel: 'belun.app',
-        body: [
-          'JSON, Base64, unit conversion, PDF — 90+ utilities that run entirely in the browser. No accounts, no ads, no uploads: files never leave your machine.',
-        ],
+      },
+      {
+        name: 'Minsk Weather Engine',
+        years: '2026',
+        note: 'The weather layer of this site: when it rains in Minsk, it rains here.',
+        status: 'alive',
+        href: '/blog/',
+      },
+      {
+        name: 'UpMyGame Player',
+        years: '2013',
+        note: 'HTML5 video player for a gaming platform, freelance.',
+        status: 'shipped',
+      },
+      {
+        name: 'Map renderer',
+        years: '2013',
+        note: 'Custom map rendering pipeline on Mapnik.',
+        status: 'shipped',
+      },
+      {
+        name: 'Beeper',
+        years: '2013',
+        note: 'A Java streaming playground.',
+        status: 'dead',
+      },
+      {
+        name: 'Mobile startup',
+        years: '2013 – 2014',
+        note: 'Co-founded; the product didn’t take off, the lessons stayed.',
+        status: 'dead',
       },
     ],
   },
@@ -223,9 +303,11 @@ export const ru: Dictionary = {
   },
   hero: {
     greeting: 'привет, я',
-    role: 'Фулстек-инженер · Сооснователь Adlega',
-    chips: ['фулстек-инженер', 'сооснователь Adlega', 'Минск'],
-    lead: 'Пятнадцать лет делаю софт, в котором неверная цифра стоит настоящих денег: платёжная инфраструктура, trade-in-платформа в 16 000 магазинов. С 2024 года — Adlega, ИИ-финдиректор для SaaS-фаундеров, построенный на одном правиле: ИИ никогда не считает сам.',
+    role: 'Фулстек-инженер · Сооснователь Adlega · Минск',
+    chips: ['инженер · 15 лет', 'сооснователь Adlega', 'Минск'],
+    lead: 'Пятнадцать лет строю софт, в котором неверная цифра стоит настоящих денег: платежи, trade-in-платформа в 16 000 магазинов — а теперь Adlega, ИИ-финдиректор с одним правилом: ИИ никогда не считает сам.',
+    lead2:
+      'Между релизами копаюсь в цифровом мире: эксперименты, новые инструменты, науч-поп. Этот сайт — моя мастерская.',
     ctaEmail: 'Написать мне',
     ctaAdlega: 'Смотреть Adlega',
     photoAlt: 'Портрет Дмитрия Семенкевича',
@@ -233,6 +315,17 @@ export const ru: Dictionary = {
     artifactLabel: 'артефакт дня',
     seedLine: 'этот сайт детерминирован',
     seedTomorrow: 'заглянуть в завтра →',
+  },
+  weather: {
+    line: 'в Минске сейчас',
+    conditions: {
+      clear: 'ясно',
+      clouds: 'облачно',
+      fog: 'туман',
+      rain: 'дождь',
+      snow: 'снег',
+      thunder: 'гроза',
+    },
   },
   artifacts: [
     'кружка кофе',
@@ -247,7 +340,7 @@ export const ru: Dictionary = {
     'воздушный шарик',
   ],
   work: {
-    label: 'Что я строю',
+    label: 'Сейчас строю',
     items: [
       {
         title: 'Adlega',
@@ -260,15 +353,55 @@ export const ru: Dictionary = {
           'Ключевое проектное решение: ИИ никогда не считает сам. Агенты интервьюируют фаундера, заполняют модель, объясняют любую цифру, гоняют goal-seek — «как утроить MRR?» — но каждое значение выдаёт детерминированный движок, который мы держим в пределах 0,5 % от собранной вручную Excel-модели, которую он заменил.',
         ],
       },
+    ],
+  },
+  shelf: {
+    label: 'Полка проектов',
+    statuses: {
+      alive: 'живой',
+      wip: 'в работе',
+      shipped: 'сдан',
+      dead: 'умер',
+      exp: 'эксперимент',
+    },
+    items: [
       {
-        title: 'Belun',
-        tag: 'девяносто инструментов, которые уважают ваши файлы',
-        meta: 'сайд-проект',
+        name: 'Belun',
+        years: '2025 —',
+        note: '90+ браузерных утилит; без серверов и аккаунтов, файлы не покидают компьютер.',
+        status: 'alive',
         href: 'https://belun.app',
-        linkLabel: 'belun.app',
-        body: [
-          'JSON, Base64, конвертация единиц, PDF — 90+ утилит, работающих целиком в браузере. Без аккаунтов, рекламы и загрузок на сервер: файлы не покидают ваш компьютер.',
-        ],
+      },
+      {
+        name: 'Minsk Weather Engine',
+        years: '2026',
+        note: 'Погодный слой этого сайта: в Минске дождь — и здесь дождь.',
+        status: 'alive',
+        href: '/ru/blog/',
+      },
+      {
+        name: 'UpMyGame Player',
+        years: '2013',
+        note: 'HTML5-видеоплеер для игровой платформы, фриланс.',
+        status: 'shipped',
+      },
+      {
+        name: 'Рендер карт',
+        years: '2013',
+        note: 'Собственный конвейер рендеринга карт на Mapnik.',
+        status: 'shipped',
+      },
+      {
+        name: 'Beeper',
+        years: '2013',
+        note: 'Полигон стриминга на Java.',
+        status: 'dead',
+      },
+      {
+        name: 'Мобильный стартап',
+        years: '2013 – 2014',
+        note: 'Сооснователь; продукт не взлетел, уроки остались.',
+        status: 'dead',
       },
     ],
   },
@@ -347,9 +480,11 @@ export const be: Dictionary = {
   },
   hero: {
     greeting: 'прывітанне, я',
-    role: 'Фулстэк-інжынер · Сузаснавальнік Adlega',
-    chips: ['фулстэк-інжынер', 'сузаснавальнік Adlega', 'Мінск'],
-    lead: 'Пятнаццаць гадоў раблю софт, у якім няправільная лічба каштуе сапраўдных грошай: плацёжная інфраструктура, trade-in-платформа ў 16 000 крамах. З 2024 года — Adlega, ШІ-фіндырэктар для SaaS-заснавальнікаў, пабудаваны на адным правіле: ШІ ніколі не лічыць сам.',
+    role: 'Фулстэк-інжынер · Сузаснавальнік Adlega · Мінск',
+    chips: ['інжынер · 15 гадоў', 'сузаснавальнік Adlega', 'Мінск'],
+    lead: 'Пятнаццаць гадоў будую софт, у якім няправільная лічба каштуе сапраўдных грошай: плацяжы, trade-in-платформа ў 16 000 крамах — а цяпер Adlega, ШІ-фіндырэктар з адным правілам: ШІ ніколі не лічыць сам.',
+    lead2:
+      'Паміж рэлізамі корпаюся ў лічбавым свеце: эксперыменты, новыя інструменты, навук-поп. Гэты сайт — мая майстэрня.',
     ctaEmail: 'Напісаць мне',
     ctaAdlega: 'Глядзець Adlega',
     photoAlt: 'Партрэт Дзмітрыя Семянкевіча',
@@ -357,6 +492,17 @@ export const be: Dictionary = {
     artifactLabel: 'артэфакт дня',
     seedLine: 'гэты сайт дэтэрмінаваны',
     seedTomorrow: 'зазірнуць у заўтра →',
+  },
+  weather: {
+    line: 'у Мінску цяпер',
+    conditions: {
+      clear: 'ясна',
+      clouds: 'воблачна',
+      fog: 'туман',
+      rain: 'дождж',
+      snow: 'снег',
+      thunder: 'навальніца',
+    },
   },
   artifacts: [
     'кубак кавы',
@@ -371,7 +517,7 @@ export const be: Dictionary = {
     'паветраны шарык',
   ],
   work: {
-    label: 'Што я будую',
+    label: 'Зараз будую',
     items: [
       {
         title: 'Adlega',
@@ -384,20 +530,60 @@ export const be: Dictionary = {
           'Ключавое праектнае рашэнне: ШІ ніколі не лічыць сам. Агенты інтэрв’юіруюць заснавальніка, запаўняюць мадэль, тлумачаць любую лічбу, ганяюць goal-seek — «як патроіць MRR?» — але кожнае значэнне выдае дэтэрмінаваны рухавік, які мы трымаем у межах 0,5 % ад сабранай уручную Excel-мадэлі, якую ён замяніў.',
         ],
       },
+    ],
+  },
+  shelf: {
+    label: 'Паліца праектаў',
+    statuses: {
+      alive: 'жывы',
+      wip: 'у працы',
+      shipped: 'здадзены',
+      dead: 'памёр',
+      exp: 'эксперымент',
+    },
+    items: [
       {
-        title: 'Belun',
-        tag: 'дзевяноста інструментаў, якія паважаюць вашы файлы',
-        meta: 'сайд-праект',
+        name: 'Belun',
+        years: '2025 —',
+        note: '90+ браўзерных утыліт; без сервераў і акаўнтаў, файлы не пакідаюць камп’ютар.',
+        status: 'alive',
         href: 'https://belun.app',
-        linkLabel: 'belun.app',
-        body: [
-          'JSON, Base64, канвертацыя адзінак, PDF — 90+ утыліт, што працуюць цалкам у браўзеры. Без акаўнтаў, рэкламы і загрузак на сервер: файлы не пакідаюць ваш камп’ютар.',
-        ],
+      },
+      {
+        name: 'Minsk Weather Engine',
+        years: '2026',
+        note: 'Надвор’евы слой гэтага сайта: у Мінску дождж — і тут дождж.',
+        status: 'alive',
+        href: '/be/blog/',
+      },
+      {
+        name: 'UpMyGame Player',
+        years: '2013',
+        note: 'HTML5-відэаплэер для гульнявой платформы, фрыланс.',
+        status: 'shipped',
+      },
+      {
+        name: 'Рэндар картаў',
+        years: '2013',
+        note: 'Уласны канвеер рэндэрынгу картаў на Mapnik.',
+        status: 'shipped',
+      },
+      {
+        name: 'Beeper',
+        years: '2013',
+        note: 'Палігон стрымінгу на Java.',
+        status: 'dead',
+      },
+      {
+        name: 'Мабільны стартап',
+        years: '2013 – 2014',
+        note: 'Сузаснавальнік; прадукт не ўзляцеў, урокі засталіся.',
+        status: 'dead',
       },
     ],
   },
   toy: {
-    title: 'кранiце філасофію →',
+    title: 'краніце філасофію →',
     target: 'мэта: ×3 MRR за 24 месяцы',
     growth: 'рост, %/мес',
     churn: 'адток, %/мес',

@@ -138,6 +138,18 @@ export function initSite() {
       monthsLabel: el.dataset.months ?? 'mo',
     });
   }
+
+  // — real Minsk weather (lazy; runs on every page) —
+  const weatherEl = document.querySelector<HTMLElement>('[data-weather]');
+  let weatherLabels = null;
+  try {
+    weatherLabels = weatherEl?.dataset.weatherLabels ? JSON.parse(weatherEl.dataset.weatherLabels) : null;
+  } catch {
+    /* caption stays empty */
+  }
+  import('./weather')
+    .then((m) => m.initWeather({ el: weatherEl, labels: weatherLabels, reduced }))
+    .catch(() => {});
 }
 
 initSite();
