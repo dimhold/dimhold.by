@@ -231,10 +231,10 @@ function buildArtifact(index: number, accent: string, deep: string): THREE.Group
 }
 
 const PHASE_LIGHTS = {
-  morning: { hemiSky: 0xffe3c8, hemiGround: 0xd9c2a8, hemiInt: 0.95, key: 0xffd9a8, keyInt: 1.25, keyPos: [2.5, 3, 2] },
-  day: { hemiSky: 0xdfefff, hemiGround: 0xcfc4b4, hemiInt: 1.05, key: 0xffffff, keyInt: 1.35, keyPos: [2, 3.5, 2] },
-  evening: { hemiSky: 0xffd2b0, hemiGround: 0xb59a92, hemiInt: 0.85, key: 0xffb37a, keyInt: 1.2, keyPos: [2.5, 1.8, 1.5] },
-  night: { hemiSky: 0x3a3560, hemiGround: 0x181322, hemiInt: 0.55, key: 0x8fa0ff, keyInt: 0.35, keyPos: [2, 3, 2] },
+  morning: { hemiSky: 0xe4efff, hemiGround: 0xc9d2e0, hemiInt: 1.0, key: 0xffffff, keyInt: 1.3, keyPos: [2.5, 3, 2] },
+  day: { hemiSky: 0xdfefff, hemiGround: 0xc9d2e0, hemiInt: 1.05, key: 0xffffff, keyInt: 1.35, keyPos: [2, 3.5, 2] },
+  evening: { hemiSky: 0xd7e2f5, hemiGround: 0xb6c1d4, hemiInt: 0.9, key: 0xeef4ff, keyInt: 1.2, keyPos: [2.5, 1.8, 1.5] },
+  night: { hemiSky: 0x2a3a5e, hemiGround: 0x0e1626, hemiInt: 0.55, key: 0x8fa8ff, keyInt: 0.35, keyPos: [2, 3, 2] },
 } as const;
 
 export async function mountHero(container: HTMLElement, opts: HeroOptions): Promise<void> {
@@ -262,14 +262,14 @@ export async function mountHero(container: HTMLElement, opts: HeroOptions): Prom
   key.shadow.camera.top = 3;
   key.shadow.camera.bottom = -3;
   scene.add(key);
-  const lamp = new THREE.PointLight(0xffc47a, 14, 7, 1.8);
+  const lamp = new THREE.PointLight(0xbdd2ff, 14, 7, 1.8);
   lamp.position.set(1.3, 2.1, 1.1);
   lamp.visible = false;
   scene.add(lamp);
 
   const stage = new THREE.Mesh(
     new THREE.CylinderGeometry(1.55, 1.62, 0.16, 48),
-    std(0xf3e8da, { roughness: 0.9 }),
+    std(0xe8eef5, { roughness: 0.9 }),
   );
   stage.position.y = -0.08;
   stage.receiveShadow = true;
@@ -291,7 +291,7 @@ export async function mountHero(container: HTMLElement, opts: HeroOptions): Prom
     key.position.set(rig.keyPos[0], rig.keyPos[1], rig.keyPos[2]);
     const night = kind === 'night';
     lamp.visible = night;
-    (stage.material as THREE.MeshStandardMaterial).color.set(night ? 0x352d4a : 0xf3e8da);
+    (stage.material as THREE.MeshStandardMaterial).color.set(night ? 0x20304b : 0xe8eef5);
     (shadowCatcher.material as THREE.ShadowMaterial).opacity = night ? 0.32 : 0.16;
   }
 

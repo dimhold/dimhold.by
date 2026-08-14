@@ -46,11 +46,6 @@ const posts = (await postsFor(t.lang)).slice(0, 3);
         quality={85}
       />
       <p class="scene-hint">{t.hero.hint}</p>
-      <p class="scene-caption">
-        {t.hero.artifactLabel}: <b data-artifact-name data-artifact-names={JSON.stringify(t.artifacts)}></b>
-        <br />
-        {t.hero.seedLine} · seed <span data-seed></span> · <a data-seed-tomorrow href="?">{t.hero.seedTomorrow}</a>
-      </p>
     </div>
   </section>
 

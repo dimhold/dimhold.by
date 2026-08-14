@@ -1,28 +1,20 @@
 ---
-title: 'A site that changes every day, deterministically'
-description: 'Build log: rebuilding a dead 2019 Jekyll blog into a trilingual Astro site with a date-seeded design, a goal-seek toy and a 3D avatar that took some bone surgery.'
+title: 'Rebuilding my site in a day: Astro, a goal-seek toy and some bone surgery'
+description: 'Build log: a dead 2019 Jekyll blog becomes a trilingual Astro site with a playable financial model and a 3D avatar that fought back.'
 date: 2026-08-14
 lang: en
-translationKey: deterministic-site
+translationKey: site-rebuild
 ---
 
 This domain sat frozen for seven years. A 2019 Jekyll blog with `title: Your awesome title` still in the config, two nav links leading to commented-out pages, and a finance dashboard hotlinking charts that no longer load. The classic personal site: built in a two-week burst, abandoned by April.
 
 I rebuilt it in a day. Here is what's under the hood, including the parts that went sideways.
 
-## The rule I stole from my own product
-
-At [Adlega](https://adlega.com) we have one non-negotiable design decision: the AI never does the math. Agents interview you, fill the model, explain any number — but every figure comes from a deterministic engine we test against a hand-built Excel model. Same inputs, same outputs, every time.
-
-I wanted the site to carry that idea somewhere visible. So the design itself is deterministic: today's date is a seed, and the seed decides everything decorative. One of eight hand-picked accent palettes. An "artifact of the day" on the 3D stage — a mug, a chess pawn, a donut, a dumbbell. The lighting follows the actual time of day in your timezone.
-
-Tomorrow the site looks different. But not randomly different: `2026-08-14` produces exactly this version, for everyone, forever. There's a `?seed=` parameter if you want to visit a specific day. Try [next New Year](/?seed=2027-01-01).
-
-The whole generator is a string hash plus [mulberry32](https://gist.github.com/tommyettinger/46a874533244883189143505d203312c) — about thirty lines, no dependencies, runs before first paint so nothing flashes.
-
 ## A financial model you can poke
 
-The Adlega card on the front page has a toy: a 36-month MRR projection with two sliders, growth and churn, and a goal-seek button that solves "what growth rate triples MRR in 24 months" — the closed form is one line:
+At [Adlega](https://adlega.com) we have one non-negotiable design decision: the AI never does the math. Agents interview you, fill the model, explain any number — but every figure comes from a deterministic engine we test against a hand-built Excel model.
+
+I wanted that idea to be something you can touch, so the Adlega card on the front page has a toy: a 36-month MRR projection with two sliders, growth and churn, and a goal-seek button that solves "what growth rate triples MRR in 24 months". The closed form is one line:
 
 ```ts
 const net = Math.pow(3, 1 / 24);          // required net monthly factor

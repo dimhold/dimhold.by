@@ -8,10 +8,10 @@
   --font-mono: 'JetBrains Mono Variable', Consolas, monospace;
   --font-hand: 'Caveat Variable', 'Segoe Script', cursive;
 
-  /* daily accent (overridden by seed script) */
-  --accent: #e96d45;
-  --accent-deep: #b84a28;
-  --accent-wash: #fdeae2;
+  /* fixed blue accent */
+  --accent: #2f7cd6;
+  --accent-deep: #1d5aa8;
+  --accent-wash: #e4effb;
 
   /* light world — white and airy */
   --bg: #ffffff;
@@ -29,25 +29,19 @@
   color-scheme: light;
 }
 
-html[data-phase='morning'] {
-  --sky-a: #fdeede;
-  --sky-b: #ffffff;
-}
-html[data-phase='evening'] {
-  --sky-a: #fce4d6;
-  --sky-b: #fff8fb;
-}
-
 html[data-mode='night'] {
-  --bg: #221c2e;
-  --surface: #2b2439;
-  --ink: #f1e9df;
-  --muted: #a89dbb;
-  --line: #3b3352;
+  --bg: #101a2b;
+  --surface: #182439;
+  --ink: #e8edf5;
+  --muted: #93a1b8;
+  --line: #283852;
+  --accent: #6aa5ee;
+  --accent-deep: #8dbcf5;
+  --accent-wash: rgba(110, 165, 238, 0.14);
   --shadow: 0 2px 6px rgba(0, 0, 0, 0.25), 0 12px 32px rgba(0, 0, 0, 0.35);
   --shadow-lift: 0 4px 10px rgba(0, 0, 0, 0.3), 0 20px 48px rgba(0, 0, 0, 0.45);
-  --sky-a: #1a1526;
-  --sky-b: #221c2e;
+  --sky-a: #0b1322;
+  --sky-b: #101a2b;
   color-scheme: dark;
 }
 
@@ -219,12 +213,12 @@ html[data-mode='night'] .langs a:hover {
 }
 
 html[data-mode='night'] .lamp {
-  color: #ffd98a;
+  color: var(--accent);
 }
 
 html[data-mode='night'] .lamp:hover {
-  background: rgba(255, 217, 138, 0.12);
-  color: #ffd98a;
+  background: var(--accent-wash);
+  color: var(--accent);
 }
 
 /* ——— hero ——— */

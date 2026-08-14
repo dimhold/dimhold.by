@@ -1,51 +1,10 @@
 import { mountToy } from './goalseek';
 
-interface Daily {
-  seed: string;
-  artifact: number;
-  accent: string;
-  deep: string;
-  wash: string;
-  phase: 'morning' | 'day' | 'evening' | 'night';
-}
-
-const FALLBACK: Daily = {
-  seed: 'fallback',
-  artifact: 0,
-  accent: '#e96d45',
-  deep: '#b84a28',
-  wash: '#fdeae2',
-  phase: 'day',
-};
+const ACCENT = '#2f7cd6';
+const ACCENT_DEEP = '#1d5aa8';
 
 export function initSite() {
-  const daily: Daily = (window as any).__daily ?? FALLBACK;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // — captions: artifact of the day + seed line —
-  const artifactEl = document.querySelector<HTMLElement>('[data-artifact-name]');
-  if (artifactEl) {
-    try {
-      const names: string[] = JSON.parse(artifactEl.dataset.artifactNames ?? '[]');
-      artifactEl.textContent = names[daily.artifact] ?? '';
-    } catch {
-      /* keep empty */
-    }
-  }
-  for (const el of document.querySelectorAll<HTMLElement>('[data-seed]')) {
-    el.textContent = daily.seed;
-  }
-  const tomorrowLink = document.querySelector<HTMLAnchorElement>('[data-seed-tomorrow]');
-  if (tomorrowLink && /^\d{4}-\d{2}-\d{2}$/.test(daily.seed)) {
-    const d = new Date(daily.seed + 'T12:00:00');
-    d.setDate(d.getDate() + 1);
-    const pad = (n: number) => String(n).padStart(2, '0');
-    const next = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-    tomorrowLink.href = `?seed=${next}`;
-    tomorrowLink.addEventListener('click', () => {
-      (window as any).posthog?.capture('seed_traveled', { to: next });
-    });
-  }
 
   // — the lamp —
   const lamp = document.querySelector<HTMLButtonElement>('[data-lamp]');
@@ -115,10 +74,10 @@ export function initSite() {
     import('./hero3d')
       .then((m) =>
         m.mountHero(sceneEl, {
-          accent: daily.accent,
-          deep: daily.deep,
-          phase: daily.phase,
-          artifact: daily.artifact,
+          accent: ACCENT,
+          deep: ACCENT_DEEP,
+          phase: document.documentElement.dataset.mode === 'night' ? 'night' : 'day',
+          artifact: 7,
           reduced,
         }),
       )

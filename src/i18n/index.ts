@@ -53,11 +53,7 @@ export interface Dictionary {
     ctaAdlega: string;
     photoAlt: string;
     hint: string;
-    artifactLabel: string;
-    seedLine: string;
-    seedTomorrow: string;
   };
-  artifacts: string[];
   work: {
     label: string;
     items: WorkItem[];
@@ -124,22 +120,7 @@ export const en: Dictionary = {
     ctaAdlega: 'See Adlega',
     photoAlt: 'Portrait of Dmitriy Semenkevich',
     hint: 'drag me. poke me.',
-    artifactLabel: 'today’s artifact',
-    seedLine: 'this site is deterministic',
-    seedTomorrow: 'peek at tomorrow →',
   },
-  artifacts: [
-    'a mug of coffee',
-    'a stack of books',
-    'a houseplant',
-    'a chess pawn',
-    'a donut',
-    'a dumbbell',
-    'a vinyl record',
-    'a laptop',
-    'a gem',
-    'a balloon',
-  ],
   work: {
     label: 'Building now',
     items: [
@@ -283,22 +264,7 @@ export const ru: Dictionary = {
     ctaAdlega: 'Смотреть Adlega',
     photoAlt: 'Портрет Дмитрия Семенкевича',
     hint: 'покрутите меня. ткните в меня.',
-    artifactLabel: 'артефакт дня',
-    seedLine: 'этот сайт детерминирован',
-    seedTomorrow: 'заглянуть в завтра →',
   },
-  artifacts: [
-    'кружка кофе',
-    'стопка книг',
-    'растение',
-    'шахматная пешка',
-    'пончик',
-    'гантель',
-    'виниловая пластинка',
-    'ноутбук',
-    'кристалл',
-    'воздушный шарик',
-  ],
   work: {
     label: 'Сейчас строю',
     items: [
@@ -442,22 +408,7 @@ export const be: Dictionary = {
     ctaAdlega: 'Глядзець Adlega',
     photoAlt: 'Партрэт Дзмітрыя Семянкевіча',
     hint: 'пакруціце мяне. тыцніце ў мяне.',
-    artifactLabel: 'артэфакт дня',
-    seedLine: 'гэты сайт дэтэрмінаваны',
-    seedTomorrow: 'зазірнуць у заўтра →',
   },
-  artifacts: [
-    'кубак кавы',
-    'стос кніг',
-    'расліна',
-    'шахматная пешка',
-    'пончык',
-    'гантэля',
-    'вінілавая пласцінка',
-    'ноўтбук',
-    'крышталь',
-    'паветраны шарык',
-  ],
   work: {
     label: 'Зараз будую',
     items: [
