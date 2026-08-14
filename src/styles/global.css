@@ -72,14 +72,6 @@ body {
   transition: background-color 400ms ease, color 400ms ease;
 }
 
-/* real-Minsk weather lives on this canvas */
-.weather-canvas {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 6;
-}
-
 ::selection {
   background: var(--accent);
   color: #fff;

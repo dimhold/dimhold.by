@@ -57,17 +57,6 @@ export interface Dictionary {
     seedLine: string;
     seedTomorrow: string;
   };
-  weather: {
-    line: string;
-    conditions: {
-      clear: string;
-      clouds: string;
-      fog: string;
-      rain: string;
-      snow: string;
-      thunder: string;
-    };
-  };
   artifacts: string[];
   work: {
     label: string;
@@ -139,17 +128,6 @@ export const en: Dictionary = {
     seedLine: 'this site is deterministic',
     seedTomorrow: 'peek at tomorrow →',
   },
-  weather: {
-    line: 'in Minsk right now',
-    conditions: {
-      clear: 'clear',
-      clouds: 'cloudy',
-      fog: 'fog',
-      rain: 'rain',
-      snow: 'snow',
-      thunder: 'a thunderstorm',
-    },
-  },
   artifacts: [
     'a mug of coffee',
     'a stack of books',
@@ -194,13 +172,6 @@ export const en: Dictionary = {
         note: '90+ browser utilities; no servers, no accounts, files never leave your machine.',
         status: 'alive',
         href: 'https://belun.app',
-      },
-      {
-        name: 'Minsk Weather Engine',
-        years: '2026',
-        note: 'The weather layer of this site: when it rains in Minsk, it rains here.',
-        status: 'alive',
-        href: '/blog/',
       },
       {
         name: 'UpMyGame Player',
@@ -316,17 +287,6 @@ export const ru: Dictionary = {
     seedLine: 'этот сайт детерминирован',
     seedTomorrow: 'заглянуть в завтра →',
   },
-  weather: {
-    line: 'в Минске сейчас',
-    conditions: {
-      clear: 'ясно',
-      clouds: 'облачно',
-      fog: 'туман',
-      rain: 'дождь',
-      snow: 'снег',
-      thunder: 'гроза',
-    },
-  },
   artifacts: [
     'кружка кофе',
     'стопка книг',
@@ -371,13 +331,6 @@ export const ru: Dictionary = {
         note: '90+ браузерных утилит; без серверов и аккаунтов, файлы не покидают компьютер.',
         status: 'alive',
         href: 'https://belun.app',
-      },
-      {
-        name: 'Minsk Weather Engine',
-        years: '2026',
-        note: 'Погодный слой этого сайта: в Минске дождь — и здесь дождь.',
-        status: 'alive',
-        href: '/ru/blog/',
       },
       {
         name: 'UpMyGame Player',
@@ -493,17 +446,6 @@ export const be: Dictionary = {
     seedLine: 'гэты сайт дэтэрмінаваны',
     seedTomorrow: 'зазірнуць у заўтра →',
   },
-  weather: {
-    line: 'у Мінску цяпер',
-    conditions: {
-      clear: 'ясна',
-      clouds: 'воблачна',
-      fog: 'туман',
-      rain: 'дождж',
-      snow: 'снег',
-      thunder: 'навальніца',
-    },
-  },
   artifacts: [
     'кубак кавы',
     'стос кніг',
@@ -548,13 +490,6 @@ export const be: Dictionary = {
         note: '90+ браўзерных утыліт; без сервераў і акаўнтаў, файлы не пакідаюць камп’ютар.',
         status: 'alive',
         href: 'https://belun.app',
-      },
-      {
-        name: 'Minsk Weather Engine',
-        years: '2026',
-        note: 'Надвор’евы слой гэтага сайта: у Мінску дождж — і тут дождж.',
-        status: 'alive',
-        href: '/be/blog/',
       },
       {
         name: 'UpMyGame Player',

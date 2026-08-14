@@ -95,14 +95,7 @@ const personLd = {
           d.style.setProperty('--accent', p[0]);
           d.style.setProperty('--accent-deep', p[1]);
           d.style.setProperty('--accent-wash', p[2]);
-          // the workshop lives in Minsk: light follows Minsk time, not the viewer's
           var hrs = now.getHours();
-          try {
-            hrs = parseInt(
-              new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Minsk', hour: '2-digit', hour12: false }).format(now),
-              10,
-            );
-          } catch (e) {}
           var phase = hrs < 6 ? 'night' : hrs < 11 ? 'morning' : hrs < 17 ? 'day' : hrs < 22 ? 'evening' : 'night';
           d.dataset.phase = phase;
           var stored = null;
