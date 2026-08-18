@@ -15,6 +15,16 @@ const { t } = Astro.props;
 const intlLocale = { en: 'en-US', ru: 'ru-RU', be: 'be-BY' }[t.lang];
 const posts = (await postsFor(t.lang)).slice(0, 3);
 const projectsHref = t.lang === 'en' ? '/projects/' : `/${t.lang}/projects/`;
+
+/* Where each of the three sits in the picture, as a percentage of its square.
+   The clips are animated from this very frame, so the marks stay put while the
+   figurine moves. */
+const SPOT_AT = {
+  me: { x: 40.5, y: 21.5 },
+  bird: { x: 30, y: 25.5 },
+  dog: { x: 62.5, y: 34.5 },
+};
+const SPOT_AUDIO = { me: '/audio/dmitriy.mp3', bird: '/audio/kenar.mp3', dog: '/audio/zoom.mp3' };
 ---
 
 <Masthead t={t} />
@@ -47,7 +57,54 @@ const projectsHref = t.lang === 'en' ? '/projects/' : `/${t.lang}/projects/`;
           loading="eager"
           fetchpriority="high"
         />
+        {
+          t.hero.spots.map((spot, i) => (
+            <button
+              class="spot"
+              type="button"
+              data-spot={spot.key}
+              style={`--x:${SPOT_AT[spot.key].x}%;--y:${SPOT_AT[spot.key].y}%;--i:${i}`}
+              aria-label={spot.label}
+              aria-expanded="false"
+              aria-controls={`note-${spot.key}-${t.lang}`}
+            >
+              <svg class="spot-stitch" viewBox="0 0 7 7" aria-hidden="true">
+                <path d="M3 2h1v3H3zM2 3h3v1H2zM1 1h1v1H1zM5 1h1v1H5zM1 5h1v1H1zM5 5h1v1H5z" />
+              </svg>
+            </button>
+          ))
+        }
       </div>
+
+      <span class="spark" data-spark aria-hidden="true"></span>
+
+      <div class="notes">
+        {
+          t.hero.spots.map((spot) => (
+            <article
+              class="note"
+              id={`note-${spot.key}-${t.lang}`}
+              data-note={spot.key}
+              style={`--x:${SPOT_AT[spot.key].x}%`}
+              hidden
+            >
+              <span class="note-tail" aria-hidden="true" />
+              <button class="note-close" type="button" data-note-close aria-label={t.hero.spotClose}>
+                <svg viewBox="0 0 12 12" aria-hidden="true">
+                  <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+              </button>
+              <h3 class="note-name">{spot.name}</h3>
+              <p class="note-text">{spot.text}</p>
+              <button class="note-listen" type="button" data-audio={SPOT_AUDIO[spot.key]} hidden>
+                <span class="note-play" aria-hidden="true" />
+                {spot.listen}
+              </button>
+            </article>
+          ))
+        }
+      </div>
+
       <p class="scene-hint">{t.hero.hint}</p>
     </div>
   </section>

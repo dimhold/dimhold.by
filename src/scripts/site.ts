@@ -1,6 +1,9 @@
+import { greetTheCurious } from './console-hello';
 import { mountToy } from './goalseek';
 
 export function initSite() {
+  greetTheCurious();
+
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // — the lamp —
@@ -65,13 +68,40 @@ export function initSite() {
   }
 
   // — the hero photograph, which now and then comes alive —
+  const scene = document.querySelector<HTMLElement>('.scene');
   const stage = document.querySelector<HTMLElement>('[data-stage]');
   const clips = (stage?.dataset.clips ?? '').split(',').filter(Boolean);
-  if (stage && clips.length && !reduced) {
-    import('./herolive')
-      .then((m) => m.mountLive(stage, { clips }))
+
+  const live =
+    stage && clips.length && !reduced
+      ? import('./herolive')
+          .then((m) => m.mountLive(stage, { clips }))
+          .catch(() => null)
+      : // the still is the fallback, and it is already on screen
+        Promise.resolve(null);
+
+  // — the three marks on it. Reading a note holds the picture still: nobody
+  //   wants the figurine fidgeting while they read about it. —
+  if (scene?.querySelector('[data-spot]')) {
+    import('./herospots')
+      .then((m) =>
+        m.mountSpots(scene, {
+          onOpen: () => void live.then((l) => l?.hold()),
+          onClose: () => void live.then((l) => l?.release()),
+        }),
+      )
       .catch(() => {
-        /* the still is the fallback, and it is already on screen */
+        /* the picture is still a picture without them */
+      });
+  }
+
+  // — the tear-off calendar in the footer —
+  const leafpad = document.querySelector<HTMLElement>('[data-leafpad]');
+  if (leafpad) {
+    import('./dayleaf')
+      .then((m) => m.mountLeafpad(leafpad))
+      .catch(() => {
+        /* the build-date sheet stays; better a stale day than none */
       });
   }
 

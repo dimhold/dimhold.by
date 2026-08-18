@@ -433,10 +433,15 @@ html[data-mode='night'] .link-plain {
    boomerang cut from this exact frame, so both ends of the fade are the same
    picture and the swap never shows a seam. */
 
+.scene {
+  --stage-w: 30rem;
+  position: relative;
+}
+
 .stage {
   position: relative;
   width: 100%;
-  max-width: 30rem;
+  max-width: var(--stage-w);
   aspect-ratio: 1 / 1;
   border-radius: 26px;
   overflow: hidden;
@@ -460,7 +465,14 @@ html[data-mode='night'] .link-plain {
   object-fit: cover;
 }
 
+/* The clip is appended after the marks, so without a stacking order it would
+   paint straight over them and they would vanish mid-playback. */
+.stage-still {
+  z-index: 0;
+}
+
 .stage-live {
+  z-index: 1;
   opacity: 0;
   pointer-events: none;
   transition: opacity 450ms ease;
@@ -491,9 +503,7 @@ html[data-mode='night'] .link-plain {
   }
   .scene {
     order: -1;
-  }
-  .stage {
-    max-width: 21rem;
+    --stage-w: 21rem;
   }
 }
 
@@ -994,6 +1004,33 @@ html[data-mode='night'] .contact-email {
   margin-top: clamp(2.5rem, 6vh, 4.5rem);
   padding: 0 0 2.2rem;
   text-align: center;
+}
+
+/* The calendar stands on the left, the signature and the copyright sit beside
+   it on one line — the pad on a desk, the name written next to it. */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+  flex-wrap: wrap;
+}
+
+.footer-left {
+  flex: 0 0 auto;
+}
+
+.footer-sign {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
 }
 
 .signature {
@@ -1524,6 +1561,9 @@ html[data-mode='night'] .astro-code span {
 
 .footer::before {
   content: '';
+  /* .footer is a flex row now, so the strip has to claim a whole line of it
+     instead of lining up beside the calendar. */
+  flex: 0 0 100%;
   display: block;
   height: 2.25rem;
   margin-bottom: 1.6rem;
@@ -1549,4 +1589,633 @@ html[data-mode='night'] .astro-code span {
   display: flex;
   align-items: baseline;
   gap: 1rem;
+}
+
+/* ——— the three marks on the hero, and the linen that unrolls from them ——— */
+
+.spot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  /* A ring, not a disc: whoever the mark points at has to stay visible. */
+  width: 1.6rem;
+  height: 1.6rem;
+  margin: -0.8rem 0 0 -0.8rem;
+  padding: 0;
+  z-index: 2;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.95), 0 1px 6px rgba(50, 36, 20, 0.35);
+  /* Out of the way by default — three rings parked on three faces is no way to
+     look at a picture. They come back on hover, on a blink, or while read. */
+  opacity: 0;
+  transition: opacity 380ms ease, transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 200ms ease, color 200ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .stage:hover .spot {
+    opacity: 1;
+  }
+}
+
+/* one short blink, staggered along the three, then gone again */
+.stage.marks-lit .spot {
+  animation: spotBlink 1.6s ease-out both;
+  animation-delay: calc(var(--i) * 0.09s);
+}
+
+.stage.marks-open .spot,
+.spot:focus-visible,
+.spot[aria-expanded='true'] {
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes spotBlink {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  14% {
+    opacity: 1;
+    transform: scale(1.14);
+  }
+  24% {
+    transform: scale(1);
+  }
+  62% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+}
+
+/* the thread: it runs from an opened mark down to the edge of the picture,
+   where the note's tail picks it up. .stage clips whatever hangs over. */
+.spot::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 0;
+  height: 100vh;
+  margin-left: -1px;
+  border-left: 2px dotted rgba(255, 255, 255, 0.85);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.spot:hover,
+.spot:focus-visible {
+  transform: scale(1.2);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.spot[aria-expanded='true'] {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.95), 0 2px 10px rgba(50, 36, 20, 0.4);
+}
+
+.spot[aria-expanded='true']::after {
+  transform: scaleY(1);
+}
+
+.spot-stitch {
+  width: 0.62rem;
+  height: 0.62rem;
+  fill: currentColor;
+  shape-rendering: crispEdges;
+  filter: drop-shadow(0 1px 1.5px rgba(50, 36, 20, 0.55));
+}
+
+.notes {
+  width: 100%;
+  max-width: var(--stage-w);
+}
+
+.note {
+  position: relative;
+  margin-top: 0.7rem;
+  padding: 1rem 1.15rem 1.1rem;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  /* The unroll clips from the top edge downward. The clip region is pulled
+     12px above the box so the tail that points back at the mark survives it. */
+  clip-path: inset(-12px 0 100% 0);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: clip-path 480ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease,
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.note.is-open {
+  clip-path: inset(-12px 0 0 0);
+  opacity: 1;
+  transform: none;
+}
+
+/* the note is cut from the same cloth as the page */
+.note::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-color: var(--ink);
+  -webkit-mask-image: var(--ornament);
+  mask-image: var(--ornament);
+  -webkit-mask-size: calc(var(--ornament-size) * 0.55);
+  mask-size: calc(var(--ornament-size) * 0.55);
+  opacity: 0.05;
+}
+
+@supports not (mask-image: url('/ornament-star.svg')) {
+  .note::after {
+    display: none;
+  }
+}
+
+.note-tail {
+  position: absolute;
+  top: -6px;
+  left: var(--x);
+  width: 11px;
+  height: 11px;
+  margin-left: -5.5px;
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  border-radius: 3px 0 0 0;
+  transform: rotate(45deg);
+}
+
+.note-name {
+  font-family: var(--font-hand);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--accent-deep);
+}
+
+html[data-mode='night'] .note-name {
+  color: var(--accent);
+}
+
+.note-text {
+  margin-top: 0.35rem;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.note-close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.note-close svg {
+  width: 0.7rem;
+  height: 0.7rem;
+  fill: none;
+}
+
+.note-close:hover {
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+.note-listen {
+  position: relative;
+  margin-top: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.9rem 0.3rem 0.32rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 150ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.note-listen:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.note-play {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+}
+
+.note-play::before {
+  content: '';
+  margin-left: 2px;
+  border-left: 7px solid #fff;
+  border-top: 4.5px solid transparent;
+  border-bottom: 4.5px solid transparent;
+}
+
+.note-listen.is-playing .note-play::before {
+  margin-left: 0;
+  width: 7px;
+  height: 9px;
+  border: 0;
+  background: linear-gradient(90deg, #fff 0 2.5px, transparent 2.5px 4.5px, #fff 4.5px 7px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spot::after {
+    transition: none;
+  }
+  .note {
+    transition: none;
+  }
+  /* still appear and withdraw, just without the pop */
+  .stage.marks-lit .spot {
+    animation-name: spotBlinkPlain;
+  }
+}
+
+@keyframes spotBlinkPlain {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  10%,
+  70% {
+    opacity: 1;
+  }
+}
+
+/* ——— the clip is announced, not suffered ———
+
+   The clips are stop-motion by nature: they stutter, and a stutter with no
+   frame around it reads as a page that has hung. So a golden ring travels
+   around the picture for exactly as long as one plays — something arrived,
+   woke the figurine, and left again. The ring outlasts the last frame by a
+   breath, so it is seen leaving. */
+
+@property --spin {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  padding: 2px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 520ms ease;
+  background: conic-gradient(
+    from var(--spin),
+    rgba(226, 178, 82, 0) 0deg 190deg,
+    rgba(226, 178, 82, 0.5) 248deg,
+    rgba(255, 244, 210, 0.95) 300deg,
+    rgba(226, 178, 82, 0.5) 344deg,
+    rgba(226, 178, 82, 0) 360deg
+  );
+  /* keep only the 2px rim: the fill is punched out of the middle */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.stage.is-magic::after {
+  opacity: 1;
+  animation: stageSpin 2.8s linear infinite;
+}
+
+.stage.is-magic {
+  box-shadow: var(--shadow-lift), 0 0 26px rgba(226, 178, 82, 0.34);
+}
+
+@keyframes stageSpin {
+  to {
+    --spin: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage.is-magic::after {
+    animation: none;
+  }
+}
+
+/* ——— the beam ———
+
+   Nothing wakes the figurine on its own: a beam arrives from off the picture,
+   lands, and the clip starts from the impact. It sits outside .stage, which
+   clips its own content, so the beam can come from somewhere else entirely. */
+
+.spark {
+  /* Where it comes from and where it lands: re-rolled before every strike, so
+     the beam never arrives twice from the same corner. These are the no-JS
+     defaults. */
+  --beam-a: -38deg;
+  --beam-x: 48%;
+  --beam-y: 44%;
+
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  max-width: var(--stage-w);
+  aspect-ratio: 1 / 1;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* the streak: its head is the impact point, its tail trails a long way behind */
+.spark::before {
+  content: '';
+  position: absolute;
+  left: var(--beam-x);
+  top: var(--beam-y);
+  width: 62%;
+  margin-left: -62%;
+  height: 2.5px;
+  border-radius: 999px;
+  transform-origin: 100% 50%;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 232, 170, 0) 0%,
+    rgba(233, 193, 92, 0.18) 34%,
+    rgba(233, 193, 92, 0.6) 72%,
+    rgba(255, 250, 230, 1) 100%
+  );
+  box-shadow: 0 0 14px rgba(255, 226, 150, 0.85);
+}
+
+/* the bloom where it lands */
+.spark::after {
+  content: '';
+  position: absolute;
+  left: var(--beam-x);
+  top: var(--beam-y);
+  width: 13%;
+  aspect-ratio: 1 / 1;
+  margin: -6.5% 0 0 -6.5%;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 250, 230, 0.95) 0%,
+    rgba(233, 193, 92, 0.5) 45%,
+    rgba(233, 193, 92, 0) 70%
+  );
+}
+
+.spark.is-striking::before {
+  animation: sparkFly 1500ms cubic-bezier(0.5, 0, 0.3, 1) both;
+}
+
+.spark.is-striking::after {
+  animation: sparkHit 620ms ease-out 760ms both;
+}
+
+/* Starts far enough out to be off the screen entirely, lands just past
+   halfway, and spends the rest of the time letting the trail go. */
+@keyframes sparkFly {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--beam-a)) translateX(-380%) scaleX(0.5);
+  }
+  10% {
+    opacity: 1;
+  }
+  52% {
+    opacity: 1;
+    transform: rotate(var(--beam-a)) translateX(0%) scaleX(1);
+  }
+  70% {
+    opacity: 0.7;
+    transform: rotate(var(--beam-a)) translateX(4%) scaleX(0.62);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--beam-a)) translateX(9%) scaleX(0.16);
+  }
+}
+
+@keyframes sparkHit {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  32% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spark {
+    display: none;
+  }
+}
+
+/* ——— the tear-off calendar ———
+
+   A desk pad: two rings at the top, one sheet per day. Yesterday's sheet sits
+   on top of today's; when the pad comes into view it peels forward around the
+   rings, lets go, and falls out of the frame. */
+
+.leafpad {
+  position: relative;
+  width: 11.5rem;
+  margin: 0 auto 0.7rem;
+  padding-top: 0.9rem;
+  perspective: 900px;
+}
+
+.leafpad-rings {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4.6rem;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.leafpad-rings span {
+  width: 0.42rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--muted), var(--line));
+  box-shadow: 0 1px 2px rgba(50, 36, 20, 0.25);
+}
+
+.leaf {
+  position: relative;
+  padding: 1.5rem 0.9rem 1.1rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px 3px 8px 8px;
+  box-shadow: var(--shadow);
+  transform-origin: 50% 0;
+  backface-visibility: hidden;
+}
+
+/* the sheet underneath — a hint of the rest of the pad */
+.leaf::after {
+  content: '';
+  position: absolute;
+  inset: auto -3px -4px -3px;
+  height: 8px;
+  z-index: -1;
+  border-radius: 0 0 9px 9px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 0;
+}
+
+/* the perforation the sheet tears along */
+.leaf-perf {
+  position: absolute;
+  top: 1rem;
+  left: 0.7rem;
+  right: 0.7rem;
+  border-top: 1.5px dotted var(--line);
+}
+
+.leaf-past {
+  position: absolute;
+  inset: 0.9rem 0 auto 0;
+  z-index: 2;
+}
+
+.leaf-past.is-torn {
+  animation: leafTear 1.25s cubic-bezier(0.35, 0.05, 0.3, 1) both;
+}
+
+/* peel forward around the rings, then let go and drop away */
+@keyframes leafTear {
+  0% {
+    transform: rotateX(0deg) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  38% {
+    transform: rotateX(-88deg) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  46% {
+    transform: rotateX(-96deg) translateY(0.4rem) rotate(-1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: rotateX(-104deg) translateY(9rem) rotate(-11deg);
+    opacity: 0;
+  }
+}
+
+.leaf-date {
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.leaf-month {
+  margin-top: 0.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.leaf-weekday {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.leaf-word {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-hand);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--accent-deep);
+  overflow-wrap: anywhere;
+}
+
+html[data-mode='night'] .leaf-word {
+  color: var(--accent);
+}
+
+.leaf-gloss {
+  margin-top: 0.15rem;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.leafpad-caption {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaf-past.is-torn {
+    animation: none;
+    opacity: 0;
+  }
 }

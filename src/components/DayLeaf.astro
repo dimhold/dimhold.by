@@ -1,0 +1,53 @@
+---
+/* A tear-off desk calendar, the kind that stands by a keyboard: two rings at
+   the top, one sheet per day, and a Belarusian word on it. Yesterday's sheet
+   is still on the pad — it tears away the first time the calendar comes into
+   view, which is the whole point of the thing.
+
+   Rendered here with the build date so it is never blank, then corrected to
+   the visitor's own today by /scripts/dayleaf. */
+import type { Dictionary } from '../i18n';
+import { sheetFor } from '../lib/words.js';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+
+const now = new Date();
+const sheets = [
+  { key: 'past', ...(await sheetFor(new Date(now.getTime() - 864e5))) },
+  { key: 'today', ...(await sheetFor(now)) },
+];
+---
+
+<aside class="leafpad" data-leafpad aria-label={t.leaf.label}>
+  <div class="leafpad-rings" aria-hidden="true"><span></span><span></span></div>
+  {
+    sheets.map((s) => (
+      <article
+        class:list={['leaf', s.key === 'past' && 'leaf-past']}
+        data-leaf={s.key}
+        aria-hidden={s.key === 'past' ? 'true' : undefined}
+      >
+        <span class="leaf-perf" aria-hidden="true" />
+        <p class="leaf-date" data-leaf-date>
+          {s.date}
+        </p>
+        <p class="leaf-month" data-leaf-month>
+          {s.month}
+        </p>
+        <p class="leaf-weekday" data-leaf-weekday>
+          {s.weekday}
+        </p>
+        <p class="leaf-word" data-leaf-word>
+          {s.entry.w}
+        </p>
+        <p class="leaf-gloss" data-leaf-gloss>
+          {s.entry[t.lang]}
+        </p>
+      </article>
+    ))
+  }
+</aside>

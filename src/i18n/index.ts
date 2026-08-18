@@ -9,6 +9,17 @@ export interface WorkItem {
   body: string[];
 }
 
+/** A tap target on the hero picture: one of the three who live in it. */
+export interface HeroSpot {
+  key: 'me' | 'bird' | 'dog';
+  /** Accessible name for the marker button. */
+  label: string;
+  name: string;
+  text: string;
+  /** Label on the play button; the recording is optional and may be missing. */
+  listen: string;
+}
+
 export interface RecordEntry {
   years: string;
   title: string;
@@ -55,8 +66,6 @@ export interface Dictionary {
     title: string;
     description: string;
     min: string;
-    /** Shown when `date` is the era a backfilled piece is about. {written} and {about} are years. */
-    backfilled: string;
   };
   hero: {
     greeting: string;
@@ -68,6 +77,8 @@ export interface Dictionary {
     ctaAdlega: string;
     photoAlt: string;
     hint: string;
+    spots: HeroSpot[];
+    spotClose: string;
   };
   work: {
     label: string;
@@ -109,6 +120,11 @@ export interface Dictionary {
     lede: string;
     email: string;
   };
+  leaf: {
+    /** Accessible name for the tear-off calendar. */
+    label: string;
+    caption: string;
+  };
   notFound: {
     title: string;
     text: string;
@@ -136,7 +152,6 @@ export const en: Dictionary = {
     description:
       'Essays and build logs by Dmitriy Semenkevich: AI products that don’t guess, financial engines, web experiments.',
     min: 'min read',
-    backfilled: 'Written in {written}, about {about}.',
   },
   hero: {
     greeting: 'hi, I’m',
@@ -149,7 +164,31 @@ export const en: Dictionary = {
     ctaAdlega: 'See Adlega',
     photoAlt:
       'A felt-and-clay figurine of Dmitriy: a laptop on his lap, a yellow canary on his shoulder, a grey dog sitting beside him',
-    hint: 'it comes alive now and then. poke it.',
+    hint: 'it comes alive now and then. the marks tell you who is who.',
+    spots: [
+      {
+        key: 'me',
+        label: 'About me, Dmitriy',
+        name: 'And this is me',
+        text: 'I am from Belarus, so even the figurine is carved the way our old dolls are, and the ornament behind it is a different Belarusian pattern every single day. Thank you for stopping by the workshop — come along, the digital world still has plenty left to find.',
+        listen: 'hear my voice',
+      },
+      {
+        key: 'bird',
+        label: 'About the canary',
+        name: 'My canary',
+        text: 'A kenar, and an absurdly good singer. He is the reason I get to catch my breath between whatever Zoom has already planned.',
+        listen: 'hear him sing',
+      },
+      {
+        key: 'dog',
+        label: 'About Zoom, the dog',
+        name: 'Zoom',
+        text: 'My Weimaraner, and the most relentlessly energetic creature I know. He loves people, he loves hunting, and he trains my nerves daily. He turns up frogs, hedgehogs, hares and brand-new adventures faster than I can ship — which is, more or less, the pace he expects from me.',
+        listen: 'hear him bark',
+      },
+    ],
+    spotClose: 'Close',
   },
   work: {
     label: 'Building now',
@@ -305,6 +344,10 @@ export const en: Dictionary = {
     stack:
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM agents',
   },
+  leaf: {
+    label: 'Tear-off calendar: a Belarusian word for today',
+    caption: 'a Belarusian word a day',
+  },
   contact: {
     label: 'Say hello',
     lede: 'Consulting, product feedback, interesting problems — the inbox is open.',
@@ -337,7 +380,6 @@ export const ru: Dictionary = {
     description:
       'Статьи и билд-логи Дмитрия Семенкевича: ИИ-продукты, которые не угадывают, финансовые движки, веб-эксперименты.',
     min: 'мин чтения',
-    backfilled: 'Написано в {written} году, про {about}-й.',
   },
   hero: {
     greeting: 'привет, я',
@@ -350,7 +392,31 @@ export const ru: Dictionary = {
     ctaAdlega: 'Смотреть Adlega',
     photoAlt:
       'Фигурка Дмитрия из фетра и глины: ноутбук на коленях, жёлтая канарейка на плече, рядом сидит серая собака',
-    hint: 'иногда оживает. ткните в неё.',
+    hint: 'иногда оживает. метки расскажут, кто есть кто.',
+    spots: [
+      {
+        key: 'me',
+        label: 'Обо мне, Дмитрии',
+        name: 'А это я',
+        text: 'Я родом из Беларуси — поэтому и фигурка вырезана в духе наших старых кукол, а на фоне каждый день новый белорусский орнамент. Спасибо, что заглянули в мастерскую. Пойдёмте искать новые открытия в цифровом мире вместе.',
+        listen: 'послушать мой голос',
+      },
+      {
+        key: 'bird',
+        label: 'О канарейке',
+        name: 'Моя птица',
+        text: 'Кенар, и поёт он невероятно красиво. Благодаря ему я успеваю перевести дух между тем, что Зум уже придумал.',
+        listen: 'послушать, как поёт',
+      },
+      {
+        key: 'dog',
+        label: 'О собаке Зуме',
+        name: 'Зум',
+        text: 'Мой веймаранер и самое неутомимое существо из всех, кого я знаю. Любит людей, любит охоту и ежедневно тренирует мои нервы. Лягушек, ежей, зайцев и новые приключения он находит быстрее, чем я выкатываю релизы, — примерно такого темпа он ждёт и от меня.',
+        listen: 'послушать, как лает',
+      },
+    ],
+    spotClose: 'Закрыть',
   },
   work: {
     label: 'Сейчас строю',
@@ -506,6 +572,10 @@ export const ru: Dictionary = {
     stack:
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM-агенты',
   },
+  leaf: {
+    label: 'Отрывной календарь: белорусское слово дня',
+    caption: 'белорусское слово на каждый день',
+  },
   contact: {
     label: 'Скажите привет',
     lede: 'Консалтинг, фидбек по продукту, интересные задачи — почта открыта.',
@@ -538,7 +608,6 @@ export const be: Dictionary = {
     description:
       'Артыкулы і білд-логі Дзмітрыя Семянкевіча: ШІ-прадукты, якія не гадаюць, фінансавыя рухавікі, веб-эксперыменты.',
     min: 'хв чытання',
-    backfilled: 'Напісана ў {written} годзе, пра {about}-і.',
   },
   hero: {
     greeting: 'прывітанне, я',
@@ -551,7 +620,31 @@ export const be: Dictionary = {
     ctaAdlega: 'Глядзець Adlega',
     photoAlt:
       'Фігурка Дзмітрыя з фетру і гліны: ноўтбук на каленях, жоўтая канарэйка на плячы, побач сядзіць шэры сабака',
-    hint: 'часам ажывае. тыцніце ў яе.',
+    hint: 'часам ажывае. меткі раскажуць, хто ёсць хто.',
+    spots: [
+      {
+        key: 'me',
+        label: 'Пра мяне, Дзмітрыя',
+        name: 'А гэта я',
+        text: 'Я родам з Беларусі — таму і фігурка выразаная ў духу нашых старых лялек, а на фоне кожны дзень новы беларускі арнамент. Дзякуй, што зазірнулі ў майстэрню. Хадзем шукаць новыя адкрыцці ў лічбавым свеце разам.',
+        listen: 'паслухаць мой голас',
+      },
+      {
+        key: 'bird',
+        label: 'Пра канарэйку',
+        name: 'Мая птушка',
+        text: 'Кенар, і спявае ён неверагодна прыгожа. Дзякуючы яму я паспяваю перавесці дух паміж тым, што Зум ужо прыдумаў.',
+        listen: 'паслухаць, як спявае',
+      },
+      {
+        key: 'dog',
+        label: 'Пра сабаку Зума',
+        name: 'Зум',
+        text: 'Мой веймаранер і самае нястомнае стварэнне з усіх, каго я ведаю. Любіць людзей, любіць паляванне і штодня трэніруе мае нервы. Жаб, вожыкаў, зайцоў і новыя прыгоды ён знаходзіць хутчэй, чым я выкатваю рэлізы, — прыкладна такога тэмпу ён чакае і ад мяне.',
+        listen: 'паслухаць, як брэша',
+      },
+    ],
+    spotClose: 'Зачыніць',
   },
   work: {
     label: 'Зараз будую',
@@ -706,6 +799,10 @@ export const be: Dictionary = {
     ],
     stack:
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM-агенты',
+  },
+  leaf: {
+    label: 'Адрыўны каляндар: беларускае слова дня',
+    caption: 'беларускае слова на кожны дзень',
   },
   contact: {
     label: 'Скажыце прывітанне',

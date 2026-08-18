@@ -1,5 +1,6 @@
 ---
 import type { Dictionary } from '../i18n';
+import DayLeaf from './DayLeaf.astro';
 
 interface Props {
   t: Dictionary;
@@ -10,8 +11,12 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <span class="signature reveal-mask" aria-hidden="true">Dmitriy</span>
-  <div class="footer-rows">
-    <span>© {year} Dmitriy Semenkevich</span>
+  <div class="footer-left">
+    <DayLeaf t={t} />
+    <p class="leafpad-caption">{t.leaf.caption}</p>
+  </div>
+  <div class="footer-sign">
+    <span class="signature reveal-mask" aria-hidden="true">Dmitriy</span>
+    <span class="footer-copy">© {year} Dmitriy Semenkevich</span>
   </div>
 </footer>
