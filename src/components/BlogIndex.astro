@@ -13,7 +13,7 @@ const posts = await postsFor(t.lang);
 const langHrefs = { en: '/blog/', ru: '/ru/blog/', be: '/be/blog/' };
 ---
 
-<Masthead t={t} blogActive langHrefs={langHrefs} />
+<Masthead t={t} active="blog" langHrefs={langHrefs} />
 
 <main id="main" class="blog-page">
   <header class="section-head">

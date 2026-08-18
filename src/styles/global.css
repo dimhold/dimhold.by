@@ -166,7 +166,14 @@ a {
   color: var(--accent);
 }
 
-.nav-blog {
+.nav-main {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-pill {
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--ink);
@@ -174,26 +181,27 @@ a {
   padding: 0.4rem 0.9rem;
   border-radius: 999px;
   background: var(--accent-wash);
+  white-space: nowrap;
   transition: background-color 150ms ease, color 150ms ease, transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.nav-blog:hover {
+.nav-pill:hover {
   background: var(--accent);
   color: #fff;
   transform: translateY(-1px);
 }
 
-.nav-blog[aria-current='page'] {
+.nav-pill[aria-current='page'] {
   background: var(--accent);
   color: #fff;
 }
 
-html[data-mode='night'] .nav-blog {
+html[data-mode='night'] .nav-pill {
   background: rgba(255, 255, 255, 0.08);
 }
 
-html[data-mode='night'] .nav-blog:hover,
-html[data-mode='night'] .nav-blog[aria-current='page'] {
+html[data-mode='night'] .nav-pill:hover,
+html[data-mode='night'] .nav-pill[aria-current='page'] {
   background: var(--accent);
   color: #1c1410;
 }
@@ -1455,6 +1463,62 @@ html[data-mode='night'] .astro-code span {
   .prose .fig .f-cycle:not(.f-c0) { display: none; }
 }
 
+/* ——— projects page ——— */
+
+.projects-page {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding-top: clamp(1.5rem, 4vh, 3rem);
+  min-height: 55svh;
+}
+
+.projects-lede {
+  margin-top: 0.2rem;
+  max-width: 60ch;
+  font-size: clamp(1.02rem, 1.6vw, 1.15rem);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.projects-sub {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.1rem;
+}
+
+.projects-note {
+  margin: -0.5rem 0 1.1rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.project-card .shelf-status {
+  margin-top: 0.7rem;
+}
+
+.project-stack {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.project-stack-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 0.3rem;
+}
+
 /* ——— rushnyk band: the woven strip that closes the page ——— */
 
 .footer::before {
@@ -1478,4 +1542,10 @@ html[data-mode='night'] .astro-code span {
   .footer::before {
     display: none;
   }
+}
+
+.project-card .card-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
 }

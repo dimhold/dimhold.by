@@ -1,0 +1,21 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ProjectsPage from '../../../components/ProjectsPage.astro';
+import { be } from '../../../i18n';
+
+const alternates = [
+  { lang: 'en', href: '/projects/' },
+  { lang: 'ru', href: '/ru/projects/' },
+  { lang: 'be', href: '/be/projects/' },
+];
+---
+
+<Base
+  t={be}
+  title={be.projects.title}
+  description={be.projects.description}
+  alternates={alternates}
+  ogType="website"
+>
+  <ProjectsPage t={be} />
+</Base>

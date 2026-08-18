@@ -17,6 +17,18 @@ export interface RecordEntry {
 
 export type ShelfStatus = 'alive' | 'wip' | 'shipped' | 'dead' | 'exp';
 
+export interface ProjectCard {
+  name: string;
+  tagline: string;
+  years: string;
+  status: ShelfStatus;
+  /** Omitted for projects with nothing public to point at. */
+  href?: string;
+  linkLabel?: string;
+  body: string[];
+  stack: string[];
+}
+
 export interface ShelfItem {
   name: string;
   years: string;
@@ -35,6 +47,7 @@ export interface Dictionary {
   lampLabel: string;
   nav: {
     blog: string;
+    projects: string;
   };
   blog: {
     label: string;
@@ -42,6 +55,8 @@ export interface Dictionary {
     title: string;
     description: string;
     min: string;
+    /** Shown when `date` is the era a backfilled piece is about. {written} and {about} are years. */
+    backfilled: string;
   };
   hero: {
     greeting: string;
@@ -60,8 +75,20 @@ export interface Dictionary {
   };
   shelf: {
     label: string;
+    all: string;
     statuses: Record<ShelfStatus, string>;
     items: ShelfItem[];
+  };
+  projects: {
+    label: string;
+    title: string;
+    description: string;
+    lede: string;
+    activeLabel: string;
+    archiveLabel: string;
+    archiveNote: string;
+    stackLabel: string;
+    items: ProjectCard[];
   };
   toy: {
     title: string;
@@ -100,6 +127,7 @@ export const en: Dictionary = {
   lampLabel: 'Toggle the lamp',
   nav: {
     blog: 'writing',
+    projects: 'my projects',
   },
   blog: {
     label: 'Writing',
@@ -108,6 +136,7 @@ export const en: Dictionary = {
     description:
       'Essays and build logs by Dmitriy Semenkevich: AI products that don’t guess, financial engines, web experiments.',
     min: 'min read',
+    backfilled: 'Written in {written}, about {about}.',
   },
   hero: {
     greeting: 'hi, I’m',
@@ -118,8 +147,9 @@ export const en: Dictionary = {
       'Between releases I poke at the digital world — experiments, new tools, pop-science rabbit holes. This site is my workshop.',
     ctaEmail: 'Write me',
     ctaAdlega: 'See Adlega',
-    photoAlt: 'Portrait of Dmitriy Semenkevich',
-    hint: 'drag me. poke me.',
+    photoAlt:
+      'A felt-and-clay figurine of Dmitriy: a laptop on his lap, a yellow canary on his shoulder, a grey dog sitting beside him',
+    hint: 'it comes alive now and then. poke it.',
   },
   work: {
     label: 'Building now',
@@ -139,6 +169,7 @@ export const en: Dictionary = {
   },
   shelf: {
     label: 'The shelf',
+    all: 'all projects →',
     statuses: {
       alive: 'alive',
       wip: 'in progress',
@@ -177,6 +208,59 @@ export const en: Dictionary = {
         years: '2013 – 2014',
         note: 'Co-founded; the product didn’t take off, the lessons stayed.',
         status: 'dead',
+      },
+    ],
+  },
+  projects: {
+    label: 'My projects',
+    title: 'My projects — Dmitriy Semenkevich',
+    description:
+      'The projects I run today: Adlega, an AI CFO for SaaS founders; Belun, a browser toolbox that never uploads your files; and this workshop of a site.',
+    lede: 'Everything that is running right now — why it exists, and what it is built on. Work that finished its run is on the shelf below, dead ends included.',
+    activeLabel: 'Running now',
+    archiveLabel: 'The shelf',
+    archiveNote: 'Older work, kept honest — including the parts that died.',
+    stackLabel: 'built with',
+    items: [
+      {
+        name: 'Adlega',
+        tagline: 'an AI CFO for SaaS founders',
+        years: '2024 —',
+        status: 'alive',
+        href: 'https://adlega.com',
+        linkLabel: 'adlega.com',
+        body: [
+          'Describe your business in a chat and get a working financial model: revenue, burn, runway, what-if scenarios. Minutes instead of weeks in a spreadsheet.',
+          'The design decision that defines the product: the AI never does the math. Agents interview the founder, fill the model, explain any number and run goal-seek — “how do I triple my MRR?” — but every figure comes from a deterministic engine, tested to stay within 0.5% of the hand-built Excel model it replaced.',
+          'I co-founded it and build it end to end: the agents, the engine, and the interface the model lives in.',
+        ],
+        stack: ['TypeScript', 'Node.js', 'React', 'PostgreSQL', 'LLM agents'],
+      },
+      {
+        name: 'Belun',
+        tagline: 'a browser toolbox that never uploads your files',
+        years: '2025 —',
+        status: 'alive',
+        href: 'https://belun.app',
+        linkLabel: 'belun.app',
+        body: [
+          '90+ small tools that live entirely in a browser tab: convert, compress, clean up, inspect. No servers, no accounts, no uploads — files never leave your machine.',
+          'It started as a private pile of scripts I kept rewriting from memory. Collecting them into one page is what made them worth keeping.',
+        ],
+        stack: ['TypeScript', 'WebAssembly', 'Web Workers', 'static hosting'],
+      },
+      {
+        name: 'dimhold.by',
+        tagline: 'this workshop, in three languages',
+        years: '2025 —',
+        status: 'wip',
+        href: '/blog/',
+        linkLabel: 'build log',
+        body: [
+          'The site you are reading. A static workshop in English, Russian and Belarusian, holding the essays, the toys and the experiments that belong nowhere else.',
+          'Built to stay fast and nearly free: no framework shipped to the page, images and clips prepared ahead of time, everything served as flat files.',
+        ],
+        stack: ['Astro', 'TypeScript', 'hand-written CSS', 'GitHub Pages'],
       },
     ],
   },
@@ -244,6 +328,7 @@ export const ru: Dictionary = {
   lampLabel: 'Переключить лампу',
   nav: {
     blog: 'блог',
+    projects: 'мои проекты',
   },
   blog: {
     label: 'Статьи',
@@ -252,6 +337,7 @@ export const ru: Dictionary = {
     description:
       'Статьи и билд-логи Дмитрия Семенкевича: ИИ-продукты, которые не угадывают, финансовые движки, веб-эксперименты.',
     min: 'мин чтения',
+    backfilled: 'Написано в {written} году, про {about}-й.',
   },
   hero: {
     greeting: 'привет, я',
@@ -262,8 +348,9 @@ export const ru: Dictionary = {
       'Между релизами копаюсь в цифровом мире: эксперименты, новые инструменты, науч-поп. Этот сайт — моя мастерская.',
     ctaEmail: 'Написать мне',
     ctaAdlega: 'Смотреть Adlega',
-    photoAlt: 'Портрет Дмитрия Семенкевича',
-    hint: 'покрутите меня. ткните в меня.',
+    photoAlt:
+      'Фигурка Дмитрия из фетра и глины: ноутбук на коленях, жёлтая канарейка на плече, рядом сидит серая собака',
+    hint: 'иногда оживает. ткните в неё.',
   },
   work: {
     label: 'Сейчас строю',
@@ -283,6 +370,7 @@ export const ru: Dictionary = {
   },
   shelf: {
     label: 'Полка проектов',
+    all: 'все проекты →',
     statuses: {
       alive: 'живой',
       wip: 'в работе',
@@ -321,6 +409,59 @@ export const ru: Dictionary = {
         years: '2013 – 2014',
         note: 'Сооснователь; продукт не взлетел, уроки остались.',
         status: 'dead',
+      },
+    ],
+  },
+  projects: {
+    label: 'Мои проекты',
+    title: 'Мои проекты — Dmitriy Semenkevich',
+    description:
+      'Проекты, которые я веду сейчас: Adlega — ИИ-финдиректор для SaaS-фаундеров, Belun — браузерный набор инструментов без загрузок на сервер, и этот сайт-мастерская.',
+    lede: 'Всё, что работает прямо сейчас: зачем оно существует и на чём собрано. То, что своё уже отработало, лежит ниже на полке — вместе с тупиками.',
+    activeLabel: 'Работают сейчас',
+    archiveLabel: 'Полка проектов',
+    archiveNote: 'Что было раньше — честно, вместе с тем, что умерло.',
+    stackLabel: 'собрано на',
+    items: [
+      {
+        name: 'Adlega',
+        tagline: 'ИИ-финдиректор для SaaS-фаундеров',
+        years: '2024 —',
+        status: 'alive',
+        href: 'https://adlega.com',
+        linkLabel: 'adlega.com',
+        body: [
+          'Опишите бизнес в чате — получите рабочую финансовую модель: выручка, burn, runway, сценарии «что если». Минуты вместо недель в таблицах.',
+          'Ключевое проектное решение: ИИ никогда не считает сам. Агенты интервьюируют фаундера, заполняют модель, объясняют любую цифру, гоняют goal-seek — «как утроить MRR?» — но каждое значение выдаёт детерминированный движок, который мы держим в пределах 0,5 % от собранной вручную Excel-модели, которую он заменил.',
+          'Я сооснователь и делаю продукт целиком: агентов, движок и интерфейс, в котором живёт модель.',
+        ],
+        stack: ['TypeScript', 'Node.js', 'React', 'PostgreSQL', 'LLM-агенты'],
+      },
+      {
+        name: 'Belun',
+        tagline: 'браузерный набор инструментов, который ничего не выгружает',
+        years: '2025 —',
+        status: 'alive',
+        href: 'https://belun.app',
+        linkLabel: 'belun.app',
+        body: [
+          '90+ небольших инструментов, которые работают целиком во вкладке браузера: конвертировать, сжать, почистить, заглянуть внутрь. Без серверов, без аккаунтов, без загрузок — файлы не покидают ваш компьютер.',
+          'Начиналось как личная стопка скриптов, которые я раз за разом писал заново. Собрал их в одну страницу — и они стали нужны не только мне.',
+        ],
+        stack: ['TypeScript', 'WebAssembly', 'Web Workers', 'статический хостинг'],
+      },
+      {
+        name: 'dimhold.by',
+        tagline: 'эта мастерская, на трёх языках',
+        years: '2025 —',
+        status: 'wip',
+        href: '/ru/blog/',
+        linkLabel: 'билд-лог',
+        body: [
+          'Сайт, который вы читаете. Статическая мастерская на английском, русском и белорусском: статьи, игрушки и эксперименты, которым больше негде жить.',
+          'Сделан так, чтобы оставаться быстрым и почти бесплатным: на страницу не уезжает фреймворк, картинки и ролики подготовлены заранее, всё отдаётся плоскими файлами.',
+        ],
+        stack: ['Astro', 'TypeScript', 'CSS руками', 'GitHub Pages'],
       },
     ],
   },
@@ -388,6 +529,7 @@ export const be: Dictionary = {
   lampLabel: 'Пераключыць лямпу',
   nav: {
     blog: 'блог',
+    projects: 'мае праекты',
   },
   blog: {
     label: 'Артыкулы',
@@ -396,6 +538,7 @@ export const be: Dictionary = {
     description:
       'Артыкулы і білд-логі Дзмітрыя Семянкевіча: ШІ-прадукты, якія не гадаюць, фінансавыя рухавікі, веб-эксперыменты.',
     min: 'хв чытання',
+    backfilled: 'Напісана ў {written} годзе, пра {about}-і.',
   },
   hero: {
     greeting: 'прывітанне, я',
@@ -406,8 +549,9 @@ export const be: Dictionary = {
       'Паміж рэлізамі корпаюся ў лічбавым свеце: эксперыменты, новыя інструменты, навук-поп. Гэты сайт — мая майстэрня.',
     ctaEmail: 'Напісаць мне',
     ctaAdlega: 'Глядзець Adlega',
-    photoAlt: 'Партрэт Дзмітрыя Семянкевіча',
-    hint: 'пакруціце мяне. тыцніце ў мяне.',
+    photoAlt:
+      'Фігурка Дзмітрыя з фетру і гліны: ноўтбук на каленях, жоўтая канарэйка на плячы, побач сядзіць шэры сабака',
+    hint: 'часам ажывае. тыцніце ў яе.',
   },
   work: {
     label: 'Зараз будую',
@@ -427,6 +571,7 @@ export const be: Dictionary = {
   },
   shelf: {
     label: 'Паліца праектаў',
+    all: 'усе праекты →',
     statuses: {
       alive: 'жывы',
       wip: 'у працы',
@@ -465,6 +610,59 @@ export const be: Dictionary = {
         years: '2013 – 2014',
         note: 'Сузаснавальнік; прадукт не ўзляцеў, урокі засталіся.',
         status: 'dead',
+      },
+    ],
+  },
+  projects: {
+    label: 'Мае праекты',
+    title: 'Мае праекты — Dmitriy Semenkevich',
+    description:
+      'Праекты, якія я вяду цяпер: Adlega — ШІ-фіндырэктар для SaaS-заснавальнікаў, Belun — браўзерны набор інструментаў без выгрузкі на сервер, і гэты сайт-майстэрня.',
+    lede: 'Усё, што працуе проста зараз: навошта яно існуе і на чым сабрана. Тое, што сваё ўжо адпрацавала, ляжыць ніжэй на паліцы — разам з тупікамі.',
+    activeLabel: 'Працуюць зараз',
+    archiveLabel: 'Паліца праектаў',
+    archiveNote: 'Што было раней — сумленна, разам з тым, што памерла.',
+    stackLabel: 'сабрана на',
+    items: [
+      {
+        name: 'Adlega',
+        tagline: 'ШІ-фіндырэктар для SaaS-заснавальнікаў',
+        years: '2024 —',
+        status: 'alive',
+        href: 'https://adlega.com',
+        linkLabel: 'adlega.com',
+        body: [
+          'Апішыце бізнес у чаце — атрымайце працоўную фінансавую мадэль: выручка, burn, runway, сцэнарыі «што калі». Хвіліны замест тыдняў у табліцах.',
+          'Ключавое праектнае рашэнне: ШІ ніколі не лічыць сам. Агенты інтэрв’юіруюць заснавальніка, запаўняюць мадэль, тлумачаць любую лічбу, ганяюць goal-seek — «як патроіць MRR?» — але кожнае значэнне выдае дэтэрмінаваны рухавік, які мы трымаем у межах 0,5 % ад сабранай уручную Excel-мадэлі, якую ён замяніў.',
+          'Я сузаснавальнік і раблю прадукт цалкам: агентаў, рухавік і інтэрфейс, у якім жыве мадэль.',
+        ],
+        stack: ['TypeScript', 'Node.js', 'React', 'PostgreSQL', 'LLM-агенты'],
+      },
+      {
+        name: 'Belun',
+        tagline: 'браўзерны набор інструментаў, які нічога не выгружае',
+        years: '2025 —',
+        status: 'alive',
+        href: 'https://belun.app',
+        linkLabel: 'belun.app',
+        body: [
+          '90+ невялікіх інструментаў, якія працуюць цалкам ва ўкладцы браўзера: сканвертаваць, сціснуць, пачысціць, зазірнуць унутр. Без сервераў, без акаўнтаў, без выгрузак — файлы не пакідаюць ваш камп’ютар.',
+          'Пачыналася як асабістая стопка скрыптоў, якія я раз за разам пісаў нанова. Сабраў іх у адну старонку — і яны спатрэбіліся не толькі мне.',
+        ],
+        stack: ['TypeScript', 'WebAssembly', 'Web Workers', 'статычны хостынг'],
+      },
+      {
+        name: 'dimhold.by',
+        tagline: 'гэтая майстэрня, на трох мовах',
+        years: '2025 —',
+        status: 'wip',
+        href: '/be/blog/',
+        linkLabel: 'білд-лог',
+        body: [
+          'Сайт, які вы чытаеце. Статычная майстэрня на англійскай, рускай і беларускай: артыкулы, цацкі і эксперыменты, якім больш няма дзе жыць.',
+          'Зроблены так, каб заставацца хуткім і амаль бясплатным: на старонку не з’язджае фрэймворк, карцінкі і ролікі падрыхтаваны загадзя, усё аддаецца плоскімі файламі.',
+        ],
+        stack: ['Astro', 'TypeScript', 'CSS рукамі', 'GitHub Pages'],
       },
     ],
   },

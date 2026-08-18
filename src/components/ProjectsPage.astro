@@ -1,0 +1,103 @@
+---
+import type { Dictionary } from '../i18n';
+import Masthead from './Masthead.astro';
+import SiteFooter from './SiteFooter.astro';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const langHrefs = { en: '/projects/', ru: '/ru/projects/', be: '/be/projects/' };
+/** Anything still alive gets a full card above; the shelf keeps the rest. */
+const archive = t.shelf.items.filter((i) => i.status !== 'alive');
+---
+
+<Masthead t={t} active="projects" langHrefs={langHrefs} />
+
+<main id="main" class="projects-page">
+  <header class="section-head">
+    <h1 class="blog-title">{t.projects.label}</h1>
+    <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+      <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+    </svg>
+  </header>
+  <p class="projects-lede">{t.projects.lede}</p>
+
+  <section class="section" aria-labelledby="active-label">
+    <h2 id="active-label" class="projects-sub">{t.projects.activeLabel}</h2>
+    <div class="cards">
+      {
+        t.projects.items.map((p) => (
+          <article class="card project-card reveal">
+            <div class="card-head">
+              <h3>
+                {p.href ? (
+                  <a href={p.href} rel="noopener">
+                    {p.name}
+                  </a>
+                ) : (
+                  p.name
+                )}
+              </h3>
+              <span class="card-meta">
+                <span>{p.years}</span>
+                {p.linkLabel && <span class="card-meta-link">{p.linkLabel}</span>}
+              </span>
+            </div>
+            <p class="card-tag">{p.tagline}</p>
+            <span class="shelf-status" data-status={p.status}>
+              {t.shelf.statuses[p.status]}
+            </span>
+            <div class="card-body">
+              {p.body.map((par) => (
+                <p>{par}</p>
+              ))}
+            </div>
+            <p class="project-stack">
+              <span class="project-stack-label">{t.projects.stackLabel}</span>
+              {p.stack.map((tech) => (
+                <span class="chip">{tech}</span>
+              ))}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    archive.length > 0 && (
+      <section class="section" aria-labelledby="archive-label">
+        <h2 id="archive-label" class="projects-sub">
+          {t.projects.archiveLabel}
+        </h2>
+        <p class="projects-note">{t.projects.archiveNote}</p>
+        <div class="shelf">
+          {archive.map((item) => (
+            <div class="shelf-item reveal">
+              <div class="shelf-head">
+                <span class="shelf-name">{item.name}</span>
+                <span class="shelf-years">{item.years}</span>
+              </div>
+              <p class="shelf-note">{item.note}</p>
+              <span class="shelf-status" data-status={item.status}>
+                {t.shelf.statuses[item.status]}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section" aria-labelledby="projects-contact">
+    <div class="contact-card reveal">
+      <h2 id="projects-contact" class="contact-title">{t.contact.label}</h2>
+      <p class="contact-lede">{t.contact.lede}</p>
+      <a class="contact-email" href={`mailto:${t.contact.email}`} data-magnet>{t.contact.email}</a>
+    </div>
+  </section>
+</main>
+
+<SiteFooter t={t} />

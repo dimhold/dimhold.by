@@ -4,13 +4,18 @@ import { dictionaries } from '../i18n';
 
 interface Props {
   t: Dictionary;
-  blogActive?: boolean;
+  /** Which nav pill is the current page, if any. */
+  active?: 'blog' | 'projects';
   /** Where each language link should go; defaults to that language's home. */
   langHrefs?: Partial<Record<Lang, string>>;
 }
 
-const { t, blogActive = false, langHrefs = {} } = Astro.props;
-const blogHref = t.lang === 'en' ? '/blog/' : `/${t.lang}/blog/`;
+const { t, active, langHrefs = {} } = Astro.props;
+const suffix = t.lang === 'en' ? '' : `/${t.lang}`;
+const nav = [
+  { key: 'projects' as const, href: `${suffix}/projects/`, label: t.nav.projects },
+  { key: 'blog' as const, href: `${suffix}/blog/`, label: t.nav.blog },
+];
 const langs = Object.values(dictionaries).map((d) => ({
   code: d.lang.toUpperCase(),
   href: langHrefs[d.lang] ?? d.path,
@@ -20,7 +25,15 @@ const langs = Object.values(dictionaries).map((d) => ({
 
 <header class="masthead">
   <a class="wordmark" href={t.path}>dimhold<span class="dot">.</span>by</a>
-  <a class="nav-blog" href={blogHref} aria-current={blogActive ? 'page' : undefined}>{t.nav.blog}</a>
+  <nav class="nav-main" aria-label={t.nav.projects}>
+    {
+      nav.map((n) => (
+        <a class="nav-pill" href={n.href} aria-current={active === n.key ? 'page' : undefined}>
+          {n.label}
+        </a>
+      ))
+    }
+  </nav>
   <nav class="langs" aria-label={t.langLabel}>
     {
       langs.map((l) =>
