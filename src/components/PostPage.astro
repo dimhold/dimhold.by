@@ -15,12 +15,6 @@ interface Props {
 
 const { t, post, langHrefs } = Astro.props;
 const { Content } = await render(post);
-
-const backfilled = post.data.backfilled
-  ? t.blog.backfilled
-      .replace('{written}', String(post.data.backfilled.getFullYear()))
-      .replace('{about}', String(post.data.date.getFullYear()))
-  : null;
 ---
 
 <Masthead t={t} active="blog" langHrefs={langHrefs} />
@@ -32,7 +26,6 @@ const backfilled = post.data.backfilled
     {fmtDate(post.data.date, t.lang)} · {readingMinutes(post.body)}
     {t.blog.min}
   </p>
-  {backfilled && <p class="post-backfill">{backfilled}</p>}
   <article class="prose">
     <Content />
   </article>
