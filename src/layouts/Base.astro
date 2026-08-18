@@ -5,6 +5,7 @@ import '@fontsource-variable/caveat';
 import '../styles/global.css';
 import type { Dictionary } from '../i18n';
 import { dictionaries, socials } from '../i18n';
+import { TINT } from '../lib/ornament.js';
 
 interface Props {
   t: Dictionary;
@@ -55,9 +56,23 @@ const personLd = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Day/night boot: runs before first paint so there is no flash. -->
-    <script is:inline>
+    <!-- Day/night boot, and the day's tint: both run before first paint so
+         there is no flash. The tint walks by two irrational steps, so the
+         beige differs every day and never repeats a value; the matching
+         ornament is charted from the same day number in /scripts/dayweave. -->
+    <script is:inline define:vars={{ tint: TINT }}>
       (function () {
+        try {
+          var now = new Date();
+          var day = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 864e5);
+          var root = document.documentElement;
+          root.dataset.day = day;
+          root.style.setProperty('--tint-h', (tint.hBase + ((day * tint.phi) % 1) * tint.hSpan).toFixed(2));
+          root.style.setProperty(
+            '--tint-s',
+            (tint.sBase + ((day * tint.plastic) % 1) * tint.sSpan).toFixed(2) + '%',
+          );
+        } catch (e) {}
         try {
           var hrs = new Date().getHours();
           var stored = null;
@@ -100,6 +115,10 @@ const personLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage.href} />
+
+    <script>
+      import '../scripts/dayweave';
+    </script>
 
     <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
 
