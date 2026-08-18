@@ -10,6 +10,8 @@ const blog = defineCollection({
     lang: z.enum(['en', 'ru', 'be']),
     translationKey: z.string(),
     draft: z.boolean().default(false),
+    /** Real writing date when `date` is the era the piece is about, not when it was written. */
+    backfilled: z.coerce.date().optional(),
   }),
 });
 
