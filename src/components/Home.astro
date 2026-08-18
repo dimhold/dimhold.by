@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import portrait from '../assets/dmitriy-semenkevich.jpg';
+import figurine from '../assets/hero-figurine.png';
 import type { Dictionary } from '../i18n';
 import { socials } from '../i18n';
 import { postsFor, postPath, langBase, fmtDate } from '../lib/blog';
@@ -14,6 +14,7 @@ interface Props {
 const { t } = Astro.props;
 const intlLocale = { en: 'en-US', ru: 'ru-RU', be: 'be-BY' }[t.lang];
 const posts = (await postsFor(t.lang)).slice(0, 3);
+const projectsHref = t.lang === 'en' ? '/projects/' : `/${t.lang}/projects/`;
 ---
 
 <Masthead t={t} />
@@ -35,16 +36,18 @@ const posts = (await postsFor(t.lang)).slice(0, 3);
     </div>
 
     <div class="scene">
-      <div class="scene-canvas" data-scene></div>
-      <Image
-        class="scene-fallback"
-        data-scene-fallback
-        hidden
-        src={portrait}
-        alt={t.hero.photoAlt}
-        width={332}
-        quality={85}
-      />
+      <div class="stage" data-stage data-clips="/hero/figurine-glance.mp4,/hero/figurine-breathe.mp4">
+        <Image
+          class="stage-still"
+          src={figurine}
+          alt={t.hero.photoAlt}
+          widths={[420, 640, 960, 1280]}
+          sizes="(max-width: 52rem) 21rem, 30rem"
+          quality={82}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
       <p class="scene-hint">{t.hero.hint}</p>
     </div>
   </section>
@@ -167,6 +170,7 @@ const posts = (await postsFor(t.lang)).slice(0, 3);
         )
       }
     </div>
+    <a class="link-plain wr-all reveal" href={projectsHref}>{t.shelf.all}</a>
   </section>
 
   <section class="section" aria-labelledby="contact-label">

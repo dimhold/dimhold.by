@@ -1,8 +1,5 @@
 import { mountToy } from './goalseek';
 
-const ACCENT = '#2f7cd6';
-const ACCENT_DEEP = '#1d5aa8';
-
 export function initSite() {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -67,26 +64,14 @@ export function initSite() {
     }
   }
 
-  // — 3D hero (lazy; falls back to the photo) —
-  const sceneEl = document.querySelector<HTMLElement>('[data-scene]');
-  const fallback = document.querySelector<HTMLElement>('[data-scene-fallback]');
-  if (sceneEl) {
-    import('./hero3d')
-      .then((m) =>
-        m.mountHero(sceneEl, {
-          accent: ACCENT,
-          deep: ACCENT_DEEP,
-          phase: document.documentElement.dataset.mode === 'night' ? 'night' : 'day',
-          artifact: 7,
-          reduced,
-        }),
-      )
-      .then(() => {
-        fallback?.remove();
-      })
+  // — the hero photograph, which now and then comes alive —
+  const stage = document.querySelector<HTMLElement>('[data-stage]');
+  const clips = (stage?.dataset.clips ?? '').split(',').filter(Boolean);
+  if (stage && clips.length && !reduced) {
+    import('./herolive')
+      .then((m) => m.mountLive(stage, { clips }))
       .catch(() => {
-        sceneEl.remove();
-        fallback?.removeAttribute('hidden');
+        /* the still is the fallback, and it is already on screen */
       });
   }
 
