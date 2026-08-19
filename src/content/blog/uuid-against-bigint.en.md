@@ -98,7 +98,7 @@ A sorted insert always lands at the right hand edge of the tree. The page there 
   <rect x="487" y="178" width="44" height="28" rx="3" class="f-box"/>
   <text x="320" y="212" class="f-label f-muted" text-anchor="middle">73.1</text>
 </svg>
-<figcaption>A sorted insert always lands at the right edge, fills the page to ninety percent and opens the next one.<br>A random insert lands inside a full page, which splits in half. Measured density 90.06 against 73.1, and 2733 leaf pages against 4724.</figcaption>
+<figcaption>A sorted insert always lands at the right edge, fills the page to ninety percent and opens the next one.<br>A random insert lands inside a full page, which splits in half. Measured density 90.06 against 73.1. Leaf pages 2733 against 4724.</figcaption>
 </figure>
 
 Fragmentation went from zero to 49.56, which counts leaves whose right sibling sits at a lower block number. Half the leaves are out of physical order, so an ordered index scan walks the file back and forth instead of reading it through. 49.56 is also about as bad as the number gets, since a fully shuffled index saturates near 50.

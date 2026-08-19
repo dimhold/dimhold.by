@@ -1,6 +1,6 @@
 ---
 title: "Reading UTF-8 as 1251: \"РџСЂРёРІРµС‚\""
-description: "Mojibake is deterministic. Six letters, twelve bytes, five code pages, and a byte table that tells you which pair of encodings collided."
+description: "Mojibake is deterministic. Six letters, twelve bytes, five code pages and a byte table that tells you which pair of encodings collided."
 date: 2011-11-09
 lang: en
 translationKey: mojibake-byte-by-byte
