@@ -10,7 +10,11 @@ claims come from.
 | File | What it holds |
 | --- | --- |
 | `RESEARCH.md` | The ethnographic groundwork: which games exist, how Belarusian each one really is, what the sources say, and what turned out not to exist at all. |
+| `CATALOGUE.md` | The standing collection — every game we can source, borrowed and Soviet-era ones included, each marked for what it is. Grows independently of what gets built. |
 | `ADAPTATION.md` | Which of them survive contact with a browser, and the mechanics proposed for each. |
+| `ROADMAP.md` | What is actually being built, in order, and the bar each game has to clear. |
+| `GPT-REVIEW.md` | Review of a competing proposal — what it got right, what it got wrong, and what was taken from it. |
+| `sources/` | Archived reference pages. Copyrighted scholarly editions are linked, not mirrored. |
 
 ## The rule this section is held to
 

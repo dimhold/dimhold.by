@@ -4,3 +4,7 @@ dist/
 
 # Midjourney source renders — heavy originals, the web-ready cuts live in public/ and src/assets/
 midjourney/
+
+# Research sources: third-party texts held locally for study only.
+# Never redistributed — see games/ATTRIBUTION.md.
+games/sources/
