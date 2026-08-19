@@ -1010,21 +1010,40 @@ html[data-mode='night'] .contact-email {
    it on one line — the pad on a desk, the name written next to it. */
 .footer {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: clamp(1.5rem, 5vw, 3.5rem);
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 
+/* The signature column is the taller one now, so the calendar sinks to the
+   bottom of the row — that is what keeps its caption on the same line as the
+   social icons. */
 .footer-left {
   flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
+/* The signature column is set to the calendar's own height and pushed apart, so
+   the name lines up with the top of the sheet and the icons with its bottom
+   edge. The insets are the rings above the sheet and the caption below it. */
 .footer-sign {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.15rem;
+  justify-content: space-between;
+  padding: 1rem 0 0;
+}
+
+/* Copyright and icons ride together as one block, so space-between drives the
+   signature to the top and the pair of them to the very bottom. */
+.footer-tail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .footer-copy {
@@ -1035,11 +1054,13 @@ html[data-mode='night'] .contact-email {
 
 .signature {
   font-family: var(--font-hand);
-  font-size: 2.6rem;
+  font-size: clamp(3.2rem, 6.4vw, 6.2rem);
   font-weight: 600;
+  line-height: 1;
   color: var(--ink);
   display: inline-block;
-  transform: rotate(-2deg);
+  transform: rotate(-9deg);
+  transform-origin: left center;
 }
 
 html[data-mode] .signature.reveal-mask {
@@ -2217,5 +2238,58 @@ html[data-mode='night'] .leaf-word {
   .leaf-past.is-torn {
     animation: none;
     opacity: 0;
+  }
+}
+
+/* ——— social row ——— */
+
+.socials {
+  margin-top: 0;
+  display: flex;
+  gap: clamp(0.3rem, 0.8vw, 0.5rem);
+  list-style: none;
+}
+
+.social {
+  /* Half the previous size. The lower bound stays at 30px rather than halving
+     too — below that they stop being a comfortable tap target on a phone. */
+  width: clamp(1.9rem, 3.1vw, 2.3rem);
+  height: clamp(1.9rem, 3.1vw, 2.3rem);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease,
+    transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.social svg {
+  width: 48%;
+  height: 48%;
+  fill: currentColor;
+}
+
+.social:hover,
+.social:focus-visible {
+  color: #fff;
+  background: var(--accent);
+  border-color: transparent;
+  transform: translateY(-3px) scale(1.04);
+}
+
+html[data-mode='night'] .social:hover,
+html[data-mode='night'] .social:focus-visible {
+  color: #1c1410;
+}
+
+@media (max-width: 34rem) {
+  /* stacked: no second column to line up with */
+  .footer-sign {
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    padding: 0.8rem 0 0;
   }
 }

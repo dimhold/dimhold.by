@@ -125,6 +125,8 @@ export interface Dictionary {
     label: string;
     caption: string;
   };
+  /** Accessible name for the social icon row. */
+  socialsLabel: string;
   notFound: {
     title: string;
     text: string;
@@ -344,6 +346,7 @@ export const en: Dictionary = {
     stack:
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM agents',
   },
+  socialsLabel: 'Elsewhere',
   leaf: {
     label: 'Tear-off calendar: a Belarusian word for today',
     caption: 'a Belarusian word a day',
@@ -572,6 +575,7 @@ export const ru: Dictionary = {
     stack:
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM-агенты',
   },
+  socialsLabel: 'Я в сети',
   leaf: {
     label: 'Отрывной календарь: белорусское слово дня',
     caption: 'белорусское слово на каждый день',
@@ -800,6 +804,7 @@ export const be: Dictionary = {
     stack:
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM-агенты',
   },
+  socialsLabel: 'Я ў сетцы',
   leaf: {
     label: 'Адрыўны каляндар: беларускае слова дня',
     caption: 'беларускае слова на кожны дзень',
@@ -818,8 +823,11 @@ export const be: Dictionary = {
 
 export const dictionaries: Record<Lang, Dictionary> = { en, ru, be };
 
+/* `icon` keys the inline SVG in SocialLinks.astro. Order is the order shown. */
 export const socials = [
-  { label: 'GitHub', href: 'https://github.com/dimhold' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/dimhold' },
-  { label: 'X', href: 'https://x.com/dimhold' },
+  { label: 'GitHub', icon: 'github', href: 'https://github.com/dimhold' },
+  { label: 'X', icon: 'x', href: 'https://x.com/dimhold' },
+  { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/dimhold' },
+  { label: 'Telegram', icon: 'telegram', href: 'https://t.me/dimhold' },
+  { label: 'Product Hunt', icon: 'producthunt', href: 'https://www.producthunt.com/@dimhold' },
 ] as const;

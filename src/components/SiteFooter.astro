@@ -1,6 +1,7 @@
 ---
 import type { Dictionary } from '../i18n';
 import DayLeaf from './DayLeaf.astro';
+import SocialLinks from './SocialLinks.astro';
 
 interface Props {
   t: Dictionary;
@@ -16,7 +17,10 @@ const year = new Date().getFullYear();
     <p class="leafpad-caption">{t.leaf.caption}</p>
   </div>
   <div class="footer-sign">
-    <span class="signature reveal-mask" aria-hidden="true">Dmitriy</span>
-    <span class="footer-copy">© {year} Dmitriy Semenkevich</span>
+    <span class="signature reveal-mask" aria-hidden="true">Dmitriy<br />Semenkevich</span>
+    <div class="footer-tail">
+      <SocialLinks label={t.socialsLabel} />
+      <span class="footer-copy">© {year} Dmitriy Semenkevich</span>
+    </div>
   </div>
 </footer>
