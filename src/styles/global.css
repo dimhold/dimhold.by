@@ -2430,3 +2430,311 @@ html[data-mode='night'] .consent-yes {
     margin-inline: 0;
   }
 }
+
+/* ── tables in prose ───────────────────────────────────────────────────────
+   Markdown tables had no styling at all, so they arrived as bare rows. Wide
+   ones scroll inside their own box rather than pushing the page sideways. */
+
+.prose .table-wrap {
+  overflow-x: auto;
+  margin: 1.6rem 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.prose th,
+.prose td {
+  padding: 0.55rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.prose thead th {
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  background: hsl(var(--tint-h) calc(var(--tint-s) * 0.9) 92% / 0.5);
+}
+
+html[data-mode='night'] .prose thead th {
+  background: hsl(var(--tint-h) calc(var(--tint-s) * 0.5) 18% / 0.5);
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* A right-aligned markdown column is a column of numbers; keep it aligned. */
+.prose th[align='right'],
+.prose td[align='right'] {
+  text-align: right;
+}
+
+.prose th[align='center'],
+.prose td[align='center'] {
+  text-align: center;
+}
+
+/* ── the walk player ───────────────────────────────────────────────────────
+   Built by /scripts/walk into any [data-walk] a post drops into its prose. */
+
+.walk {
+  --walk-ground: hsl(96 30% 62% / 0.16);
+  --walk-crown-a: hsl(104 30% 44% / 0.16);
+  --walk-crown-b: hsl(86 32% 54% / 0.15);
+  --walk-trunk: hsl(28 30% 34% / 0.14);
+  margin: 2.2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+html[data-mode='night'] .walk {
+  /* On a dark surface a pale green reads as glowing rather than as woodland,
+     so night gets a much lower alpha than the daytime value. */
+  --walk-ground: hsl(96 20% 48% / 0.09);
+  --walk-crown-a: hsl(104 20% 56% / 0.1);
+  --walk-crown-b: hsl(86 20% 62% / 0.09);
+  --walk-trunk: hsl(28 20% 58% / 0.09);
+}
+
+.walk-row {
+  display: flex;
+  gap: 0.7rem;
+  align-items: stretch;
+}
+
+.walk-stage {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  /* The walk decides the shape of its own box: a long thin ramble squeezed
+     into 4:3 wastes most of the frame and shrinks the interesting part. */
+  aspect-ratio: var(--aspect, 4 / 3);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.walk-map {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+
+.walk.is-dragging .walk-map {
+  cursor: grabbing;
+}
+
+.walk-ground {
+  fill: var(--walk-ground);
+}
+
+.walk-crown {
+  fill: var(--walk-crown-a);
+}
+
+.walk-crown-b {
+  fill: var(--walk-crown-b);
+}
+
+.walk-trunk {
+  fill: var(--walk-trunk);
+}
+
+.walk-trail {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.walk-tether {
+  stroke: var(--muted);
+  opacity: 0.7;
+}
+
+.walk-reset {
+  position: absolute;
+  right: 0.6rem;
+  top: 0.6rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.walk-gauges {
+  display: flex;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.walk-gauge {
+  width: 5.4rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.55rem 0.3rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.walk-gauge svg {
+  flex: 1;
+  min-height: 0;
+}
+
+.walk-gauge-title {
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  text-align: center;
+}
+
+.walk-track-bar {
+  stroke: var(--line);
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+
+.walk-fill {
+  stroke-width: 9;
+  stroke-linecap: round;
+  opacity: 0.35;
+}
+
+.walk-gauge-value,
+.walk-gauge-cap {
+  fill: var(--muted);
+  font-size: 13px;
+  font-family: var(--font-sans);
+}
+
+.walk-gauge-cap {
+  font-size: 12px;
+}
+
+.walk-panel {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.walk-play {
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--ink);
+  color: var(--surface);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  min-width: 5rem;
+}
+
+.walk-scrub {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--accent);
+}
+
+.walk-clock {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size: 0.82rem;
+  min-width: 3.4rem;
+  text-align: right;
+}
+
+.walk-rates {
+  display: inline-flex;
+  gap: 0.25rem;
+  flex: 0 0 auto;
+}
+
+.walk-rates button {
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.walk-rates button.is-on {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.walk-cards {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.walk-card {
+  flex: 1 1 8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.walk-card img {
+  border-radius: 50%;
+}
+
+.walk-card b {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.walk-card span {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+@media (max-width: 40rem) {
+  /* On a phone the gauges would leave the map a postage stamp, so they go
+     under it and lie down. */
+  .walk-row {
+    flex-direction: column;
+  }
+
+  .walk-gauges {
+    height: 7rem;
+  }
+
+  .walk-gauge {
+    flex: 1;
+    width: auto;
+  }
+}

@@ -10,6 +10,9 @@ const blog = defineCollection({
     lang: z.enum(['en', 'ru', 'be']),
     translationKey: z.string(),
     draft: z.boolean().default(false),
+    /* Set when the post drops a <div data-walk> into its prose; only then does
+       the page pay for the player's script and its 190 KB of coordinates. */
+    walk: z.boolean().default(false),
   }),
 });
 

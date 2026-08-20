@@ -1,29 +1,27 @@
-/* Builds the walk animation prototype: one self-contained HTML file with both
- * tracks, both faces and the whole player inlined.
+/* Turns the two anonymised tracks into what the page actually loads:
+ * `public/data/walk.json` plus the two round portraits.
  *
- * It reads the ANONYMISED tracks, never the raw ones, so the artefact is safe
- * to open anywhere and safe to commit. Coordinates are converted to metres on a
- * local plane before they go in: over six kilometres the curvature of the earth
- * is worth less than a pixel, and metres are what the reader actually wants to
- * think in.
+ * It reads the ANONYMISED tracks, never the raw ones, and converts them to
+ * metres on a local plane before writing. Over six kilometres the curvature of
+ * the earth is worth less than a pixel, and metres are what a reader thinks in.
  *
  * Run: npm run walk
  */
-import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import sharp from 'sharp';
 
 const IN = 'data/tracks-anon';
-const OUT = 'prototypes/walk.html';
+const OUT_JSON = 'public/data/walk.json';
+const OUT_IMG = 'public/walk';
 
 /** Which file is whose, matched on the timestamp in the filename. */
 const WHO = {
-  '20260820-185351': { key: 'mitya', label: 'Мітя', colour: '#2f7cd6' },
-  '20260820-184647': { key: 'zoom', label: 'Зум', colour: '#c9762f' },
+  '20260820-185351': { key: 'mitya', colour: '#2f7cd6' },
+  '20260820-184647': { key: 'zoom', colour: '#c9762f' },
 };
 
-/* Face crops for the two markers. Both portraits face right, which reads as
-   heading somewhere — the reason they beat a crop out of the hero picture,
-   where the dog sits still and the man looks at a laptop. */
+/* Both portraits face right, which reads as heading somewhere — the reason they
+   beat a crop out of the hero picture, where the dog sits still. */
 const FACES = {
   mitya: { file: 'data/me.png', crop: { left: 22, top: 4, width: 206, height: 206 } },
   zoom: { file: 'data/zoom.png', crop: { left: 62, top: 18, width: 214, height: 214 } },
@@ -31,8 +29,7 @@ const FACES = {
 
 /* The interesting part of the walk, in seconds from the moment both loggers
    were running. Before this Zoom was walking to heel on command and the two
-   tracks are the same line; after it he was back on heel again. The middle is
-   the only part where there is anything to compare.
+   tracks are the same line; after it he was back on heel again.
 
    The end is not guessed: the sixty-second mean separation holds around 30 m at
    62:00, decays through 12 m at 62:33 and settles at 2-5 m from 63:03 to the
@@ -57,37 +54,34 @@ function parse(xml) {
 function medianFilter(values, win) {
   const half = win >> 1;
   return values.map((_, i) => {
-    const slice = values.slice(Math.max(0, i - half), Math.min(values.length, i + half + 1)).sort((a, b) => a - b);
+    const slice = values
+      .slice(Math.max(0, i - half), Math.min(values.length, i + half + 1))
+      .sort((a, b) => a - b);
     return slice[slice.length >> 1];
   });
 }
 
-/** A circular marker: the face, masked to a disc, as a data URI. */
-async function face(spec, size = 128) {
+/** The portrait, masked to a disc. */
+async function face(spec, out, size = 160) {
   const disc = Buffer.from(
     `<svg width="${size}" height="${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="#fff"/></svg>`,
   );
-  const buf = await sharp(spec.file)
+  await sharp(spec.file)
     .extract(spec.crop)
     .resize(size, size, { kernel: 'lanczos3' })
     .composite([{ input: disc, blend: 'dest-in' }])
     .png({ compressionLevel: 9 })
-    .toBuffer();
-  return `data:image/png;base64,${buf.toString('base64')}`;
+    .toFile(out);
 }
 
 const files = (await readdir(IN)).filter((f) => f.endsWith('.gpx'));
 const raw = {};
 for (const f of files) {
-  const stamp = f.slice(0, 15);
-  const who = WHO[stamp];
+  const who = WHO[f.slice(0, 15)];
   if (!who) throw new Error(`unrecognised track: ${f}`);
   raw[who.key] = { ...who, pts: parse(await readFile(`${IN}/${f}`, 'utf8')) };
 }
 
-/* The two loggers started six minutes apart. The player runs on one clock, and
-   the honest one is the window both were recording — outside it, a marker would
-   be standing still for reasons that have nothing to do with the walk. */
 const bothFrom = Math.max(...Object.values(raw).map((t) => t.pts[0].t));
 const bothTo = Math.min(...Object.values(raw).map((t) => t.pts.at(-1).t));
 const from = bothFrom + WINDOW.from * 1000;
@@ -104,9 +98,9 @@ for (const [key, t] of Object.entries(raw)) {
   const x = [];
   const y = [];
   const s = [];
+  const d = [];
   const eRaw = [];
   let dist = 0;
-  const d = [];
   for (let i = 0; i < pts.length; i++) {
     eRaw.push(pts[i].ele ?? eRaw[i - 1] ?? 0);
     const px = (pts[i].lon - anchor.lon) * mPerLon;
@@ -130,21 +124,20 @@ for (const [key, t] of Object.entries(raw)) {
     return dt > 0 ? +(((d[b] - d[a]) / dt) * 3.6).toFixed(2) : 0;
   });
 
-  tracks[key] = { label: t.label, colour: t.colour, x, y, s, d, e, v, face: await face(FACES[key]) };
+  await mkdir(OUT_IMG, { recursive: true });
+  await face(FACES[key], `${OUT_IMG}/${key}.png`);
+  tracks[key] = { colour: t.colour, face: `/walk/${key}.png`, x, y, s, d, e, v };
 }
 
-const data = { seconds: Math.round((to - from) / 1000), tracks };
+await mkdir('public/data', { recursive: true });
+await writeFile(OUT_JSON, JSON.stringify({ seconds: Math.round((to - from) / 1000), tracks }));
 
-const template = await readFile('scripts/walk-template.html', 'utf8');
-const html = template.replace('__DATA__', JSON.stringify(data));
-
-await mkdir('prototypes', { recursive: true });
-await writeFile(OUT, html);
+const bytes = (await readFile(OUT_JSON)).length;
 console.log(
-  `window ${WINDOW.from}-${WINDOW.to}s of ${Math.round((bothTo - bothFrom) / 1000)}s recorded together`,
+  `${OUT_JSON} — ${Math.round((to - from) / 1000)}s, ` +
+    Object.keys(tracks)
+      .map((k) => `${k} ${tracks[k].x.length} pts`)
+      .join(', ') +
+    `, ${(bytes / 1024).toFixed(0)} KB`,
 );
-console.log(
-  `${OUT} — ${data.seconds}s, ` +
-    Object.keys(tracks).map((k) => `${k} ${tracks[k].x.length} pts`).join(', ') +
-    `, ${(html.length / 1024).toFixed(0)} KB`,
-);
+console.log(`window ${WINDOW.from}-${WINDOW.to}s of ${Math.round((bothTo - bothFrom) / 1000)}s recorded together`);

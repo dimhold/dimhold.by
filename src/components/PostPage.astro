@@ -31,4 +31,12 @@ const { Content } = await render(post);
   </article>
 </main>
 
+{
+  post.data.walk && (
+    <script>
+      import '../scripts/walk';
+    </script>
+  )
+}
+
 <SiteFooter t={t} />
