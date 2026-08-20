@@ -1,6 +1,8 @@
 /** The Adlega philosophy, playable: every number here comes from a tiny
     deterministic engine. Nothing is generated, nothing is guessed. */
 
+import { track } from './analytics';
+
 export interface ToyOptions {
   locale: string;
   monthsLabel: string;
@@ -89,7 +91,7 @@ export function mountToy(root: HTMLElement, opts: ToyOptions) {
     const from = parseFloat(growth.value);
     const t0 = performance.now();
     const D = 650;
-    (window as any).posthog?.capture('goalseek_used', { churn: churn.value, solution: target.toFixed(2) });
+    track('goalseek_used', { churn: churn.value, solution: target.toFixed(2) });
     function step(now: number) {
       const p = Math.min((now - t0) / D, 1);
       const e = 1 - Math.pow(1 - p, 3);

@@ -1,0 +1,31 @@
+---
+/* The cookie notice. Rendered hidden and only revealed by /scripts/consent
+   when there is no stored answer — so a returning visitor who has already
+   decided never sees it again, and the markup costs nothing when it stays shut.
+
+   It is a `dialog` in spirit but not in element: a modal would trap focus and
+   block the page for a question that is not urgent. This sits at the bottom,
+   is reachable by keyboard, and lets the page be read while it waits. */
+import type { Dictionary } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+---
+
+<aside class="consent" data-consent hidden aria-label={t.consent.label}>
+  <p class="consent-text">
+    {t.consent.text}{' '}
+    <a
+      href="https://policies.google.com/technologies/partner-sites"
+      rel="noopener nofollow"
+      target="_blank">{t.consent.more}</a
+    >
+  </p>
+  <div class="consent-buttons">
+    <button type="button" class="consent-no" data-consent-set="denied">{t.consent.decline}</button>
+    <button type="button" class="consent-yes" data-consent-set="granted">{t.consent.accept}</button>
+  </div>
+</aside>

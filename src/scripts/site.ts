@@ -1,8 +1,11 @@
 import { greetTheCurious } from './console-hello';
 import { mountToy } from './goalseek';
+import { track } from './analytics';
+import { initConsent } from './consent';
 
 export function initSite() {
   greetTheCurious();
+  initConsent();
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -17,7 +20,7 @@ export function initSite() {
     } catch {
       /* private mode */
     }
-    (window as any).posthog?.capture('lamp_toggled', { to: next });
+    track('lamp_toggled', { to: next });
   });
 
   // — reveals —

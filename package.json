@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "ornament": "node scripts/gen-ornament.mjs"
+    "ornament": "node scripts/gen-ornament.mjs",
+    "favicon": "node scripts/gen-favicon.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

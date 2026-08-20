@@ -35,6 +35,6 @@ None of this is hard. All of it is invisible when it works, which is the usual d
 
 ## Boring choices, on purpose
 
-Everything else is deliberately unexciting. [Astro 5](https://astro.build), static output, GitHub Pages, zero frameworks on the client — the interactivity is vanilla TypeScript plus three.js, lazy-loaded so the text renders instantly. Three languages — English, Russian, Belarusian — as three static page trees with proper `hreflang`. Analytics without cookies: PostHog with in-memory persistence, so there's no banner because there's nothing to consent to.
+Everything else is deliberately unexciting. [Astro 5](https://astro.build), static output, GitHub Pages, zero frameworks on the client — the interactivity is vanilla TypeScript, lazy-loaded so the text renders instantly. Three languages — English, Russian, Belarusian — as three static page trees with proper `hreflang`. Analytics that asks first: Google Analytics behind Consent Mode, storage denied until the banner is answered, advertising signals denied for good.
 
 The 2019 site died because it was a chore. This one is a toy I want to keep playing with. That's the entire retention strategy.

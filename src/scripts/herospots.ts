@@ -6,6 +6,8 @@
    file has actually answered, so dropping the real takes in — or leaving them
    out — needs no change here. */
 
+import { track } from './analytics';
+
 const AUDIO_HIDDEN = 'hidden';
 
 interface Hooks {
@@ -69,7 +71,7 @@ export function mountSpots(scene: HTMLElement, hooks: Hooks = {}) {
     stage?.classList.add('marks-open');
     armAudio(key, note);
     hooks.onOpen?.(key);
-    (window as any).posthog?.capture('hero_spot_opened', { spot: key });
+    track('hero_spot_opened', { spot: key });
   }
 
   function toggle(key: string) {
@@ -109,6 +111,7 @@ export function mountSpots(scene: HTMLElement, hooks: Hooks = {}) {
       stopAudio();
       playing = audio;
       button.classList.add('is-playing');
+      track('hero_audio_played', { spot: key });
       audio.play().catch(() => {
         button.classList.remove('is-playing');
         playing = null;

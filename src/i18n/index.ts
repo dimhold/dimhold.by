@@ -127,6 +127,15 @@ export interface Dictionary {
   };
   /** Accessible name for the social icon row. */
   socialsLabel: string;
+  consent: {
+    /** Accessible name for the cookie notice. */
+    label: string;
+    text: string;
+    /** Link out to Google's own account of what it does with the data. */
+    more: string;
+    accept: string;
+    decline: string;
+  };
   notFound: {
     title: string;
     text: string;
@@ -355,6 +364,13 @@ export const en: Dictionary = {
     label: 'Say hello',
     lede: 'Consulting, product feedback, interesting problems — the inbox is open.',
     email: 'dimhold@gmail.com',
+  },
+  consent: {
+    label: 'Cookie notice',
+    text: 'I count visits with Google Analytics — how many people come, and which pages get read. No advertising, no profiling, nothing sold on. Until you agree, nothing is written to your device.',
+    more: 'What Google does with it',
+    accept: 'Allow',
+    decline: 'No thanks',
   },
   notFound: {
     title: 'Page not found',
@@ -585,6 +601,13 @@ export const ru: Dictionary = {
     lede: 'Консалтинг, фидбек по продукту, интересные задачи — почта открыта.',
     email: 'dimhold@gmail.com',
   },
+  consent: {
+    label: 'Про куки',
+    text: 'Я считаю визиты через Google Analytics — сколько людей заходит и какие страницы читают. Ни рекламы, ни профилирования, никакой продажи данных. Пока вы не согласитесь, на ваше устройство ничего не записывается.',
+    more: 'Что с этим делает Google',
+    accept: 'Разрешить',
+    decline: 'Не надо',
+  },
   notFound: {
     title: 'Страница не найдена',
     text: 'По этому адресу ничего нет.',
@@ -813,6 +836,13 @@ export const be: Dictionary = {
     label: 'Скажыце прывітанне',
     lede: 'Кансалтынг, фідбэк па прадукце, цікавыя задачы — пошта адкрытая.',
     email: 'dimhold@gmail.com',
+  },
+  consent: {
+    label: 'Пра кукі',
+    text: 'Я лічу візіты праз Google Analytics — колькі людзей заходзіць і якія старонкі чытаюць. Ні рэкламы, ні прафілявання, ніякага продажу даных. Пакуль вы не пагодзіцеся, на вашу прыладу нічога не запісваецца.',
+    more: 'Што з гэтым робіць Google',
+    accept: 'Дазволіць',
+    decline: 'Не трэба',
   },
   notFound: {
     title: 'Старонка не знойдзена',
