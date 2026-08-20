@@ -8,3 +8,8 @@ midjourney/
 # Research sources: third-party texts held locally for study only.
 # Never redistributed — see games/ATTRIBUTION.md.
 games/sources/
+
+# Raw GPS logs. They start at the front door with metre precision, so the
+# originals stay on this machine. The committed copies in data/tracks-anon/
+# are the same paths, translated into the middle of the Pacific.
+data/tracks/

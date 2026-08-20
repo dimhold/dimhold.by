@@ -52,7 +52,8 @@ const personLd = {
     '@type': 'CollegeOrUniversity',
     name: 'Belarusian State University of Informatics and Radioelectronics',
   },
-  address: { '@type': 'PostalAddress', addressLocality: 'Minsk', addressCountry: 'BY' },
+  // Country only. The city is nobody's business and search engines do not need it.
+  address: { '@type': 'PostalAddress', addressCountry: 'BY' },
   sameAs: socials.map((s) => s.href),
 };
 ---

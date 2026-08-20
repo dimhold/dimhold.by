@@ -7,7 +7,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "ornament": "node scripts/gen-ornament.mjs",
-    "favicon": "node scripts/gen-favicon.mjs"
+    "favicon": "node scripts/gen-favicon.mjs",
+    "tracks": "node scripts/anon-tracks.mjs",
+    "walk": "node scripts/gen-walk-prototype.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

@@ -148,7 +148,7 @@ export const en: Dictionary = {
   path: '/',
   metaTitle: 'Dmitriy Semenkevich — full-stack engineer & founder',
   metaDescription:
-    'Fifteen years of production software: payments infrastructure, a trade-in platform in 16,000 stores. Co-founder of Adlega, an AI CFO for SaaS founders. Minsk.',
+    'Fifteen years of production software: payments infrastructure, a trade-in platform in 16,000 stores. Co-founder of Adlega, an AI CFO for SaaS founders.',
   langLabel: 'Language',
   skipLink: 'Skip to content',
   lampLabel: 'Toggle the lamp',
@@ -166,8 +166,8 @@ export const en: Dictionary = {
   },
   hero: {
     greeting: 'hi, I’m',
-    role: 'Full-stack engineer · Co-founder of Adlega · Minsk',
-    chips: ['engineer · 15 years', 'co-founder @ Adlega', 'Minsk'],
+    role: 'Full-stack engineer · Co-founder of Adlega',
+    chips: ['engineer · 15 years', 'co-founder @ Adlega'],
     lead: 'Fifteen years building software where a wrong number costs real money: payments, a device trade-in platform in 16,000 stores — and now Adlega, an AI CFO with one rule: the AI never does the math.',
     lead2:
       'Between releases I poke at the digital world — experiments, new tools, pop-science rabbit holes. This site is my workshop.',
@@ -348,7 +348,7 @@ export const en: Dictionary = {
       },
       {
         years: '2007 – 2012',
-        title: 'BSUIR, Minsk',
+        title: 'BSUIR',
         note: 'Engineer’s degree in software engineering.',
       },
     ],
@@ -384,7 +384,7 @@ export const ru: Dictionary = {
   path: '/ru/',
   metaTitle: 'Dmitriy Semenkevich — фулстек-инженер и сооснователь Adlega',
   metaDescription:
-    'Пятнадцать лет продакшен-разработки: платёжная инфраструктура, trade-in-платформа в 16 000 магазинов. Сооснователь Adlega — ИИ-финдиректора для SaaS-фаундеров. Минск.',
+    'Пятнадцать лет продакшен-разработки: платёжная инфраструктура, trade-in-платформа в 16 000 магазинов. Сооснователь Adlega — ИИ-финдиректора для SaaS-фаундеров.',
   langLabel: 'Язык',
   skipLink: 'К содержанию',
   lampLabel: 'Переключить лампу',
@@ -402,8 +402,8 @@ export const ru: Dictionary = {
   },
   hero: {
     greeting: 'привет, я',
-    role: 'Фулстек-инженер · Сооснователь Adlega · Минск',
-    chips: ['инженер · 15 лет', 'сооснователь Adlega', 'Минск'],
+    role: 'Фулстек-инженер · Сооснователь Adlega',
+    chips: ['инженер · 15 лет', 'сооснователь Adlega'],
     lead: 'Пятнадцать лет строю софт, в котором неверная цифра стоит настоящих денег: платежи, trade-in-платформа в 16 000 магазинов — а теперь Adlega, ИИ-финдиректор с одним правилом: ИИ никогда не считает сам.',
     lead2:
       'Между релизами копаюсь в цифровом мире: эксперименты, новые инструменты, науч-поп. Этот сайт — моя мастерская.',
@@ -584,7 +584,7 @@ export const ru: Dictionary = {
       },
       {
         years: '2007 – 2012',
-        title: 'БГУИР, Минск',
+        title: 'БГУИР',
         note: 'Диплом инженера-программиста.',
       },
     ],
@@ -620,7 +620,7 @@ export const be: Dictionary = {
   path: '/be/',
   metaTitle: 'Dmitriy Semenkevich — фулстэк-інжынер і сузаснавальнік Adlega',
   metaDescription:
-    'Пятнаццаць гадоў прадакшен-распрацоўкі: плацёжная інфраструктура, trade-in-платформа ў 16 000 крамах. Сузаснавальнік Adlega — ШІ-фіндырэктара для SaaS-заснавальнікаў. Мінск.',
+    'Пятнаццаць гадоў прадакшен-распрацоўкі: плацёжная інфраструктура, trade-in-платформа ў 16 000 крамах. Сузаснавальнік Adlega — ШІ-фіндырэктара для SaaS-заснавальнікаў.',
   langLabel: 'Мова',
   skipLink: 'Да зместу',
   lampLabel: 'Пераключыць лямпу',
@@ -638,8 +638,8 @@ export const be: Dictionary = {
   },
   hero: {
     greeting: 'прывітанне, я',
-    role: 'Фулстэк-інжынер · Сузаснавальнік Adlega · Мінск',
-    chips: ['інжынер · 15 гадоў', 'сузаснавальнік Adlega', 'Мінск'],
+    role: 'Фулстэк-інжынер · Сузаснавальнік Adlega',
+    chips: ['інжынер · 15 гадоў', 'сузаснавальнік Adlega'],
     lead: 'Пятнаццаць гадоў будую софт, у якім няправільная лічба каштуе сапраўдных грошай: плацяжы, trade-in-платформа ў 16 000 крамах — а цяпер Adlega, ШІ-фіндырэктар з адным правілам: ШІ ніколі не лічыць сам.',
     lead2:
       'Паміж рэлізамі корпаюся ў лічбавым свеце: эксперыменты, новыя інструменты, навук-поп. Гэты сайт — мая майстэрня.',
@@ -820,7 +820,7 @@ export const be: Dictionary = {
       },
       {
         years: '2007 – 2012',
-        title: 'БДУІР, Мінск',
+        title: 'БДУІР',
         note: 'Дыплом інжынера-праграміста.',
       },
     ],
