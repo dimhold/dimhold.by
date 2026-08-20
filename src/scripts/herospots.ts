@@ -30,13 +30,16 @@ export function mountSpots(scene: HTMLElement, hooks: Hooks = {}) {
   let playing: HTMLAudioElement | null = null;
   let hovering = false;
 
+  /** Each player's own way of putting its button back to rest. */
+  const resets = new Map<HTMLAudioElement, () => void>();
+
   const stopAudio = () => {
-    playing?.pause();
-    if (playing) playing.currentTime = 0;
-    playing = null;
-    for (const note of notes.values()) {
-      note.querySelector('[data-audio]')?.classList.remove('is-playing');
+    if (playing) {
+      playing.pause();
+      playing.currentTime = 0;
+      resets.get(playing)?.();
     }
+    playing = null;
   };
 
   function close(key: string) {
@@ -96,12 +99,35 @@ export function mountSpots(scene: HTMLElement, hooks: Hooks = {}) {
     audio.preload = 'metadata';
     players.set(key, audio);
 
+    const time = button.querySelector<HTMLElement>('[data-audio-time]');
+
+    /* How much is left, shown two ways: the button fills from the left, and the
+       seconds count down. The fill answers "roughly how long" without being
+       read; the number answers it exactly for anyone who looks. */
+    const progress = () => {
+      const total = audio.duration;
+      if (!Number.isFinite(total) || total <= 0) return;
+      button.style.setProperty('--p', String(audio.currentTime / total));
+      if (time) {
+        const left = Math.max(0, Math.ceil(total - audio.currentTime));
+        time.textContent = `0:${String(left).padStart(2, '0')}`;
+      }
+    };
+
+    const rewind = () => {
+      button.classList.remove('is-playing');
+      button.style.setProperty('--p', '0');
+      if (time) time.textContent = '';
+    };
+
     audio.addEventListener('loadedmetadata', () => button.removeAttribute(AUDIO_HIDDEN), { once: true });
     audio.addEventListener('error', () => button.setAttribute(AUDIO_HIDDEN, ''), { once: true });
+    audio.addEventListener('timeupdate', progress);
     audio.addEventListener('ended', () => {
-      button.classList.remove('is-playing');
+      rewind();
       playing = null;
     });
+    resets.set(audio, rewind);
 
     button.addEventListener('click', () => {
       if (playing === audio) {
@@ -111,6 +137,7 @@ export function mountSpots(scene: HTMLElement, hooks: Hooks = {}) {
       stopAudio();
       playing = audio;
       button.classList.add('is-playing');
+      progress();
       track('hero_audio_played', { spot: key });
       audio.play().catch(() => {
         button.classList.remove('is-playing');

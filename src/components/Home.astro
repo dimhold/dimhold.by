@@ -98,7 +98,8 @@ const SPOT_AUDIO = { me: '/audio/dmitriy.mp3', bird: '/audio/kenar.mp3', dog: '/
               <p class="note-text">{spot.text}</p>
               <button class="note-listen" type="button" data-audio={SPOT_AUDIO[spot.key]} hidden>
                 <span class="note-play" aria-hidden="true" />
-                {spot.listen}
+                <span class="note-label">{spot.listen}</span>
+                <span class="note-time" data-audio-time aria-hidden="true" />
               </button>
             </article>
           ))

@@ -21,10 +21,12 @@ const WHO = {
   '20260820-184647': { key: 'zoom', label: 'Зум', colour: '#c9762f' },
 };
 
-/** Face crops for the two markers, cut from the pictures already in the repo. */
+/* Face crops for the two markers. Both portraits face right, which reads as
+   heading somewhere — the reason they beat a crop out of the hero picture,
+   where the dog sits still and the man looks at a laptop. */
 const FACES = {
-  mitya: { file: 'src/assets/favicon-source.png', crop: { left: 120, top: 80, width: 1064, height: 1064 } },
-  zoom: { file: 'src/assets/hero-figurine.png', crop: { left: 775, top: 325, width: 325, height: 325 } },
+  mitya: { file: 'data/me.png', crop: { left: 22, top: 4, width: 206, height: 206 } },
+  zoom: { file: 'data/zoom.png', crop: { left: 62, top: 18, width: 214, height: 214 } },
 };
 
 /* The interesting part of the walk, in seconds from the moment both loggers
