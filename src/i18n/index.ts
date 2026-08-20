@@ -229,6 +229,13 @@ export const en: Dictionary = {
     },
     items: [
       {
+        name: 'whotop',
+        years: '2026 —',
+        note: 'Terminal tool that tells look-alike processes apart and names the ports they hold.',
+        status: 'alive',
+        href: 'https://github.com/dimhold/whotop',
+      },
+      {
         name: 'Belun',
         years: '2025 —',
         note: '90+ browser utilities; no servers, no accounts, files never leave your machine.',
@@ -236,27 +243,9 @@ export const en: Dictionary = {
         href: 'https://belun.app',
       },
       {
-        name: 'UpMyGame Player',
-        years: '2013',
-        note: 'HTML5 video player for a gaming platform, freelance.',
-        status: 'shipped',
-      },
-      {
-        name: 'Map renderer',
-        years: '2013',
-        note: 'Custom map rendering pipeline on Mapnik.',
-        status: 'shipped',
-      },
-      {
-        name: 'Beeper',
-        years: '2013',
-        note: 'A Java streaming playground.',
-        status: 'dead',
-      },
-      {
-        name: 'Mobile startup',
-        years: '2013 – 2014',
-        note: 'Co-founded; the product didn’t take off, the lessons stayed.',
+        name: 'Rando4.me',
+        years: '2014 – 2024',
+        note: 'Co-founded; a mobile app that ran for a decade. It never became a business, the lessons stayed.',
         status: 'dead',
       },
     ],
@@ -265,7 +254,7 @@ export const en: Dictionary = {
     label: 'My projects',
     title: 'My projects — Dmitriy Semenkevich',
     description:
-      'The projects I run today: Adlega, an AI CFO for SaaS founders; Belun, a browser toolbox that never uploads your files; and this workshop of a site.',
+      'The projects I run today: Adlega, an AI CFO for SaaS founders; Belun, a browser toolbox that never uploads your files; whotop, which tells look-alike processes apart; and this workshop of a site.',
     lede: 'Everything that is running right now — why it exists, and what it is built on. Work that finished its run is on the shelf below, dead ends included.',
     activeLabel: 'Running now',
     archiveLabel: 'The shelf',
@@ -298,6 +287,20 @@ export const en: Dictionary = {
           'It started as a private pile of scripts I kept rewriting from memory. Collecting them into one page is what made them worth keeping.',
         ],
         stack: ['TypeScript', 'WebAssembly', 'Web Workers', 'static hosting'],
+      },
+      {
+        name: 'whotop',
+        tagline: 'what is this process, and which port is it holding?',
+        years: '2026 —',
+        status: 'alive',
+        href: 'https://github.com/dimhold/whotop',
+        linkLabel: 'github.com/dimhold/whotop',
+        body: [
+          'A terminal tool that reads the process table and the socket table together, then reads what is actually in each command line. A screen full of identical node rows becomes an agent session, two dev servers told apart by the project they run in, and the orphan that has been sitting on your port since you switched branches an hour ago.',
+          'It exists because I killed the wrong node. Six of them, all mine, all called node, and the list said nothing about which was which. Every fact I needed was already there — the command line, the working directory, the parent that had exited — the operating system just never puts them next to the pid.',
+          'It refuses to guess quietly: --explain names the rule behind every label, and says what the platform flatly refused to disclose. Then it will kill by port or by pid, after showing you exactly what it resolved.',
+        ],
+        stack: ['TypeScript', 'Node.js', 'zero runtime dependencies'],
       },
       {
         name: 'dimhold.by',
@@ -465,6 +468,13 @@ export const ru: Dictionary = {
     },
     items: [
       {
+        name: 'whotop',
+        years: '2026 —',
+        note: 'Утилита в терминале: различает процессы-двойники и показывает, кто держит порт.',
+        status: 'alive',
+        href: 'https://github.com/dimhold/whotop',
+      },
+      {
         name: 'Belun',
         years: '2025 —',
         note: '90+ браузерных утилит; без серверов и аккаунтов, файлы не покидают компьютер.',
@@ -472,27 +482,9 @@ export const ru: Dictionary = {
         href: 'https://belun.app',
       },
       {
-        name: 'UpMyGame Player',
-        years: '2013',
-        note: 'HTML5-видеоплеер для игровой платформы, фриланс.',
-        status: 'shipped',
-      },
-      {
-        name: 'Рендер карт',
-        years: '2013',
-        note: 'Собственный конвейер рендеринга карт на Mapnik.',
-        status: 'shipped',
-      },
-      {
-        name: 'Beeper',
-        years: '2013',
-        note: 'Полигон стриминга на Java.',
-        status: 'dead',
-      },
-      {
-        name: 'Мобильный стартап',
-        years: '2013 – 2014',
-        note: 'Сооснователь; продукт не взлетел, уроки остались.',
+        name: 'Rando4.me',
+        years: '2014 – 2024',
+        note: 'Сооснователь; мобильное приложение, прожившее десять лет. Бизнесом не стало, уроки остались.',
         status: 'dead',
       },
     ],
@@ -501,7 +493,7 @@ export const ru: Dictionary = {
     label: 'Мои проекты',
     title: 'Мои проекты — Dmitriy Semenkevich',
     description:
-      'Проекты, которые я веду сейчас: Adlega — ИИ-финдиректор для SaaS-фаундеров, Belun — браузерный набор инструментов без загрузок на сервер, и этот сайт-мастерская.',
+      'Проекты, которые я веду сейчас: Adlega — ИИ-финдиректор для SaaS-фаундеров, Belun — браузерный набор инструментов без загрузок на сервер, whotop — утилита, различающая процессы-двойники, и этот сайт-мастерская.',
     lede: 'Всё, что работает прямо сейчас: зачем оно существует и на чём собрано. То, что своё уже отработало, лежит ниже на полке — вместе с тупиками.',
     activeLabel: 'Работают сейчас',
     archiveLabel: 'Полка проектов',
@@ -534,6 +526,20 @@ export const ru: Dictionary = {
           'Начиналось как личная стопка скриптов, которые я раз за разом писал заново. Собрал их в одну страницу — и они стали нужны не только мне.',
         ],
         stack: ['TypeScript', 'WebAssembly', 'Web Workers', 'статический хостинг'],
+      },
+      {
+        name: 'whotop',
+        tagline: 'что это за процесс и какой порт он держит?',
+        years: '2026 —',
+        status: 'alive',
+        href: 'https://github.com/dimhold/whotop',
+        linkLabel: 'github.com/dimhold/whotop',
+        body: [
+          'Утилита в терминале, которая читает таблицу процессов и таблицу сокетов вместе, а потом читает, что на самом деле написано в каждой командной строке. Экран одинаковых строк node превращается в сессию агента, два dev-сервера, различённые по проектам, и сироту, которая держит ваш порт с тех пор, как час назад вы переключили ветку.',
+          'Всё началось с того, что я убил не тот node. Их было шесть, все мои, все назывались node, и список ничего не говорил о том, кто есть кто. Нужные факты лежали рядом — командная строка, рабочий каталог, давно вышедший родитель, — просто система не кладёт их рядом с pid.',
+          'Она не гадает молча: --explain называет правило за каждой подписью и говорит, что именно платформа отказалась раскрыть. А потом убьёт по порту или по pid — показав сначала, что именно она нашла.',
+        ],
+        stack: ['TypeScript', 'Node.js', 'ноль зависимостей в рантайме'],
       },
       {
         name: 'dimhold.by',
@@ -701,6 +707,13 @@ export const be: Dictionary = {
     },
     items: [
       {
+        name: 'whotop',
+        years: '2026 —',
+        note: 'Утыліта ў тэрмінале: адрознівае працэсы-двайнікі і паказвае, хто трымае порт.',
+        status: 'alive',
+        href: 'https://github.com/dimhold/whotop',
+      },
+      {
         name: 'Belun',
         years: '2025 —',
         note: '90+ браўзерных утыліт; без сервераў і акаўнтаў, файлы не пакідаюць камп’ютар.',
@@ -708,27 +721,9 @@ export const be: Dictionary = {
         href: 'https://belun.app',
       },
       {
-        name: 'UpMyGame Player',
-        years: '2013',
-        note: 'HTML5-відэаплэер для гульнявой платформы, фрыланс.',
-        status: 'shipped',
-      },
-      {
-        name: 'Рэндар картаў',
-        years: '2013',
-        note: 'Уласны канвеер рэндэрынгу картаў на Mapnik.',
-        status: 'shipped',
-      },
-      {
-        name: 'Beeper',
-        years: '2013',
-        note: 'Палігон стрымінгу на Java.',
-        status: 'dead',
-      },
-      {
-        name: 'Мабільны стартап',
-        years: '2013 – 2014',
-        note: 'Сузаснавальнік; прадукт не ўзляцеў, урокі засталіся.',
+        name: 'Rando4.me',
+        years: '2014 – 2024',
+        note: 'Сузаснавальнік; мабільная праграма, якая пражыла дзесяць гадоў. Бізнесам не стала, урокі засталіся.',
         status: 'dead',
       },
     ],
@@ -737,7 +732,7 @@ export const be: Dictionary = {
     label: 'Мае праекты',
     title: 'Мае праекты — Dmitriy Semenkevich',
     description:
-      'Праекты, якія я вяду цяпер: Adlega — ШІ-фіндырэктар для SaaS-заснавальнікаў, Belun — браўзерны набор інструментаў без выгрузкі на сервер, і гэты сайт-майстэрня.',
+      'Праекты, якія я вяду цяпер: Adlega — ШІ-фіндырэктар для SaaS-заснавальнікаў, Belun — браўзерны набор інструментаў без выгрузкі на сервер, whotop — утыліта, якая адрознівае працэсы-двайнікі, і гэты сайт-майстэрня.',
     lede: 'Усё, што працуе проста зараз: навошта яно існуе і на чым сабрана. Тое, што сваё ўжо адпрацавала, ляжыць ніжэй на паліцы — разам з тупікамі.',
     activeLabel: 'Працуюць зараз',
     archiveLabel: 'Паліца праектаў',
@@ -770,6 +765,20 @@ export const be: Dictionary = {
           'Пачыналася як асабістая стопка скрыптоў, якія я раз за разам пісаў нанова. Сабраў іх у адну старонку — і яны спатрэбіліся не толькі мне.',
         ],
         stack: ['TypeScript', 'WebAssembly', 'Web Workers', 'статычны хостынг'],
+      },
+      {
+        name: 'whotop',
+        tagline: 'што гэта за працэс і які порт ён трымае?',
+        years: '2026 —',
+        status: 'alive',
+        href: 'https://github.com/dimhold/whotop',
+        linkLabel: 'github.com/dimhold/whotop',
+        body: [
+          'Утыліта ў тэрмінале, якая чытае табліцу працэсаў і табліцу сокетаў разам, а потым чытае, што насамрэч напісана ў кожным камандным радку. Экран аднолькавых радкоў node ператвараецца ў сесію агента, два dev-серверы, адрозненыя па праектах, і сірату, якая трымае ваш порт з таго часу, як гадзіну таму вы пераключылі галінку.',
+          'Усё пачалося з таго, што я забіў не той node. Іх было шэсць, усе мае, усе зваліся node, і спіс нічога не казаў пра тое, хто ёсць хто. Патрэбныя факты ляжалі побач — камандны радок, рабочы каталог, даўно выйшлы бацька, — проста сістэма не кладзе іх побач з pid.',
+          'Яна не гадае моўчкі: --explain называе правіла за кожным подпісам і кажа, што менавіта платформа адмовілася раскрыць. А потым заб’е па порце або па pid — паказаўшы спярша, што менавіта яна знайшла.',
+        ],
+        stack: ['TypeScript', 'Node.js', 'нуль залежнасцяў у рантайме'],
       },
       {
         name: 'dimhold.by',
