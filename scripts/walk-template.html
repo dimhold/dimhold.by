@@ -30,7 +30,7 @@
     align-items: stretch;
   }
   .gauges {
-    flex: 0 0 7.5rem;
+    flex: 0 0 6.2rem;
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 14px;
@@ -114,6 +114,10 @@
   <div class="gauges">
     <div class="gauge-title">вышыня</div>
     <svg id="alt" preserveAspectRatio="none" viewBox="0 0 100 400"></svg>
+  </div>
+  <div class="gauges">
+    <div class="gauge-title">хуткасць</div>
+    <svg id="spd" preserveAspectRatio="none" viewBox="0 0 100 400"></svg>
   </div>
 </div>
 
@@ -227,54 +231,64 @@
     cards.appendChild(div);
   }
 
-  /* ── altitude ────────────────────────────────────────────────────────────
-     Two vertical gauges on the right and a profile underneath. Both read the
-     same filtered series, and both share ONE scale across the two walkers —
-     separate scales would let a two-metre wobble look like a hill. */
-  let eLo = Infinity, eHi = -Infinity;
-  for (const k of keys) {
-    for (const v of DATA.tracks[k].e) {
-      if (v < eLo) eLo = v;
-      if (v > eHi) eHi = v;
+  /* ── the two gauge columns ───────────────────────────────────────────────
+     Height and speed, each read off the same series the map is drawn from.
+     Both share ONE scale across the two walkers: separate scales would let a
+     two-metre wobble look like a hill, and a stroll look like a sprint. */
+  function extent(field) {
+    let lo = Infinity, hi = -Infinity;
+    for (const k of keys) {
+      for (const v of DATA.tracks[k][field]) {
+        if (v < lo) lo = v;
+        if (v > hi) hi = v;
+      }
     }
+    return [lo, Math.max(hi, lo + 1)];
   }
-  const eSpan = Math.max(eHi - eLo, 1);
 
-  const alt = document.getElementById('alt');
-  const AW = 100, AH = 400, ATOP = 22, ABOT = 26;
-  const altY = (v) => AH - ABOT - ((v - eLo) / eSpan) * (AH - ATOP - ABOT);
+  const AW = 100, AH = 400, ATOP = 22, ABOT = 26, KNOB = 30;
 
-  const gauges = {};
-  keys.forEach((k, n) => {
-    const t = DATA.tracks[k];
-    const cx = AW * (n === 0 ? 0.3 : 0.7);
-    alt.appendChild(el('line', { x1: cx, x2: cx, y1: ATOP, y2: AH - ABOT, stroke: 'var(--line)', 'stroke-width': 9, 'stroke-linecap': 'round' }));
-    const fill = el('line', { x1: cx, x2: cx, y1: AH - ABOT, y2: AH - ABOT, stroke: t.colour, 'stroke-width': 9, 'stroke-linecap': 'round', opacity: 0.35 });
-    alt.appendChild(fill);
-    /* The same face as on the map. A coloured dot would make the reader hold
-       two legends in their head; the face is the legend. */
-    const KNOB = 30;
-    const knob = el('image', { href: t.face, width: KNOB, height: KNOB, x: cx - KNOB / 2, y: AH - ABOT - KNOB / 2 });
-    const knobRing = el('circle', { cx: cx, r: KNOB / 2 + 1.5, cy: AH - ABOT, fill: 'none', stroke: t.colour, 'stroke-width': 3 });
-    alt.appendChild(knob);
-    alt.appendChild(knobRing);
-    const label = el('text', { x: cx, y: AH - 8, 'text-anchor': 'middle', fill: 'var(--muted)', 'font-size': 13 });
-    label.textContent = '0';
-    alt.appendChild(label);
-    gauges[k] = { fill: fill, knob: knob, ring: knobRing, cx: cx, KNOB: KNOB, label: label };
-  });
+  function buildGauge(svgId, field, lo, hi, top) {
+    const svg = document.getElementById(svgId);
+    const y = (v) => AH - ABOT - ((v - lo) / (hi - lo)) * (AH - ATOP - ABOT);
+    const parts = {};
+    keys.forEach((k, n) => {
+      const t = DATA.tracks[k];
+      const cx = AW * (n === 0 ? 0.3 : 0.7);
+      svg.appendChild(el('line', { x1: cx, x2: cx, y1: ATOP, y2: AH - ABOT, stroke: 'var(--line)', 'stroke-width': 9, 'stroke-linecap': 'round' }));
+      const fill = el('line', { x1: cx, x2: cx, y1: AH - ABOT, y2: AH - ABOT, stroke: t.colour, 'stroke-width': 9, 'stroke-linecap': 'round', opacity: 0.35 });
+      svg.appendChild(fill);
+      /* The same face as on the map. A coloured dot would make the reader hold
+         a legend in their head; the face is the legend. */
+      const knob = el('image', { href: t.face, width: KNOB, height: KNOB, x: cx - KNOB / 2, y: AH - ABOT - KNOB / 2 });
+      const ring = el('circle', { cx: cx, r: KNOB / 2 + 1.5, cy: AH - ABOT, fill: 'none', stroke: t.colour, 'stroke-width': 3 });
+      svg.appendChild(knob);
+      svg.appendChild(ring);
+      const label = el('text', { x: cx, y: AH - 8, 'text-anchor': 'middle', fill: 'var(--muted)', 'font-size': 13 });
+      svg.appendChild(label);
+      parts[k] = { fill: fill, knob: knob, ring: ring, label: label };
+    });
+    const cap = el('text', { x: AW / 2, y: 13, 'text-anchor': 'middle', fill: 'var(--muted)', 'font-size': 12 });
+    cap.textContent = top;
+    svg.appendChild(cap);
+    return { y: y, parts: parts };
+  }
+
   /* Heights read from the bottom of the walk, not from the sea: the anonymised
      tracks are rebased so the lowest point of the wood is zero. */
-  const hiLabel = el('text', { x: AW / 2, y: 13, 'text-anchor': 'middle', fill: 'var(--muted)', 'font-size': 12 });
-  hiLabel.textContent = '+' + (eHi - eLo).toFixed(0) + ' м';
-  alt.appendChild(hiLabel);
+  const [eLo, eHi] = extent('e');
+  const altG = buildGauge('alt', 'e', eLo, eHi, '+' + (eHi - eLo).toFixed(0) + ' м');
+  /* Speed is capped at the fastest thing either of them did, rounded up, so the
+     bar has a round number at the top rather than 24.63. */
+  const vTop = Math.ceil(extent('v')[1] / 5) * 5;
+  const spdG = buildGauge('spd', 'v', 0, vTop, vTop + ' км/г');
 
   /* The profile is drawn against wall-clock seconds rather than distance —
      the whole point is that at the same instant they were at different heights. */
   const prof = document.getElementById('prof');
   const PW = 1000, PH = 160, PPAD = 10;
   const pxT = (sec) => (sec / DATA.seconds) * PW;
-  const pyE = (v) => PH - PPAD - ((v - eLo) / eSpan) * (PH - PPAD * 2);
+  const pyE = (v) => PH - PPAD - ((v - eLo) / (eHi - eLo)) * (PH - PPAD * 2);
 
   for (const k of keys) {
     const t = DATA.tracks[k];
@@ -287,13 +301,18 @@
   const playhead = el('line', { y1: 0, y2: PH, stroke: 'var(--ink)', 'stroke-width': 1.5, opacity: 0.5, x1: 0, x2: 0 });
   prof.appendChild(playhead);
 
-  function renderAltitude(sec, pos) {
+  function setGauge(g, k, value, text) {
+    const p = g.parts[k];
+    p.fill.setAttribute('y2', g.y(value));
+    p.knob.setAttribute('y', g.y(value) - KNOB / 2);
+    p.ring.setAttribute('cy', g.y(value));
+    p.label.textContent = text;
+  }
+
+  function renderGauges(sec, pos) {
     for (const k of keys) {
-      const v = pos[k].e;
-      gauges[k].fill.setAttribute('y2', altY(v));
-      gauges[k].knob.setAttribute('y', altY(v) - gauges[k].KNOB / 2);
-      gauges[k].ring.setAttribute('cy', altY(v));
-      gauges[k].label.textContent = '+' + (v - eLo).toFixed(0);
+      setGauge(altG, k, pos[k].e, '+' + (pos[k].e - eLo).toFixed(0));
+      setGauge(spdG, k, Math.min(pos[k].v, vTop), pos[k].v.toFixed(1));
     }
     playhead.setAttribute('x1', pxT(sec));
     playhead.setAttribute('x2', pxT(sec));
@@ -322,9 +341,9 @@
       parts[k].ring.setAttribute('cx', cx);
       parts[k].ring.setAttribute('cy', cy);
       document.getElementById('km-' + k).textContent = (t.d[i] / 1000).toFixed(2);
-      pos[k] = { x: t.x[i], y: t.y[i], d: t.d[i], e: t.e[i] };
+      pos[k] = { x: t.x[i], y: t.y[i], d: t.d[i], e: t.e[i], v: t.v[i] };
     }
-    renderAltitude(sec, pos);
+    renderGauges(sec, pos);
 
     tether.setAttribute('x1', px(pos.mitya.x));
     tether.setAttribute('y1', py(pos.mitya.y));

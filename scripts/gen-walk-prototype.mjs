@@ -116,7 +116,19 @@ for (const [key, t] of Object.entries(raw)) {
     d.push(Math.round(dist));
   }
   const e = medianFilter(eRaw, 15).map((v) => +v.toFixed(1));
-  tracks[key] = { label: t.label, colour: t.colour, x, y, s, d, e, face: await face(FACES[key]) };
+
+  /* Speed from the distance already accumulated, over a five-second window.
+     Per-second GPS speed is mostly jitter — a walker standing still reads two
+     or three km/h — and five seconds is short enough to still catch a sprint. */
+  const HALF = 2;
+  const v = d.map((_, i) => {
+    const a = Math.max(0, i - HALF);
+    const b = Math.min(d.length - 1, i + HALF);
+    const dt = s[b] - s[a];
+    return dt > 0 ? +(((d[b] - d[a]) / dt) * 3.6).toFixed(2) : 0;
+  });
+
+  tracks[key] = { label: t.label, colour: t.colour, x, y, s, d, e, v, face: await face(FACES[key]) };
 }
 
 const data = { seconds: Math.round((to - from) / 1000), tracks };
