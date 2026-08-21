@@ -33,7 +33,20 @@ const {
 
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site);
-const ogImage = new URL('/og.png', site);
+/* The page's own preview card, drawn by /scripts/gen-og.mjs. The name follows
+   the URL rather than being passed down from each page, so a new post gets its
+   card from `npm run og` and nothing here has to change. Anything without a
+   card of its own — the 404, say — falls back to the site card. */
+function ogCard(pathname: string) {
+  const seg = pathname.split('/').filter(Boolean);
+  const lang = seg[0] === 'ru' || seg[0] === 'be' ? seg.shift() : 'en';
+  if (seg.length === 0) return `/og/home-${lang}.jpg`;
+  if (seg.length === 1 && (seg[0] === 'blog' || seg[0] === 'projects')) return `/og/${seg[0]}-${lang}.jpg`;
+  if (seg.length === 2 && seg[0] === 'blog') return `/og/post-${seg[1]}-${lang}.jpg`;
+  return '/og.jpg';
+}
+
+const ogImage = new URL(ogCard(Astro.url.pathname), site);
 const ogLocale = { en: 'en_US', ru: 'ru_RU', be: 'be_BY' }[t.lang];
 const alternates = (
   alternatesProp ?? Object.values(dictionaries).map((d) => ({ lang: d.lang, href: d.path }))
@@ -126,6 +139,7 @@ const personLd = {
     <meta property="og:image" content={ogImage.href} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
     <meta property="og:locale" content={ogLocale} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@dimhold" />
