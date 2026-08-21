@@ -1,13 +1,15 @@
-/* Cuts the site's icons out of the portrait in data/me.png, as a round mark.
+/* Cuts the site's icons out of src/assets/favicon-source.png, as a round mark.
  *
- * The portrait is a rendered figurine, not a photograph of a face, which is
- * why it survives the trip down to 16 pixels: the cap is one solid shape, the
- * profile is one silhouette against a pale ground, and both read even when
- * every feature inside them has dissolved.
+ * The source is the figurine's head with its background already removed and
+ * the contrast lifted, trimmed to a square with the head centred in it and
+ * held at 512 — every icon here is 180 or smaller, so anything larger is
+ * megabytes the repository would carry for nothing.
  *
- * The circle is not decoration. A square icon of a head sits in the tab strip
- * as a beige block among other beige blocks; a disc has an outline of its own
- * and is picked out of a row of favicons at a glance.
+ * The head is dropped onto a disc of the deep accent blue. That is what makes
+ * the mark survive 16 pixels: cap, skin and hair are all warm mid-tones, so
+ * against beige they turn to porridge, and against blue the silhouette holds.
+ * The circle is not decoration either — a square beige tile is one more square
+ * beige tile in a strip of favicons; a disc has an outline of its own.
  *
  * Run: npm run favicon
  */
@@ -15,24 +17,18 @@ import { Buffer } from 'node:buffer';
 import { writeFile } from 'node:fs/promises';
 import sharp from 'sharp';
 
-const SOURCE = 'data/me.png';
+const SOURCE = 'src/assets/favicon-source.png';
 const OUT = 'public';
-
-/* The square that holds the whole head — cap crown to collar, and far enough
-   right that the nose clears the edge of the circle rather than grazing it.
-   Measured against the 237×213 source, not guessed. */
-const CROP = { left: 32, top: 2, width: 200, height: 200 };
 
 /** ICO sizes. 48 is there for Google Search, which asks for it by name. */
 const ICO_SIZES = [16, 32, 48];
 
-/** The paper colour behind the light theme. iOS paints its own square under an
- *  apple-touch-icon and reads transparency as black, so that one gets a ground. */
-const PAPER = { r: 242, g: 235, b: 224, alpha: 1 };
+/** --accent-deep from the light theme. */
+const BLUE = { r: 29, g: 90, b: 168, alpha: 1 };
 
-/* The portrait is a render with soft gradients, so a palette would band the
-   cheek. Keep it truecolour and pay for it in encoder effort instead — the
-   high setting is what takes the 180 from 70 kB down to 19. */
+/* The head is a render with soft gradients, so a palette would band the cheek.
+   Keep it truecolour and pay for it in encoder effort instead — the high
+   setting is what takes the 180 from 70 kB down to under 20. */
 const SQUEEZE = { compressionLevel: 9, effort: 10 };
 
 /** A full-bleed disc, used as an alpha stencil. */
@@ -41,22 +37,22 @@ const disc = (n) =>
 
 /* Downscaling softens every edge that carries the likeness — the cap's brim,
    the line of the jaw. A touch of sharpening at the small sizes puts that back;
-   the large ones do not need it and look brittle with it. Masking happens last,
-   after the resize, so the rim of the disc is antialiased at its final size
-   instead of being resampled into a staircase. */
-const round = (size) => {
-  const cut = sharp(SOURCE).extract(CROP).resize(size, size, { kernel: 'lanczos3' });
-  const sharpened = size <= 48 ? cut.sharpen({ sigma: 0.6 }) : cut;
-  return sharpened
-    .composite([{ input: disc(size), blend: 'dest-in' }])
-    .png(SQUEEZE)
-    .toBuffer();
+   the large ones do not need it and look brittle with it. */
+const onBlue = async (size, inset = 1) => {
+  const head = Math.round(size * inset);
+  const pad = Math.round((size - head) / 2);
+  const scaled = await sharp(SOURCE).resize(head, head, { kernel: 'lanczos3' }).png().toBuffer();
+  const tile = sharp({ create: { width: size, height: size, channels: 4, background: BLUE } }).composite([
+    { input: scaled, left: pad, top: pad },
+  ]);
+  return (size <= 48 ? tile.sharpen({ sigma: 0.6 }) : tile).png(SQUEEZE).toBuffer();
 };
 
-/** Same disc, dropped onto the paper colour instead of onto nothing. */
-const onPaper = async (size) =>
-  sharp({ create: { width: size, height: size, channels: 4, background: PAPER } })
-    .composite([{ input: await round(size) }])
+/* Masking happens last, after the resize, so the rim of the disc is
+   antialiased at its final size instead of being resampled into a staircase. */
+const round = async (size) =>
+  sharp(await onBlue(size))
+    .composite([{ input: disc(size), blend: 'dest-in' }])
     .png(SQUEEZE)
     .toBuffer();
 
@@ -94,7 +90,11 @@ await Promise.all([
   writeFile(`${OUT}/favicon.ico`, ico(icoImages)),
   // The 32 is what a modern browser actually paints in the tab.
   writeFile(`${OUT}/favicon.png`, await round(32)),
-  writeFile(`${OUT}/apple-touch-icon.png`, await onPaper(180)),
+  // iOS clips this into a rounded square of its own and reads transparency as
+  // black, so it gets the blue full bleed rather than a disc floating on it —
+  // and the head pulled in a little, because nothing else trims the corners
+  // here the way the disc does in the tab.
+  writeFile(`${OUT}/apple-touch-icon.png`, await onBlue(180, 0.86)),
 ]);
 
 console.log(`favicon.ico (${ICO_SIZES.join('/')}), favicon.png, apple-touch-icon.png`);

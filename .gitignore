@@ -13,3 +13,8 @@ games/sources/
 # originals stay on this machine. The committed copies in data/tracks-anon/
 # are the same paths, translated into the middle of the Pacific.
 data/tracks/
+
+# The full-resolution portrait the favicon is cut from — two megabytes of render
+# for a mark that is never larger than 180 pixels. The trimmed square that
+# actually feeds the script is committed as src/assets/favicon-source.png.
+data/me2.png

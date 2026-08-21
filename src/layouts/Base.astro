@@ -102,9 +102,10 @@ const personLd = {
     {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
     <link rel="alternate" type="application/rss+xml" title="dimhold.by" href="/rss.xml" />
-    <!-- The head from data/me.png, cut into a disc by /scripts/gen-favicon.mjs.
-         The .ico carries 16/32/48 because Google Search asks for 48 by name;
-         the .png is what a browser paints in the tab. -->
+    <!-- The head from src/assets/favicon-source.png, dropped on a disc of the
+         deep accent blue by /scripts/gen-favicon.mjs. The .ico carries 16/32/48
+         because Google Search asks for 48 by name; the .png is what a browser
+         paints in the tab. -->
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
