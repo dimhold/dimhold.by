@@ -869,4 +869,6 @@ export const socials = [
   { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/dimhold' },
   { label: 'Telegram', icon: 'telegram', href: 'https://t.me/dimhold' },
   { label: 'Product Hunt', icon: 'producthunt', href: 'https://www.producthunt.com/@dimhold' },
+  { label: 'Stack Overflow', icon: 'stackoverflow', href: 'https://stackoverflow.com/users/1538240/dimhold' },
+  { label: 'Upwork', icon: 'upwork', href: 'https://www.upwork.com/freelancers/~01f23e484922726655' },
 ] as const;
