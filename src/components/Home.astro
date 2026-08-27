@@ -33,7 +33,14 @@ const SPOT_AUDIO = { me: '/audio/dmitriy.mp3', bird: '/audio/kenar.mp3', dog: '/
   <section class="hero">
     <div class="hero-intro">
       <p class="greeting">{t.hero.greeting}</p>
-      <h1 class="name">Dmitriy Semenkevich<span class="name-dot">.</span></h1>
+      <h1 class="name">{t.identity.name}<span class="name-dot">.</span></h1>
+      {/* The other spellings, stated once. A Cyrillic search for him has
+          nothing to match otherwise, and the three language pages read as
+          three different people. */}
+      <p class="also-known">
+        <span class="also-label">{t.identity.alsoLabel}</span>
+        {t.identity.also.map((n) => <span class="also-name">{n}</span>)}
+      </p>
       <div class="chips">
         {t.hero.chips.map((c, i) => <span class={i === 1 ? 'chip chip-accent' : 'chip'}>{c}</span>)}
       </div>

@@ -56,10 +56,26 @@ const xDefault = alternates.find((a) => a.lang === 'en')?.href;
 const personLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Dmitriy Semenkevich',
+  name: t.identity.name,
+  givenName: 'Dmitriy',
+  familyName: 'Semenkevich',
+  // Every spelling of one person: two scripts, two Belarusian surname forms and
+  // the patronymic. A search engine has no way to join Дмитрий Семенкевич to
+  // Dmitriy Semenkevich unless the page says they are the same man.
+  alternateName: [
+    'Dmitriy Semenkevich',
+    'Dmitry Semenkevich',
+    'Дмитрий Семенкевич',
+    'Дмитрий Дмитриевич Семенкевич',
+    'Дзмітрый Семянкевіч',
+    'Дзмітрый Семенкевіч',
+    'Дзмітрый Дзмітрыевіч Семянкевіч',
+    'Дзмітрый Дзмітрыевіч Семенкевіч',
+  ],
+  knowsLanguage: ['ru', 'be', 'en', 'pl'],
   url: site.href,
   email: 'mailto:dimhold@gmail.com',
-  jobTitle: 'Full-stack engineer, co-founder of Adlega',
+  jobTitle: 'AI architect and systems engineer, co-founder of Adlega',
   worksFor: { '@type': 'Organization', name: 'Adlega', url: 'https://adlega.com' },
   alumniOf: {
     '@type': 'CollegeOrUniversity',

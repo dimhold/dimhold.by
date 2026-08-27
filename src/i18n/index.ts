@@ -48,9 +48,27 @@ export interface ShelfItem {
   href?: string;
 }
 
+/**
+ * The same person in three scripts. The site is read in Russian and Belarusian
+ * too, and a page whose title and heading are Latin gives a Cyrillic search
+ * nothing to match. So each language names him in its own script, and the
+ * other spellings are stated once so the three pages are visibly one person.
+ */
+export interface Identity {
+  /** As the heading and the titles say it on this language's pages. */
+  name: string;
+  /** With the patronymic. The full legal form, stated once, in the footer. */
+  full: string;
+  /** Label in front of the other spellings. */
+  alsoLabel: string;
+  /** The same name in the other scripts. */
+  also: string[];
+}
+
 export interface Dictionary {
   lang: Lang;
   path: string;
+  identity: Identity;
   metaTitle: string;
   metaDescription: string;
   langLabel: string;
@@ -146,6 +164,12 @@ export interface Dictionary {
 export const en: Dictionary = {
   lang: 'en',
   path: '/',
+  identity: {
+    name: 'Dmitriy Semenkevich',
+    full: 'Dmitriy Semenkevich',
+    alsoLabel: 'also written',
+    also: ['Дмитрий Семенкевич', 'Дзмітрый Семянкевіч'],
+  },
   metaTitle: 'Dmitriy Semenkevich — full-stack engineer & founder',
   metaDescription:
     'Fifteen years of production software: payments infrastructure, a trade-in platform in 16,000 stores. Co-founder of Adlega, an AI CFO for SaaS founders.',
@@ -385,7 +409,13 @@ export const en: Dictionary = {
 export const ru: Dictionary = {
   lang: 'ru',
   path: '/ru/',
-  metaTitle: 'Dmitriy Semenkevich — фулстек-инженер и сооснователь Adlega',
+  identity: {
+    name: 'Дмитрий Семенкевич',
+    full: 'Дмитрий Дмитриевич Семенкевич',
+    alsoLabel: 'он же',
+    also: ['Dmitriy Semenkevich', 'Дзмітрый Семянкевіч'],
+  },
+  metaTitle: 'Дмитрий Семенкевич (Dmitriy Semenkevich) — ИИ-архитектор и сооснователь Adlega',
   metaDescription:
     'Пятнадцать лет продакшен-разработки: платёжная инфраструктура, trade-in-платформа в 16 000 магазинов. Сооснователь Adlega — ИИ-финдиректора для SaaS-фаундеров.',
   langLabel: 'Язык',
@@ -398,7 +428,7 @@ export const ru: Dictionary = {
   blog: {
     label: 'Статьи',
     all: 'все статьи →',
-    title: 'Статьи — Dmitriy Semenkevich',
+    title: 'Статьи — Дмитрий Семенкевич',
     description:
       'Статьи и билд-логи Дмитрия Семенкевича: ИИ-продукты, которые не угадывают, финансовые движки, веб-эксперименты.',
     min: 'мин чтения',
@@ -491,7 +521,7 @@ export const ru: Dictionary = {
   },
   projects: {
     label: 'Мои проекты',
-    title: 'Мои проекты — Dmitriy Semenkevich',
+    title: 'Мои проекты — Дмитрий Семенкевич',
     description:
       'Проекты, которые я веду сейчас: Adlega — ИИ-финдиректор для SaaS-фаундеров, Belun — браузерный набор инструментов без загрузок на сервер, whotop — утилита, различающая процессы-двойники, и этот сайт-мастерская.',
     lede: 'Всё, что работает прямо сейчас: зачем оно существует и на чём собрано. То, что своё уже отработало, лежит ниже на полке — вместе с тупиками.',
@@ -624,7 +654,13 @@ export const ru: Dictionary = {
 export const be: Dictionary = {
   lang: 'be',
   path: '/be/',
-  metaTitle: 'Dmitriy Semenkevich — фулстэк-інжынер і сузаснавальнік Adlega',
+  identity: {
+    name: 'Дзмітрый Семянкевіч',
+    full: 'Дзмітрый Дзмітрыевіч Семянкевіч',
+    alsoLabel: 'ён жа',
+    also: ['Dmitriy Semenkevich', 'Дмитрий Семенкевич', 'Дзмітрый Семенкевіч'],
+  },
+  metaTitle: 'Дзмітрый Семянкевіч (Dmitriy Semenkevich) — ШІ-архітэктар і сузаснавальнік Adlega',
   metaDescription:
     'Пятнаццаць гадоў прадакшен-распрацоўкі: плацёжная інфраструктура, trade-in-платформа ў 16 000 крамах. Сузаснавальнік Adlega — ШІ-фіндырэктара для SaaS-заснавальнікаў.',
   langLabel: 'Мова',
@@ -637,7 +673,7 @@ export const be: Dictionary = {
   blog: {
     label: 'Артыкулы',
     all: 'усе артыкулы →',
-    title: 'Артыкулы — Dmitriy Semenkevich',
+    title: 'Артыкулы — Дзмітрый Семянкевіч',
     description:
       'Артыкулы і білд-логі Дзмітрыя Семянкевіча: ШІ-прадукты, якія не гадаюць, фінансавыя рухавікі, веб-эксперыменты.',
     min: 'хв чытання',
@@ -730,7 +766,7 @@ export const be: Dictionary = {
   },
   projects: {
     label: 'Мае праекты',
-    title: 'Мае праекты — Dmitriy Semenkevich',
+    title: 'Мае праекты — Дзмітрый Семянкевіч',
     description:
       'Праекты, якія я вяду цяпер: Adlega — ШІ-фіндырэктар для SaaS-заснавальнікаў, Belun — браўзерны набор інструментаў без выгрузкі на сервер, whotop — утыліта, якая адрознівае працэсы-двайнікі, і гэты сайт-майстэрня.',
     lede: 'Усё, што працуе проста зараз: навошта яно існуе і на чым сабрана. Тое, што сваё ўжо адпрацавала, ляжыць ніжэй на паліцы — разам з тупікамі.',

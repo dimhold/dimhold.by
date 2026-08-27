@@ -320,6 +320,33 @@ html[data-mode='night'] .greeting {
   color: var(--accent);
 }
 
+/* The other spellings of the name, under the heading. Quiet on purpose: it is
+   there so a Cyrillic search finds him and so the three language pages read as
+   one person, not as a design element. */
+.also-known {
+  margin-top: 0.55rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.55rem;
+  font-size: 0.82rem;
+  color: var(--muted, #6b6b6b);
+}
+
+.also-known .also-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  opacity: 0.75;
+}
+
+.also-known .also-name + .also-name::before {
+  content: ' b7';
+  margin-right: 0.55rem;
+  opacity: 0.5;
+}
+
 .chips {
   margin-top: 1.1rem;
   display: flex;
