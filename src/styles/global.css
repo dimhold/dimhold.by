@@ -2765,3 +2765,253 @@ html[data-mode='night'] .walk {
     width: auto;
   }
 }
+
+/* ── papers ───────────────────────────────────────────────────────────────
+   A paper page is a document, not a spread. It is narrower than the blog,
+   set in the serif-less body face at a size that survives being printed to
+   PDF, and it carries its own front matter: title, byline, abstract, then
+   the links out. The print block at the bottom is what `npm run pdf` sees. */
+
+.paper-index,
+.paper-page {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+.paper-index-title {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.paper-index-lede {
+  margin-top: 0.8rem;
+  max-width: 38rem;
+  color: var(--muted, #6b6b6b);
+}
+
+.paper-list {
+  margin-top: 2.5rem;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 2rem;
+}
+
+.paper-row-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 2px solid var(--accent-wash);
+}
+
+.paper-row-title:hover {
+  border-bottom-color: var(--accent);
+}
+
+.paper-row-sub {
+  margin-top: 0.4rem;
+  color: var(--muted, #6b6b6b);
+}
+
+.paper-row-meta,
+.paper-meta {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted, #6b6b6b);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.paper-head {
+  margin-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--accent-wash);
+}
+
+.paper-title {
+  font-size: clamp(1.7rem, 4.2vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.paper-subtitle {
+  margin-top: 0.6rem;
+  font-size: 1.05rem;
+  color: var(--muted, #6b6b6b);
+}
+
+.paper-byline {
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+.paper-abstract {
+  margin-top: 2rem;
+  padding: 1.2rem 1.4rem;
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent-wash) 35%, transparent);
+}
+
+.paper-abstract h2 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.paper-abstract p {
+  margin-top: 0.6rem;
+  line-height: 1.65;
+}
+
+.paper-links {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.paper-body {
+  margin-top: 2.5rem;
+}
+
+.paper-body h2 {
+  margin-top: 2.6rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.paper-body h3 {
+  margin-top: 1.8rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.paper-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4rem 0;
+  font-size: 0.9rem;
+}
+
+.paper-body th,
+.paper-body td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--accent-wash);
+  text-align: left;
+  vertical-align: top;
+}
+
+.paper-cite {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--accent-wash);
+}
+
+.paper-cite h2 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.paper-cite-line {
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.paper-keywords {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--muted, #6b6b6b);
+}
+
+/* What `npm run pdf` prints. The chrome of the site goes away, the page gets
+   real margins, and links keep their href so the PDF is still navigable. */
+@media print {
+  .masthead,
+  .footer,
+  .paper-links,
+  .post-back,
+  .consent {
+    display: none !important;
+  }
+
+  /* System faces on paper. The site's three variable fonts get embedded whole
+     when Chrome prints, which turned a text-only paper into a 3 MB file; the
+     typography is worth nothing in a PDF and the weight is worth a lot. */
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  /* The ornament sheet is a fixed background, so Chrome rasterises it once per
+     printed page: 58 images and 2.9 MB in a paper that is nothing but text.
+     It goes, along with anything else painting behind the prose. */
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  * {
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+
+  .paper-meta,
+  .paper-cite-line,
+  .paper-abstract h2,
+  .paper-cite h2,
+  code,
+  pre {
+    font-family: Consolas, 'Courier New', monospace;
+  }
+
+  .paper-title,
+  .paper-body h2,
+  .paper-body h3 {
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  .paper-page {
+    max-width: none;
+    padding: 0;
+    font-size: 10.5pt;
+  }
+
+  .paper-abstract {
+    background: none;
+    border-left: 2px solid #444;
+  }
+
+  .paper-body h2,
+  .paper-body h3 {
+    break-after: avoid;
+  }
+
+  .paper-body table,
+  .paper-body pre {
+    break-inside: avoid;
+  }
+
+  a {
+    color: #111 !important;
+    text-decoration: underline;
+  }
+}

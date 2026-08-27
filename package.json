@@ -10,7 +10,8 @@
     "favicon": "node scripts/gen-favicon.mjs",
     "tracks": "node scripts/anon-tracks.mjs",
     "walk": "node scripts/gen-walk-data.mjs",
-    "og": "node --experimental-strip-types scripts/gen-og.mjs"
+    "og": "node --experimental-strip-types scripts/gen-og.mjs",
+    "pdf": "node scripts/gen-pdf.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

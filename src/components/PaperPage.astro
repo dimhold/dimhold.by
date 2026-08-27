@@ -1,0 +1,64 @@
+---
+import { render } from 'astro:content';
+import { en } from '../i18n';
+import type { Paper } from '../lib/papers';
+import { citationLine, doiUrl, pdfPath } from '../lib/papers';
+import Masthead from './Masthead.astro';
+import SiteFooter from './SiteFooter.astro';
+
+interface Props {
+  paper: Paper;
+}
+
+const { paper } = Astro.props;
+const { Content } = await render(paper);
+const d = paper.data;
+const printed = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(d.date);
+---
+
+<Masthead t={en} />
+
+<main id="main" class="paper-page">
+  <a class="post-back" href="/papers/">← papers</a>
+
+  <header class="paper-head">
+    <h1 class="paper-title">{d.title}</h1>
+    <p class="paper-subtitle">{d.subtitle}</p>
+    <p class="paper-byline">
+      Dmitriy Semenkevich ·
+      <a href="https://orcid.org/0009-0009-3013-4978" rel="noopener">ORCID 0009-0009-3013-4978</a>
+    </p>
+    <p class="paper-meta">{printed} · dimhold.by</p>
+  </header>
+
+  {/* The abstract is a field rather than the first paragraph of the prose,
+      because it has to be identical in three places: here, in the PDF and in
+      the Zenodo record. */}
+  <section class="paper-abstract">
+    <h2>Abstract</h2>
+    <p>{d.abstract}</p>
+  </section>
+
+  <nav class="paper-links" aria-label="This paper elsewhere">
+    <a class="btn" href={pdfPath(paper)}>Download PDF</a>
+    <a class="link-plain" href={doiUrl(d.doi)} rel="noopener">{d.doi} ↗</a>
+    <a class="link-plain" href={d.repo} rel="noopener">code and data ↗</a>
+  </nav>
+
+  <article class="prose paper-body">
+    <Content />
+  </article>
+
+  <section class="paper-cite">
+    <h2>Cite this</h2>
+    <p class="paper-cite-line">{citationLine(paper)}</p>
+    <p class="paper-keywords">{d.keywords.join(' · ')}</p>
+  </section>
+</main>
+
+<SiteFooter t={en} />

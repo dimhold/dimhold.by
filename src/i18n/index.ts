@@ -77,6 +77,7 @@ export interface Dictionary {
   nav: {
     blog: string;
     projects: string;
+    papers: string;
   };
   blog: {
     label: string;
@@ -179,6 +180,7 @@ export const en: Dictionary = {
   nav: {
     blog: 'writing',
     projects: 'my projects',
+    papers: 'papers',
   },
   blog: {
     label: 'Writing',
@@ -424,6 +426,7 @@ export const ru: Dictionary = {
   nav: {
     blog: 'блог',
     projects: 'мои проекты',
+    papers: 'работы',
   },
   blog: {
     label: 'Статьи',
@@ -669,6 +672,7 @@ export const be: Dictionary = {
   nav: {
     blog: 'блог',
     projects: 'мае праекты',
+    papers: 'працы',
   },
   blog: {
     label: 'Артыкулы',

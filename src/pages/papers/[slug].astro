@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import PaperPage from '../../components/PaperPage.astro';
+import { en } from '../../i18n';
+import { allPapers, citationDate, pdfPath } from '../../lib/papers';
+import type { Paper } from '../../lib/papers';
+
+export async function getStaticPaths() {
+  const papers = await allPapers();
+  return papers.map((paper) => ({ params: { slug: paper.id }, props: { paper } }));
+}
+
+interface Props {
+  paper: Paper;
+}
+
+const { paper } = Astro.props;
+const d = paper.data;
+const site = Astro.site!;
+
+/* Scholar reads these off this page and then fetches citation_pdf_url. Both
+   URLs are absolute on purpose: the crawler does not resolve relative ones. */
+const citation = {
+  title: d.title,
+  author: 'Semenkevich, Dmitriy',
+  date: citationDate(d.date),
+  pdfUrl: new URL(pdfPath(paper), site).href,
+  doi: d.doi,
+  keywords: d.keywords,
+  institution: 'dimhold.by',
+};
+---
+
+<Base
+  t={en}
+  title={`${d.title} — Dmitriy Semenkevich`}
+  description={d.abstract}
+  alternates={[{ lang: 'en', href: `/papers/${paper.id}/` }]}
+  ogType="article"
+  citation={citation}
+>
+  <PaperPage paper={paper} />
+</Base>

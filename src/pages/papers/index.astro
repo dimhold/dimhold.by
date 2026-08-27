@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import Masthead from '../../components/Masthead.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { en } from '../../i18n';
+import { allPapers, doiUrl, paperPath, pdfPath } from '../../lib/papers';
+
+const papers = await allPapers();
+const fmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<Base
+  t={en}
+  title="Papers — Dmitriy Semenkevich"
+  description="Write-ups of measurements run against language models, package registries and databases. Each one has a DOI, a PDF and the code that produced the numbers."
+  alternates={[{ lang: 'en', href: '/papers/' }]}
+>
+  <Masthead t={en} />
+
+  <main id="main" class="paper-index">
+    <h1 class="paper-index-title">Papers</h1>
+    <p class="paper-index-lede">
+      Measurements, written up. Every one names what would have proved it wrong before the first
+      number was taken, says who had already done it, and ships the code that produced the figures.
+      Each has a permanent DOI and a PDF.
+    </p>
+
+    <ul class="paper-list">
+      {
+        papers.map((paper) => (
+          <li class="paper-row">
+            <a class="paper-row-title" href={paperPath(paper)}>
+              {paper.data.title}
+            </a>
+            <p class="paper-row-sub">{paper.data.subtitle}</p>
+            <p class="paper-row-meta">
+              {fmt.format(paper.data.date)} ·<a href={pdfPath(paper)}>PDF</a> ·
+              <a href={doiUrl(paper.data.doi)} rel="noopener">
+                {paper.data.doi}
+              </a>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+
+  <SiteFooter t={en} />
+</Base>
