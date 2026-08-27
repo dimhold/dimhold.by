@@ -68,6 +68,13 @@ const personLd = {
   // Country only. The city is nobody's business and search engines do not need it.
   address: { '@type': 'PostalAddress', addressCountry: 'BY' },
   sameAs: socials.map((s) => s.href),
+  // The ORCID iD is both a profile link and a credential, so it goes in twice:
+  // once in sameAs with the rest, once here as the identifier search engines read.
+  identifier: {
+    '@type': 'PropertyValue',
+    propertyID: 'ORCID',
+    value: 'https://orcid.org/0009-0009-3013-4978',
+  },
 };
 ---
 
