@@ -1,20 +1,20 @@
 ---
 title: "Option instead of null: the 16 bytes I could not find"
-description: "Three broken links in one chain give the same NullPointerException with an empty message. Option turns all three into None. Then the allocation counter says the Some costs nothing and it takes -XX:-DoEscapeAnalysis to find it."
+description: "3 broken links in one chain give the same NullPointerException with an empty message. Option turns all 3 into None. Then the allocation counter says the Some costs nothing and it takes -XX:-DoEscapeAnalysis to find it."
 date: 2011-11-30
 lang: en
 translationKey: option-vs-null
 ---
 
-A NullPointerException came out of a line with three dots in it.
+A NullPointerException came out of a line with 3 dots in it.
 
 ```scala
 def zipOf(order: Order): String = order.customer.address.zip
 ```
 
-The message was empty. The stack trace named the method and the line, which I already knew from the exception being thrown at all. Any of the three could have been null and the exception looks the same either way.
+The message was empty. The stack trace named the method and the line, which I already knew from the exception being thrown at all. Any of the 3 could have been null and the exception looks the same either way.
 
-Two things I wanted to settle. Whether Option really takes this class of error away, which everyone around me says and I half believe. And what it costs, because I have been repeating that Option allocates on every lookup and I have never measured that once. Everything below is Scala 2.9.1 on jdk 7.
+2 things I wanted to settle. Whether Option really takes this class of error away, which everyone around me says and I half believe. And what it costs, because I have been repeating that Option allocates on every lookup and I have never measured that once. Everything below is Scala 2.9.1 on jdk 7.
 
 ```
 complete: 00-001
@@ -81,10 +81,10 @@ no order: NullPointerException, message=[null] at zipOf line 8
   <rect x="386" y="182" width="248" height="26" rx="4" class="f-plain"/>
   <text x="398" y="200" class="f-mono f-muted">no exception thrown</text>
 </svg>
-<figcaption>Three different defects break the chain at three different links. All three arrive as the same exception with an empty message, on the same line.</figcaption>
+<figcaption>3 different defects break the chain at 3 different links. All 3 arrive as the same exception with an empty message, on the same line.</figcaption>
 </figure>
 
-Three different defects arrive as one line of output repeated three times. To find out which link was broken I had to go back and split the chain up by hand. The argument for Option is about this class of error and it is fair.
+3 different defects arrive as one line of output repeated 3 times. To find out which link was broken I had to go back and split the chain up by hand. The argument for Option is about this class of error and it is fair.
 
 The same path with the fields typed as Option:
 
@@ -100,7 +100,7 @@ no customer: None
 no order: None
 ```
 
-Nothing is thrown. The three defects are still there and the program still cannot produce a zip, but the absence now travels as a value and arrives where I decided to handle it. The compiler also stops me reading the zip out without saying what happens when it is missing.
+Nothing is thrown. The 3 defects are still there and the program still cannot produce a zip, but the absence now travels as a value and arrives where I decided to handle it. The compiler also stops me reading the zip out without saying what happens when it is missing.
 
 That holds for code that goes through `map` and `flatMap`. `get` is still on the type:
 
@@ -140,9 +140,9 @@ o.getOrElse("none")             ! java.lang.NullPointerException
     Interop$.main(Interop.scala:27) <- Interop.main(Interop.scala)
 ```
 
-That compiles without a warning. I ran the compiler again with `-deprecation` in case I had missed one. The only two warnings in the whole build are about an `Integer` alias in a different file. An uninitialised field of type `Option[String]` holds null rather than `None`. Every call on it fails the old way.
+That compiles without a warning. I ran the compiler again with `-deprecation` in case I had missed one. The only 2 warnings in the whole build are about an `Integer` alias in a different file. An uninitialised field of type `Option[String]` holds null rather than `None`. Every call on it fails the old way.
 
-2.9.1 has a flag aimed at exactly this. `-Xcheck-null` warns on the selection of a nullable reference. On these two small files it produced 54 warnings. Three of them are the real dereferences on line 8. It also flags `o.isDefined` on the null Option, which is the case I had just been surprised by. The rest are things like an arrow on a string literal and `label.+`, because a string concatenation is a selection on a reference too. Seventeen of the 54 are concatenations and eight are that arrow. I did not find a way to read the three I wanted out of the other fifty one.
+2.9.1 has a flag aimed at exactly this. `-Xcheck-null` warns on the selection of a nullable reference. On these 2 small files it produced 54 warnings. 3 of them are the real dereferences on line 8. It also flags `o.isDefined` on the null Option, which is the case I had just been surprised by. The rest are things like an arrow on a string literal and `label.+`, because a string concatenation is a selection on a reference too. 17 of the 54 are concatenations and 8 are that arrow. I did not find a way to read the 3 I wanted out of the other 51.
 
 <figure class="fig">
 <svg viewBox="0 0 640 186" role="img" aria-label="Four states behind a value of type Option of String. Some of a value and None are the two states the type describes. Some of null and a null reference are also legal, one arriving from a java null and the other from an uninitialised field. Both crash with a NullPointerException.">
@@ -173,12 +173,12 @@ That compiles without a warning. I ran the compiler again with `-deprecation` in
   <path d="M 560 138 L 560 152" class="f-line" marker-end="url(#oArrow)"/>
   <text x="560" y="172" class="f-label f-muted" text-anchor="middle">uninitialised field</text>
 </svg>
-<figcaption>Four states fit behind a value typed Option[String]. Two of them are the ones the type describes.</figcaption>
+<figcaption>4 states fit behind a value typed Option[String]. 2 of them are the ones the type describes.</figcaption>
 </figure>
 
 ## What I thought it cost
 
-I have been repeating that Option costs an allocation on every lookup. I had never measured it. A table of 100000 entries, 20 million lookups per loop, three warmups then five timed runs with the median printed. Same 2.9.1 and jdk 7, heap pinned with `-Xms256m -Xmx256m` so that compressed oops stay on:
+I have been repeating that Option costs an allocation on every lookup. I had never measured it. A table of 100000 entries, 20 million lookups per loop, 3 warmups then 5 timed runs with the median printed. Same 2.9.1 and jdk 7, heap pinned with `-Xms256m -Xmx256m` so that compressed oops stay on:
 
 ```
 1 java null                median 192 ms   runs 192,192,176,201,182            15.9802 bytes/lookup
@@ -206,14 +206,14 @@ I have been repeating that Option costs an allocation on every lookup. I had nev
   <text x="525" y="160" class="f-mono f-muted" text-anchor="middle">sm.get(k)</text>
   <text x="525" y="190" class="f-glyph f-accent" text-anchor="middle">436 ms</text>
 </svg>
-<figcaption>Medians of five timed runs, 20 million lookups each. Both slow cells sit in the scala row. Moving Option in or out of the loop moves nothing.</figcaption>
+<figcaption>Medians of 5 timed runs, 20 million lookups each. Both slow cells sit in the scala row. Moving Option in or out of the loop moves nothing.</figcaption>
 </figure>
 
-Loops 1 and 3 run against the same `java.util.HashMap`. The only difference is that loop 3 wraps every result in `Option(...)`. 188 against 192. Across the three runs I kept, the two sit at 181 to 189 against 186 to 199. Wrapping costs nothing I can see. The interesting gap is loop 3 against loop 2, which is 248 ms between two loops that both build an Option per lookup. What separates those two is `scala.collection.mutable.HashMap` against `java.util.HashMap`.
+Loops 1 and 3 run against the same `java.util.HashMap`. The only difference is that loop 3 wraps every result in `Option(...)`. 188 against 192. Across the 3 runs I kept, the 2 sit at 181 to 189 against 186 to 199. Wrapping costs nothing I can see. The interesting gap is loop 3 against loop 2, which is 248 ms between 2 loops that both build an Option per lookup. What separates those 2 is `scala.collection.mutable.HashMap` against `java.util.HashMap`.
 
 The allocation column is the part I got wrong. Loops 2, 3 and 4 all allocate 15.9795 bytes per lookup and loop 1 sits a rounding hair away at 15.9802. That number is the key rather than the `Some`. The key `i % SIZE` is boxed into an `Integer`. The cache covers -128 to 127 by default while the keys run from 0 to 99999. So 128 lookups in every 100000 come out of the cache and the rest allocate 16 bytes each. That is 16 × (1 − 128/100000) or 15.97952.
 
-Loop 4 was meant to be the control. `sm(k)` returns the value directly and the word Option does not appear in it. It came out as slow as loop 2, a little slower in two of the three runs. I read that as confirmation until I turned escape analysis off:
+Loop 4 was meant to be the control. `sm(k)` returns the value directly and the word Option does not appear in it. It came out as slow as loop 2, a little slower in 2 of the 3 runs. I read that as confirmation until I turned escape analysis off:
 
 ```
 1 java null                median 195 ms   runs 192,189,195,195,210            15.9802 bytes/lookup
@@ -222,9 +222,9 @@ Loop 4 was meant to be the control. `sm(k)` returns the value directly and the w
 4 scala apply, no Option   median 535 ms   runs 495,545,553,535,518            31.9795 bytes/lookup
 ```
 
-Loop 1 holds at 15.9802 and the other three gain exactly 16 bytes. Loop 4 gains them too, so there is a `Some` in it after all: `apply` calls `get`, `get` builds the `Some` and `apply` unwraps it and drops it. My control loop contained the thing I was controlling for. I only noticed because the allocation counter disagreed with the source I had written.
+Loop 1 holds at 15.9802 and the other 3 gain exactly 16 bytes. Loop 4 gains them too, so there is a `Some` in it after all: `apply` calls `get`, `get` builds the `Some` and `apply` unwraps it and drops it. My control loop contained the thing I was controlling for. I only noticed because the allocation counter disagreed with the source I had written.
 
-Sixteen bytes is one `Some`, a 12 byte header plus one 4 byte reference under compressed oops. With escape analysis on, which is the default, the jit works out that it never leaves the method and skips the allocation. Loop 3 goes from 188 ms to 229 when I take that away. The object is real and it costs time when the jit cannot remove it. It just never gets built.
+16 bytes is one `Some`, a 12 byte header plus one 4 byte reference under compressed oops. With escape analysis on, which is the default, the jit works out that it never leaves the method and skips the allocation. Loop 3 goes from 188 ms to 229 when I take that away. The object is real and it costs time when the jit cannot remove it. It just never gets built.
 
 The same block settles the other question better than my first pairing did. With allocation forced on both, loops 2 and 3 build the same number of `Some` objects and allocate the same 31.9795 bytes per lookup. They are still 315 ms apart. Whatever that gap is, it is not the Option.
 
@@ -232,4 +232,4 @@ The same block settles the other question better than my first pairing did. With
 
 Where those 248 ms go. I measured that it is not the Option and stopped there, so `scala.collection.mutable.HashMap` is still on my list.
 
-Whether any of this survives outside a tight loop. Twenty million lookups with nothing else running is a friendly case for escape analysis. In a request handler with a stack of frames above it I do not know that the `Some` stays out of the heap. I did not build that test.
+Whether any of this survives outside a tight loop. 20 million lookups with nothing else running is a friendly case for escape analysis. In a request handler with a stack of frames above it I do not know that the `Some` stays out of the heap. I did not build that test.

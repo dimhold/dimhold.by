@@ -1,12 +1,12 @@
 ---
 title: "Money in a double: 4.35 * 100 comes out 434"
-description: "Four prices in a hundred are exact doubles. Across a million amounts the wrong kopeck only ever turned up on an exact half: 3656 of them at 18 percent, none at 20."
+description: "4 prices in every 100 are exact doubles. Across a million amounts the wrong kopeck only ever turned up on an exact half: 3656 of them at 18 percent, none at 20."
 date: 2011-11-16
 lang: en
 translationKey: money-in-a-double
 ---
 
-I had a price of 4.35 and needed it in kopecks:
+I had a price of 4.35. I needed it in kopecks:
 
 ```
 $ cat Price.java
@@ -22,7 +22,7 @@ $ javac Price.java && java Price
 434
 ```
 
-The cast truncates and a kopeck is gone. Avoiding `double` for money is advice I took without ever measuring what it costs, so I measured it.
+The cast truncates. A kopeck is gone. Avoiding `double` for money is advice I took without ever measuring what it costs, so I measured it.
 
 `new BigDecimal(double)` prints the exact decimal value of the bits with no rounding on the way out. That is the whole diagnostic tool here:
 
@@ -36,9 +36,9 @@ The cast truncates and a kopeck is gone. Avoiding `double` for money is advice I
 
 4.35 is held a little below 4.35. Times 100 it is still a little below 435 and the cast to `long` drops everything after the point. `Math.round` gives 435 here. It does not help when the rate itself is inexact.
 
-## Four exact prices in a hundred
+## 4 exact prices in every 100
 
-I ran every two decimal value from 0.01 to 100.00 through the same comparison, the double against the decimal it stands for:
+I ran every 2 decimal value from 0.01 to 100.00 through the same comparison, the double against the decimal it stands for:
 
 ```
 for (long c = 1; c <= 10000; c++) {
@@ -52,7 +52,7 @@ exact: 400 of 10000
 first hundred: 0.25 0.50 0.75 1.00
 ```
 
-Four percent. A double is a sum of powers of two so a hundredth fits only when it reduces to a fourth. Every other price is already an approximation when it is parsed.
+4 percent. A double is a sum of powers of 2 so a hundredth fits only when it reduces to a fourth. Every other price is already an approximation when it is parsed.
 
 <figure class="fig">
 <svg viewBox="0 0 640 398" role="img" aria-label="A hundred two decimal prices from 0.01 to 1.00, four of them exact as doubles">
@@ -162,10 +162,10 @@ Four percent. A double is a sum of powers of two so a hundredth fits only when i
   <rect x="467" y="358" width="30" height="30" rx="4" class="f-box"/>
   <text x="482" y="377" class="f-label f-accent" text-anchor="middle">.00</text>
 </svg>
-<figcaption>Every two decimal price from 0.01 to 1.00. Four of the hundred are stored exactly.<br>The other ninety six are approximations before any arithmetic happens.</figcaption>
+<figcaption>Every 2 decimal price from 0.01 to 1.00. 4 of the 100 are stored exactly.<br>The other 96 are approximations before any arithmetic happens.</figcaption>
 </figure>
 
-## Adding 0.10 ten times
+## 10 additions of 0.10
 
 The famous one first:
 
@@ -188,11 +188,11 @@ exact                           = 10000.00
 difference in rubles            = 1.71856299857608973979949951171875E-7
 ```
 
-Then I rounded the double total to kopecks after every one of those million steps and compared it with the exact total. They never disagreed. Not once in a million steps. The drift is real at the seventh decimal and rounding to two eats all of it.
+Then I rounded the double total to kopecks after every one of those million steps and compared it with the exact total. They never disagreed. Not once in a million steps. The drift is real at the seventh decimal. Rounding to 2 decimals eats all of it.
 
 ## The kopeck leaves on an exact half
 
-Take the Russian VAT rate of 18 percent and compute the tax two ways for every amount from 0.01 to 10000.00:
+Take the Russian VAT rate of 18 percent and compute the tax 2 ways for every amount from 0.01 to 10000.00:
 
 ```
 long viaDouble = Math.round(cents / 100.0 * 0.18 * 100.0);
@@ -218,7 +218,7 @@ times 100          22.499999999999996447286321199499070644378662109375
 Math.round         22
 ```
 
-1.25 is one of the four hundred exact prices while 0.18 is stored below its decimal value. The true product is 0.225. That sits exactly between two kopecks so HALF_UP takes it up to 0.23. The double sits 3.55e-15 under the halfway point and falls to 0.22.
+1.25 is one of the 400 exact prices while 0.18 is stored below its decimal value. The true product is 0.225. That sits exactly between 2 kopecks so HALF_UP takes it up to 0.23. The double sits 3.55e-15 under the halfway point and falls to 0.22.
 
 <figure class="fig">
 <svg viewBox="0 0 640 200" role="img" aria-label="Eighteen percent of 1.25 falls on the halfway point between 22 and 23 kopecks">
@@ -243,10 +243,10 @@ Math.round         22
   <path d="M 238 158 L 102 158" class="f-line" marker-end="url(#mArrow)"/>
   <text x="100" y="174" class="f-label f-muted" text-anchor="start">Math.round</text>
 </svg>
-<figcaption>The exact product sits on the halfway mark and HALF_UP sends it to 23.<br>The double lands below it and Math.round sends it to 22. The gap is drawn far wider than 3.55e-15.</figcaption>
+<figcaption>The exact product sits on the halfway mark. HALF_UP sends it to 23.<br>The double lands below it. Math.round sends it to 22. The gap is drawn far wider than 3.55e-15.</figcaption>
 </figure>
 
-I repeated the scan at six rates, with the mismatches counted separately depending on whether the exact product landed on a half:
+I repeated the scan at 6 rates, with the mismatches counted separately depending on whether the exact product landed on a half:
 
 | rate | halfway cases | wrong on a half | wrong anywhere else |
 |---|---|---|---|
@@ -257,11 +257,11 @@ I repeated the scan at six rates, with the mismatches counted separately dependi
 | 20% | 0 | 0 | 0 |
 | 25% | 250000 | 16405 | 0 |
 
-The column I did not expect is the last one. Six rates, a million amounts each. That counter never moved off zero.
+The column I did not expect is the last one. 6 rates, a million amounts each. That counter never moved off zero.
 
-20 percent has no halves to get wrong. The tax in kopecks is the price in kopecks times two, divided by ten. An even numerator never leaves a remainder of five. That one is arithmetic and it holds outside the scan. 7 percent does have halves. It has 10000 of them in the million and loses none. I widened that scan to ten million amounts to be sure. 100000 halves, still zero.
+20 percent has no halves to get wrong. The tax in kopecks is the price in kopecks times two, divided by ten. An even numerator never leaves a remainder of five. That one is arithmetic. It holds outside the scan. 7 percent does have halves. It has 10000 of them in the million. It loses none. I widened that scan to 10 million amounts to be sure. 100000 halves, still zero.
 
-I wanted a rule out of the direction each rate is stored in. 0.05 and 0.07 and 0.20 sit above their decimal value, 0.03 and 0.18 sit below, 0.25 is exact. Sorted by the share of halves lost it almost lines up. The two stored below lose the most: 20.3 halves in every hundred at 3 percent and 18.3 at 18 percent. 0.25 is stored exactly and loses 6.6. Then 0.05 sits above and still loses 1.6, where the direction on its own says zero. The price has been through `cents / 100.0` before the rate ever touches it, so the rate is only half of what is going on. I do not have the rule.
+I wanted a rule out of the direction each rate is stored in. 0.05 and 0.07 and 0.20 sit above their decimal value, 0.03 and 0.18 sit below, 0.25 is exact. Sorted by the share of halves lost it almost lines up. The 2 stored below lose the most: 20.3 halves in every 100 at 3 percent and 18.3 at 18 percent. 0.25 is stored exactly and loses 6.6. Then 0.05 sits above and still loses 1.6, where the direction on its own says zero. The price has been through `cents / 100.0` before the rate ever touches it, so the rate is only half of what is going on. I do not have the rule.
 
 ## BigDecimal has its own edges
 
@@ -282,7 +282,7 @@ hash 1.0  = 311
 hash 1.00 = 3102
 ```
 
-Scale is part of identity, so a `HashSet` keeps 1.0 and 1.00 as two different prices. Those two hash values are what the implementation does and not what the javadoc promises. Division refuses to guess at all:
+Scale is part of identity, so a `HashSet` keeps 1.0 and 1.00 as 2 different prices. Those 2 hash values are what the implementation does and not what the javadoc promises. Division refuses to guess at all:
 
 ```
 1/3 -> ArithmeticException: Non-terminating decimal expansion; no exact representable decimal result.
@@ -308,4 +308,4 @@ Zero, against `setScale(2, HALF_UP)` on every one of them. A `long` holds 922337
 
 HALF_EVEN roughly halves it and does not remove it. Through `Math.rint` the same 18 percent scan gives 1830 wrong out of a million. Half of 3656 is 1828, which is about what I expect when half the ties were rounding down anyway. I have not chased the other two.
 
-Still open: currencies with three decimals. Splitting one amount across several invoice lines so the parts add back up to the whole. And the JDBC driver with a `NUMERIC` column, which I have not looked at yet.
+Still open: currencies with 3 decimals. Splitting one amount across several invoice lines so the parts add back up to the whole. And the JDBC driver with a `NUMERIC` column, which I have not looked at yet.

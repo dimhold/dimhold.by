@@ -68,8 +68,8 @@ export interface KataPiece {
 }
 
 /**
- * One spoken line. The villagers speak Belarusian on every page — the `be`
- * strings are identical in all three blocks — and the gloss follows the page
+ * One spoken line. The villagers speak Belarusian on every page, so the `be`
+ * strings are identical in all three blocks and the gloss follows the page
  * language ('' when the page is already Belarusian).
  */
 export interface KataLine {
@@ -99,7 +99,7 @@ export interface KataAdvisor {
   tailNext: KataLine[];
   /** Act II: chatter and taunts while the cord swings. */
   swing: KataLine[];
-  /** Act II: the announced shove — the threat, or the coaching against it. */
+  /** Act II: the announced shove. Either the threat or the coaching against it. */
   shove: KataLine[];
   playerHit: KataLine[];
   playerMiss: KataLine[];
@@ -122,10 +122,10 @@ export interface KataCopy {
   jump: string;
   soundOn: string;
   soundOff: string;
-  /** The two stage sizes, like a player: the page column, or the window. */
+  /** The two stage sizes, like a player: the page column or the window. */
   viewWide: string;
   viewNormal: string;
-  /** The two halves of the rite, and the labels around them. */
+  /** The two halves of the rite and the labels around them. */
   actBake: string;
   actBite: string;
   dough: string;
@@ -140,15 +140,15 @@ export interface KataCopy {
   bestWon: string;
   bestNone: string;
   pieces: KataPiece[];
-  /** The title card before the door opens, and the one tap that skips it. */
+  /** The title card before the door opens plus the one tap that skips it. */
   prologue: {
-    /** Title-card lines: the same date and place the kicker carries. */
+    /** Title card lines: the same date and place the kicker carries. */
     card: string[];
-    /** One sentence of scene-setting, and nothing else. */
+    /** One sentence of scene setting and nothing else. */
     scene: string;
     skip: string;
   };
-  /** The standing goal, shown through both acts, and what each act asks for. */
+  /** The standing goal, shown through both acts, with what each act asks for. */
   goal: {
     standing: string;
     bake: string;
@@ -177,7 +177,7 @@ export interface KataCopy {
     symon: KataAdvisor;
     alesik: KataAdvisor;
   };
-  /** After the last bite: the outcome, the calendar, and the record itself. */
+  /** After the last bite: the outcome, the calendar and the record itself. */
   epilogue: {
     win: string;
     lose: string;
@@ -202,8 +202,8 @@ export interface KataCopy {
 
 /**
  * The same person in three scripts. The site is read in Russian and Belarusian
- * too, and a page whose title and heading are Latin gives a Cyrillic search
- * nothing to match. So each language names him in its own script, and the
+ * too. A page whose title and heading are Latin gives a Cyrillic search
+ * nothing to match. So each language names him in its own script and the
  * other spellings are stated once so the three pages are visibly one person.
  */
 export interface Identity {
@@ -307,7 +307,7 @@ export interface Dictionary {
     email: string;
   };
   leaf: {
-    /** Accessible name for the tear-off calendar. */
+    /** Accessible name for the tear off calendar. */
     label: string;
     caption: string;
   };
@@ -340,7 +340,7 @@ export const en: Dictionary = {
     alsoLabel: 'also written',
     also: ['Дмитрий Семенкевич', 'Дзмітрый Семянкевіч'],
   },
-  metaTitle: 'Dmitriy Semenkevich — full-stack engineer & founder',
+  metaTitle: 'Dmitriy Semenkevich: full stack engineer & founder',
   metaDescription:
     'Fifteen years of production software: payments infrastructure, a trade-in platform in 16,000 stores. Co-founder of Adlega, an AI CFO for SaaS founders.',
   langLabel: 'Language',
@@ -355,43 +355,43 @@ export const en: Dictionary = {
   blog: {
     label: 'Writing',
     all: 'all essays →',
-    title: 'Writing — Dmitriy Semenkevich',
+    title: 'Writing · Dmitriy Semenkevich',
     description:
       'Essays and build logs by Dmitriy Semenkevich: AI products that don’t guess, financial engines, web experiments.',
     min: 'min read',
   },
   hero: {
     greeting: 'hi, I’m',
-    role: 'Full-stack engineer · Co-founder of Adlega',
+    role: 'Full stack engineer · Co-founder of Adlega',
     chips: ['engineer · 15 years', 'co-founder @ Adlega'],
-    lead: 'Fifteen years building software where a wrong number costs real money: payments, a device trade-in platform in 16,000 stores — and now Adlega, an AI CFO with one rule: the AI never does the math.',
+    lead: 'Fifteen years building software where a wrong number costs real money: payments, a device trade-in platform in 16,000 stores. Now Adlega, an AI CFO with one rule: the AI never does the math.',
     lead2:
-      'Between releases I poke at the digital world — experiments, new tools, pop-science rabbit holes. This site is my workshop.',
+      'Between releases I poke at the digital world: experiments, new tools, pop science rabbit holes. This site is my workshop.',
     ctaEmail: 'Write me',
     ctaAdlega: 'See Adlega',
     photoAlt:
-      'A felt-and-clay figurine of Dmitriy: a laptop on his lap, a yellow canary on his shoulder, a grey dog sitting beside him',
+      'A felt and clay figurine of Dmitriy: a laptop on his lap, a yellow canary on his shoulder, a grey dog sitting beside him',
     hint: 'it comes alive now and then. the marks tell you who is who.',
     spots: [
       {
         key: 'me',
         label: 'About me, Dmitriy',
         name: 'And this is me',
-        text: 'I am from Belarus, so even the figurine is carved the way our old dolls are, and the ornament behind it is a different Belarusian pattern every single day. Thank you for stopping by the workshop — come along, the digital world still has plenty left to find.',
+        text: 'I am from Belarus, so even the figurine is carved the way our old dolls are. The ornament behind it is a different Belarusian pattern every single day. Thank you for stopping by the workshop. Come along, the digital world still has plenty left to find.',
         listen: 'hear my voice',
       },
       {
         key: 'bird',
         label: 'About the canary',
         name: 'My canary',
-        text: 'A kenar, and an absurdly good singer. He is the reason I get to catch my breath between whatever Zoom has already planned.',
+        text: 'A kenar. An absurdly good singer. He is the reason I get to catch my breath between whatever Zoom has already planned.',
         listen: 'hear him sing',
       },
       {
         key: 'dog',
         label: 'About Zoom, the dog',
         name: 'Zoom',
-        text: 'My Weimaraner, and the most relentlessly energetic creature I know. He loves people, he loves hunting, and he trains my nerves daily. He turns up frogs, hedgehogs, hares and brand-new adventures faster than I can ship — which is, more or less, the pace he expects from me.',
+        text: 'My Weimaraner and the most relentlessly energetic creature I know. He loves people, he loves hunting and he trains my nerves daily. He turns up frogs, hedgehogs, hares and brand new adventures faster than I can ship. That is, more or less, the pace he expects from me.',
         listen: 'hear him bark',
       },
     ],
@@ -407,8 +407,8 @@ export const en: Dictionary = {
         href: 'https://adlega.com',
         linkLabel: 'adlega.com',
         body: [
-          'Describe your business in a chat and get a working financial model: revenue, burn, runway, what-if scenarios. Minutes instead of weeks in a spreadsheet.',
-          'The design decision that defines the product: the AI never does the math. Agents interview the founder, fill the model, explain any number and run goal-seek — “how do I triple my MRR?” — but every figure comes from a deterministic engine, tested to stay within 0.5% of the hand-built Excel model it replaced.',
+          'Describe your business in a chat and get a working financial model: revenue, burn, runway, what if scenarios. Minutes instead of weeks in a spreadsheet.',
+          'The design decision that defines the product: the AI never does the math. Agents interview the founder, fill the model, explain any number and run goal seek (“how do I triple my MRR?”), but every figure comes from a deterministic engine, tested to stay within 0.5% of the hand built Excel model it replaced.',
         ],
       },
     ],
@@ -427,7 +427,7 @@ export const en: Dictionary = {
       {
         name: 'whotop',
         years: '2026 —',
-        note: 'Terminal tool that tells look-alike processes apart and names the ports they hold.',
+        note: 'Terminal tool that tells look alike processes apart and names the ports they hold.',
         status: 'alive',
         href: 'https://github.com/dimhold/whotop',
       },
@@ -448,13 +448,13 @@ export const en: Dictionary = {
   },
   projects: {
     label: 'My projects',
-    title: 'My projects — Dmitriy Semenkevich',
+    title: 'My projects · Dmitriy Semenkevich',
     description:
-      'The projects I run today: Adlega, an AI CFO for SaaS founders; Belun, a browser toolbox that never uploads your files; whotop, which tells look-alike processes apart; and this workshop of a site.',
-    lede: 'Everything that is running right now — why it exists, and what it is built on. Work that finished its run is on the shelf below, dead ends included.',
+      'The projects I run today: Adlega, an AI CFO for SaaS founders; Belun, a browser toolbox that never uploads your files; whotop, which tells look alike processes apart; and this workshop of a site.',
+    lede: 'Everything that is running right now: why it exists and what it is built on. Work that finished its run is on the shelf below, dead ends included.',
     activeLabel: 'Running now',
     archiveLabel: 'The shelf',
-    archiveNote: 'Older work, kept honest — including the parts that died.',
+    archiveNote: 'Older work, kept honest, including the parts that died.',
     stackLabel: 'built with',
     items: [
       {
@@ -465,9 +465,9 @@ export const en: Dictionary = {
         href: 'https://adlega.com',
         linkLabel: 'adlega.com',
         body: [
-          'Describe your business in a chat and get a working financial model: revenue, burn, runway, what-if scenarios. Minutes instead of weeks in a spreadsheet.',
-          'The design decision that defines the product: the AI never does the math. Agents interview the founder, fill the model, explain any number and run goal-seek — “how do I triple my MRR?” — but every figure comes from a deterministic engine, tested to stay within 0.5% of the hand-built Excel model it replaced.',
-          'I co-founded it and build it end to end: the agents, the engine, and the interface the model lives in.',
+          'Describe your business in a chat and get a working financial model: revenue, burn, runway, what if scenarios. Minutes instead of weeks in a spreadsheet.',
+          'The design decision that defines the product: the AI never does the math. Agents interview the founder, fill the model, explain any number and run goal seek (“how do I triple my MRR?”), but every figure comes from a deterministic engine, tested to stay within 0.5% of the hand built Excel model it replaced.',
+          'I co-founded it and build it end to end: the agents, the engine and the interface the model lives in.',
         ],
         stack: ['TypeScript', 'Node.js', 'React', 'PostgreSQL', 'LLM agents'],
       },
@@ -479,28 +479,28 @@ export const en: Dictionary = {
         href: 'https://belun.app',
         linkLabel: 'belun.app',
         body: [
-          '90+ small tools that live entirely in a browser tab: convert, compress, clean up, inspect. No servers, no accounts, no uploads — files never leave your machine.',
+          '90+ small tools that live entirely in a browser tab: convert, compress, clean up, inspect. No servers, no accounts, no uploads: files never leave your machine.',
           'It started as a private pile of scripts I kept rewriting from memory. Collecting them into one page is what made them worth keeping.',
         ],
         stack: ['TypeScript', 'WebAssembly', 'Web Workers', 'static hosting'],
       },
       {
         name: 'whotop',
-        tagline: 'what is this process, and which port is it holding?',
+        tagline: 'what is this process and which port is it holding?',
         years: '2026 —',
         status: 'alive',
         href: 'https://github.com/dimhold/whotop',
         linkLabel: 'github.com/dimhold/whotop',
         body: [
-          'A terminal tool that reads the process table and the socket table together, then reads what is actually in each command line. A screen full of identical node rows becomes an agent session, two dev servers told apart by the project they run in, and the orphan that has been sitting on your port since you switched branches an hour ago.',
-          'It exists because I killed the wrong node. Six of them, all mine, all called node, and the list said nothing about which was which. Every fact I needed was already there — the command line, the working directory, the parent that had exited — the operating system just never puts them next to the pid.',
-          'It refuses to guess quietly: --explain names the rule behind every label, and says what the platform flatly refused to disclose. Then it will kill by port or by pid, after showing you exactly what it resolved.',
+          'A terminal tool that reads the process table and the socket table together, then reads what is actually in each command line. A screen full of identical node rows becomes an agent session and 2 dev servers told apart by the project they run in, plus the orphan that has been sitting on your port since you switched branches an hour ago.',
+          'It exists because I killed the wrong node. 6 of them, all mine, all called node and the list said nothing about which was which. Every fact I needed was already there: the command line, the working directory, the parent that had exited. The operating system just never puts them next to the pid.',
+          'It refuses to guess quietly: --explain names the rule behind every label and says what the platform flatly refused to disclose. Then it will kill by port or by pid, after showing you exactly what it resolved.',
         ],
         stack: ['TypeScript', 'Node.js', 'zero runtime dependencies'],
       },
       {
         name: 'dimhold.by',
-        tagline: 'this workshop, in three languages',
+        tagline: 'this workshop, in 3 languages',
         years: '2025 —',
         status: 'wip',
         href: '/blog/',
@@ -509,21 +509,21 @@ export const en: Dictionary = {
           'The site you are reading. A static workshop in English, Russian and Belarusian, holding the essays, the toys and the experiments that belong nowhere else.',
           'Built to stay fast and nearly free: no framework shipped to the page, images and clips prepared ahead of time, everything served as flat files.',
         ],
-        stack: ['Astro', 'TypeScript', 'hand-written CSS', 'GitHub Pages'],
+        stack: ['Astro', 'TypeScript', 'hand written CSS', 'GitHub Pages'],
       },
     ],
   },
   games: {
     label: 'Games',
-    title: 'Games — how Belarus played',
+    title: 'Games: how Belarus played',
     description:
-      'Belarusian folk games, playable in the browser. Each one comes with who recorded it and where — and an honest account of what makes it Belarusian.',
-    lede: 'These are games people played in Belarusian villages, and you can play them here. Hardly any of them is found nowhere else — the ethnographers are quite frank about that. But each has something of its own: the words, the tune, the thing in your hands, the day of the year it was played on. That is what this section is for.',
+      'Belarusian folk games, playable in the browser. Each one comes with who recorded it and where, plus an honest account of what makes it Belarusian.',
+    lede: 'These are games people played in Belarusian villages and you can play them here. Hardly any of them is found nowhere else. The ethnographers are quite frank about that. But each has something of its own: the words, the tune, the thing in your hands, the day of the year it was played on. That is what this section is for.',
     framing:
-      'In how they work, these games are much the same as their Russian, Ukrainian and Polish cousins. What differs is not the rules but the language, the tune, the equipment and the occasion. That is a far better story than arguing over uniqueness — and unlike the argument, it happens to be true.',
-    rulesLabel: 'Three rules of this section',
+      'In how they work, these games are much the same as their Russian, Ukrainian and Polish cousins. What differs is not the rules but the language, the tune, the equipment and the occasion. That is a far better story than arguing over uniqueness. And unlike the argument, it happens to be true.',
+    rulesLabel: '3 rules of this section',
     rules: [
-      'Every game has a source: who recorded it, where, and in what year.',
+      'Every game has a source: who recorded it, where and in what year.',
       'Nothing added. The words “only in Belarus” appear only where the record says so.',
       'Where the record is silent and a number had to be invented, the page owns up to it.',
     ],
@@ -533,7 +533,7 @@ export const en: Dictionary = {
     items: [
       {
         slug: 'kata-piachy',
-        name: '«Ката пячы»',
+        name: '"Ката пячы"',
         gloss:
           'A cat is shaped out of buns and hung from the ceiling. You are hoisted up on a pitchfork, jump and bite, while everyone else tries to knock you off. Reach the tail and you have won.',
         status: 'live',
@@ -541,47 +541,47 @@ export const en: Dictionary = {
       },
       {
         slug: 'lianok',
-        name: '«Лянок»',
+        name: '"Лянок"',
         gloss:
-          'A song that follows flax from the field to the shirt: pulled, threshed, spread, broken, woven, bleached, cut, sewn — eight verses, eight movements. And the cloth at the end folds into a real pattern.',
+          'A song that follows flax from the field to the shirt: pulled, threshed, spread, broken, woven, bleached, cut, sewn. 8 verses, 8 movements. And the cloth at the end folds into a real pattern.',
         status: 'planned',
       },
       {
         slug: 'pannachka',
-        name: '«Панначка»',
+        name: '"Панначка"',
         gloss:
           'Girls stand in a ring, a candle in every hand. Guard your own, blow out your neighbour’s. Nobody loses: the last flame goes round the ring and lights everyone up again.',
         status: 'planned',
       },
       {
         slug: 'hrahi',
-        name: '«Грахі»',
+        name: '"Грахі"',
         gloss:
-          'A ball is rolled along a row of holes. Miss, and the sin is yours; hit, and it goes to your opponent. The more sins you carry, the fewer throws you get: the guilty are in no position to punish.',
+          'A ball is rolled along a row of holes. Miss and the sin is yours; hit and it goes to your opponent. The more sins you carry, the fewer throws you get: the guilty are in no position to punish.',
         status: 'planned',
       },
       {
         slug: 'zanicba-cyareski',
-        name: '«Жаніцьба Цярэшкі»',
+        name: '"Жаніцьба Цярэшкі"',
         gloss:
-          'A make-believe wedding at Kalady — the one game ethnographers call purely Belarusian. You are the matchmaker, pairing off couple after couple, and the song tells you what comes next.',
+          'A make believe wedding at Kalady: the one game ethnographers call purely Belarusian. You are the matchmaker, pairing off couple after couple, while the song tells you what comes next.',
         status: 'planned',
       },
     ],
     kata: {
-      name: '«Ката пячы»',
+      name: '"Ката пячы"',
       gloss: 'baking the cat',
-      title: '«Ката пячы» — a game where the cat is baked first and bitten after',
+      title: '"Ката пячы": a game where the cat is baked first and bitten after',
       description:
         'Every 27 November in Skirmantava a cat is shaped out of buns, hung from the ceiling and bitten at from a pitchfork; whoever gets the tail wins. Here you have to bake the cat yourself first.',
       kicker: '27 November · аг. Скірмантава · State List 33АК000117',
-      lede: 'On the evening before the fast a cat is shaped out of buns and hung from the ceiling on a cord. The players are hoisted up to it one by one on a pitchfork: jump, bite, and the piece is yours. Everyone else, meanwhile, is shoving to make you miss. Whoever bites off the tail wins. Here there is an oven in front of all that: the cat has to be baked first. And whatever comes out of the oven is the cat you will have to bite.',
+      lede: 'On the evening before the fast a cat is shaped out of buns and hung from the ceiling on a cord. The players are hoisted up to it one by one on a pitchfork: jump, bite and the piece is yours. Everyone else, meanwhile, is shoving to make you miss. Whoever bites off the tail wins. Here there is an oven in front of all that: the cat has to be baked first. And whatever comes out of the oven is the cat you will have to bite.',
       howLabel: 'How to play',
       how: [
-        'Hold, and a lump of dough pulls away from the trough. A big bun is easier to bite later; a small one is harder — and it burns faster in the oven.',
-        'The trough holds dough for exactly six buns. The sixth is the tail, and without a tail there is no winning. Remember to leave some for it.',
-        'Let go, and the lump goes into the oven. Press when the bun turns golden. Raw comes out heavy and slippery; burnt comes out wide and crisp, but light as a feather.',
-        'Then the cat is hung up, and the real thing begins. A heavy cat swings lazily, a light one tears about — and with every piece bitten off it gets lighter.',
+        'Hold and a lump of dough pulls away from the trough. A big bun is easier to bite later. A small one is harder and it burns faster in the oven.',
+        'The trough holds dough for exactly 6 buns. The sixth is the tail and without a tail there is no winning. Remember to leave some for it.',
+        'Let go and the lump goes into the oven. Press when the bun turns golden. Raw comes out heavy and slippery; burnt comes out wide and crisp, but light as a feather.',
+        'Then the cat is hung up and the real thing begins. A heavy cat swings lazily, a light one tears about. And with every piece bitten off it gets lighter.',
       ],
       start: 'Knead',
       again: 'Again',
@@ -600,7 +600,7 @@ export const en: Dictionary = {
       tries: 'tries',
       shove: 'a shove!',
       sceneAlt:
-        'A cat made of buns hangs on a cord from a beam. Below it a boy on a pitchfork, beside them an oven and a trough of dough, and the whole house around.',
+        'A cat made of buns hangs on a cord from a beam. Below it a boy on a pitchfork, beside them an oven and a trough of dough, with the whole house around.',
       bestLabel: 'best so far',
       bestWon: 'took the tail',
       bestNone: 'no tail yet',
@@ -614,29 +614,29 @@ export const en: Dictionary = {
       ],
       prologue: {
         card: ['27 November', 'аг. Скірмантава'],
-        scene: 'Winter, evening, the last one before the fast. One window is lit — inside, the dough is already being kneaded.',
+        scene: 'Winter, evening, the last one before the fast. One window is lit. Inside, the dough is already being kneaded.',
         skip: 'skip',
       },
       goal: {
         standing: 'bite off the tail',
-        bake: 'six buns from one trough; the sixth is the tail',
+        bake: '6 buns from one trough; the sixth is the tail',
         bite: 'every piece you bite off is one more try at the tail',
       },
       msg: {
-        idle: 'The trough is full and the oven is hot. Six buns make a cat.',
-        shape: 'Hold, and the lump grows. This one will be {piece}.',
+        idle: 'The trough is full and the oven is hot. 6 buns make a cat.',
+        shape: 'Hold and the lump grows. This one will be {piece}.',
         bake: 'Into the oven. Press when it turns golden.',
         baked: '{piece}: {bake}.',
-        tailNext: 'The last one is the tail, and the tail is the whole game. Dough left: {n}.',
+        tailNext: 'The last one is the tail and the tail is the whole game. Dough left: {n}.',
         doughOut: 'The trough is empty. From here on, you bake what you scraped.',
         hung: 'The cat is baked and hung. Time to bite.',
         ready: 'Bite: {piece}.',
-        hit: 'Got it! The cat is lighter — and picking up speed.',
+        hit: 'Got it! The cat is lighter and picking up speed.',
         miss: 'Missed. That piece went to someone else.',
-        tail: 'Only the tail is left, and the cord is flying like never before. Tries: {n}.',
+        tail: 'Only the tail is left and the cord is flying like never before. Tries: {n}.',
         tailMiss: 'Missed. Tries left: {n}.',
         win: 'The tail is yours. The game is yours.',
-        lose: 'The tail went to someone else. Never mind — next 27 November is not far off.',
+        lose: 'The tail went to someone else. Never mind, next 27 November is not far off.',
       },
       advisors: {
         hanna: {
@@ -644,7 +644,7 @@ export const en: Dictionary = {
           tag: 'generous',
           greeting: [
             { be: 'Кладзі больш. Малы кот — малая радасць.', gloss: 'Put more in. A small cat is a small joy.' },
-            { be: 'Не шкадуй цеста — будзе што кусаць.', gloss: 'Don’t skimp on the dough, and there will be something to bite.' },
+            { be: 'Не шкадуй цеста. Будзе што кусаць.', gloss: 'Don’t skimp on the dough. There will be something to bite.' },
           ],
           bigBun: [
             { be: 'Вось гэта булка. Пад такую і рот шырэй.', gloss: 'Now that’s a bun. Your mouth opens wider for one like that.' },
@@ -653,11 +653,11 @@ export const en: Dictionary = {
           ],
           smallBun: [
             { be: 'Гэта не булка, гэта гузік.', gloss: 'That’s not a bun, that’s a button.' },
-            { be: 'Малая і гарыць хутка, і кусаецца вузка. Навошта табе такая?', gloss: 'A small one burns fast and bites narrow. What do you want that for?' },
+            { be: 'Малая хутка гарыць і вузка кусаецца. Навошта табе такая?', gloss: 'A small one burns fast and bites narrow. What do you want that for?' },
             { be: 'Шкадуеш цеста? Яно ж не срэбра.', gloss: 'Saving the dough? It isn’t silver.' },
           ],
           raw: [
-            { be: 'Сыраватая. Затое цяжкая — кот павісне спакойна.', gloss: 'A bit raw. But heavy — the cat will hang nice and calm.' },
+            { be: 'Сыраватая. Затое цяжкая — кот павісне спакойна.', gloss: 'A bit raw. But heavy: the cat will hang nice and calm.' },
             { be: 'Недапечаная. Кусаць будзе вузка, але вага ў ёй ёсць.', gloss: 'Underdone. A narrow bite, but there’s weight in it.' },
           ],
           golden: [
@@ -665,16 +665,16 @@ export const en: Dictionary = {
             { be: 'Во, акурат. Кладзі на стол.', gloss: 'There, just right. Put it on the table.' },
           ],
           burnt: [
-            { be: 'Спаліў. Ну хоць шырокая — хрумсткае лёгка кусаецца.', gloss: 'Burnt it. Well, at least it’s wide — crisp is easy to bite.' },
+            { be: 'Спаліў. Ну хоць шырокая — хрумсткае лёгка кусаецца.', gloss: 'Burnt it. Well, at least it’s wide: crisp is easy to bite.' },
             { be: 'Чорная і лёгкая, як папера. Кот з такіх будзе скакаць.', gloss: 'Black and light as paper. A cat of those will jump.' },
           ],
           doughLow: [
-            { be: 'Ужо дно відаць. Затое пяць булак — як булкі.', gloss: 'I can see the bottom already. But five proper buns, at least.' },
-            { be: 'Цеста мала. Ну, хай хвост будзе малы — хвост ёсць хвост.', gloss: 'Not much dough left. Well, let the tail be small — a tail is a tail.' },
+            { be: 'Ужо дно відаць. Затое пяць булак — як булкі.', gloss: 'I can see the bottom already. But 5 proper buns, at least.' },
+            { be: 'Цеста мала. Ну, хай хвост будзе малы — хвост ёсць хвост.', gloss: 'Not much dough left. Well, let the tail be small: a tail is a tail.' },
           ],
           tailNext: [
             { be: 'Апошні — хвост. Што ў дзяжы засталося, тое яму і будзе.', gloss: 'The last one is the tail. Whatever is left in the trough is what it gets.' },
-            { be: 'Хвост. Аддай яму ўсё, што ёсць, — больш узяць няма адкуль.', gloss: 'The tail. Give it everything you have — there’s nowhere else to get more.' },
+            { be: 'Хвост. Аддай яму ўсё, што ёсць. Больш узяць няма адкуль.', gloss: 'The tail. Give it everything you have. There’s nowhere else to get more.' },
           ],
           swing: [
             { be: 'Ротам наперад! Не бокам!', gloss: 'Mouth first! Not sideways!' },
@@ -694,7 +694,7 @@ export const en: Dictionary = {
             { be: 'Міма. Нічога, кот цяпер лягчэйшы.', gloss: 'Missed. Never mind, the cat is lighter now.' },
           ],
           win: [
-            { be: 'Во як трэба. Хвост твой, і гаворка скончана.', gloss: 'That’s how it’s done. The tail is yours, and that settles it.' },
+            { be: 'Во як трэба. Хвост твой. Гаворка скончана.', gloss: 'That’s how it’s done. The tail is yours. That settles it.' },
             { be: 'Малайчына. Сядай, будзем есці.', gloss: 'Well done. Sit down, let’s eat.' },
           ],
           lose: [
@@ -706,7 +706,7 @@ export const en: Dictionary = {
           name: 'Symon',
           tag: 'thrifty',
           greeting: [
-            { be: 'Дзяжа адна, а булак шэсць. Лічы адразу.', gloss: 'One trough, six buns. Start counting now.' },
+            { be: 'Дзяжа адна, а булак шэсць. Лічы адразу.', gloss: 'One trough, 6 buns. Start counting now.' },
             { be: 'Спачатку падумай, потым адрывай.', gloss: 'Think first, tear off after.' },
           ],
           bigBun: [
@@ -714,19 +714,19 @@ export const en: Dictionary = {
             { be: 'Вялікая, вядома. А з чаго потым хвост ляпіць?', gloss: 'Big, sure. And what do you shape the tail from later?' },
           ],
           smallBun: [
-            { be: 'Во. Малую і рабі — на хвост застанецца.', gloss: 'There. Keep them small, and there’ll be some left for the tail.' },
-            { be: 'Разумна. Толькі малая гарыць хутка, ад печы не адыходзь.', gloss: 'Sensible. Only a small one burns fast — don’t leave the oven.' },
+            { be: 'Во. Малую і рабі — на хвост застанецца.', gloss: 'There. Keep them small and there’ll be some left for the tail.' },
+            { be: 'Разумна. Толькі малая гарыць хутка, ад печы не адыходзь.', gloss: 'Sensible. Only a small one burns fast. Don’t leave the oven.' },
           ],
           raw: [
             { be: 'Ранавата выняў. Цяжкая, ды ўкус ад яе вузкі.', gloss: 'Took it out too early. Heavy, but a narrow bite.' },
             { be: 'Сырая. Кот павісне цяжкі і спакойны, а кусаць нязручна.', gloss: 'Raw. The cat will hang heavy and calm, but it’s awkward to bite.' },
           ],
           golden: [
-            { be: 'Во так. Залатая: і вага ёсць, і ўкус шырокі.', gloss: 'That’s it. Golden: it has weight, and the bite is wide.' },
+            { be: 'Во так. Залатая: вага ёсць, укус шырокі.', gloss: 'That’s it. Golden: it has weight, the bite is wide.' },
             { be: 'У самы час выняў. Больш нічога і не трэба.', gloss: 'Took it out at just the right moment. Nothing more is needed.' },
           ],
           burnt: [
-            { be: 'Перадзяржаў. Лёгкая, як вугаль, — цяпер кот пойдзе ў разнос.', gloss: 'Left it in too long. Light as charcoal — now the cat will go wild.' },
+            { be: 'Перадзяржаў. Лёгкая, як вугаль. Цяпер кот пойдзе ў разнос.', gloss: 'Left it in too long. Light as charcoal. Now the cat will go wild.' },
             { be: 'Спаліў. Кусаць шырэй, ды гайдацца будзе шалёна.', gloss: 'Burnt. A wider bite, but the swing will be mad.' },
           ],
           doughLow: [
@@ -739,19 +739,19 @@ export const en: Dictionary = {
           ],
           swing: [
             { be: 'Не спяшайся. Вяроўка сама вернецца.', gloss: 'No hurry. The cord comes back on its own.' },
-            { be: 'Кожны ўзяты кавалак — яшчэ адна спроба на хвост.', gloss: 'Every piece you take is one more try at the tail.' },
+            { be: 'Кожны ўзяты кавалак дае яшчэ адну спробу на хвост.', gloss: 'Every piece you take is one more try at the tail.' },
           ],
           shove: [
-            { be: 'Чакай, не скачы пад штуршок. Перачакай.', gloss: 'Wait — don’t jump into the shove. Let it pass.' },
+            { be: 'Чакай, не скачы пад штуршок. Перачакай.', gloss: 'Wait. Don’t jump into the shove. Let it pass.' },
             { be: 'Замахнуліся. Пастой, хай пройдзе.', gloss: 'They’re winding up. Stand still, let it go by.' },
           ],
           playerHit: [
             { be: 'Добра. Яшчэ адна спроба на хвост.', gloss: 'Good. One more try at the tail.' },
-            { be: 'Узяў. Толькі памятай: кот цяпер лягчэйшы і хутчэйшы.', gloss: 'Got it. Only remember: the cat is lighter now, and faster.' },
+            { be: 'Узяў. Толькі памятай: кот цяпер лягчэйшы і хутчэйшы.', gloss: 'Got it. Only remember: the cat is lighter now and faster.' },
           ],
           playerMiss: [
             { be: 'Раней трэба было. Ён ужо адыходзіў.', gloss: 'Should have gone sooner. It was already on its way out.' },
-            { be: 'Міма. Кавалак пайшоў іншаму, а кот усё роўна палягчэў.', gloss: 'Missed. The piece went to somebody else, and the cat got lighter anyway.' },
+            { be: 'Міма. Кавалак пайшоў іншаму, а кот усё роўна палягчэў.', gloss: 'Missed. The piece went to somebody else and the cat got lighter anyway.' },
           ],
           win: [
             { be: 'Ну вось. А ты лічыць не хацеў.', gloss: 'There you go. And you didn’t want to count.' },
@@ -770,15 +770,15 @@ export const en: Dictionary = {
             { be: 'А давайце спалім хоць адну! Ну хоць адну!', gloss: 'Let’s burn one! Just one, come on!' },
           ],
           bigBun: [
-            { be: 'Вялікая! Такая доўга пячэцца — я пачакаю.', gloss: 'A big one! That takes ages to bake — I’ll wait.' },
-            { be: 'Ого. Пакуль яна зарумяніцца, я тры разы збегаю.', gloss: 'Whoa. By the time that browns I can run out three times.' },
+            { be: 'Вялікая! Такая доўга пячэцца — я пачакаю.', gloss: 'A big one! That takes ages to bake, so I’ll wait.' },
+            { be: 'Ого. Пакуль яна зарумяніцца, я тры разы збегаю.', gloss: 'Whoa. By the time that browns I can run out 3 times.' },
           ],
           smallBun: [
             { be: 'Малая счарнее ў момант. Не адыходзь!', gloss: 'A small one goes black in a blink. Don’t walk away!' },
             { be: 'Гэтая згарыць хутчэй за ўсіх. Здорава!', gloss: 'That one will burn faster than any of them. Brilliant!' },
           ],
           raw: [
-            { be: 'Рана! Яна ж яшчэ цеста. Цяжкая будзе — кот павісне, як мех.', gloss: 'Too early! It’s still dough. It’ll be heavy — the cat will hang like a sack.' },
+            { be: 'Рана! Яна ж яшчэ цеста. Цяжкая будзе — кот павісне, як мех.', gloss: 'Too early! It’s still dough. It’ll be heavy: the cat will hang like a sack.' },
             { be: 'Сырая. Нудна. Вяроўка з ёй ледзь варушыцца.', gloss: 'Raw. Boring. The cord hardly moves with that on it.' },
           ],
           golden: [
@@ -787,15 +787,15 @@ export const en: Dictionary = {
           ],
           burnt: [
             { be: 'Чорная! Цяпер кот скакаць будзе!', gloss: 'Black! Now the cat will jump!' },
-            { be: 'Вугаль! Лёгкі, як пух, — вяроўка з розуму сыдзе.', gloss: 'Charcoal! Light as fluff — the cord will lose its mind.' },
+            { be: 'Вугаль! Лёгкі, як пух. Вяроўка з розуму сыдзе.', gloss: 'Charcoal! Light as fluff. The cord will lose its mind.' },
             { be: 'Хрумсціць! І рот пад яе шырэйшы.', gloss: 'It crunches! And your mouth opens wider for it.' },
           ],
           doughLow: [
-            { be: 'Цеста мала — значыць, апошняя згарыць у момант!', gloss: 'Not much dough left — so the last one will burn in a blink!' },
+            { be: 'Цеста мала. Значыць, апошняя згарыць у момант!', gloss: 'Not much dough left, so the last one will burn in a blink!' },
             { be: 'Ужо дно? А я і не наеўся.', gloss: 'The bottom already? I’m not even full.' },
           ],
           tailNext: [
-            { be: 'Хвост! Спаліце хвост — ён шырокі будзе, сам у рот трапіць!', gloss: 'The tail! Burn the tail — it’ll be wide, it’ll jump into your mouth by itself!' },
+            { be: 'Хвост! Спаліце хвост. Ён шырокі будзе, сам у рот трапіць!', gloss: 'The tail! Burn the tail. It’ll be wide, it’ll jump into your mouth by itself!' },
             { be: 'Апошні. Толькі рана не выцягвайце: сыры хвост вузкі.', gloss: 'The last one. Only don’t take it out early: a raw tail is narrow.' },
           ],
           swing: [
@@ -826,31 +826,31 @@ export const en: Dictionary = {
         },
       },
       epilogue: {
-        win: 'The tail is yours. The cat is eaten to the last crumb, and the house falls quiet.',
+        win: 'The tail is yours. The cat is eaten to the last crumb and the house falls quiet.',
         lose: 'The tail went to someone else. The cat is eaten all the same, to the last crumb.',
         calendar:
-          'And in the morning the Piĺipaŭka fast begins. It takes the meat away, and the games with it, until Kalady.',
+          'And in the morning the Piĺipaŭka fast begins. It takes the meat away and the games with it, until Kalady.',
         docLabel: 'What the record actually says',
         facts: [
-          'The rite «Ката пячы» was entered on the State List of Historical and Cultural Values of Belarus in 2017, number 33АК000117.',
+          'The rite "Ката пячы" was entered on the State List of Historical and Cultural Values of Belarus in 2017, number 33АК000117.',
           'The village of Skirmantava, Dziaržynsk district.',
-          'The rite rests on the Redźka family and the ensembles «Сваякі» and «Весялуха» — every year since 1993.',
+          'The rite rests on the Redźka family and the ensembles "Сваякі" and "Весялуха", every year since 1993.',
         ],
         invented:
           'Hanna, Symon and Alesik are our invention. The list records a rite, not people: the names, the bickering and every piece of advice were made up here.',
       },
       sourceLabel: 'Source',
       source:
-        'State List of Historical and Cultural Values of the Republic of Belarus, no. 33АК000117, entered in 2017: the rite «Ката пячы», village of Skirmantava, Dziaržynsk district. The rite rests on the Redźka family and the ensembles «Сваякі» and «Весялуха», every year since 1993.',
+        'State List of Historical and Cultural Values of the Republic of Belarus, no. 33АК000117, entered in 2017: the rite "Ката пячы", village of Skirmantava, Dziaržynsk district. The rite rests on the Redźka family and the ensembles "Сваякі" and "Весялуха", every year since 1993.',
       honestyLabel: 'How Belarusian it is',
       honesty:
-        'A rare case where the word “unique” holds up: nothing like it turned up among Russians, Ukrainians or Poles, however hard we looked. Then again, the rite is not Belarus-wide either — it belongs to one village. And that is how it is shown here: as Skirmantava’s.',
+        'A rare case where the word “unique” holds up: nothing like it turned up among Russians, Ukrainians or Poles, however hard we looked. Then again, the rite does not belong to all of Belarus either. It belongs to one village. And that is how it is shown here: as Skirmantava’s.',
       calendarLabel: 'Why 27 November',
       calendar:
-        'It is the last evening before the Piĺipaŭka fast. The food is deliberately rich and filling: the fast starts in the morning, and it allows neither meat nor games.',
+        'It is the last evening before the Piĺipaŭka fast. The food is deliberately rich and filling: the fast starts in the morning and it allows neither meat nor games.',
       choicesLabel: 'What we made up ourselves',
       choices:
-        'The record says little: the cat is baked from buns, hung from the ceiling, reached on a pitchfork, the others shove, and the tail decides. Every number is ours: how much dough the trough holds, what a bun’s size is worth in the biting, how raw and burnt change the swing, how many tries the tail allows. Baking as a half of the game is ours too: in the record the buns are simply baked, nobody competes over them. And the three at the table are invented — Hanna, Symon and Alesik. They deliberately give conflicting advice: the tradition comes in variants, and none of the three is more right than the others.',
+        'The record says little: the cat is baked from buns, hung from the ceiling, reached on a pitchfork, the others shove and the tail decides. Every number is ours: how much dough the trough holds, what a bun’s size is worth in the biting, how raw and burnt change the swing, how many tries the tail allows. Baking as a half of the game is ours too: in the record the buns are simply baked, nobody competes over them. And the 3 at the table are invented: Hanna, Symon and Alesik. They deliberately give conflicting advice: the tradition comes in variants and none of them is more right than the others.',
       back: 'all games',
     },
   },
@@ -859,8 +859,8 @@ export const en: Dictionary = {
     target: 'goal: ×3 MRR in 24 months',
     growth: 'growth, %/mo',
     churn: 'churn, %/mo',
-    button: 'goal-seek',
-    note: 'not one of these numbers was computed by AI — a deterministic engine, like in Adlega.',
+    button: 'goal seek',
+    note: 'not one of these numbers was computed by AI: a deterministic engine, like in Adlega.',
     months: 'mo',
   },
   record: {
@@ -874,12 +874,12 @@ export const en: Dictionary = {
       {
         years: '2022 —',
         title: 'Independent consultant',
-        note: 'High-load payments (Modulr), enterprise and government systems.',
+        note: 'High load payments (Modulr), enterprise and government systems.',
       },
       {
         years: '2014 – 2022',
-        title: 'HYLA Mobile, an Assurant company · senior full-stack',
-        note: 'Device trade-in platform running in 16,000+ stores. Led the monolith-to-microservices split; Gatling load testing.',
+        title: 'HYLA Mobile, an Assurant company · senior full stack',
+        note: 'Device trade-in platform running in 16,000+ stores. Led the split from monolith to microservices; Gatling load testing.',
       },
       {
         years: '2013 – 2014',
@@ -896,19 +896,19 @@ export const en: Dictionary = {
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM agents',
   },
   socialsLabel: 'Elsewhere',
-  papersOnlyEnglish: 'Papers are English only. Each has a DOI and a PDF that Google Scholar indexes, and a translation would drift from them.',
+  papersOnlyEnglish: 'Papers are English only. Each has a DOI and a PDF that Google Scholar indexes. A translation would drift from them.',
   leaf: {
-    label: 'Tear-off calendar: a Belarusian word for today',
+    label: 'Tear off calendar: a Belarusian word for today',
     caption: 'a Belarusian word a day',
   },
   contact: {
     label: 'Say hello',
-    lede: 'Consulting, product feedback, interesting problems — the inbox is open.',
+    lede: 'Consulting, product feedback, interesting problems: the inbox is open.',
     email: 'dimhold@gmail.com',
   },
   consent: {
     label: 'Cookie notice',
-    text: 'I count visits with Google Analytics — how many people come, and which pages get read. No advertising, no profiling, nothing sold on. Until you agree, nothing is written to your device.',
+    text: 'I count visits with Google Analytics: how many people come and which pages get read. No advertising, no profiling, nothing sold on. Until you agree, nothing is written to your device.',
     more: 'What Google does with it',
     accept: 'Allow',
     decline: 'No thanks',
@@ -953,7 +953,7 @@ export const ru: Dictionary = {
     greeting: 'привет, я',
     role: 'Фулстек-инженер · Сооснователь Adlega',
     chips: ['инженер · 15 лет', 'сооснователь Adlega'],
-    lead: 'Пятнадцать лет строю софт, в котором неверная цифра стоит настоящих денег: платежи, trade-in-платформа в 16 000 магазинов — а теперь Adlega, ИИ-финдиректор с одним правилом: ИИ никогда не считает сам.',
+    lead: 'Пятнадцать лет строю софт, в котором неверная цифра стоит настоящих денег: платежи, trade-in-платформа в 16 000 магазинов. А теперь Adlega, ИИ-финдиректор с одним правилом: ИИ никогда не считает сам.',
     lead2:
       'Между релизами копаюсь в цифровом мире: эксперименты, новые инструменты, науч-поп. Этот сайт — моя мастерская.',
     ctaEmail: 'Написать мне',
@@ -966,21 +966,21 @@ export const ru: Dictionary = {
         key: 'me',
         label: 'Обо мне, Дмитрии',
         name: 'А это я',
-        text: 'Я родом из Беларуси — поэтому и фигурка вырезана в духе наших старых кукол, а на фоне каждый день новый белорусский орнамент. Спасибо, что заглянули в мастерскую. Пойдёмте искать новые открытия в цифровом мире вместе.',
+        text: 'Я родом из Беларуси. Поэтому и фигурка вырезана в духе наших старых кукол, а на фоне каждый день новый белорусский орнамент. Спасибо, что заглянули в мастерскую. Пойдёмте искать новые открытия в цифровом мире вместе.',
         listen: 'послушать мой голос',
       },
       {
         key: 'bird',
         label: 'О канарейке',
         name: 'Моя птица',
-        text: 'Кенар, и поёт он невероятно красиво. Благодаря ему я успеваю перевести дух между тем, что Зум уже придумал.',
+        text: 'Кенар. Поёт он невероятно красиво. Благодаря ему я успеваю перевести дух между тем, что Зум уже придумал.',
         listen: 'послушать, как поёт',
       },
       {
         key: 'dog',
         label: 'О собаке Зуме',
         name: 'Зум',
-        text: 'Мой веймаранер и самое неутомимое существо из всех, кого я знаю. Любит людей, любит охоту и ежедневно тренирует мои нервы. Лягушек, ежей, зайцев и новые приключения он находит быстрее, чем я выкатываю релизы, — примерно такого темпа он ждёт и от меня.',
+        text: 'Мой веймаранер и самое неутомимое существо из всех, кого я знаю. Любит людей, любит охоту и ежедневно тренирует мои нервы. Лягушек, ежей, зайцев и новые приключения он находит быстрее, чем я выкатываю релизы. Примерно такого темпа он ждёт и от меня.',
         listen: 'послушать, как лает',
       },
     ],
@@ -996,8 +996,8 @@ export const ru: Dictionary = {
         href: 'https://adlega.com',
         linkLabel: 'adlega.com',
         body: [
-          'Опишите бизнес в чате — получите рабочую финансовую модель: выручка, burn, runway, сценарии «что если». Минуты вместо недель в таблицах.',
-          'Ключевое проектное решение: ИИ никогда не считает сам. Агенты интервьюируют фаундера, заполняют модель, объясняют любую цифру, гоняют goal-seek — «как утроить MRR?» — но каждое значение выдаёт детерминированный движок, который мы держим в пределах 0,5 % от собранной вручную Excel-модели, которую он заменил.',
+          'Опишите бизнес в чате. Получите рабочую финансовую модель: выручка, burn, runway, сценарии "что если". Минуты вместо недель в таблицах.',
+          'Ключевое проектное решение: ИИ никогда не считает сам. Агенты интервьюируют фаундера, заполняют модель, объясняют любую цифру, гоняют goal seek ("как утроить MRR?"), но каждое значение выдаёт детерминированный движок, который мы держим в пределах 0,5 % от собранной вручную Excel-модели, которую он заменил.',
         ],
       },
     ],
@@ -1039,8 +1039,8 @@ export const ru: Dictionary = {
     label: 'Мои проекты',
     title: 'Мои проекты — Дмитрий Семенкевич',
     description:
-      'Проекты, которые я веду сейчас: Adlega — ИИ-финдиректор для SaaS-фаундеров, Belun — браузерный набор инструментов без загрузок на сервер, whotop — утилита, различающая процессы-двойники, и этот сайт-мастерская.',
-    lede: 'Всё, что работает прямо сейчас: зачем оно существует и на чём собрано. То, что своё уже отработало, лежит ниже на полке — вместе с тупиками.',
+      'Проекты, которые я веду сейчас: Adlega (ИИ-финдиректор для SaaS-фаундеров), Belun (браузерный набор инструментов без загрузок на сервер), whotop (утилита, различающая процессы-двойники) и этот сайт-мастерская.',
+    lede: 'Всё, что работает прямо сейчас: зачем оно существует и на чём собрано. То, что своё уже отработало, лежит ниже на полке, вместе с тупиками.',
     activeLabel: 'Работают сейчас',
     archiveLabel: 'Полка проектов',
     archiveNote: 'Что было раньше — честно, вместе с тем, что умерло.',
@@ -1054,8 +1054,8 @@ export const ru: Dictionary = {
         href: 'https://adlega.com',
         linkLabel: 'adlega.com',
         body: [
-          'Опишите бизнес в чате — получите рабочую финансовую модель: выручка, burn, runway, сценарии «что если». Минуты вместо недель в таблицах.',
-          'Ключевое проектное решение: ИИ никогда не считает сам. Агенты интервьюируют фаундера, заполняют модель, объясняют любую цифру, гоняют goal-seek — «как утроить MRR?» — но каждое значение выдаёт детерминированный движок, который мы держим в пределах 0,5 % от собранной вручную Excel-модели, которую он заменил.',
+          'Опишите бизнес в чате. Получите рабочую финансовую модель: выручка, burn, runway, сценарии "что если". Минуты вместо недель в таблицах.',
+          'Ключевое проектное решение: ИИ никогда не считает сам. Агенты интервьюируют фаундера, заполняют модель, объясняют любую цифру, гоняют goal seek ("как утроить MRR?"), но каждое значение выдаёт детерминированный движок, который мы держим в пределах 0,5 % от собранной вручную Excel-модели, которую он заменил.',
           'Я сооснователь и делаю продукт целиком: агентов, движок и интерфейс, в котором живёт модель.',
         ],
         stack: ['TypeScript', 'Node.js', 'React', 'PostgreSQL', 'LLM-агенты'],
@@ -1069,7 +1069,7 @@ export const ru: Dictionary = {
         linkLabel: 'belun.app',
         body: [
           '90+ небольших инструментов, которые работают целиком во вкладке браузера: конвертировать, сжать, почистить, заглянуть внутрь. Без серверов, без аккаунтов, без загрузок — файлы не покидают ваш компьютер.',
-          'Начиналось как личная стопка скриптов, которые я раз за разом писал заново. Собрал их в одну страницу — и они стали нужны не только мне.',
+          'Начиналось как личная стопка скриптов, которые я раз за разом писал заново. Собрал их в одну страницу. И они стали нужны не только мне.',
         ],
         stack: ['TypeScript', 'WebAssembly', 'Web Workers', 'статический хостинг'],
       },
@@ -1081,9 +1081,9 @@ export const ru: Dictionary = {
         href: 'https://github.com/dimhold/whotop',
         linkLabel: 'github.com/dimhold/whotop',
         body: [
-          'Утилита в терминале, которая читает таблицу процессов и таблицу сокетов вместе, а потом читает, что на самом деле написано в каждой командной строке. Экран одинаковых строк node превращается в сессию агента, два dev-сервера, различённые по проектам, и сироту, которая держит ваш порт с тех пор, как час назад вы переключили ветку.',
-          'Всё началось с того, что я убил не тот node. Их было шесть, все мои, все назывались node, и список ничего не говорил о том, кто есть кто. Нужные факты лежали рядом — командная строка, рабочий каталог, давно вышедший родитель, — просто система не кладёт их рядом с pid.',
-          'Она не гадает молча: --explain называет правило за каждой подписью и говорит, что именно платформа отказалась раскрыть. А потом убьёт по порту или по pid — показав сначала, что именно она нашла.',
+          'Утилита в терминале, которая читает таблицу процессов и таблицу сокетов вместе, а потом читает, что на самом деле написано в каждой командной строке. Экран одинаковых строк node превращается в сессию агента и два dev-сервера, различённые по проектам, а ещё в сироту, которая держит ваш порт с тех пор, как час назад вы переключили ветку.',
+          'Всё началось с того, что я убил не тот node. Их было шесть, все мои, все назывались node и список ничего не говорил о том, кто есть кто. Нужные факты лежали рядом: командная строка, рабочий каталог, давно вышедший родитель. Просто система не кладёт их рядом с pid.',
+          'Она не гадает молча: --explain называет правило за каждой подписью и говорит, что именно платформа отказалась раскрыть. А потом убьёт по порту или по pid, показав сначала, что именно она нашла.',
         ],
         stack: ['TypeScript', 'Node.js', 'ноль зависимостей в рантайме'],
       },
@@ -1106,14 +1106,14 @@ export const ru: Dictionary = {
     label: 'Игры',
     title: 'Игры — как играли в Беларуси',
     description:
-      'Белорусские народные игры прямо в браузере. Про каждую сказано, кто и где её записал — и что в ней по-настоящему своё.',
-    lede: 'Здесь можно сыграть в игры, в которые играли в белорусских деревнях. Таких, каких больше нигде нет, среди них почти не найдётся — этнографы говорят об этом прямо. Но у каждой есть своё: слова, песня, вещь в руках, день в году, когда в неё играли. Ради этого всё и затеяно.',
+      'Белорусские народные игры прямо в браузере. Про каждую сказано, кто и где её записал и что в ней по-настоящему своё.',
+    lede: 'Здесь можно сыграть в игры, в которые играли в белорусских деревнях. Таких, каких больше нигде нет, среди них почти не найдётся. Этнографы говорят об этом прямо. Но у каждой есть своё: слова, песня, вещь в руках, день в году, когда в неё играли. Ради этого всё и затеяно.',
     framing:
-      'Устроены эти игры примерно так же, как у русских, украинцев и поляков. Отличаются не правила, а язык, напев, инвентарь и повод. Это куда интереснее, чем спорить об уникальности, — и, в отличие от споров, это правда.',
+      'Устроены эти игры примерно так же, как у русских, украинцев и поляков. Отличаются не правила, а язык, напев, инвентарь и повод. Это куда интереснее, чем спорить об уникальности. И, в отличие от споров, это правда.',
     rulesLabel: 'Три правила раздела',
     rules: [
       'У каждой игры есть источник: кто записал, где и в каком году.',
-      'Ничего от себя. Слова «только в Беларуси» появляются лишь там, где так написано в записи.',
+      'Ничего от себя. Слова "только в Беларуси" появляются лишь там, где так написано в записи.',
       'Если в записи чего-то нет и цифру пришлось придумать, страница честно в этом признаётся.',
     ],
     statuses: { live: 'можно играть', planned: 'в работе' },
@@ -1122,7 +1122,7 @@ export const ru: Dictionary = {
     items: [
       {
         slug: 'kata-piachy',
-        name: '«Ката пячы»',
+        name: '"Ката пячы"',
         gloss:
           'Из булок лепят кота и вешают под потолок. Тебя поднимают на вилах, ты прыгаешь и откусываешь, а вокруг стараются столкнуть. Кто добрался до хвоста — тот и победил.',
         status: 'live',
@@ -1130,51 +1130,51 @@ export const ru: Dictionary = {
       },
       {
         slug: 'lianok',
-        name: '«Лянок»',
+        name: '"Лянок"',
         gloss:
-          'Песня про лён от поля до рубахи: рвут, молотят, стелют, мнут, ткут, белят, кроят, шьют — восемь куплетов, восемь движений. А из полотна в конце складывается настоящий узор.',
+          'Песня про лён от поля до рубахи: рвут, молотят, стелют, мнут, ткут, белят, кроят, шьют. Восемь куплетов, восемь движений. А из полотна в конце складывается настоящий узор.',
         status: 'planned',
       },
       {
         slug: 'pannachka',
-        name: '«Панначка»',
+        name: '"Панначка"',
         gloss:
-          'Девушки встают в круг, у каждой свеча. Свою — беречь, соседкину — задуть. Проигравших нет: последний огонёк обходит круг и зажигает всех заново.',
+          'Девушки встают в круг, у каждой свеча. Свою — беречь. Соседкину — задуть. Проигравших нет: последний огонёк обходит круг и зажигает всех заново.',
         status: 'planned',
       },
       {
         slug: 'hrahi',
-        name: '«Грахі»',
+        name: '"Грахі"',
         gloss:
-          'Мяч катят вдоль лунок. Промазал — грех тебе, попал — грех сопернику. И чем больше на тебе грехов, тем реже тебе дают бросать: виноватому наказывать не положено.',
+          'Мяч катят вдоль лунок. Промазал — грех тебе. Попал — грех сопернику. И чем больше на тебе грехов, тем реже тебе дают бросать: виноватому наказывать не положено.',
         status: 'planned',
       },
       {
         slug: 'zanicba-cyareski',
-        name: '«Жаніцьба Цярэшкі»',
+        name: '"Жаніцьба Цярэшкі"',
         gloss:
           'Колядная свадьба понарошку — единственная игра, которую этнографы называют чисто белорусской. Ты сваха: сводишь пары одну за другой, а что делать дальше, подсказывает песня.',
         status: 'planned',
       },
     ],
     kata: {
-      name: '«Ката пячы»',
+      name: '"Ката пячы"',
       gloss: 'печь кота',
-      title: '«Ката пячы» — игра, где кота сначала пекут, а потом кусают',
+      title: '"Ката пячы" — игра, где кота сначала пекут, а потом кусают',
       description:
-        'Каждое 27 ноября в Скирмантове из булок лепят кота, вешают под потолок и кусают с вил — кто откусил хвост, тот победил. Здесь кота ещё и печь придётся самому.',
+        'Каждое 27 ноября в Скирмантове из булок лепят кота, вешают под потолок и кусают с вил. Кто откусил хвост, тот победил. Здесь кота ещё и печь придётся самому.',
       kicker: '27 лістапада · аг. Скірмантава · Дзяржаўны спіс 33АК000117',
       lede: 'Вечером перед постом в хате из булок лепят кота и подвешивают на верёвке к потолку. Игроков по очереди поднимают к нему на вилах: прыгнул, откусил — твоё. А остальные тем временем толкаются, чтобы ты промахнулся. Кто откусил хвост, тот и выиграл. Здесь к этому добавлена печь: кота сначала надо испечь. И каким он выйдет из печи, такого и придётся кусать.',
       howLabel: 'Как играть',
       how: [
-        'Зажми — и из дежи тянется ком теста. Большая булка потом легче кусается, маленькая — труднее, да ещё и горит в печи быстрее.',
+        'Зажми — и из дежи тянется ком теста. Большая булка потом легче кусается, а маленькая — труднее. Да ещё и горит в печи быстрее.',
         'Теста в деже ровно на шесть булок. Шестая — хвост, а без хвоста нет победы. Не забудь оставить на него.',
-        'Отпусти — ком отправится в печь. Нажми, когда булка станет золотой. Сырая выйдет тяжёлой и скользкой, подгорелая — широкой и хрустящей, но лёгкой, как пух.',
-        'Потом кота подвешивают, и начинается главное. Тяжёлый кот качается лениво, лёгкий носится как угорелый — и с каждым откушенным куском он всё легче.',
+        'Отпусти — ком отправится в печь. Нажми, когда булка станет золотой. Сырая выйдет тяжёлой и скользкой. Подгорелая — широкой и хрустящей, но лёгкой, как пух.',
+        'Потом кота подвешивают. Начинается главное. Тяжёлый кот качается лениво, лёгкий носится как угорелый. И с каждым откушенным куском он всё легче.',
       ],
       start: 'Месить',
       again: 'Ещё раз',
-      jump: 'Удерживай — лепишь булку, нажми — вынимаешь из печи, нажми — кусаешь',
+      jump: 'Удерживай — лепишь булку. Нажми — вынимаешь из печи. Нажми — кусаешь',
       soundOn: 'звук включён',
       soundOff: 'звук выключен',
       viewWide: 'во всю ширину',
@@ -1233,7 +1233,7 @@ export const ru: Dictionary = {
           tag: 'щедрая',
           greeting: [
             { be: 'Кладзі больш. Малы кот — малая радасць.', gloss: 'Клади больше. Маленький кот — маленькая радость.' },
-            { be: 'Не шкадуй цеста — будзе што кусаць.', gloss: 'Не жалей теста — будет что кусать.' },
+            { be: 'Не шкадуй цеста. Будзе што кусаць.', gloss: 'Не жалей теста. Будет что кусать.' },
           ],
           bigBun: [
             { be: 'Вось гэта булка. Пад такую і рот шырэй.', gloss: 'Вот это булка. Под такую и рот шире.' },
@@ -1242,7 +1242,7 @@ export const ru: Dictionary = {
           ],
           smallBun: [
             { be: 'Гэта не булка, гэта гузік.', gloss: 'Это не булка, это пуговица.' },
-            { be: 'Малая і гарыць хутка, і кусаецца вузка. Навошта табе такая?', gloss: 'Маленькая и горит быстро, и кусается узко. Зачем тебе такая?' },
+            { be: 'Малая хутка гарыць і вузка кусаецца. Навошта табе такая?', gloss: 'Маленькая быстро горит и узко кусается. Зачем тебе такая?' },
             { be: 'Шкадуеш цеста? Яно ж не срэбра.', gloss: 'Жалеешь тесто? Оно же не серебро.' },
           ],
           raw: [
@@ -1263,7 +1263,7 @@ export const ru: Dictionary = {
           ],
           tailNext: [
             { be: 'Апошні — хвост. Што ў дзяжы засталося, тое яму і будзе.', gloss: 'Последний — хвост. Что в деже осталось, то ему и достанется.' },
-            { be: 'Хвост. Аддай яму ўсё, што ёсць, — больш узяць няма адкуль.', gloss: 'Хвост. Отдай ему всё, что есть, — больше взять неоткуда.' },
+            { be: 'Хвост. Аддай яму ўсё, што ёсць. Больш узяць няма адкуль.', gloss: 'Хвост. Отдай ему всё, что есть. Больше взять неоткуда.' },
           ],
           swing: [
             { be: 'Ротам наперад! Не бокам!', gloss: 'Ртом вперёд! Не боком!' },
@@ -1283,7 +1283,7 @@ export const ru: Dictionary = {
             { be: 'Міма. Нічога, кот цяпер лягчэйшы.', gloss: 'Мимо. Ничего, кот теперь легче.' },
           ],
           win: [
-            { be: 'Во як трэба. Хвост твой, і гаворка скончана.', gloss: 'Вот как надо. Хвост твой, и разговор окончен.' },
+            { be: 'Во як трэба. Хвост твой. Гаворка скончана.', gloss: 'Вот как надо. Хвост твой. Разговор окончен.' },
             { be: 'Малайчына. Сядай, будзем есці.', gloss: 'Молодец. Садись, будем есть.' },
           ],
           lose: [
@@ -1311,11 +1311,11 @@ export const ru: Dictionary = {
             { be: 'Сырая. Кот павісне цяжкі і спакойны, а кусаць нязручна.', gloss: 'Сырая. Кот повиснет тяжёлый и спокойный, а кусать неудобно.' },
           ],
           golden: [
-            { be: 'Во так. Залатая: і вага ёсць, і ўкус шырокі.', gloss: 'Вот так. Золотая: и вес есть, и укус широкий.' },
+            { be: 'Во так. Залатая: вага ёсць, укус шырокі.', gloss: 'Вот так. Золотая: вес есть, укус широкий.' },
             { be: 'У самы час выняў. Больш нічога і не трэба.', gloss: 'Вовремя вынул. Больше ничего и не надо.' },
           ],
           burnt: [
-            { be: 'Перадзяржаў. Лёгкая, як вугаль, — цяпер кот пойдзе ў разнос.', gloss: 'Передержал. Лёгкая, как уголь, — теперь кот пойдёт вразнос.' },
+            { be: 'Перадзяржаў. Лёгкая, як вугаль. Цяпер кот пойдзе ў разнос.', gloss: 'Передержал. Лёгкая, как уголь. Теперь кот пойдёт вразнос.' },
             { be: 'Спаліў. Кусаць шырэй, ды гайдацца будзе шалёна.', gloss: 'Сжёг. Кусать шире, да качаться будет бешено.' },
           ],
           doughLow: [
@@ -1328,7 +1328,7 @@ export const ru: Dictionary = {
           ],
           swing: [
             { be: 'Не спяшайся. Вяроўка сама вернецца.', gloss: 'Не спеши. Верёвка сама вернётся.' },
-            { be: 'Кожны ўзяты кавалак — яшчэ адна спроба на хвост.', gloss: 'Каждый взятый кусок — ещё одна попытка на хвост.' },
+            { be: 'Кожны ўзяты кавалак дае яшчэ адну спробу на хвост.', gloss: 'Каждый взятый кусок даёт ещё одну попытку на хвост.' },
           ],
           shove: [
             { be: 'Чакай, не скачы пад штуршок. Перачакай.', gloss: 'Погоди, не прыгай под толчок. Пережди.' },
@@ -1376,15 +1376,15 @@ export const ru: Dictionary = {
           ],
           burnt: [
             { be: 'Чорная! Цяпер кот скакаць будзе!', gloss: 'Чёрная! Теперь кот скакать будет!' },
-            { be: 'Вугаль! Лёгкі, як пух, — вяроўка з розуму сыдзе.', gloss: 'Уголь! Лёгкий, как пух, — верёвка с ума сойдёт.' },
+            { be: 'Вугаль! Лёгкі, як пух. Вяроўка з розуму сыдзе.', gloss: 'Уголь! Лёгкий, как пух. Верёвка с ума сойдёт.' },
             { be: 'Хрумсціць! І рот пад яе шырэйшы.', gloss: 'Хрустит! И рот под неё шире.' },
           ],
           doughLow: [
-            { be: 'Цеста мала — значыць, апошняя згарыць у момант!', gloss: 'Теста мало — значит, последняя сгорит мигом!' },
+            { be: 'Цеста мала. Значыць, апошняя згарыць у момант!', gloss: 'Теста мало. Значит, последняя сгорит мигом!' },
             { be: 'Ужо дно? А я і не наеўся.', gloss: 'Уже дно? А я и не наелся.' },
           ],
           tailNext: [
-            { be: 'Хвост! Спаліце хвост — ён шырокі будзе, сам у рот трапіць!', gloss: 'Хвост! Сожгите хвост — он широкий будет, сам в рот попадёт!' },
+            { be: 'Хвост! Спаліце хвост. Ён шырокі будзе, сам у рот трапіць!', gloss: 'Хвост! Сожгите хвост. Он широкий будет, сам в рот попадёт!' },
             { be: 'Апошні. Толькі рана не выцягвайце: сыры хвост вузкі.', gloss: 'Последний. Только рано не вынимайте: сырой хвост узкий.' },
           ],
           swing: [
@@ -1415,31 +1415,31 @@ export const ru: Dictionary = {
         },
       },
       epilogue: {
-        win: 'Хвост твой. Кота съели до крошки, и в хате стало тихо.',
+        win: 'Хвост твой. Кота съели до крошки. И в хате стало тихо.',
         lose: 'Хвост достался другому. Кота всё равно съели — до последней крошки.',
         calendar:
           'А с утра — Филипповки. Пост забирает мясо, а вместе с ним и игры, до самых Колядок.',
         docLabel: 'А что записано на самом деле',
         facts: [
-          'Обряд «Ката пячы» внесён в Государственный список историко-культурных ценностей Беларуси в 2017 году под номером 33АК000117.',
+          'Обряд "Ката пячы" внесён в Государственный список историко-культурных ценностей Беларуси в 2017 году под номером 33АК000117.',
           'Агрогородок Скирмантово Дзержинского района.',
-          'Обряд держится на семье Радьковых и коллективах «Сваякі» и «Весялуха» — каждый год с 1993-го.',
+          'Обряд держится на семье Радьковых и коллективах "Сваякі" и "Весялуха", каждый год с 1993-го.',
         ],
         invented:
           'Ганна, Сымон и Алесик — наша выдумка. В списке записан обряд, а не люди: имена, споры и все советы придуманы здесь.',
       },
       sourceLabel: 'Источник',
       source:
-        'Государственный список историко-культурных ценностей Республики Беларусь, № 33АК000117, внесён в 2017 году: обряд «Ката пячы», агрогородок Скирмантово Дзержинского района. Обряд держится на семье Радьковых и коллективах «Сваякі» и «Весялуха», каждый год с 1993-го.',
+        'Государственный список историко-культурных ценностей Республики Беларусь, № 33АК000117, внесён в 2017 году: обряд "Ката пячы", агрогородок Скирмантово Дзержинского района. Обряд держится на семье Радьковых и коллективах "Сваякі" и "Весялуха", каждый год с 1993-го.',
       honestyLabel: 'Насколько она белорусская',
       honesty:
-        'Редкий случай, когда слово «уникальная» подтверждается: ни у русских, ни у украинцев, ни у поляков ничего похожего не нашлось, как ни ищи. Правда, и обряд этот не общебелорусский, а одной деревни. Так он и показан здесь — как скирмантовский.',
+        'Редкий случай, когда слово "уникальная" подтверждается: ни у русских, ни у украинцев, ни у поляков ничего похожего не нашлось, как ни ищи. Правда, обряд этот тоже не общебелорусский, а одной деревни. Так он и показан здесь — как скирмантовский.',
       calendarLabel: 'Почему 27 ноября',
       calendar:
         'Это последний вечер перед Филипповками. Еда нарочно жирная и сытная: с утра начнётся пост, а в пост нельзя ни мяса, ни игр.',
       choicesLabel: 'Что мы придумали сами',
       choices:
-        'Из записи известно немногое: кота пекут из булок, вешают под потолок, к нему поднимаются на вилах, остальные толкают, а решает хвост. Все цифры — наши: сколько теста в деже, что размер булки даёт при укусе, как сырое и горелое меняют качание, сколько попыток положено на хвост. Выпечка как отдельная половина игры тоже наша: в записи булки просто пекут, никто за них не соревнуется. И трое за столом выдуманы — Ганна, Сымон и Алесик. Они нарочно советуют вразнобой: у традиции есть варианты, и ни один из троих не прав больше других.',
+        'Из записи известно немногое: кота пекут из булок, вешают под потолок, к нему поднимаются на вилах, остальные толкают, а решает хвост. Все цифры наши: сколько теста в деже, что размер булки даёт при укусе, как сырое и горелое меняют качание, сколько попыток положено на хвост. Выпечка как отдельная половина игры тоже наша: в записи булки просто пекут, никто за них не соревнуется. И трое за столом выдуманы — Ганна, Сымон и Алесик. Они нарочно советуют вразнобой: у традиции есть варианты, ни один из троих не прав больше других.',
       back: 'все игры',
     },
   },
@@ -1448,8 +1448,8 @@ export const ru: Dictionary = {
     target: 'цель: ×3 MRR за 24 месяца',
     growth: 'рост, %/мес',
     churn: 'отток, %/мес',
-    button: 'goal-seek',
-    note: 'ни одну из этих цифр не считал ИИ — детерминированный движок, как в Adlega.',
+    button: 'goal seek',
+    note: 'ни одну из этих цифр не считал ИИ. Детерминированный движок, как в Adlega.',
     months: 'мес',
   },
   record: {
@@ -1467,7 +1467,7 @@ export const ru: Dictionary = {
       },
       {
         years: '2014 – 2022',
-        title: 'HYLA Mobile, компания Assurant · senior full-stack',
+        title: 'HYLA Mobile, компания Assurant · senior full stack',
         note: 'Trade-in-платформа в 16 000+ магазинов. Вёл распил монолита на микросервисы; нагрузочное тестирование на Gatling.',
       },
       {
@@ -1485,7 +1485,7 @@ export const ru: Dictionary = {
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM-агенты',
   },
   socialsLabel: 'Я в сети',
-  papersOnlyEnglish: 'Papers только по-английски. У каждой работы есть DOI и PDF, которые индексирует Google Scholar, — перевод разошёлся бы с ними.',
+  papersOnlyEnglish: 'Papers только по-английски. У каждой работы есть DOI и PDF, которые индексирует Google Scholar. Перевод разошёлся бы с ними.',
   leaf: {
     label: 'Отрывной календарь: белорусское слово дня',
     caption: 'белорусское слово на каждый день',
@@ -1497,7 +1497,7 @@ export const ru: Dictionary = {
   },
   consent: {
     label: 'Про куки',
-    text: 'Я считаю визиты через Google Analytics — сколько людей заходит и какие страницы читают. Ни рекламы, ни профилирования, никакой продажи данных. Пока вы не согласитесь, на ваше устройство ничего не записывается.',
+    text: 'Я считаю визиты через Google Analytics: сколько людей заходит и какие страницы читают. Ни рекламы, ни профилирования, никакой продажи данных. Пока вы не согласитесь, на ваше устройство ничего не записывается.',
     more: 'Что с этим делает Google',
     accept: 'Разрешить',
     decline: 'Не надо',
@@ -1542,7 +1542,7 @@ export const be: Dictionary = {
     greeting: 'прывітанне, я',
     role: 'Фулстэк-інжынер · Сузаснавальнік Adlega',
     chips: ['інжынер · 15 гадоў', 'сузаснавальнік Adlega'],
-    lead: 'Пятнаццаць гадоў будую софт, у якім няправільная лічба каштуе сапраўдных грошай: плацяжы, trade-in-платформа ў 16 000 крамах — а цяпер Adlega, ШІ-фіндырэктар з адным правілам: ШІ ніколі не лічыць сам.',
+    lead: 'Пятнаццаць гадоў будую софт, у якім няправільная лічба каштуе сапраўдных грошай: плацяжы, trade-in-платформа ў 16 000 крамах. А цяпер Adlega, ШІ-фіндырэктар з адным правілам: ШІ ніколі не лічыць сам.',
     lead2:
       'Паміж рэлізамі корпаюся ў лічбавым свеце: эксперыменты, новыя інструменты, навук-поп. Гэты сайт — мая майстэрня.',
     ctaEmail: 'Напісаць мне',
@@ -1555,21 +1555,21 @@ export const be: Dictionary = {
         key: 'me',
         label: 'Пра мяне, Дзмітрыя',
         name: 'А гэта я',
-        text: 'Я родам з Беларусі — таму і фігурка выразаная ў духу нашых старых лялек, а на фоне кожны дзень новы беларускі арнамент. Дзякуй, што зазірнулі ў майстэрню. Хадзем шукаць новыя адкрыцці ў лічбавым свеце разам.',
+        text: 'Я родам з Беларусі. Таму і фігурка выразаная ў духу нашых старых лялек, а на фоне кожны дзень новы беларускі арнамент. Дзякуй, што зазірнулі ў майстэрню. Хадзем шукаць новыя адкрыцці ў лічбавым свеце разам.',
         listen: 'паслухаць мой голас',
       },
       {
         key: 'bird',
         label: 'Пра канарэйку',
         name: 'Мая птушка',
-        text: 'Кенар, і спявае ён неверагодна прыгожа. Дзякуючы яму я паспяваю перавесці дух паміж тым, што Зум ужо прыдумаў.',
+        text: 'Кенар. Спявае ён неверагодна прыгожа. Дзякуючы яму я паспяваю перавесці дух паміж тым, што Зум ужо прыдумаў.',
         listen: 'паслухаць, як спявае',
       },
       {
         key: 'dog',
         label: 'Пра сабаку Зума',
         name: 'Зум',
-        text: 'Мой веймаранер і самае нястомнае стварэнне з усіх, каго я ведаю. Любіць людзей, любіць паляванне і штодня трэніруе мае нервы. Жаб, вожыкаў, зайцоў і новыя прыгоды ён знаходзіць хутчэй, чым я выкатваю рэлізы, — прыкладна такога тэмпу ён чакае і ад мяне.',
+        text: 'Мой веймаранер і самае нястомнае стварэнне з усіх, каго я ведаю. Любіць людзей, любіць паляванне і штодня трэніруе мае нервы. Жаб, вожыкаў, зайцоў і новыя прыгоды ён знаходзіць хутчэй, чым я выкатваю рэлізы. Прыкладна такога тэмпу ён чакае і ад мяне.',
         listen: 'паслухаць, як брэша',
       },
     ],
@@ -1585,8 +1585,8 @@ export const be: Dictionary = {
         href: 'https://adlega.com',
         linkLabel: 'adlega.com',
         body: [
-          'Апішыце бізнес у чаце — атрымайце працоўную фінансавую мадэль: выручка, burn, runway, сцэнарыі «што калі». Хвіліны замест тыдняў у табліцах.',
-          'Ключавое праектнае рашэнне: ШІ ніколі не лічыць сам. Агенты інтэрв’юіруюць заснавальніка, запаўняюць мадэль, тлумачаць любую лічбу, ганяюць goal-seek — «як патроіць MRR?» — але кожнае значэнне выдае дэтэрмінаваны рухавік, які мы трымаем у межах 0,5 % ад сабранай уручную Excel-мадэлі, якую ён замяніў.',
+          'Апішыце бізнес у чаце. Атрымайце працоўную фінансавую мадэль: выручка, burn, runway, сцэнарыі "што калі". Хвіліны замест тыдняў у табліцах.',
+          'Ключавое праектнае рашэнне: ШІ ніколі не лічыць сам. Агенты інтэрв’юіруюць заснавальніка, запаўняюць мадэль, тлумачаць любую лічбу, ганяюць goal seek ("як патроіць MRR?"), але кожнае значэнне выдае дэтэрмінаваны рухавік, які мы трымаем у межах 0,5 % ад сабранай уручную Excel-мадэлі, якую ён замяніў.',
         ],
       },
     ],
@@ -1628,8 +1628,8 @@ export const be: Dictionary = {
     label: 'Мае праекты',
     title: 'Мае праекты — Дзмітрый Семянкевіч',
     description:
-      'Праекты, якія я вяду цяпер: Adlega — ШІ-фіндырэктар для SaaS-заснавальнікаў, Belun — браўзерны набор інструментаў без выгрузкі на сервер, whotop — утыліта, якая адрознівае працэсы-двайнікі, і гэты сайт-майстэрня.',
-    lede: 'Усё, што працуе проста зараз: навошта яно існуе і на чым сабрана. Тое, што сваё ўжо адпрацавала, ляжыць ніжэй на паліцы — разам з тупікамі.',
+      'Праекты, якія я вяду цяпер: Adlega (ШІ-фіндырэктар для SaaS-заснавальнікаў), Belun (браўзерны набор інструментаў без выгрузкі на сервер), whotop (утыліта, якая адрознівае працэсы-двайнікі) і гэты сайт-майстэрня.',
+    lede: 'Усё, што працуе проста зараз: навошта яно існуе і на чым сабрана. Тое, што сваё ўжо адпрацавала, ляжыць ніжэй на паліцы, разам з тупікамі.',
     activeLabel: 'Працуюць зараз',
     archiveLabel: 'Паліца праектаў',
     archiveNote: 'Што было раней — сумленна, разам з тым, што памерла.',
@@ -1643,8 +1643,8 @@ export const be: Dictionary = {
         href: 'https://adlega.com',
         linkLabel: 'adlega.com',
         body: [
-          'Апішыце бізнес у чаце — атрымайце працоўную фінансавую мадэль: выручка, burn, runway, сцэнарыі «што калі». Хвіліны замест тыдняў у табліцах.',
-          'Ключавое праектнае рашэнне: ШІ ніколі не лічыць сам. Агенты інтэрв’юіруюць заснавальніка, запаўняюць мадэль, тлумачаць любую лічбу, ганяюць goal-seek — «як патроіць MRR?» — але кожнае значэнне выдае дэтэрмінаваны рухавік, які мы трымаем у межах 0,5 % ад сабранай уручную Excel-мадэлі, якую ён замяніў.',
+          'Апішыце бізнес у чаце. Атрымайце працоўную фінансавую мадэль: выручка, burn, runway, сцэнарыі "што калі". Хвіліны замест тыдняў у табліцах.',
+          'Ключавое праектнае рашэнне: ШІ ніколі не лічыць сам. Агенты інтэрв’юіруюць заснавальніка, запаўняюць мадэль, тлумачаць любую лічбу, ганяюць goal seek ("як патроіць MRR?"), але кожнае значэнне выдае дэтэрмінаваны рухавік, які мы трымаем у межах 0,5 % ад сабранай уручную Excel-мадэлі, якую ён замяніў.',
           'Я сузаснавальнік і раблю прадукт цалкам: агентаў, рухавік і інтэрфейс, у якім жыве мадэль.',
         ],
         stack: ['TypeScript', 'Node.js', 'React', 'PostgreSQL', 'LLM-агенты'],
@@ -1670,9 +1670,9 @@ export const be: Dictionary = {
         href: 'https://github.com/dimhold/whotop',
         linkLabel: 'github.com/dimhold/whotop',
         body: [
-          'Утыліта ў тэрмінале, якая чытае табліцу працэсаў і табліцу сокетаў разам, а потым чытае, што насамрэч напісана ў кожным камандным радку. Экран аднолькавых радкоў node ператвараецца ў сесію агента, два dev-серверы, адрозненыя па праектах, і сірату, якая трымае ваш порт з таго часу, як гадзіну таму вы пераключылі галінку.',
-          'Усё пачалося з таго, што я забіў не той node. Іх было шэсць, усе мае, усе зваліся node, і спіс нічога не казаў пра тое, хто ёсць хто. Патрэбныя факты ляжалі побач — камандны радок, рабочы каталог, даўно выйшлы бацька, — проста сістэма не кладзе іх побач з pid.',
-          'Яна не гадае моўчкі: --explain называе правіла за кожным подпісам і кажа, што менавіта платформа адмовілася раскрыць. А потым заб’е па порце або па pid — паказаўшы спярша, што менавіта яна знайшла.',
+          'Утыліта ў тэрмінале, якая чытае табліцу працэсаў і табліцу сокетаў разам, а потым чытае, што насамрэч напісана ў кожным камандным радку. Экран аднолькавых радкоў node ператвараецца ў сесію агента і два dev-серверы, адрозненыя па праектах, а яшчэ ў сірату, якая трымае ваш порт з таго часу, як гадзіну таму вы пераключылі галінку.',
+          'Усё пачалося з таго, што я забіў не той node. Іх было шэсць, усе мае, усе зваліся node і спіс нічога не казаў пра тое, хто ёсць хто. Патрэбныя факты ляжалі побач: камандны радок, рабочы каталог, даўно выйшлы бацька. Проста сістэма не кладзе іх побач з pid.',
+          'Яна не гадае моўчкі: --explain называе правіла за кожным подпісам і кажа, што менавіта платформа адмовілася раскрыць. А потым заб’е па порце або па pid, паказаўшы спярша, што менавіта яна знайшла.',
         ],
         stack: ['TypeScript', 'Node.js', 'нуль залежнасцяў у рантайме'],
       },
@@ -1695,14 +1695,14 @@ export const be: Dictionary = {
     label: 'Гульні',
     title: 'Гульні — як гулялі ў Беларусі',
     description:
-      'Беларускія народныя гульні проста ў браўзеры. Пра кожную сказана, хто і дзе яе запісаў — і што ў ёй па-сапраўднаму сваё.',
-    lede: 'Тут можна згуляць у гульні, у якія гулялі ў беларускіх вёсках. Такіх, якіх больш нідзе няма, сярод іх амаль не знойдзецца — этнографы кажуць пра гэта проста. Але ў кожнай ёсць сваё: словы, песня, рэч у руках, дзень у годзе, калі ў яе гулялі. Дзеля гэтага ўсё і задумана.',
+      'Беларускія народныя гульні проста ў браўзеры. Пра кожную сказана, хто і дзе яе запісаў і што ў ёй па-сапраўднаму сваё.',
+    lede: 'Тут можна згуляць у гульні, у якія гулялі ў беларускіх вёсках. Такіх, якіх больш нідзе няма, сярод іх амаль не знойдзецца. Этнографы кажуць пра гэта проста. Але ў кожнай ёсць сваё: словы, песня, рэч у руках, дзень у годзе, калі ў яе гулялі. Дзеля гэтага ўсё і задумана.',
     framing:
-      'Зладжаныя гэтыя гульні прыкладна так жа, як у рускіх, украінцаў і палякаў. Розняцца не правілы, а мова, напеў, начынне і нагода. Гэта куды цікавей, чым спрачацца пра ўнікальнасць, — і, у адрозненне ад спрэчак, гэта праўда.',
+      'Зладжаныя гэтыя гульні прыкладна так жа, як у рускіх, украінцаў і палякаў. Розняцца не правілы, а мова, напеў, начынне і нагода. Гэта куды цікавей, чым спрачацца пра ўнікальнасць. І, у адрозненне ад спрэчак, гэта праўда.',
     rulesLabel: 'Тры правілы раздзела',
     rules: [
       'У кожнай гульні ёсць крыніца: хто запісаў, дзе і ў якім годзе.',
-      'Нічога ад сябе. Словы «толькі ў Беларусі» з’яўляюцца толькі там, дзе так напісана ў запісе.',
+      'Нічога ад сябе. Словы "толькі ў Беларусі" з’яўляюцца толькі там, дзе так напісана ў запісе.',
       'Калі ў запісе чагосьці няма і лічбу давялося прыдумаць, старонка шчыра ў гэтым прызнаецца.',
     ],
     statuses: { live: 'можна гуляць', planned: 'у працы' },
@@ -1711,7 +1711,7 @@ export const be: Dictionary = {
     items: [
       {
         slug: 'kata-piachy',
-        name: '«Ката пячы»',
+        name: '"Ката пячы"',
         gloss:
           'З булак лепяць ката і вешаюць пад столь. Цябе падымаюць на вілах, ты скачаш і адкусваеш, а навокал стараюцца сапхнуць. Хто дабраўся да хваста — той і перамог.',
         status: 'live',
@@ -1719,51 +1719,51 @@ export const be: Dictionary = {
       },
       {
         slug: 'lianok',
-        name: '«Лянок»',
+        name: '"Лянок"',
         gloss:
-          'Песня пра лён ад поля да кашулі: бяруць, малоцяць, сцелюць, мнуць, ткуць, беляць, крояць, шыюць — восем куплетаў, восем рухаў. А з палатна ў канцы складаецца сапраўдны ўзор.',
+          'Песня пра лён ад поля да кашулі: бяруць, малоцяць, сцелюць, мнуць, ткуць, беляць, крояць, шыюць. Восем куплетаў, восем рухаў. А з палатна ў канцы складаецца сапраўдны ўзор.',
         status: 'planned',
       },
       {
         slug: 'pannachka',
-        name: '«Панначка»',
+        name: '"Панначка"',
         gloss:
-          'Дзяўчаты становяцца ў кола, у кожнай свечка. Сваю — берагчы, суседчыну — задзьмуць. Тых, хто прайграў, няма: апошні агеньчык абыходзіць кола і запальвае ўсіх нанова.',
+          'Дзяўчаты становяцца ў кола, у кожнай свечка. Сваю — берагчы. Суседчыну — задзьмуць. Тых, хто прайграў, няма: апошні агеньчык абыходзіць кола і запальвае ўсіх нанова.',
         status: 'planned',
       },
       {
         slug: 'hrahi',
-        name: '«Грахі»',
+        name: '"Грахі"',
         gloss:
-          'Мяч коцяць уздоўж ямак. Схібіў — грэх табе, пацэліў — грэх суперніку. І чым больш на табе грахоў, тым радзей табе даюць кідаць: вінаватаму караць не належыць.',
+          'Мяч коцяць уздоўж ямак. Схібіў — грэх табе. Пацэліў — грэх суперніку. І чым больш на табе грахоў, тым радзей табе даюць кідаць: вінаватаму караць не належыць.',
         status: 'planned',
       },
       {
         slug: 'zanicba-cyareski',
-        name: '«Жаніцьба Цярэшкі»',
+        name: '"Жаніцьба Цярэшкі"',
         gloss:
           'Каляднае вяселле панарошку — адзіная гульня, якую этнографы называюць чыста беларускай. Ты свацця: зводзіш пары адну за адной, а што рабіць далей, падказвае песня.',
         status: 'planned',
       },
     ],
     kata: {
-      name: '«Ката пячы»',
+      name: '"Ката пячы"',
       gloss: 'ігрышча',
-      title: '«Ката пячы» — гульня, дзе ката спачатку пякуць, а потым кусаюць',
+      title: '"Ката пячы" — гульня, дзе ката спачатку пякуць, а потым кусаюць',
       description:
-        'Кожнага 27 лістапада ў Скірмантаве з булак лепяць ката, вешаюць пад столь і кусаюць з вілаў — хто адкусіў хвост, той перамог. Тут ката яшчэ і спячы давядзецца самому.',
+        'Кожнага 27 лістапада ў Скірмантаве з булак лепяць ката, вешаюць пад столь і кусаюць з вілаў. Хто адкусіў хвост, той перамог. Тут ката яшчэ і спячы давядзецца самому.',
       kicker: '27 лістапада · аг. Скірмантава · Дзяржаўны спіс 33АК000117',
       lede: 'Вечарам перад постам у хаце з булак лепяць ката і падвешваюць на вяроўцы да столі. Гульцоў па чарзе падымаюць да яго на вілах: скокнуў, адкусіў — тваё. А астатнія тым часам штурхаюцца, каб ты схібіў. Хто адкусіў хвост, той і выйграў. Тут да гэтага дададзеная печ: ката спачатку трэба спячы. І якім ён выйдзе з печы, такога і давядзецца кусаць.',
       howLabel: 'Як гуляць',
       how: [
-        'Зацісні — і з дзяжы цягнецца камяк цеста. Вялікая булка потым лягчэй кусаецца, малая — цяжэй, ды яшчэ і гарыць у печы хутчэй.',
+        'Зацісні — і з дзяжы цягнецца камяк цеста. Вялікая булка потым лягчэй кусаецца, а малая — цяжэй. Ды яшчэ і гарыць у печы хутчэй.',
         'Цеста ў дзяжы роўна на шэсць булак. Шостая — хвост, а без хваста няма перамогі. Не забудзь пакінуць на яго.',
-        'Адпусці — камяк пойдзе ў печ. Націсні, калі булка стане залатой. Сырая выйдзе цяжкай і слізкай, падгарэлая — шырокай і хрумсткай, але лёгкай, як пух.',
-        'Потым ката падвешваюць, і пачынаецца галоўнае. Цяжкі кот гайдаецца ляніва, лёгкі носіцца як ашалелы — і з кожным адкушаным кавалкам ён усё лягчэйшы.',
+        'Адпусці — камяк пойдзе ў печ. Націсні, калі булка стане залатой. Сырая выйдзе цяжкай і слізкай. Падгарэлая — шырокай і хрумсткай, але лёгкай, як пух.',
+        'Потым ката падвешваюць. Пачынаецца галоўнае. Цяжкі кот гайдаецца ляніва, лёгкі носіцца як ашалелы. І з кожным адкушаным кавалкам ён усё лягчэйшы.',
       ],
       start: 'Месіць',
       again: 'Яшчэ раз',
-      jump: 'Утрымлівай — лепіш булку, націсні — вымаеш з печы, націсні — кусаеш',
+      jump: 'Утрымлівай — лепіш булку. Націсні — вымаеш з печы. Націсні — кусаеш',
       soundOn: 'гук уключаны',
       soundOff: 'гук выключаны',
       viewWide: 'на ўсю шырыню',
@@ -1822,7 +1822,7 @@ export const be: Dictionary = {
           tag: 'шчодрая',
           greeting: [
             { be: 'Кладзі больш. Малы кот — малая радасць.', gloss: '' },
-            { be: 'Не шкадуй цеста — будзе што кусаць.', gloss: '' },
+            { be: 'Не шкадуй цеста. Будзе што кусаць.', gloss: '' },
           ],
           bigBun: [
             { be: 'Вось гэта булка. Пад такую і рот шырэй.', gloss: '' },
@@ -1831,7 +1831,7 @@ export const be: Dictionary = {
           ],
           smallBun: [
             { be: 'Гэта не булка, гэта гузік.', gloss: '' },
-            { be: 'Малая і гарыць хутка, і кусаецца вузка. Навошта табе такая?', gloss: '' },
+            { be: 'Малая хутка гарыць і вузка кусаецца. Навошта табе такая?', gloss: '' },
             { be: 'Шкадуеш цеста? Яно ж не срэбра.', gloss: '' },
           ],
           raw: [
@@ -1852,7 +1852,7 @@ export const be: Dictionary = {
           ],
           tailNext: [
             { be: 'Апошні — хвост. Што ў дзяжы засталося, тое яму і будзе.', gloss: '' },
-            { be: 'Хвост. Аддай яму ўсё, што ёсць, — больш узяць няма адкуль.', gloss: '' },
+            { be: 'Хвост. Аддай яму ўсё, што ёсць. Больш узяць няма адкуль.', gloss: '' },
           ],
           swing: [
             { be: 'Ротам наперад! Не бокам!', gloss: '' },
@@ -1872,7 +1872,7 @@ export const be: Dictionary = {
             { be: 'Міма. Нічога, кот цяпер лягчэйшы.', gloss: '' },
           ],
           win: [
-            { be: 'Во як трэба. Хвост твой, і гаворка скончана.', gloss: '' },
+            { be: 'Во як трэба. Хвост твой. Гаворка скончана.', gloss: '' },
             { be: 'Малайчына. Сядай, будзем есці.', gloss: '' },
           ],
           lose: [
@@ -1900,11 +1900,11 @@ export const be: Dictionary = {
             { be: 'Сырая. Кот павісне цяжкі і спакойны, а кусаць нязручна.', gloss: '' },
           ],
           golden: [
-            { be: 'Во так. Залатая: і вага ёсць, і ўкус шырокі.', gloss: '' },
+            { be: 'Во так. Залатая: вага ёсць, укус шырокі.', gloss: '' },
             { be: 'У самы час выняў. Больш нічога і не трэба.', gloss: '' },
           ],
           burnt: [
-            { be: 'Перадзяржаў. Лёгкая, як вугаль, — цяпер кот пойдзе ў разнос.', gloss: '' },
+            { be: 'Перадзяржаў. Лёгкая, як вугаль. Цяпер кот пойдзе ў разнос.', gloss: '' },
             { be: 'Спаліў. Кусаць шырэй, ды гайдацца будзе шалёна.', gloss: '' },
           ],
           doughLow: [
@@ -1917,7 +1917,7 @@ export const be: Dictionary = {
           ],
           swing: [
             { be: 'Не спяшайся. Вяроўка сама вернецца.', gloss: '' },
-            { be: 'Кожны ўзяты кавалак — яшчэ адна спроба на хвост.', gloss: '' },
+            { be: 'Кожны ўзяты кавалак дае яшчэ адну спробу на хвост.', gloss: '' },
           ],
           shove: [
             { be: 'Чакай, не скачы пад штуршок. Перачакай.', gloss: '' },
@@ -1965,15 +1965,15 @@ export const be: Dictionary = {
           ],
           burnt: [
             { be: 'Чорная! Цяпер кот скакаць будзе!', gloss: '' },
-            { be: 'Вугаль! Лёгкі, як пух, — вяроўка з розуму сыдзе.', gloss: '' },
+            { be: 'Вугаль! Лёгкі, як пух. Вяроўка з розуму сыдзе.', gloss: '' },
             { be: 'Хрумсціць! І рот пад яе шырэйшы.', gloss: '' },
           ],
           doughLow: [
-            { be: 'Цеста мала — значыць, апошняя згарыць у момант!', gloss: '' },
+            { be: 'Цеста мала. Значыць, апошняя згарыць у момант!', gloss: '' },
             { be: 'Ужо дно? А я і не наеўся.', gloss: '' },
           ],
           tailNext: [
-            { be: 'Хвост! Спаліце хвост — ён шырокі будзе, сам у рот трапіць!', gloss: '' },
+            { be: 'Хвост! Спаліце хвост. Ён шырокі будзе, сам у рот трапіць!', gloss: '' },
             { be: 'Апошні. Толькі рана не выцягвайце: сыры хвост вузкі.', gloss: '' },
           ],
           swing: [
@@ -2004,31 +2004,31 @@ export const be: Dictionary = {
         },
       },
       epilogue: {
-        win: 'Хвост твой. Ката з’елі да крошкі, і ў хаце стала ціха.',
+        win: 'Хвост твой. Ката з’елі да крошкі. І ў хаце стала ціха.',
         lose: 'Хвост дастаўся іншаму. Ката ўсё роўна з’елі — да апошняй крошкі.',
         calendar:
           'А з раніцы — Піліпаўка. Пост забірае мяса, а разам з ім і гульні, да самых Каляд.',
         docLabel: 'А што запісана насамрэч',
         facts: [
-          'Ігрышча «Ката пячы» ўнесена ў Дзяржаўны спіс гісторыка-культурных каштоўнасцей Беларусі ў 2017 годзе пад нумарам 33АК000117.',
+          'Ігрышча "Ката пячы" ўнесена ў Дзяржаўны спіс гісторыка-культурных каштоўнасцей Беларусі ў 2017 годзе пад нумарам 33АК000117.',
           'Аграгарадок Скірмантава Дзяржынскага раёна.',
-          'Абрад трымаецца на сям’і Радзькаў і калектывах «Сваякі» і «Весялуха» — штогод з 1993-га.',
+          'Абрад трымаецца на сям’і Радзькаў і калектывах "Сваякі" і "Весялуха", штогод з 1993-га.',
         ],
         invented:
           'Ганна, Сымон і Алесік — наша выдумка. У спісе запісаны абрад, а не людзі: імёны, спрэчкі і ўсе парады прыдуманы тут.',
       },
       sourceLabel: 'Крыніца',
       source:
-        'Дзяржаўны спіс гісторыка-культурных каштоўнасцей Рэспублікі Беларусь, № 33АК000117, унесена ў 2017 годзе: ігрышча «Ката пячы», аграгарадок Скірмантава Дзяржынскага раёна. Абрад трымаецца на сям’і Радзькаў і калектывах «Сваякі» і «Весялуха», штогод з 1993-га.',
+        'Дзяржаўны спіс гісторыка-культурных каштоўнасцей Рэспублікі Беларусь, № 33АК000117, унесена ў 2017 годзе: ігрышча "Ката пячы", аграгарадок Скірмантава Дзяржынскага раёна. Абрад трымаецца на сям’і Радзькаў і калектывах "Сваякі" і "Весялуха", штогод з 1993-га.',
       honestyLabel: 'Наколькі яна беларуская',
       honesty:
-        'Рэдкі выпадак, калі слова «ўнікальная» пацвярджаецца: ні ў рускіх, ні ва ўкраінцаў, ні ў палякаў нічога падобнага не знайшлося, як ні шукай. Праўда, і абрад гэты не агульнабеларускі, а адной вёскі. Так ён тут і паказаны — як скірмантаўскі.',
+        'Рэдкі выпадак, калі слова "ўнікальная" пацвярджаецца: ні ў рускіх, ні ва ўкраінцаў, ні ў палякаў нічога падобнага не знайшлося, як ні шукай. Праўда, абрад гэты таксама не агульнабеларускі, а адной вёскі. Так ён тут і паказаны — як скірмантаўскі.',
       calendarLabel: 'Чаму 27 лістапада',
       calendar:
         'Гэта апошні вечар перад Піліпаўкай. Ежа знарок тлустая і сытная: з раніцы пачнецца пост, а ў пост нельга ні мяса, ні гульняў.',
       choicesLabel: 'Што мы прыдумалі самі',
       choices:
-        'З запісу вядома няшмат: ката пякуць з булак, вешаюць пад столь, да яго падымаюцца на вілах, астатнія штурхаюць, а вырашае хвост. Усе лічбы — нашы: колькі цеста ў дзяжы, што памер булкі дае пры ўкусе, як сырое і гарэлае мяняюць гайданне, колькі спробаў належыць на хвост. Выпечка як асобная палова гульні таксама наша: у запісе булкі проста пякуць, ніхто за іх не спаборнічае. І трое за сталом выдуманыя — Ганна, Сымон і Алесік. Яны знарок раяць уразнабой: у традыцыі ёсць варыянты, і ніводзін з траіх не мае рацыі больш за іншых.',
+        'З запісу вядома няшмат: ката пякуць з булак, вешаюць пад столь, да яго падымаюцца на вілах, астатнія штурхаюць, а вырашае хвост. Усе лічбы нашы: колькі цеста ў дзяжы, што памер булкі дае пры ўкусе, як сырое і гарэлае мяняюць гайданне, колькі спробаў належыць на хвост. Выпечка як асобная палова гульні таксама наша: у запісе булкі проста пякуць, ніхто за іх не спаборнічае. І трое за сталом выдуманыя — Ганна, Сымон і Алесік. Яны знарок раяць уразнабой: у традыцыі ёсць варыянты, ніводзін з траіх не мае рацыі больш за іншых.',
       back: 'усе гульні',
     },
   },
@@ -2037,8 +2037,8 @@ export const be: Dictionary = {
     target: 'мэта: ×3 MRR за 24 месяцы',
     growth: 'рост, %/мес',
     churn: 'адток, %/мес',
-    button: 'goal-seek',
-    note: 'ніводную з гэтых лічбаў не лічыў ШІ — дэтэрмінаваны рухавік, як у Adlega.',
+    button: 'goal seek',
+    note: 'ніводную з гэтых лічбаў не лічыў ШІ. Дэтэрмінаваны рухавік, як у Adlega.',
     months: 'мес',
   },
   record: {
@@ -2056,7 +2056,7 @@ export const be: Dictionary = {
       },
       {
         years: '2014 – 2022',
-        title: 'HYLA Mobile, кампанія Assurant · senior full-stack',
+        title: 'HYLA Mobile, кампанія Assurant · senior full stack',
         note: 'Trade-in-платформа ў 16 000+ крамах. Вёў распіл маналіта на мікрасэрвісы; нагрузачнае тэсціраванне на Gatling.',
       },
       {
@@ -2074,7 +2074,7 @@ export const be: Dictionary = {
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM-агенты',
   },
   socialsLabel: 'Я ў сетцы',
-  papersOnlyEnglish: 'Papers толькі па-англійску. У кожнай працы ёсць DOI і PDF, якія індэксуе Google Scholar, — пераклад разышоўся б з імі.',
+  papersOnlyEnglish: 'Papers толькі па-англійску. У кожнай працы ёсць DOI і PDF, якія індэксуе Google Scholar. Пераклад разышоўся б з імі.',
   leaf: {
     label: 'Адрыўны каляндар: беларускае слова дня',
     caption: 'беларускае слова на кожны дзень',
@@ -2086,7 +2086,7 @@ export const be: Dictionary = {
   },
   consent: {
     label: 'Пра кукі',
-    text: 'Я лічу візіты праз Google Analytics — колькі людзей заходзіць і якія старонкі чытаюць. Ні рэкламы, ні прафілявання, ніякага продажу даных. Пакуль вы не пагодзіцеся, на вашу прыладу нічога не запісваецца.',
+    text: 'Я лічу візіты праз Google Analytics: колькі людзей заходзіць і якія старонкі чытаюць. Ні рэкламы, ні прафілявання, ніякага продажу даных. Пакуль вы не пагодзіцеся, на вашу прыладу нічога не запісваецца.',
     more: 'Што з гэтым робіць Google',
     accept: 'Дазволіць',
     decline: 'Не трэба',

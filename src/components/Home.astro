@@ -181,11 +181,11 @@ const SPOT_AUDIO = { me: '/audio/dmitriy.mp3', bird: '/audio/kenar.mp3', dog: '/
                 <div class="toy-chart" data-chart></div>
                 <div class="toy-controls">
                   <div class="toy-field">
-                    <label for={`growth-${t.lang}`}>{t.toy.growth} — <output data-growth-out></output></label>
+                    <label for={`growth-${t.lang}`}>{t.toy.growth}: <output data-growth-out></output></label>
                     <input id={`growth-${t.lang}`} type="range" min="0" max="25" step="0.5" value="8" data-growth />
                   </div>
                   <div class="toy-field">
-                    <label for={`churn-${t.lang}`}>{t.toy.churn} — <output data-churn-out></output></label>
+                    <label for={`churn-${t.lang}`}>{t.toy.churn}: <output data-churn-out></output></label>
                     <input id={`churn-${t.lang}`} type="range" min="0" max="12" step="0.5" value="3" data-churn />
                   </div>
                   <button class="toy-btn" type="button" data-solve>{t.toy.button}</button>

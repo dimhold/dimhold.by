@@ -8,11 +8,11 @@ translationKey: imul-that-never-runs
 
 I got one comment on a code review this week. I had written `total = count * 2` and the comment asked for `count << 1` instead, because a shift is cheaper than a multiply. I did not argue. I had nothing to argue with. I write Java every working day and I had never opened a class file to see what javac makes of it.
 
-So I opened one. Everything below is OpenJDK 7 b147, the IcedTea 2.0 build that reached the distributions in October, pinned to one core of a kvm guest. Tiered compilation is off in 7, so the server compiler does all of the work and its `CompileThreshold` is 10000.
+So I opened one. Everything below is OpenJDK 7 b147, the IcedTea 2.0 build that reached the distributions in October. The run is pinned to one core of a kvm guest. Tiered compilation is off in 7, so the server compiler does all of the work and its `CompileThreshold` is 10000.
 
 ## What javac keeps
 
-Two methods, one line apart:
+2 methods, one line apart:
 
 ```java
 static int byMul(int x)   { return x * 2; }
@@ -29,7 +29,7 @@ And `javap -c` on the class file:
        3: ireturn                    3: ireturn
 ```
 
-Four bytecodes each and two of the four differ, the constant that gets pushed and the instruction that consumes it. At this layer the review comment is correct.
+4 bytecodes each. 2 of the 4 differ: one instruction pushes the constant, the other consumes it. At this layer the review comment is correct.
 
 javac does rewrite things, just not this one. `return 2 * 3` compiles to `bipush 6`. A `static final int` read from another class arrives as `iconst_4` rather than as a field load. javac performs the rewrites the language specifies and leaves arithmetic to whatever runs the bytecode.
 
@@ -75,41 +75,41 @@ javac does rewrite things, just not this one. `return 2 * 3` compiles to `bipush
   <text x="428" y="265" class="f-label f-muted">the comment still says imul</text>
 
 </svg>
-<figcaption>javac keeps the difference. Below javac it stops being measurable: the interpreter cannot separate the two and the server compiler writes the same instruction for both.</figcaption>
+<figcaption>javac keeps the difference. Below javac it stops being measurable: the interpreter cannot separate them and the server compiler writes the same instruction for both.</figcaption>
 </figure>
 
 
 ## What the interpreter can see
 
-If the difference lives below javac it should live in the interpreter, which walks the bytecode one instruction at a time. I ran both loops under `-Xint`, ten million calls per round, fifteen rounds, mul and shift alternating inside one JVM so that drift hits both. Medians in microseconds:
+If the difference lives below javac it should live in the interpreter, which walks the bytecode one instruction at a time. I ran both loops under `-Xint`, 10 million calls per round, 15 rounds, mul and shift alternating inside one JVM so that drift hits both. Medians in microseconds:
 
 ```
 mul   median 241716 us
 shift median 240751 us
 ```
 
-Shift comes out 0.4 percent faster. The script repeats the measurement three times: mul faster by 4.7 percent, then by 8.4, then shift faster by 2.6. Rounds inside a single run spread from 199267 to 301291, so none of those gaps mean anything.
+Shift comes out 0.4 percent faster. The script repeats the measurement 3 times: mul faster by 4.7 percent, then by 8.4, then shift faster by 2.6. Rounds inside a single run spread from 199267 to 301291, so none of those gaps mean anything.
 
 The reason is dispatch. Every bytecode template ends with `movzbl 0x1(%r13),%ebx` and `jmp *(%r10,%rbx,8)`, a table lookup and an indirect jump into the next one. I dumped both templates with `-XX:+PrintInterpreter` expecting twins. The arithmetic is one instruction in each, but the shift template is one `mov` longer, because the count has to go through `%cl` first. Whatever the shift saves in the ALU it gives back at the top of its own template.
 
 ## The compiler arrives in the middle of a loop
 
-The same loops without `-Xint`, a hundred million calls per round. These rounds are not interleaved, all nine mul rounds run first:
+The same loops without `-Xint`, 100 million calls per round. These rounds are not interleaved, all 9 mul rounds run first:
 
 ```
 mul   median 34629 us
 shift median 34635 us
 ```
 
-That is 0.35 nanoseconds per iteration against 24.2 in the interpreter, a factor of 70. Across four runs it landed between 66 and 71, with the movement coming almost entirely from the interpreted side: that median shifted by six percent, the compiled one by under one.
+That is 0.35 nanoseconds per iteration against 24.2 in the interpreter, a factor of 70. Across 4 runs it landed between 66 and 71, with the movement coming almost entirely from the interpreted side: that median shifted by 6 percent, the compiled one by under one.
 
-The transition shows up if you print every round instead of a median. Twelve rounds of a million calls, in microseconds:
+The transition shows up if you print every round instead of a median. 12 rounds of a million calls, in microseconds:
 
 ```
 10012  386  370  381  370  381  342  356  342  342  354  342
 ```
 
-Round zero is about thirty times the plateau. It is not a fully interpreted round either. A million interpreted calls cost around 24200 microseconds and this one cost 10012, so the compiler caught up with the loop while it was still running. `-XX:+PrintCompilation` on that same command shows how:
+Round zero is about 30 times the plateau. It is not a fully interpreted round either. A million interpreted calls cost around 24200 microseconds and this one cost 10012, so the compiler caught up with the loop while it was still running. `-XX:+PrintCompilation` on that same command shows how:
 
 ```
 37    1             Doubling::byMul (4 bytes)
@@ -130,7 +130,7 @@ byShift: mov %esi,%eax        shl $1,%eax   ;*ishl
 
 The same arithmetic, one `mov` and one `shl`, inside method bodies of 32 bytes each. The comment column names the bytecode an instruction came from. In the first line it says `imul` next to a shift.
 
-The loops are the better result. I stripped the addresses from both listings and diffed them, 103 instructions a side. `diff` returns two lines and both differ only in the comment:
+The loops are the better result. I stripped the addresses from both listings and diffed them, 103 instructions a side. `diff` returns 2 lines. Both differ only in the comment:
 
 ```
 55c55
@@ -143,7 +143,7 @@ The loops are the better result. I stripped the addresses from both listings and
 > mov    %r11d,%ebx         ;*ishl
 ```
 
-The hot loop is 32 instructions and 90 bytes. It runs sixteen source iterations per pass, with no multiply in it and no call to `byMul` either. The multiply became a running value that grows by 32 every pass, kept in three staggered registers. Sixteen copies of it reach the accumulator, fifteen by `add` and one by a `mov` that overwrites it before the old contents fold back in. `add $0xf0` supplies the 240 that corrects the sum. Adding `2 * i` over sixteen consecutive values of `i` gives 32 times the first value plus 240, which is what the compiler wrote down.
+The hot loop is 32 instructions and 90 bytes. It runs sixteen source iterations per pass. There is no multiply in it and no call to `byMul` either. The multiply became a running value that grows by 32 every pass, kept in 3 staggered registers. Sixteen copies of it reach the accumulator, fifteen by `add` and one by a `mov` that overwrites it before the old contents fold back in. `add $0xf0` supplies the 240 that corrects the sum. Adding `2 * i` over sixteen consecutive values of `i` gives 32 times the first value plus 240. That is what the compiler wrote down.
 
 There is exactly one real multiply instruction in the whole compiled method. It sits next to `movabs $0x20c49ba5e353f7cf` and `sar $0x7`, a division by 1000 done as a multiply by a magic constant. That is my own timing line turning nanoseconds into microseconds. The multiply from my source never runs. The one that does came out of my timing code.
 
@@ -204,13 +204,13 @@ My first version added nothing up. It called `byMul(i)` and dropped the result:
 discarded   4934   8684      0      0      0      0
 ```
 
-Zero microseconds from round two on. I raised it to two billion iterations and it still printed zeros. An unused call with no side effect is dead and the loop around it goes with it. The disassembly of that `main` has one loop left and no mention of `byMul`. I lost half an hour to the zeros before I worked out that I was timing an empty loop.
+Zero microseconds from round 2 on. I raised it to 2 billion iterations and it still printed zeros. An unused call with no side effect is dead. The loop around it goes with it. The disassembly of that `main` has one loop left and no mention of `byMul`. I lost half an hour to the zeros before I worked out that I was timing an empty loop.
 
 ## Where the threshold shows up
 
-I wanted to watch the 10000 counter fire. A thousand calls per round reaches it around round ten, so I ran two hundred such rounds and looked for the step. It came at round 76. I ran the same command again and got 101, then 66, then 69, then 91.
+I wanted to watch the 10000 counter fire. 1000 calls per round reaches it around round 10, so I ran 200 such rounds and looked for the step. It came at round 76. I ran the same command again and got 101, then 66, then 69, then 91.
 
-The counter is not what moves. `-Xbatch` makes the calling thread wait for the compiler instead of queueing the work. Under that flag the step lands on round 11 in every run. It also moves exactly where the counter says: `CompileThreshold=20000` puts it at round 21, `5000` at round 6 and five hundred calls per round back at 21.
+The counter is not what moves. `-Xbatch` makes the calling thread wait for the compiler instead of queueing the work. Under that flag the step lands on round 11 in every run. It also moves exactly where the counter says: `CompileThreshold=20000` puts it at round 21, `5000` at round 6 and 500 calls per round back at 21.
 
 ```
 round 8   41 us
@@ -221,7 +221,7 @@ round 10   28 us
 round 11   0 us
 ```
 
-Round 9 carries 2181 microseconds because `byMul` is compiled inside the timed loop. `roundMul` is compiled at the entry to round 10, before the timer starts, so its own two milliseconds never show. Round 10 still runs interpreted: the counter fired on the way in and the frame already running stays interpreted to the end. Round 11 is the first compiled one and its thousand iterations take under a microsecond, which integer division prints as zero. Without the flag the code arrives whenever the compiler thread gets to it, fifty to ninety rounds later here.
+Round 9 carries 2181 microseconds because `byMul` is compiled inside the timed loop. `roundMul` is compiled at the entry to round 10, before the timer starts, so its own 2 milliseconds never show. Round 10 still runs interpreted: the counter fired on the way in and the frame already running stays interpreted to the end. Round 11 is the first compiled one. Its 1000 iterations take under a microsecond, which integer division prints as zero. Without the flag the code arrives whenever the compiler thread gets to it, 50 to 90 rounds later here.
 
 <figure class="fig">
 <svg viewBox="0 0 640 226" role="img" aria-label="A timeline of rounds from 0 to 120, a thousand calls each. The invocation counter reaches 10000 at round ten. With -Xbatch, which makes the calling thread wait for the compiler, the loop starts running compiled at round 11 in all three runs. Without the flag the compiler works on its own thread and the same step lands at rounds 66, 69, 76, 91 and 101 across five runs.">
@@ -255,12 +255,12 @@ Round 9 carries 2181 microseconds because `byMul` is compiled inside the timed l
   <text x="620" y="206" class="f-mono f-muted" text-anchor="middle">120</text>
   <text x="6" y="206" class="f-label f-muted">round</text>
 </svg>
-<figcaption>The counter fires at the same round every time. When the compiled code shows up depends on the compiler thread, which is fifty to ninety rounds later here.</figcaption>
+<figcaption>The counter fires at the same round every time. When the compiled code shows up depends on the compiler thread. Here that is 50 to 90 rounds later.</figcaption>
 </figure>
 
 
 ## What I did not check
 
-I only measured `* 2`. A multiply by a constant that is not a power of two is a different question. A multiply by a variable is another. I did not open either. I meant to compare the client compiler and found there is no `-client` in this 64-bit build. That would mean a 32-bit jdk and I did not go there.
+I only measured `* 2`. A multiply by a constant that is not a power of 2 is a different question. A multiply by a variable is another. I did not open either. I meant to compare the client compiler and found there is no `-client` in this 64-bit build. That would mean a 32-bit jdk. I did not go there.
 
 The review comment was fair on its own terms. It aimed at the one layer where the difference is plain to see. On this machine the layer under it charged 70 times more for the same source, until the compiler got there. I do not know how long a real request path takes to reach 10000 calls. That is the number I want next.

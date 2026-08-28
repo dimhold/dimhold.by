@@ -1,12 +1,12 @@
 ---
 title: "Reading UTF-8 as 1251: \"РџСЂРёРІРµС‚\""
-description: "Mojibake is deterministic. Six letters, twelve bytes, five code pages and a byte table that tells you which pair of encodings collided."
+description: "Mojibake is deterministic. 6 letters, 12 bytes and 5 code pages, plus a byte table that tells you which pair of encodings collided."
 date: 2011-11-09
 lang: en
 translationKey: mojibake-byte-by-byte
 ---
 
-I wanted to see this in bytes instead of guessing at it again. So I printed `Привет` as UTF-8 and got twelve bytes for six letters. Then I handed them to a decoder that believes one byte is one character:
+I wanted to see this in bytes instead of guessing at it again. So I printed `Привет` as UTF-8 and got 12 bytes for 6 letters. Then I handed them to a decoder that believes one byte is one character:
 
 ```
 $ printf 'Привет' | xxd
@@ -192,15 +192,15 @@ $ printf 'Привет' | iconv -f CP1251 -t UTF-8
     <text x="573.0" y="171" class="f-glyph f-ink" text-anchor="middle">┌</text>
   </g>
 </svg>
-<figcaption>The twelve bytes never change. Only the table used to read them changes. ISO-8859-1 has C1 controls at 9f, 80 and 82, which is why three of its cells stay empty while CP1252 fills them.</figcaption>
+<figcaption>The 12 bytes never change. Only the table used to read them changes. ISO-8859-1 has C1 controls at 9f, 80 and 82, which is why 3 of its cells stay empty while CP1252 fills them.</figcaption>
 </figure>
 
 
 My fix for this has always been clicking through an encoding dropdown until the text comes back. It works. I have never once looked at what was underneath.
 
-## Sixty six letters, two leading bytes
+## 66 letters, 2 leading bytes
 
-Russian Cyrillic sits at U+0410 through U+044F, with `Ё` and `ё` off on their own at U+0401 and U+0451. All of them are two bytes in UTF-8. I collected the leading byte of every letter, upper and lower case:
+Russian Cyrillic sits at U+0410 through U+044F, with `Ё` and `ё` off on their own at U+0401 and U+0451. All of them are 2 bytes in UTF-8. I collected the leading byte of every letter, upper and lower case:
 
 ```
 $ perl -CO -e 'print map { chr } (0x401, 0x451, 0x410..0x44f)' \
@@ -209,7 +209,7 @@ $ perl -CO -e 'print map { chr } (0x401, 0x451, 0x410..0x44f)' \
 d0 d1
 ```
 
-Two values for sixty six letters. So a single byte code page reading that stream prints its own idea of `d0` and `d1` in front of every second character. That makes the garbage readable in reverse:
+2 values for 66 letters. So a single byte code page reading that stream prints its own idea of `d0` and `d1` in front of every second character. That makes the garbage readable in reverse:
 
 | decoder | `d0` | `d1` | `Привет` arrives as |
 |---|---|---|---|
@@ -219,9 +219,9 @@ Two values for sixty six letters. So a single byte code page reading that stream
 | CP866 | `╨` | `╤` | `╨Я╤А╨╕╨▓╨╡╤В` |
 | KOI8-R | `п` | `я` | `п÷я─п╦п╡п╣я┌` |
 
-A wall of `Р` and `С` means the file was read as 1251, which is the case I hit almost every time. The other four are rarer and just as readable off the first column.
+A wall of `Р` and `С` means the file was read as 1251. That is the case I hit almost every time. The other 4 are rarer and just as readable off the first column.
 
-CP1252 and ISO-8859-1 agree on `d0` and `d1`, so the fingerprint is the same. They disagree from `80` to `9f`. CP1252 has printable characters there and prints `ÐŸÑ€Ð¸Ð²ÐµÑ‚`, twelve characters for twelve bytes. In ISO-8859-1 that band is C1 controls. Bytes `9f`, `80` and `82` print as nothing at all, so the same string comes out as `ÐÑÐ¸Ð²ÐµÑ`, nine visible characters. I lost half an hour comparing character counts before I worked that out.
+CP1252 and ISO-8859-1 agree on `d0` and `d1`, so the fingerprint is the same. They disagree from `80` to `9f`. CP1252 has printable characters there. It prints `ÐŸÑ€Ð¸Ð²ÐµÑ‚`, 12 characters for 12 bytes. In ISO-8859-1 that band is C1 controls. Bytes `9f`, `80` and `82` print as nothing at all, so the same string comes out as `ÐÑÐ¸Ð²ÐµÑ`, 9 visible characters. I lost half an hour comparing character counts before I worked that out.
 
 The trick is narrower than it looks. Belarusian also fits in `d0` and `d1`, `ў` included, but Ukrainian breaks it. `Ґ` is `d2 90`, which 1251 draws as `Т`.
 
@@ -237,7 +237,7 @@ $ printf 'Привет' | iconv -f UTF-8 -t CP1251 | iconv -f UTF-8 -t UTF-8
 iconv: (stdin):1:0: cannot convert
 ```
 
-None of those six bytes start a valid UTF-8 sequence, so iconv stops on the first one. The editor I had open on the same file was less honest about it. It put U+FFFD in every position, which looks like a text you can still work with.
+None of those 6 bytes start a valid UTF-8 sequence, so iconv stops on the first one. The editor I had open on the same file was less honest about it. It put U+FFFD in every position, which looks like a text you can still work with.
 
 The `Р`/`С` version keeps every original byte. Feeding the mojibake back through 1251 returns the source exactly:
 
@@ -246,7 +246,7 @@ $ printf 'Привет' | iconv -f CP1251 -t UTF-8 | iconv -f UTF-8 -t CP1251 | 
 00000000: d09f d180 d0b8 d0b2 d0b5 d182            ............
 ```
 
-Saving the mess instead of converting it back is how a file gets encoded twice. Twelve bytes become twenty five.
+Saving the mess instead of converting it back is how a file gets encoded twice. 12 bytes become 25.
 
 ```
 $ printf 'Привет' | iconv -f CP1251 -t UTF-8 | wc -c
@@ -320,9 +320,9 @@ kODIROWKA
 </figure>
 
 
-Case comes out inverted because lower case Cyrillic occupies the upper case ASCII range. Strip the high bit somewhere in transit and the text is still legible, which cannot be an accident at this hit rate. The same operation on the 1251 bytes gives `Ophber`.
+Case comes out inverted because lower case Cyrillic occupies the upper case ASCII range. Strip the high bit somewhere in transit and the text is still legible. At this hit rate that cannot be an accident. The same operation on the 1251 bytes gives `Ophber`.
 
-All three words I tried happen to use letters from the mapped side of the table. `ъ` or `щ` in there would come out as punctuation.
+All 3 words I tried happen to use letters from the mapped side of the table. `ъ` or `щ` in there would come out as punctuation.
 
 ## What did not work
 
@@ -333,6 +333,6 @@ CP1252   Ð—Ð´Ñ€Ð°Ð²Ñ
 iconv: (stdin):1:11: cannot convert
 ```
 
-It stopped at byte eleven, which is `81`. CP1252 leaves five byte values undefined and `81` is one of them, so a converter following the table has nothing to return. The C1 band that makes CP1252 and ISO-8859-1 print differently is the same band that makes one of them fail outright.
+It stopped at byte eleven, which is `81`. CP1252 leaves 5 byte values undefined. `81` is one of them, so a converter following the table has nothing to return. The C1 band that makes CP1252 and ISO-8859-1 print differently is the same band that makes one of them fail outright.
 
-That band is busy. Thirty four of the sixty six letters have their second byte between `80` and `9f`. So a little over half of any Cyrillic text lands where those two tables stop agreeing. I have not checked yet what CP1250 or CP1257 do with the same bytes.
+That band is busy. 34 of the 66 letters have their second byte between `80` and `9f`. So a little over half of any Cyrillic text lands where those 2 tables stop agreeing. I have not checked yet what CP1250 or CP1257 do with the same bytes.

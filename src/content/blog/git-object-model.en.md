@@ -1,12 +1,12 @@
 ---
 title: "A commit built by hand: 187 bytes"
-description: "Five plumbing calls make a commit that git log reads. Eleven revisions of one 1703 line file cost 187576 bytes loose against 16490 packed. The delta base turns out to be the newest version of the file."
+description: "5 plumbing calls make a commit that git log reads. 11 revisions of one 1703 line file cost 187576 bytes loose against 16490 packed. The delta base turns out to be the newest version of the file."
 date: 2011-12-07
 lang: en
 translationKey: git-object-model
 ---
 
-My working git was six commands and one rule. The commands were `add`, `commit`, `pull`, `push`, `checkout` and `log`. The rule was that when the repository got into a state I did not recognize, I deleted the directory and cloned it again. The rule works. It also means I never knew what I was deleting.
+My working git was 6 commands and one rule. The commands were `add`, `commit`, `pull`, `push`, `checkout` and `log`. The rule was that when the repository got into a state I did not recognize, I deleted the directory and cloned it again. The rule works. It also means I never knew what I was deleting.
 
 So instead of learning a seventh command I built a commit by hand, out of plumbing only. Everything below is git 1.7.8, built from source, at the default compression level. Author and committer dates are pinned to one second so that every hash here reproduces.
 
@@ -20,7 +20,7 @@ $ printf 'blob 12\0hello world\n' | sha1sum
 3b18e512dba79e4c8300dd08aeb37f8e728b8dad  -
 ```
 
-The name of an object is the sha1 of a header plus the content. The header is the type, a space, the length in bytes and a zero byte. Hashing the twelve bytes on their own gives `22596363b3de40b06f981fb85d82312e8c0ed511`, which this repository never refers to.
+The name of an object is the sha1 of a header plus the content. The header is the type, a space, the length in bytes and a zero byte. Hashing the 12 bytes on their own gives `22596363b3de40b06f981fb85d82312e8c0ed511`, which this repository never refers to.
 
 Then I copied `a.txt` to `b.txt` and wrote both:
 
@@ -33,7 +33,7 @@ $ find .git/objects -type f
 .git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad
 ```
 
-Two files, one name, one object. The name is a function of those bytes, header included, so the same content under two paths cannot land in two objects. On disk the object is 28 bytes. Twelve bytes of content and eight bytes of header go into deflate and 28 come out. Compression added eight bytes here.
+2 files, one name, one object. The name is a function of those bytes, header included, so the same content under 2 paths cannot land in 2 objects. On disk the object is 28 bytes. 12 bytes of content and 8 bytes of header go into deflate and 28 come out. Compression added 8 bytes here.
 
 <figure class="fig">
 <svg viewBox="0 0 640 210" role="img" aria-label="The name of a git object is the sha1 of a header followed by the content. The header is the word blob, a space, the length 12 and a zero byte, then the twelve bytes of hello world. That gives 3b18e512, which is the name git stores the object under. Hashing the twelve bytes of content on their own gives 22596363, which appears nowhere in the repository.">
@@ -66,7 +66,7 @@ Two files, one name, one object. The name is a function of those bytes, header i
 
 ## A commit with no porcelain in it
 
-A fresh repository, then two blobs, a tree, a commit and a ref. Five calls:
+A fresh repository, then 2 blobs, a tree, a commit and a ref. 5 calls:
 
 ```
 $ git hash-object -w greeting.txt
@@ -93,7 +93,7 @@ committer Dmitriy Semenkevich <dimhold@gmail.com> 1323253380 +0100
 handmade
 ```
 
-The tree is 76 bytes. The branch is a file with forty hex digits and a newline in it:
+The tree is 76 bytes. The branch is a file with 40 hex digits and a newline in it:
 
 ```
 $ wc -c .git/refs/heads/master
@@ -102,7 +102,7 @@ $ cat .git/HEAD
 ref: refs/heads/master
 ```
 
-`git log --stat` reads that and prints my two files as added, which is what I came to see. A reader like `log` needs the objects and one ref. I had written both of those by hand.
+`git log --stat` reads that and prints my 2 files as added, which is what I came to see. A reader like `log` needs the objects and one ref. I had written both of those by hand.
 
 Then this:
 
@@ -114,7 +114,7 @@ D  note.txt
 ?? note.txt
 ```
 
-Both files deleted and untracked at once. There was no `.git/index` on disk at all, because I built the tree with `mktree` and never went through the index. Git compares the index against HEAD, finds two files in HEAD and nothing in the index, then reports two deletions. The untracked list comes from walking the directory and keeping whatever the index does not mention, which is the same two files again. `git reset` with no arguments writes a 184 byte index from HEAD and the status goes quiet, with the ref left where it was. So the index is a third thing on disk, next to the objects and the refs. It holds the list of files git will put in the next commit. After `git reset` with no arguments that list is a copy of HEAD's tree, which is why the status goes quiet.
+Both files deleted and untracked at once. There was no `.git/index` on disk at all, because I built the tree with `mktree` and never went through the index. Git compares the index against HEAD, finds 2 files in HEAD and nothing in the index, then reports 2 deletions. The untracked list comes from walking the directory and keeping whatever the index does not mention, which is the same 2 files again. `git reset` with no arguments writes a 184 byte index from HEAD and the status goes quiet, with the ref left where it was. So the index is a third thing on disk, next to the objects and the refs. It holds the list of files git will put in the next commit. After `git reset` with no arguments that list is a copy of HEAD's tree, which is why the status goes quiet.
 
 <figure class="fig">
 <svg viewBox="0 0 640 250" role="img" aria-label="The chain built by hand out of five plumbing calls. The file refs/heads/master holds 41 bytes, the forty digits of the commit name and a newline. The commit b0eabc99 is 187 bytes and names one tree. The tree b88f66c9 is 76 bytes and names two blobs of 12 bytes each, greeting.txt and note.txt. Off to the side the index was never written, so git status reports both files as deleted and untracked until git reset rebuilds the index from HEAD.">
@@ -149,7 +149,7 @@ Both files deleted and untracked at once. There was no `.git/index` on disk at a
   <text x="85" y="178" class="f-label f-accent" text-anchor="middle">index, never written</text>
   <text x="10" y="230" class="f-label f-muted">status reports D and ?? until git reset rebuilds it</text>
 </svg>
-<figcaption>Five plumbing calls produce this. The index is the one part mktree does not touch, which is what the status output was about.</figcaption>
+<figcaption>5 plumbing calls produce this. The index is the one part mktree does not touch, which is what the status output was about.</figcaption>
 </figure>
 
 
@@ -162,7 +162,7 @@ The tree is a function of the content. The commit carries the time and the autho
 
 ## What I thought a commit stored
 
-I assumed a commit held a diff, because a diff is what `git show` prints. So I took `read-cache.c` out of the git source, 46456 bytes over 1703 lines. Then eleven commits: the file as it came, then ten more, each rewriting a single line in the middle of it:
+I assumed a commit held a diff, because a diff is what `git show` prints. So I took `read-cache.c` out of the git source, 46456 bytes over 1703 lines. Then 11 commits: the file as it came, then 10 more, each rewriting a single line in the middle of it:
 
 ```
 $ git diff --stat HEAD~1 HEAD
@@ -170,7 +170,7 @@ $ git diff --stat HEAD~1 HEAD
  1 files changed, 1 insertions(+), 1 deletions(-)
 ```
 
-`count-objects -v` says count: 33. Thirty three objects for eleven commits, so eleven blobs and eleven trees under them. Every blob is a whole copy of the file, 16828 to 16833 bytes on disk depending on the revision. The loose objects add up to 187576 bytes. One rewritten comment line costs a full new blob.
+`count-objects -v` says count: 33. 33 objects for 11 commits, so 11 blobs and 11 trees under them. Every blob is a whole copy of the file, 16828 to 16833 bytes on disk depending on the revision. The loose objects add up to 187576 bytes. One rewritten comment line costs a full new blob.
 
 Then `git gc`:
 
@@ -192,16 +192,16 @@ $ git verify-pack -v .git/objects/pack/pack-*.idx | grep ' blob '
 5790a91044e4fdf5b2eec515051a66c110e0daa4 blob   18 31 16439 1 1530d3b547cf0a52ec2f6f4ed20053f5229581ea
 ```
 
-187576 bytes became 16490, a factor of 11.4. Four of the eleven blob lines are above. Of the seven I left out, six are 16 byte deltas and one is 14.
+187576 bytes became 16490, a factor of 11.4. 4 of the 11 blob lines are above. Of the 7 I left out, 6 are 16 byte deltas and one is 14.
 
-The base `1530d3b5` is the newest version of the file. The ten older revisions are deltas against it at depth 1, between 14 and 18 bytes each. The revision I committed first is stored as an 18 byte delta from the last one. I read that size column twice before I believed it, because for a deltified object it holds the size of the delta:
+The base `1530d3b5` is the newest version of the file. The 10 older revisions are deltas against it at depth 1, between 14 and 18 bytes each. The revision I committed first is stored as an 18 byte delta from the last one. I read that size column twice before I believed it, because for a deltified object it holds the size of the delta:
 
 ```
 $ git cat-file -s 4723c6ab5406c51c12595742b8770ebd36062d5b
 46467
 ```
 
-So diffs are real, but they sit a layer below the commit. The repack that `gc` runs computes them, backwards from the newest version here. A commit names a tree, that tree names the blob and the blob on disk is still a whole copy of read-cache.c.
+So diffs are real, but they sit a layer below the commit. The repack that `gc` runs computes them, backwards from the newest version here. A commit names a tree, that tree names the blob and the blob on disk is still a whole copy of `read-cache.c`.
 
 <figure class="fig">
 <svg viewBox="0 0 640 230" role="img" aria-label="The same eleven revisions of read-cache.c stored twice. Loose, each revision is a whole copy of the file at 16828 to 16833 bytes on disk. All 33 objects come to 187576 bytes. Packed, the newest revision is stored whole in 13889 bytes and the ten older ones are deltas of 14 to 18 bytes pointing at it, depth 1, for a pack of 16490 bytes.">
@@ -252,12 +252,12 @@ So diffs are real, but they sit a layer below the commit. The repack that `gc` r
   <text x="430" y="222" class="f-label f-ink">16490 bytes</text>
   <text x="30" y="222" class="f-label f-muted">revisions 0 to 9, deltas of 14 to 18 bytes, depth 1</text>
 </svg>
-<figcaption>Eleven whole copies against one whole copy plus ten deltas. The deltas point at the newest revision, so the oldest one is reconstructed from the latest.</figcaption>
+<figcaption>11 whole copies against one whole copy plus 10 deltas. The deltas point at the newest revision, so the oldest one is reconstructed from the latest.</figcaption>
 </figure>
 
 
 
-## Forty one bytes
+## 41 bytes
 
 The rule about deleting the directory is the part I wanted to fix. This runs on a copy of the repository taken before the `gc`:
 
@@ -275,13 +275,13 @@ $ git reflog
 c460805 HEAD@{1}: commit: revision 10
 ```
 
-Those are the first two of twelve reflog entries. The working tree went back three revisions. The commit I left is still an object and the reflog still names it. Getting it back took one `update-ref`. The `reset --hard` after that rewrote the index and 46 KB of working file out of objects that had not gone anywhere. `count-objects` reports 33 before and after all of it.
+Those are the first 2 of 12 reflog entries. The working tree went back 3 revisions. The commit I left is still an object and the reflog still names it. Getting it back took one `update-ref`. The `reset --hard` after that rewrote the index and 46 KB of working file out of objects that had not gone anywhere. `count-objects` reports 33 before and after all of it.
 
 `git branch invoice-fix` writes a 41 byte ref and adds no object at all. It also writes a 167 byte reflog for the new branch, so a branch cost 208 bytes here. Cheap branching is a phrase I had repeated without a number behind it.
 
 ## What I did not check
 
-How the repack picks the delta base and whether depth stays at 1 on a real history. The defaults here are a window of 10 and depth up to 50. Eleven revisions of one text file are a friendly input for a window of 10.
+How the repack picks the delta base and whether depth stays at 1 on a real history. The defaults here are a window of 10 and depth up to 50. 11 revisions of one text file are a friendly input for a window of 10.
 
 A binary file, where the delta search has nothing to reuse. Text only here.
 
