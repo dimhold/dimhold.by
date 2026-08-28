@@ -237,6 +237,20 @@ for (const t of Object.values(dictionaries)) {
     name: `projects-${t.lang}`,
     copy: { kicker: `${site}/projects`, title: t.projects.label, footer: t.projects.lede },
   });
+
+  jobs.push({
+    name: `games-${t.lang}`,
+    copy: { kicker: `${site}/games`, title: t.games.label, footer: t.games.description },
+  });
+
+  /* A card per playable game. The ones still on the roadmap have no page to
+     link, so they get no card either. */
+  for (const g of t.games.items.filter((g) => g.status === 'live')) {
+    jobs.push({
+      name: `game-${g.slug}-${t.lang}`,
+      copy: { kicker: `${site}/games`, title: g.name, footer: t.games.kata.kicker },
+    });
+  }
 }
 
 for (const post of await posts()) {
