@@ -313,6 +313,8 @@ export interface Dictionary {
   };
   /** Accessible name for the social icon row. */
   socialsLabel: string;
+  /** Why the RU and BE switches on the papers pages are locked. Shown in the language of the locked switch. */
+  papersOnlyEnglish: string;
   consent: {
     /** Accessible name for the cookie notice. */
     label: string;
@@ -894,6 +896,7 @@ export const en: Dictionary = {
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM agents',
   },
   socialsLabel: 'Elsewhere',
+  papersOnlyEnglish: 'Papers are English only. Each has a DOI and a PDF that Google Scholar indexes, and a translation would drift from them.',
   leaf: {
     label: 'Tear-off calendar: a Belarusian word for today',
     caption: 'a Belarusian word a day',
@@ -936,7 +939,7 @@ export const ru: Dictionary = {
     blog: 'блог',
     projects: 'мои проекты',
     games: 'игры',
-    papers: 'работы',
+    papers: 'papers',
   },
   blog: {
     label: 'Статьи',
@@ -1482,6 +1485,7 @@ export const ru: Dictionary = {
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM-агенты',
   },
   socialsLabel: 'Я в сети',
+  papersOnlyEnglish: 'Papers только по-английски. У каждой работы есть DOI и PDF, которые индексирует Google Scholar, — перевод разошёлся бы с ними.',
   leaf: {
     label: 'Отрывной календарь: белорусское слово дня',
     caption: 'белорусское слово на каждый день',
@@ -1524,7 +1528,7 @@ export const be: Dictionary = {
     blog: 'блог',
     projects: 'мае праекты',
     games: 'гульні',
-    papers: 'працы',
+    papers: 'papers',
   },
   blog: {
     label: 'Артыкулы',
@@ -2070,6 +2074,7 @@ export const be: Dictionary = {
       'Java · Spring · TypeScript · Angular · React · Node.js · PostgreSQL · Kafka · AWS · LLM-агенты',
   },
   socialsLabel: 'Я ў сетцы',
+  papersOnlyEnglish: 'Papers толькі па-англійску. У кожнай працы ёсць DOI і PDF, якія індэксуе Google Scholar, — пераклад разышоўся б з імі.',
   leaf: {
     label: 'Адрыўны каляндар: беларускае слова дня',
     caption: 'беларускае слова на кожны дзень',

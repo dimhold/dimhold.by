@@ -242,6 +242,64 @@ html[data-mode='night'] .nav-pill[aria-current='page'] {
   background: var(--accent);
 }
 
+/* A locked switch: the pill stays, greyed, and a note comes up on hover, on
+   keyboard focus and on a tap (which focuses the button). */
+.lang-locked {
+  position: relative;
+  display: inline-flex;
+}
+
+.lang-locked button {
+  font: inherit;
+  color: var(--muted);
+  opacity: 0.55;
+  background: transparent;
+  border: 0;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  cursor: not-allowed;
+}
+
+.lang-note {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 20;
+  width: min(18rem, calc(100vw - 2rem));
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.6rem;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 150ms ease, transform 150ms ease, visibility 0s linear 150ms;
+}
+
+.lang-note::before {
+  content: '';
+  position: absolute;
+  top: -0.3rem;
+  right: 0.9rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+.lang-locked:hover .lang-note,
+.lang-locked:focus-within .lang-note {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
 html[data-mode='night'] .langs a:hover {
   color: var(--accent);
   background: rgba(255, 255, 255, 0.06);

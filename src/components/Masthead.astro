@@ -8,9 +8,12 @@ interface Props {
   active?: 'blog' | 'projects' | 'games' | 'papers';
   /** Where each language link should go; defaults to that language's home. */
   langHrefs?: Partial<Record<Lang, string>>;
+  /** The papers exist in English only: the other two switches stay put and
+      say why, each in its own language. */
+  lockLangs?: boolean;
 }
 
-const { t, active, langHrefs = {} } = Astro.props;
+const { t, active, langHrefs = {}, lockLangs = false } = Astro.props;
 const suffix = t.lang === 'en' ? '' : `/${t.lang}`;
 const nav = [
   { key: 'projects' as const, href: `${suffix}/projects/`, label: t.nav.projects },
@@ -25,6 +28,7 @@ const langs = Object.values(dictionaries).map((d) => ({
   code: d.lang.toUpperCase(),
   href: langHrefs[d.lang] ?? d.path,
   current: d.lang === t.lang,
+  note: d.papersOnlyEnglish,
 }));
 ---
 
@@ -46,6 +50,15 @@ const langs = Object.values(dictionaries).map((d) => ({
           <a href={l.href} aria-current="page">
             {l.code}
           </a>
+        ) : lockLangs ? (
+          <span class="lang-locked">
+            <button type="button" aria-disabled="true" aria-describedby={`lang-note-${l.code}`}>
+              {l.code}
+            </button>
+            <span class="lang-note" role="tooltip" id={`lang-note-${l.code}`}>
+              {l.note}
+            </span>
+          </span>
         ) : (
           <a href={l.href}>{l.code}</a>
         ),
