@@ -1,0 +1,21 @@
+---
+import Base from '../../../layouts/Base.astro';
+import KataPiachy from '../../../components/games/KataPiachy.astro';
+import { ru } from '../../../i18n';
+
+const alternates = [
+  { lang: 'en', href: '/games/kata-piachy/' },
+  { lang: 'ru', href: '/ru/games/kata-piachy/' },
+  { lang: 'be', href: '/be/games/kata-piachy/' },
+];
+---
+
+<Base
+  t={ru}
+  title={ru.games.kata.title}
+  description={ru.games.kata.description}
+  alternates={alternates}
+  ogType="website"
+>
+  <KataPiachy t={ru} />
+</Base>

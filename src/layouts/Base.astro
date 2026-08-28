@@ -61,8 +61,10 @@ function ogCard(pathname: string) {
   const seg = pathname.split('/').filter(Boolean);
   const lang = seg[0] === 'ru' || seg[0] === 'be' ? seg.shift() : 'en';
   if (seg.length === 0) return `/og/home-${lang}.jpg`;
-  if (seg.length === 1 && (seg[0] === 'blog' || seg[0] === 'projects')) return `/og/${seg[0]}-${lang}.jpg`;
+  if (seg.length === 1 && (seg[0] === 'blog' || seg[0] === 'projects' || seg[0] === 'games'))
+    return `/og/${seg[0]}-${lang}.jpg`;
   if (seg.length === 2 && seg[0] === 'blog') return `/og/post-${seg[1]}-${lang}.jpg`;
+  if (seg.length === 2 && seg[0] === 'games') return `/og/game-${seg[1]}-${lang}.jpg`;
   return '/og.jpg';
 }
 

@@ -115,6 +115,17 @@ export function initSite() {
       monthsLabel: el.dataset.months ?? 'mo',
     });
   }
+
+  // — the games. Each one is fetched only on its own page, and the drawn scene
+  //   is already on screen without it. —
+  const kata = document.querySelector<HTMLElement>('[data-game="kata-piachy"]');
+  if (kata) {
+    import('./games/kata-piachy')
+      .then((m) => m.mountKataPiachy(kata))
+      .catch(() => {
+        /* the cat keeps hanging there; it just never swings */
+      });
+  }
 }
 
 initSite();

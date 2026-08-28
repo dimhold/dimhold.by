@@ -9,11 +9,67 @@ cheapest lessons are learned first.
 
 | # | Гульня | Genre | Why here in the order |
 | --- | --- | --- | --- |
-| 1 | **Ката пячы** | timing / aim | Tier 1, state-listed, nobody has adapted it, and the simplest of the five to make *good*. First contact with the section's visual language happens on the cheapest game. |
+| 1 | ~~**Ката пячы**~~ **shipped** | bake, then bite | Tier 1, state-listed, nobody has adapted it. First contact with the section's visual language happened on the cheapest game. See below. |
 | 2 | **Лянок** (Horki) | call-and-response rhythm | Eight recorded stages = a game already written. Ends by weaving a real ornament through `ornament.js`, which welds the section to the rest of the site. |
 | 3 | **Панначка** | shield / blow, one input | Visually the strongest thing in the corpus. Tiny mechanically, so it is where the section earns its look. |
 | 4 | **Грахі** | turn-based, simulated opponents | The rule *is* the content: guilt reduces your right to punish. Cheap to build once the shared UI exists. |
 | 5 | **Жаніцьба Цярэшкі** | social state machine | The flagship, and the only game an authority calls unique to Belarus. Last because it does not work without music. |
+
+## 1. «Ката пячы» — shipped 27 Aug 2026 · rebuilt same day
+
+Lives at `/games/kata-piachy/` in all three languages. **Rebuilt 27 Aug 2026**
+from the v1 SVG sketch into a staged evening: a Canvas-2D cut-paper
+(выцінанка) theatre lit by the печ, a skippable prologue, three invented —
+and labelled as invented — villagers whose advice genuinely contradicts, a
+verlet cord and live dough (both cosmetic; the bite is still judged
+analytically), a synthesised score, and an epilogue that ends on Піліпаўка and
+the documentary card. Design contract and build record: `KATA-REBUILD.md`.
+Code: `src/scripts/games/kata-piachy/` (mechanics · engine · scene · physics ·
+drama · sound · index), `src/components/games/KataPiachy.astro`, the `.kata`
+block in `src/styles/global.css`, copy under `games.kata` in
+`src/i18n/index.ts`, balance harness `scripts/kata-balance.mjs`
+(`npm run kata:balance`).
+
+**It is two acts, because the rite is.** The name is an instruction — *bake the
+cat* — so the game bakes it first and only then hangs it up to be bitten. The
+halves are one system rather than two minigames stitched together:
+
+- One trough of dough, six buns, and the sixth is the tail. Rationing is the
+  whole strategic problem, and the game says the tail is last so it is a plan
+  rather than a trap.
+- A bun's **size** is the width of the mouthful it will make later. A big loaf
+  also browns more slowly, so it is easier to bake well — small buns are hard
+  twice over.
+- A bun's **bake** is what it weighs. Raw is heavy and slippery, burnt is crisp
+  and wide but weightless. The cat's total weight sets how wildly the room can
+  swing it, and it gets lighter with every piece bitten off — so the difficulty
+  ramp is emergent from what the player baked.
+- Every piece taken buys another attempt at the tail.
+
+One button does all three jobs: hold to shape, press to pull out of the oven,
+press to bite. Plays one-handed on a phone, works in silence, keeps a best line
+in `localStorage`.
+
+**Balance was measured, not guessed.** The module is driven headless against a
+stub DOM and a fake clock, with a model-free aimer, over the cross-product of
+baking strategies and human timing jitter. At ±100 ms the spread runs from about
+50 % (spend the dough early, or bake nothing but scraps) to near-certain (save
+the dough for the tail) — the choices at the oven are the difference.
+
+**With `prefers-reduced-motion` the cat steps rather than swings**, at half
+speed, on a grid of angles anchored so that one of them puts the piece exactly
+over the pitchfork. Without that anchor a piece could be unhittable at every
+stepped position — it was, before it was measured.
+
+⚠️ **What we invented, and the page says so:** the baking is played here as a
+game, and the record describes buns, not a contest over them. Every number —
+the size of the trough, what a bun's size buys, what raw and burnt do to the
+swing, how many attempts the tail allows — is ours.
+
+No chant is recorded for this rite, so none is put in the player's mouth. The
+only Belarusian in the game itself is the names of the six pieces — вуха, лапа,
+лапа, бок, галава, хвост — which are the words for what they are, not a text
+borrowed from anybody.
 
 ## Definition of done, per game
 

@@ -1,0 +1,304 @@
+---
+/* «Ката пячы» — the first of the games.
+ *
+ * The picture the visitor plays on is a canvas, and a canvas is nothing at all
+ * without JavaScript. So the server still draws the whole scene as SVG — the
+ * oven, the trough, a cat of buns on its cord — and the module in
+ * src/scripts/games swaps the canvas in over it once it has arrived. If it never
+ * does, the visitor sees a hanging cat and the text about it, which is a worse
+ * page but not a broken one.
+ */
+import type { Dictionary } from '../../i18n';
+import Masthead from '../Masthead.astro';
+import SiteFooter from '../SiteFooter.astro';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const k = t.games.kata;
+const langHrefs = {
+  en: '/games/kata-piachy/',
+  ru: '/ru/games/kata-piachy/',
+  be: '/be/games/kata-piachy/',
+};
+const gamesHref = t.lang === 'en' ? '/games/' : `/${t.lang}/games/`;
+
+/* Everything the game needs to speak the page's language, handed over once.
+   Keeping it here rather than in the module means the strings live where every
+   other string on this site lives. */
+const copy = {
+  start: k.start,
+  again: k.again,
+  actBake: k.actBake,
+  actBite: k.actBite,
+  dough: k.dough,
+  weight: k.weight,
+  bakes: k.bakes,
+  yours: k.yours,
+  rivals: k.rivals,
+  tries: k.tries,
+  shove: k.shove,
+  soundOn: k.soundOn,
+  soundOff: k.soundOff,
+  viewWide: k.viewWide,
+  viewNormal: k.viewNormal,
+  bestLabel: k.bestLabel,
+  bestWon: k.bestWon,
+  bestNone: k.bestNone,
+  pieces: k.pieces,
+  prologue: k.prologue,
+  goal: k.goal,
+  msg: k.msg,
+  advisors: k.advisors,
+  epilogue: k.epilogue,
+};
+
+const notes = [
+  { label: k.sourceLabel, text: k.source },
+  { label: k.honestyLabel, text: k.honesty },
+  { label: k.calendarLabel, text: k.calendar },
+  { label: k.choicesLabel, text: k.choices },
+];
+---
+
+<Masthead t={t} active="games" langHrefs={langHrefs} />
+
+<main id="main" class="game-page">
+  <a class="post-back" href={gamesHref}>← {k.back}</a>
+
+  <header class="game-head">
+    <p class="game-kicker">{k.kicker}</p>
+    <h1 class="game-title">{k.name}</h1>
+    <p class="game-lede">{k.lede}</p>
+  </header>
+
+  <section class="kata" data-game="kata-piachy" data-phase="idle" data-act="bake" aria-labelledby="kata-title">
+    <h2 id="kata-title" class="sr-only">{k.name}</h2>
+
+    <script type="application/json" data-kata-copy is:inline set:html={JSON.stringify(copy)} />
+
+    <p class="kata-goal">
+      <span class="kata-lbl">{k.goal.standing}</span>
+      <span class="kata-goal-sub" data-goal-sub></span>
+    </p>
+
+    <div class="kata-hud">
+      <p class="kata-now" data-now>
+        <span class="kata-lbl" data-hud-act>—</span>
+        <strong data-hud-target>—</strong>
+      </p>
+      <dl class="kata-score">
+        <div hidden>
+          <dt>{k.yours}</dt>
+          <dd data-hud-yours>0</dd>
+        </div>
+        <div hidden>
+          <dt>{k.rivals}</dt>
+          <dd data-hud-rivals>0</dd>
+        </div>
+        <div hidden>
+          <dt>{k.tries}</dt>
+          <dd data-hud-tries>0</dd>
+        </div>
+      </dl>
+    </div>
+
+    <p class="kata-meter" data-meter hidden>
+      <span class="kata-lbl" data-meter-label>{k.dough}</span>
+      <span class="kata-meter-track"><span class="kata-meter-bar" data-meter-bar></span></span>
+    </p>
+
+    <div class="kata-stage">
+      <canvas class="kata-canvas" data-canvas width="720" height="480" role="img" aria-label={k.sceneAlt} hidden
+      ></canvas>
+
+      <!-- the no-JS picture: complete on its own, and swapped out the moment
+           the module lands -->
+      <div class="kata-poster" data-poster>
+        <svg class="kata-scene" viewBox="0 0 320 230" role="img" aria-label={k.sceneAlt}>
+          <!-- the ceiling beam, and the cut-paper stars along it -->
+          <g class="kp-beam">
+            <rect x="0" y="6" width="320" height="18" rx="3"></rect>
+            <g class="kp-beam-stars">
+              <path d="M40 15 44 11 48 15 44 19Z"></path>
+              <path d="M96 15 100 11 104 15 100 19Z"></path>
+              <path d="M152 15 156 11 160 15 156 19Z"></path>
+              <path d="M208 15 212 11 216 15 212 19Z"></path>
+              <path d="M264 15 268 11 272 15 268 19Z"></path>
+            </g>
+          </g>
+
+          <!-- the cord, and the cat of buns on the end of it -->
+          <g transform="rotate(-6 160 24)">
+            <line class="kp-cord" x1="160" y1="20" x2="160" y2="98"></line>
+            <g class="kp-cat">
+              <g class="kp-piece">
+                <path class="kp-bun" d="M116 110 128 90 141 108Z"></path>
+              </g>
+              <g class="kp-piece">
+                <ellipse class="kp-bun" cx="148" cy="140" rx="9" ry="7"></ellipse>
+              </g>
+              <g class="kp-piece">
+                <ellipse class="kp-bun" cx="168" cy="142" rx="9" ry="7"></ellipse>
+              </g>
+              <g class="kp-piece">
+                <ellipse class="kp-bun" cx="164" cy="120" rx="34" ry="21"></ellipse>
+                <path class="kp-crumb" d="M150 112q8 5 16 0M154 128q10 5 20 0"></path>
+              </g>
+              <g class="kp-piece">
+                <path class="kp-bun" d="M133 105 144 93 148 109Z"></path>
+                <circle class="kp-bun" cx="130" cy="116" r="15"></circle>
+                <circle class="kp-eye" cx="125" cy="113" r="1.6"></circle>
+                <circle class="kp-eye" cx="134" cy="113" r="1.6"></circle>
+                <path class="kp-crumb" d="M126 121q4 3 8 0"></path>
+              </g>
+              <g class="kp-piece">
+                <path class="kp-tail" d="M192 114q14 2 16-10t-4-16"></path>
+              </g>
+            </g>
+          </g>
+
+          <!-- the oven, the board and the trough -->
+          <g class="kp-bake">
+            <g class="kp-oven">
+              <path class="kp-oven-body" d="M8 214v-48q0-16 16-16h60q16 0 16 16v48Z"></path>
+              <path class="kp-oven-mouth" d="M26 214v-28q0-14 14-14h32q14 0 14 14v28Z"></path>
+              <circle class="kp-oven-bun" cx="56" cy="198" r="7"></circle>
+              <g class="kp-fire">
+                <path d="M42 214q-4-10 3-14 0 6 4 3 3-3 1-9 9 6 8 20Z"></path>
+                <path d="M62 214q-3-8 2-11 0 5 3 2 2-2 1-7 7 5 6 16Z"></path>
+              </g>
+            </g>
+
+            <g class="kp-board">
+              <rect x="126" y="206" width="68" height="6" rx="3"></rect>
+              <circle class="kp-ball" cx="160" cy="196" r="10"></circle>
+            </g>
+
+            <g class="kp-trough">
+              <path class="kp-trough-wood" d="M214 176h94l-9 38h-76Z"></path>
+              <path class="kp-trough-dough" d="M222 186h78l-5 20h-68Z"></path>
+            </g>
+          </g>
+
+          <!-- the room, and the one on the pitchfork -->
+          <g class="kp-bite">
+            <g class="kp-crowd">
+              <g class="kp-body">
+                <circle cx="34" cy="184" r="9"></circle>
+                <path d="M24 214q0-18 10-18t10 18Z"></path>
+              </g>
+              <g class="kp-body">
+                <circle cx="66" cy="190" r="8"></circle>
+                <path d="M57 214q0-16 9-16t9 16Z"></path>
+              </g>
+              <g class="kp-body">
+                <circle cx="256" cy="188" r="8.5"></circle>
+                <path d="M246 214q0-17 10-17t10 17Z"></path>
+              </g>
+              <g class="kp-body">
+                <circle cx="288" cy="185" r="9"></circle>
+                <path d="M278 214q0-18 10-18t10 18Z"></path>
+              </g>
+            </g>
+
+            <g class="kp-player">
+              <g class="kp-fork">
+                <line x1="140" y1="216" x2="147" y2="178"></line>
+                <path d="M138 178H157"></path>
+                <path d="M139 178 136 160M147.5 178V158M156 178 159 160"></path>
+              </g>
+              <path class="kp-body-fill" d="M152 214q0-22 8-22t8 22Z"></path>
+              <circle class="kp-body-fill" cx="160" cy="180" r="9"></circle>
+              <path class="kp-mouth" d="M155 181q5 4 10 0"></path>
+            </g>
+          </g>
+
+          <line class="kp-floor" x1="0" y1="214" x2="320" y2="214"></line>
+        </svg>
+      </div>
+
+      <button class="kata-tap" data-tap hidden aria-label={k.jump}></button>
+
+      <!-- two stage sizes, like a player: the page column, or the window -->
+      <button class="kata-view" data-view hidden aria-pressed="false" aria-label={k.viewWide} title={k.viewWide}>
+        <svg viewBox="0 0 20 14" aria-hidden="true">
+          <rect x="1" y="1" width="18" height="12" rx="2"></rect>
+          <rect x="4.5" y="4" width="11" height="6" rx="1"></rect>
+        </svg>
+      </button>
+      <p class="kata-shove" data-shove hidden aria-hidden="true">{k.shove}</p>
+
+      <!-- the villagers' speech, decorative: the status line below carries the
+           same information for a screen reader -->
+      <div class="kata-bubbles" aria-hidden="true">
+        <div class="kata-bubble" data-bubble hidden>
+          <b class="kata-bubble-be" data-bubble-be></b>
+          <span class="kata-bubble-gloss" data-bubble-gloss hidden></span>
+        </div>
+      </div>
+
+      <!-- пралог: the title card over the yard -->
+      <div class="kata-overlay kata-pro" data-prologue hidden>
+        <div class="kata-card">
+          {k.prologue.card.map((line) => <p class="kata-card-line">{line}</p>)}
+          <p class="kata-card-scene">{k.prologue.scene}</p>
+        </div>
+        <button class="kata-skip" data-skip>{k.prologue.skip} →</button>
+      </div>
+
+      <!-- эпілог: the outcome, the calendar, and then the record itself -->
+      <div class="kata-overlay kata-epi" data-epilogue hidden>
+        <div class="kata-card kata-epi-card">
+          <p class="kata-verdict" data-verdict></p>
+          <p class="kata-calendar" data-calendar hidden>{k.epilogue.calendar}</p>
+          <div class="kata-doc" data-doc hidden>
+            <h3 class="kata-doc-label">{k.epilogue.docLabel}</h3>
+            <ul class="kata-doc-facts">
+              {k.epilogue.facts.map((f) => <li>{f}</li>)}
+            </ul>
+            <p class="kata-doc-invented">{k.epilogue.invented}</p>
+          </div>
+          <button class="kata-start kata-again" data-again hidden>{k.again}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kata-gauge" data-gauge hidden aria-hidden="true">
+      <span class="kata-zone" data-zone="raw">{k.bakes.raw}</span>
+      <span class="kata-zone" data-zone="golden">{k.bakes.golden}</span>
+      <span class="kata-zone" data-zone="burnt">{k.bakes.burnt}</span>
+      <span class="kata-needle" data-needle></span>
+    </div>
+
+    <p class="kata-status" data-status role="status" aria-live="polite">{k.msg.idle}</p>
+
+    <div class="kata-controls">
+      <button class="kata-start" data-start hidden>{k.start}</button>
+      <button class="kata-sound" data-sound hidden aria-pressed="false">{k.soundOff}</button>
+      <span class="kata-best" data-best></span>
+    </div>
+  </section>
+
+  <section class="game-how" aria-labelledby="kata-how">
+    <h2 id="kata-how" class="projects-sub">{k.howLabel}</h2>
+    <ol class="game-steps">
+      {k.how.map((line) => <li>{line}</li>)}
+    </ol>
+  </section>
+
+  <section class="game-notes" aria-label={k.sourceLabel}>
+    {
+      notes.map((n) => (
+        <div class="game-note reveal">
+          <h2 class="game-note-label">{n.label}</h2>
+          <p>{n.text}</p>
+        </div>
+      ))
+    }
+  </section>
+</main>
+
+<SiteFooter t={t} />

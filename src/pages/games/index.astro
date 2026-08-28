@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import GamesIndex from '../../components/GamesIndex.astro';
+import { en } from '../../i18n';
+
+const alternates = [
+  { lang: 'en', href: '/games/' },
+  { lang: 'ru', href: '/ru/games/' },
+  { lang: 'be', href: '/be/games/' },
+];
+---
+
+<Base
+  t={en}
+  title={en.games.title}
+  description={en.games.description}
+  alternates={alternates}
+  ogType="website"
+>
+  <GamesIndex t={en} />
+</Base>

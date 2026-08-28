@@ -1,0 +1,63 @@
+---
+/* The Гульні section front: what is playable, what is being built, and the
+   rules the whole section is held to. */
+import type { Dictionary } from '../i18n';
+import Masthead from './Masthead.astro';
+import SiteFooter from './SiteFooter.astro';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const langHrefs = { en: '/games/', ru: '/ru/games/', be: '/be/games/' };
+---
+
+<Masthead t={t} active="games" langHrefs={langHrefs} />
+
+<main id="main" class="games-page">
+  <header class="section-head">
+    <h1 class="blog-title">{t.games.label}</h1>
+    <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+      <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+    </svg>
+  </header>
+
+  <p class="projects-lede">{t.games.lede}</p>
+  <p class="games-framing">{t.games.framing}</p>
+
+  <div class="games-list">
+    {
+      t.games.items.map((g) =>
+        g.href ? (
+          <a class="post-card game-card reveal" href={g.href}>
+            <span class="game-card-status" data-status={g.status}>
+              {t.games.statuses[g.status]}
+            </span>
+            <h2 class="post-card-title">{g.name}</h2>
+            <p class="post-card-desc">{g.gloss}</p>
+            <span class="post-card-meta">{t.games.play}</span>
+          </a>
+        ) : (
+          <div class="post-card game-card is-planned reveal">
+            <span class="game-card-status" data-status={g.status}>
+              {t.games.statuses[g.status]}
+            </span>
+            <h2 class="post-card-title">{g.name}</h2>
+            <p class="post-card-desc">{g.gloss}</p>
+            <span class="post-card-meta">{t.games.soon}</span>
+          </div>
+        ),
+      )
+    }
+  </div>
+
+  <section class="section" aria-labelledby="games-rules">
+    <h2 id="games-rules" class="projects-sub">{t.games.rulesLabel}</h2>
+    <ol class="games-rules">
+      {t.games.rules.map((r) => <li>{r}</li>)}
+    </ol>
+  </section>
+</main>
+
+<SiteFooter t={t} />

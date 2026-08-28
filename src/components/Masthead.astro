@@ -5,7 +5,7 @@ import { dictionaries } from '../i18n';
 interface Props {
   t: Dictionary;
   /** Which nav pill is the current page, if any. */
-  active?: 'blog' | 'projects' | 'papers';
+  active?: 'blog' | 'projects' | 'games' | 'papers';
   /** Where each language link should go; defaults to that language's home. */
   langHrefs?: Partial<Record<Lang, string>>;
 }
@@ -15,6 +15,7 @@ const suffix = t.lang === 'en' ? '' : `/${t.lang}`;
 const nav = [
   { key: 'projects' as const, href: `${suffix}/projects/`, label: t.nav.projects },
   { key: 'blog' as const, href: `${suffix}/blog/`, label: t.nav.blog },
+  { key: 'games' as const, href: `${suffix}/games/`, label: t.nav.games },
   /* The papers live in English only, so every language points at the same
      place. Better a link that crosses languages than a section reachable
      from the sitemap alone. */
