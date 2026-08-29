@@ -118,6 +118,12 @@ sounding prose would answer the question inside the prompt.
 21 August 2026 with claude CLI 2.1.238, tools isolated with `--tools ""` and an
 empty MCP config.
 
+2 of the sonnet texts, `B-002` and `B-021`, were generated twice: the first run
+stopped on a tool use stub of 13 and 17 words. `stats.json` records both as
+`failures` and the stubs sit in `rejected/`. The 2 replacements are the ones
+measured. Sonnet is the model with the weakest dash separation, so the reader
+should know the cell was retried.
+
 The 30 topics are the first 30 corpus A essays in corpus order. The run was
 fixed at 30 texts per model before it started, so the 2 essays that sit last in
 that order, `A-031` and `A-032`, both by Julia Evans, have no machine

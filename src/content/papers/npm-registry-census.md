@@ -242,8 +242,8 @@ packages whose `prepare` never runs.
 
 A fourth counter sits in the same file and is outside the table because it
 answers a different question. 101,811 packages, 2.37% of the registry, declare
-`preinstall`, `install` or `postinstall` in some version rather than in the
-newest one. For a reader who cares what an old pin can still execute, that is the
+`preinstall`, `install` or `postinstall` in any version, not only in the newest
+one. For a reader who cares what an old pin can still execute, that is the
 honest figure and it is 1.4 times the 74,664 above.
 
 ### 3.6 A sample of 100,000 was wrong by at most 0.16 points
@@ -438,8 +438,10 @@ records drawn by reservoir sampling with seed 20260821.
 
 `npm run verify` does 3 things in seconds and without the network. It checks the
 crawler's own state file against the aggregate, so a truncated or swapped file
-shows up. It re-derives every number quoted in the repository from the raw
-counters and fails if prose and data disagree. Then it re-runs the counting
+shows up. It re-derives the headline figures from the raw counters and then
+checks that each derived string appears somewhere in the README, which catches a
+number that has drifted but not one that is quoted in a wrong sentence. Then it
+re-runs the counting
 script, in the reader's clone, over the published slice and requires it to
 reproduce the published slice aggregate exactly.
 

@@ -19,7 +19,9 @@ abstract: >-
   times out of 10. On one 36 month cash forecast that slight wrongness came to
   $8,451 with nothing in the reply to signal it. It also spent the most
   reasoning of any model, 58,027 tokens against 7,771 for the most accurate one.
-  More thinking bought less accuracy here.
+  More reasoning went with less accuracy across these 4 models. That is a
+  direction rather than a lever: n is 4 and token spend is inseparable from
+  model identity.
 date: 2026-08-16
 doi: 10.5281/zenodo.22128841
 repo: https://github.com/dimhold/llm-arithmetic
@@ -260,7 +262,7 @@ comparison inside 1 vendor family rather than a new benchmark.
 - [wesm/llm-arithmetic-benchmark](https://github.com/wesm/llm-arithmetic-benchmark)
   (December 2025) is the nearest neighbour and it is code rather than a paper. It
   measures tool free arithmetic aggregation, a sum grouped by key over CSV rows,
-  under the same no calculator condition used here. Its model list runs to 4
+  under the same no calculator condition used here. Its `benchmark.py` lists 6
   Anthropic models beside OpenAI and locally hosted ones, so a within family
   comparison on identical arithmetic tasks already exists.
 - Inverse Scaling in Test-Time Compute

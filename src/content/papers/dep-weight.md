@@ -98,8 +98,9 @@ and Maven `test` and `provided` scopes are excluded. That is why `prisma`,
 `angular`, `next` and `quarkus` look small here: their weight arrives bundled,
 as peers or through a BOM.
 
-**The root package counts as a node in its own tree.** So "`express` resolves to
-71 packages" means 70 dependencies plus `express` itself. That convention is
+**Every root package counts as a node in its own tree.** The `express` stack has
+3 roots, `express` with `cors` and `body-parser`, so "`express` resolves to
+71 packages" means 68 dependencies plus those 3. That convention is
 stated here because the next section is what forced it into the open.
 
 ### 2.4 Checked against an independent resolver
@@ -110,7 +111,8 @@ publishes already resolved dependency graphs. The comparison ran on 19 August
 
 The first run came back +1 high almost everywhere: `vue` 23 against 22, `svelte`
 20 against 19, `webpack` 68 against 67, `django` 3 against 2, `okhttp` 5 against
-4. 10 stacks off by exactly 1 is a definition rather than noise. We count the
+4. 15 of the 42 stacks were off by exactly 1, which is a definition rather
+than noise. `VALIDATION.md` names 10 of those 15. We count the
 root as a node and `deps.dev` reports the graph without it. The comparison now
 subtracts the roots and keeps `rawDelta` beside `delta` so the gap stays visible
 instead of being tidied away.

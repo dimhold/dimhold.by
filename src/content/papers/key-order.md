@@ -93,7 +93,8 @@ measurement:
    fits in cache measures memory rather than the key.
 
 The disproof condition was written down in the same file: **under 1.5x on all 3
-of insert time, WAL and index size would have been the published result**, with
+of last batch insert time, last batch WAL and end index size would have been the
+published result**, with
 the conclusion that at this table size key order decides nothing and the advice
 was sold for more than it is worth.
 
@@ -194,7 +195,7 @@ identical fragmentation.
 
 A random key arrives in a leaf page that is already full. The page splits and
 half of each split page stays empty, which gives 71.2% leaf density against
-90.1%, which gives an index a quarter larger, which means more pages touched per
+90.0%, which gives an index a quarter larger, which means more pages touched per
 insert and more full page images written to WAL. An ordered key always lands at
 the right edge of the tree, so nothing splits in the middle and nothing
 fragments.

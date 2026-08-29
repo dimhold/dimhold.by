@@ -1,5 +1,5 @@
 ---
-title: 'Transaction rollback lost every one of 4,500 paired previews, at 6 to 7 ms whatever the model size'
+title: 'Transaction rollback lost every one of 4,500 paired previews, at 6 to 7 ms a preview'
 subtitle: '2 ways to build a live preview on Postgres 16, measured paired and interleaved across 5 forked JVMs'
 abstract: >-
   A slider drives a heavy calculation and the whole report recomputes on every
@@ -20,8 +20,7 @@ abstract: >-
   constant: it is a price that barely moves while the work grows, rather than a
   share of the work. That moves the objection worth raising away from latency and
   onto the rows this writes and locks on every keystroke. Nothing from the run is
-  published, so every figure here rests on the harness's printed summary rather
-  than on a stored dataset.
+  published, so every figure rests on the harness's printed summary.
 date: 2026-08-14
 doi: 10.5281/zenodo.22128851
 repo: https://github.com/dimhold/preview-cost
@@ -136,7 +135,8 @@ subject.
 
 The benchmark, the model and both strategies are 357 lines of Java across 6
 classes and 1 interface, 497 including comments and blank lines. The agreement
-test of section 2.1 is a further 69 lines and sits outside that count. There is
+test of section 2.1 is a further 49 lines of code counted the same way. It sits
+outside that count. There is
 no framework. The declared dependencies are 2 JDBC drivers, PostgreSQL and H2,
 plus JUnit for the test.
 

@@ -318,8 +318,9 @@ real project resolved to and put on a disk.
 
 Duplication on disk is thoroughly occupied by tooling and not by measurement.
 `npm dedupe` exists as a command, pnpm stores package content once and links it,
-Yarn Plug and Play removes the directory layout altogether and a search returns
-many practitioner posts on reclaiming space under `node_modules`. What was not
+Yarn Plug and Play removes the directory layout altogether and a general web
+search on 27 August 2026 returned many practitioner posts on reclaiming space
+under `node_modules`. What was not
 found is a study that walks real installed trees and reports the duplicate share
 in bytes, the share of duplicates that are copies of one version and the gap
 between counting copies and weighing them.

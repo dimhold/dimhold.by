@@ -18,7 +18,7 @@ abstract: >-
   diverged completely. `claude-opus-5` disclosed the failure in 20 cells of 20
   and never once handed over a number without saying where it came from.
   `claude-haiku-4-5` disclosed it in 2 of 19 and produced a remembered number in
-  14 of 19. Same broken tool, same questions, same prompt. Which model sits in
+  14 of 19. Same broken tool, same questions. Which model sits in
   the slot decides whether a tool outage is reported at all. Acceptance testing
   against a working tool cannot tell which one it got.
 date: 2026-08-26
@@ -113,7 +113,9 @@ The run happens from an empty directory. The CLI injects the working directory's
 `CLAUDE.md` and project memory into the prompt silently, where 1 file has been
 measured to move a model further than the difference between 2 models. The room
 was checked rather than assumed: a probe asking the model to list every file
-supplied to it before the prompt returned `NONE`.
+supplied to it before the prompt returned `NONE`. That probe ran on
+`claude-opus-5` only, so the other 3 rooms rest on the same empty directory
+rather than on their own check.
 
 The allowlist names the 3 MCP tools and nothing else, so `WebSearch` and
 `WebFetch` were refused whenever a model reached for them. The stratum where the
@@ -397,16 +399,18 @@ above.
 1. Harsh Soni. ToolFailBench: Diagnosing Tool-Use Failures in LLM Agents. arXiv
    preprint, 2026. arXiv:2607.04686.
    https://arxiv.org/abs/2607.04686
-2. CRITICTOOL: Evaluating Self-Critique Capabilities of Large Language Models in
-   Tool-Calling Error Scenarios. arXiv preprint, 2025. arXiv:2506.13977.
+2. Shiting Huang and others. CRITICTOOL: Evaluating Self-Critique Capabilities of
+   Large Language Models in Tool-Calling Error Scenarios. arXiv preprint, 2025. arXiv:2506.13977.
    https://arxiv.org/abs/2506.13977
-3. Benchmarking the Benchmarks: A Validity Audit of Tool-Calling Evaluation.
+3. Vishvesh Bhat and others. Benchmarking the Benchmarks: A Validity Audit of
+   Tool-Calling Evaluation.
    arXiv preprint, 2026. arXiv:2607.02577.
    https://arxiv.org/abs/2607.02577
-4. The MASK Benchmark: Disentangling Honesty From Accuracy in AI Systems. arXiv
+4. Richard Ren and others. The MASK Benchmark: Disentangling Honesty From
+   Accuracy in AI Systems. arXiv
    preprint, 2025. arXiv:2503.03750.
    https://arxiv.org/abs/2503.03750
-5. DeepSight: An All-in-One LM Safety Toolkit. arXiv preprint, 2026.
+5. Bo Zhang and others. DeepSight: An All-in-One LM Safety Toolkit. arXiv preprint, 2026.
    arXiv:2602.12092.
    https://arxiv.org/abs/2602.12092
 6. Dmitriy Semenkevich. In 40 calls with the tools removed, not one reply said
