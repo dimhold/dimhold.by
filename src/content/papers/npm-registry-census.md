@@ -44,10 +44,13 @@ So this counts it. Every name in the replication index, fetched from the
 registry itself, on a date that is written down. The point of the exercise is
 not any single share but the denominator underneath all of them.
 
-One result came out of that and was not expected. The most quoted security
-number about npm, the share of packages that execute code when you install them,
-is wrong by a factor of 3.66 and it is wrong for a reason no sample size can
-fix.
+One result came out of that and was not expected. Counting all 4 npm lifecycle
+scripts gives 6.36% of the registry. Counting only the 3 that run on the machine
+of somebody installing a published tarball gives 1.74%. The gap is a factor of
+3.66 and it is a definition rather than a sample, so no sample size closes it.
+Which of the 2 figures circulates more is not something this study established
+and no claim about that is made here: the only practitioner measurement section 6
+found already counts the 3 correct hooks.
 
 ## 2. Method
 
@@ -72,7 +75,9 @@ One request per name, 25 requests a second, holding to that rate on purpose
 because the registry is a public service and this was a long visit. The run
 started at 2026-08-19T09:15:07Z and finished at 2026-08-21T09:15:31Z, averaging
 24.9 packages a second and writing 20.65 GB of slim records. The registry asked
-the crawler to slow down 5 times and it did.
+the crawler to slow down 5 times and it did. Byte figures in this paper are
+decimal: 20.65 GB is 20,652,163,999 bytes over 10 to the 9th, not a power of 2
+quantity.
 
 The crawler is resumable, which matters at this length: the output file is the
 state, so killing the process costs nothing but the request in flight. Ages are
@@ -97,14 +102,23 @@ away from the count it came from.
 - A package with no versions at all is counted in the denominator and skipped
   everywhere else. There are 1,933 of those, 0.04%.
 
+That skip splits the denominators of the 3 means quoted below. The version count
+is accumulated before it, so 16.5 versions per package divides by all 4,296,340.
+The dependency and maintainer sums are accumulated after it, so 4.57 and 1.46
+divide 4,294,407 packages' worth of data by 4,296,340. The difference is 0.045%
+and it does not reach the second decimal of either mean, which is why the figures
+stand as printed rather than being recomputed.
+
 ### 2.4 The second pass over install hooks
 
 The crawler stored the presence of a lifecycle script as a single bit across all
 4 of `preinstall`, `install`, `postinstall` and `prepare`. That bit answers the
-wrong question, so every package carrying it was fetched again by name and its
-newest version read for which of the 4 it declares. 323,556 candidates were
-requested on 21 August 2026, 323,536 answered, 20 had left the registry between
-the passes and there were no errors.
+wrong question, so every package carrying it in any version was fetched again by
+name and its newest version read for which of the 4 it declares. 323,536
+candidates came back on 21 August 2026 with no errors. That is the number every
+split below is taken over and it is the `candidatesScanned` field of
+`hooks-full.json`. The pass's own state file is not published, so how many names
+it asked for is not checkable from the artifact and is not quoted.
 
 The reason for the second pass is a semantic claim that should not be taken from
 documentation, so it was run instead. A probe package declaring all 4 hooks,
@@ -220,6 +234,18 @@ will actually execute anything. The whole difference is `prepare`, declared and
 nothing else by 198,614 packages, which is 61.4% of the 323,536 candidates the
 first pass flagged.
 
+`prepare` is not dead code. It fires when the package is built from source and
+it fires when the package arrives as a git, file or link dependency, which row 3
+of the probe table shows. So those 198,614 are packages whose `prepare` does not
+run for somebody pulling a published tarball, the ordinary case, rather than
+packages whose `prepare` never runs.
+
+A fourth counter sits in the same file and is outside the table because it
+answers a different question. 101,811 packages, 2.37% of the registry, declare
+`preinstall`, `install` or `postinstall` in some version rather than in the
+newest one. For a reader who cares what an old pin can still execute, that is the
+honest figure and it is 1.4 times the 74,664 above.
+
 ### 3.6 A sample of 100,000 was wrong by at most 0.16 points
 
 Before the census a uniform sample of 100,000 names was drawn with seed
@@ -237,6 +263,13 @@ sampling error alone.
 | declares any of the 4 hooks | 6.38% | 6.29% | -0.09 pp |
 | no versions at all | 0.04% | 0.04% | -0.00 pp |
 
+Line 6 of that table is the crawl's single bit, counted in the same pass as
+everything else in it. The second pass of section 2.4 counts the same definition
+over the same registry and gets 6.36% rather than 6.38%, because it re-read every
+candidate 2 days later and packages publish in between. That is 820 packages out
+of 4,296,340. Every split by which script comes from the second pass, because the
+crawl bit cannot be split.
+
 The worst error across every metric is 0.16 percentage points. A uniform sample
 of 99,751 described a registry of 4,296,340 to within a fifth of a point. That
 is the textbook result and it is worth having in hand rather than assuming,
@@ -246,20 +279,27 @@ prove them.
 ## 4. The error is in the definition, where sample size has no purchase
 
 Line 6 of the table above is the one to read twice. The sample said 6.29% of
-packages declare an install hook, the census said 6.38% and the agreement
-between them is real. The number is still the wrong answer to the question it
-gets asked, because 4.62 of those 6.38 points are `prepare` and `prepare` never
-runs on the installing machine. A larger sample would have agreed more closely
-and stayed exactly as wrong.
+packages declare an install hook, the census said 6.38% and the agreement between
+them is real. The number is still the wrong answer to the question it gets asked.
+Split by which script, over the second pass that is the only measurement able to
+split it, 6.36% of the registry is 1.74% that runs for an installer plus 4.62%
+that declares `prepare` and nothing else. A larger sample would have agreed more
+closely and stayed exactly as wrong.
+
+Those 2 shares for one definition, 6.38% from the crawl and 6.36% from the second
+pass, are quoted separately on purpose. Subtracting the `prepare` share of one
+measurement from the total of the other would produce a corrected figure that
+belongs to neither, so the correction is taken inside the second pass and the
+crawl figure is used only where it is compared with the sample.
 
 That is the general shape worth carrying away from a census: sampling error is
 the failure mode people check for and a definition that quietly answers a
 neighbouring question is the failure mode that survives every check for it.
 
 The corrected figure changes the argument in both directions. The attack surface
-that executes code at install time is roughly a quarter of what is usually
-claimed, so `--ignore-scripts` breaks fewer projects than the common objection
-assumes. It also becomes concrete: 74,664 names fit in a file that a person can
+that executes code at install time is roughly a quarter of what counting all 4
+lifecycle scripts gives, so `--ignore-scripts` breaks fewer projects than a
+manifest grep implies. It also becomes concrete: 74,664 names fit in a file that a person can
 read, which an ecosystem sized abstraction does not. npm v12 draws its default
 allowlist boundary around exactly these 3 scripts, according
 to a [Semgrep post of 11 June 2026](https://semgrep.dev/blog/2026/rip-npm-postinstall-scripts-npm-v12-default-change/),
@@ -281,6 +321,15 @@ package counts once whether millions of projects install it or nobody ever has.
 A census weighted by downloads would produce different numbers and would answer
 a different question. Quoting one of these shares as though it described the
 packages in a working `node_modules` would be wrong.
+
+**The frame is the replication index, not every name npm has ever held.**
+[Ecosyste.ms](https://ecosyste.ms/), the source section 6 cites first, reported
+5,797,555 npm packages when this paper was written. The index this census walked
+listed 4,305,887 names on 19 August 2026 and 4,296,340 of them answered, so the 2
+frames are about 1,500,000 apart. This study did not reconcile them name by name
+and offers no account of the gap, so no share here should be read as a share of
+whatever Ecosyste.ms counts. What every percentage in section 3 divides by is
+written down exactly. That is the most the artifact supports.
 
 **The snapshot is smeared across 48 hours.** A package fetched in the first hour
 and a package fetched in the last were read 2 days apart. At this scale that
@@ -316,7 +365,10 @@ continuously updated datasets are larger than anything a single crawl produces.
 
 - [Ecosyste.ms](https://ecosyste.ms/) aggregates package registry, repository
   and advisory metadata across ecosystems continuously. At the time of checking
-  it reported 14,400,000 packages across 109 sources and 2,180,000 maintainers.
+  it reported 14,400,000 packages across 109 sources and 2,180,000 maintainers,
+  of which 5,797,555 packages and 1,240,824 maintainers are npm. That npm figure
+  is 1,500,000 above the frame counted here and section 5 says what follows from
+  it.
 - [deps.dev](https://deps.dev/), Google's Open Source Insights, indexes 7
   package managers including npm and exposes dependency graphs through an API
   and a public BigQuery dataset.
@@ -343,6 +395,20 @@ continuously updated datasets are larger than anything a single crawl produces.
   plainly that its frame is a search result rather than a census and it does
   not analyse `prepare` separately.
 
+2 companion measurements of ours sit on the other side of the same registry and
+are named because their numbers contradict these. A disk walk of installed
+`node_modules` trees
+([10.5281/zenodo.22128826](https://doi.org/10.5281/zenodo.22128826)) finds 50.0%
+of 1,598 installed names listing exactly 1 maintainer and 44.7% silent for 2
+years, against the 84.9% and 65.8% here. A resolution of 42 frozen manifests
+against registry metadata
+([10.5281/zenodo.22128854](https://doi.org/10.5281/zenodo.22128854)) sits with
+the disk walk on that axis. The reason is section 5's first threat: this is the
+registry as a warehouse, where most entries are a single publish nobody installed,
+while both companions count only what a real manifest resolves to. Any share
+taken over the whole registry reads far more abandoned than the same share taken
+over a working tree. Neither is the wrong answer to its own question.
+
 What was not found stated anywhere is the separation itself: 6.36% of the
 registry declaring one of the 4 lifecycle scripts against 1.74% declaring one
 that runs for an installer, counted over every package rather than over a
@@ -351,12 +417,14 @@ whole registry with the crawler, the counting scripts and a verification slice,
 where every number quoted is recomputed from raw counters by a check that fails
 if the text and the data disagree.
 
-Searched arXiv, Semantic Scholar, GitHub and general web search on 29 August
-2026.
+Searched arXiv, Semantic Scholar and GitHub on 29 August 2026. Semantic Scholar
+rate limited most queries and general web search was unavailable that day, so the
+open web outside those sources is not claimed as checked.
 
-The novelty check for this measurement was written after the counting rather
-than before it. That order is wrong and is recorded as such; from 27 August 2026
-the check is required beside the disproof condition, before the first count.
+The novelty check for this measurement was written on 27 August 2026, after the
+counting rather than before it. That order is wrong and is recorded as such; from
+27 August 2026 the check is required beside the disproof condition, before the
+first count.
 
 ## 7. Availability
 
@@ -379,3 +447,32 @@ That last check is worth being precise about. It proves the aggregates came out
 of the code beside them, on real crawl records that can be read. It does not
 prove the full totals. Nothing short of crawling the registry again proves the
 full totals, which is why the crawler is published byte for byte as it ran.
+
+The hook pass has one gap of the same kind. Its aggregate and a slice of every
+160th candidate ship. Its 727 MB of raw records and its state file do not, so the
+count of names it requested cannot be recovered from the repository.
+
+## 8. References
+
+- Markus Zimmermann, Cristian-Alexandru Staicu, Cam Tenny, Michael Pradel. Small
+  world with high risks: a study of security threats in the npm ecosystem.
+  USENIX Security, 2019. arXiv:1902.09217. https://arxiv.org/abs/1902.09217
+- Nusrat Zahan, Thomas Zimmermann, Patrice Godefroid, Brendan Murphy, Chandra
+  Maddila, Laurie Williams. What are weak links in the npm supply chain? arXiv,
+  2021. arXiv:2112.10165. https://arxiv.org/abs/2112.10165
+- Donald Pinckney, Federico Cassano, Arjun Guha, Jonathan Bell. `npm-follower`:
+  a complete dataset tracking the npm ecosystem. ESEC/FSE, 2023.
+  arXiv:2308.12545. https://arxiv.org/abs/2308.12545
+- Myzura. How many npm packages actually run code when you npm install. dev.to,
+  10 August 2026.
+  https://dev.to/myzura/how-many-npm-packages-actually-run-code-when-you-npm-install-i-measured-a-sample-45e4
+- Semgrep. RIP npm postinstall scripts: the npm v12 default change. Semgrep blog,
+  11 June 2026.
+  https://semgrep.dev/blog/2026/rip-npm-postinstall-scripts-npm-v12-default-change/
+- Dmitriy Semenkevich. Duplicate copies hold 14.0 to 17.2% of node_modules.
+  2026. DOI 10.5281/zenodo.22128826. https://doi.org/10.5281/zenodo.22128826
+- Dmitriy Semenkevich. Dependency trees did not grow: 25 of 39 frozen manifests
+  held flat or shrank. 2026. DOI 10.5281/zenodo.22128854.
+  https://doi.org/10.5281/zenodo.22128854
+- Google Open Source Insights. deps.dev. https://deps.dev/
+- Ecosyste.ms. Open source ecosystem metadata. https://ecosyste.ms/

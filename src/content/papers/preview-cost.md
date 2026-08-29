@@ -1,5 +1,5 @@
 ---
-title: 'Transaction rollback lost every one of 4,500 paired previews, at a flat 6 to 7 ms'
+title: 'Transaction rollback lost every one of 4,500 paired previews, at 6 to 7 ms whatever the model size'
 subtitle: '2 ways to build a live preview on Postgres 16, measured paired and interleaved across 5 forked JVMs'
 abstract: >-
   A slider drives a heavy calculation and the whole report recomputes on every
@@ -14,11 +14,14 @@ abstract: >-
   method, so the measurement isolates how the inputs were produced. On Postgres
   16 with JDK 25, at 1,500 paired previews per configuration and 4,500 across
   3 configurations, the rollback was slower in every pair. The paired median
-  difference was 6.54 ms at 42 model fields and 7.02 ms at 482, while the
-  calculation itself grew 5.6 times heavier across the same range. The overhead
-  is a fixed price rather than a share of the work, which moves the objection
-  worth raising away from latency and onto the rows this writes and locks on
-  every keystroke.
+  difference ran from 6.16 ms to 7.02 ms across the 3 configurations, a factor of
+  1.14, while the calculation it wraps grew 5.6 times heavier over the same
+  range. The 3 bootstrap intervals do not overlap, so the penalty is not one
+  constant: it is a price that barely moves while the work grows, rather than a
+  share of the work. That moves the objection worth raising away from latency and
+  onto the rows this writes and locks on every keystroke. Nothing from the run is
+  published, so every figure here rests on the harness's printed summary rather
+  than on a stored dataset.
 date: 2026-08-14
 doi: 10.5281/zenodo.22128851
 repo: https://github.com/dimhold/preview-cost
@@ -131,14 +134,17 @@ installed, but every number below is from real Postgres. H2 in memory does not
 reproduce what a write and discard costs a real database, which is the entire
 subject.
 
-The whole thing is 357 lines of Java across 7 classes, 497 including comments,
-with no framework and no dependency beyond a JDBC driver.
+The benchmark, the model and both strategies are 357 lines of Java across 6
+classes and 1 interface, 497 including comments and blank lines. The agreement
+test of section 2.1 is a further 69 lines and sits outside that count. There is
+no framework. The declared dependencies are 2 JDBC drivers, PostgreSQL and H2,
+plus JUnit for the test.
 
 ## 3. Results
 
 **The rollback was slower in 100% of pairs, in every configuration. The paired
-median difference was 6.54 ms with 42 model fields and 7.02 ms with 482, while
-the calculation it wraps got 5.6 times more expensive across that same range.**
+median difference stayed between 6.16 ms and 7.02 ms across the 3 configurations
+while the calculation it wraps got 5.6 times more expensive.**
 
 | plans | fields | A: rollback p50 | per fork medians | B: in memory p50 | paired median difference | 95% CI |
 |---|---|---|---|---|---|---|
@@ -150,22 +156,33 @@ There is no significance test to run here. The separation is total: no pair
 anywhere in the run had the rollback finishing first, so there are no
 overlapping tails for a test to weigh.
 
-### 3.1 The overhead is a constant
+### 3.1 The overhead does not scale with the work
 
-This is the finding. It is visible in the last 2 columns of the table read
-against the fourth. The calculation went from 0.08 ms to 0.45 ms, a factor of
-5.6. The penalty went from 6.54 ms to 7.02 ms, a factor of 1.07.
+This is the finding and it is weaker than a constant. The calculation went from
+0.08 ms to 0.45 ms, a factor of 5.6. The penalty went 6.54, 6.16, 7.02, a range
+of 0.86 ms and a factor of 1.14 between its cheapest and its dearest point.
 
-The mechanism is in the code. Each preview issues the same statements whatever
-the model size: one batched update of 4 rows, one select of the whole model, one
-rollback. Only the select's result set grows, from 42 rows to 482. The price is
-paid for having a transaction at all, not for the size of what was computed
-inside it.
+**It is not a constant and the intervals say so.** [6.41, 6.65], [6.05, 6.26] and
+[6.84, 7.20] do not overlap in any pair, so the penalty differs at all 3 model
+sizes by more than this harness's sampling error. It is not monotone either: the
+middle configuration is the cheapest of the 3. Reading only the first and last
+rows gives 6.54 to 7.02 and a factor of 1.07, which hides the dip at 162 fields
+and understates the real spread.
 
-Read the other way, the ratio between the strategies collapses as the work
-grows: A is 83 times slower than B at 42 fields and 17 times slower at 482. A
-benchmark that reported only that ratio would tell you the opposite story
-depending on which configuration it happened to run.
+What survives is the claim the decision actually needs. Over a range where the
+work grows 5.6 times, the penalty moves by at most 1.14 times. The mechanism is
+in the code. Each preview issues the same statements whatever the model size: one
+batched update of 4 rows, one select of the whole model, one rollback. Only the
+select's result set grows, from 42 rows to 482. The price is paid mostly for
+having a transaction at all rather than for the size of what was computed inside
+it. What is left over is the 0.86 ms.
+
+Read the other way, the ratio between the strategies collapses as the work grows:
+A is roughly 80 times slower than B at 42 fields and roughly 17 times slower at
+482. Both ratios are loose on purpose. B's median prints as 0.08 ms, which carries
+1 significant figure, so the first ratio is pinned no better than somewhere
+between 78 and 88. A benchmark that reported only that ratio would tell you the
+opposite story depending on which configuration it happened to run.
 
 ### 3.2 One run would not have been an answer
 
@@ -188,9 +205,10 @@ spends waiting. Nobody feels it. If latency were the whole argument, the
 rollback preview would win on simplicity and the second engine would never get
 built.
 
-The cost is somewhere else. The constant is what points at it. Every preview
-opens a transaction, writes rows it is about to throw away and holds their locks
-until it does. On one connection with no contention that is invisible. With
+The cost is somewhere else and the shape of the penalty points at it. A price
+that barely moves while the work grows 5.6 times is not being paid for the
+computation. Every preview opens a transaction, writes rows it is about to throw
+away and holds their locks until it does. On one connection with no contention that is invisible. With
 several people previewing the same model, the lock duration is exactly the part
 that stops being free, scaling with the number of previewers rather than with
 the size of the calculation.
@@ -203,12 +221,16 @@ in the test that has to stay green.
 
 ## 5. Threats to validity
 
-**The raw per pair timings are not published.** The repository ships the harness
-and the numbers, not the 4,500 measured pairs. Every figure here therefore rests
-on the harness's own printed summary from the run of 14 August 2026 rather than
-on a stored dataset a reader can recompute from. Reproduction means rerunning
-against a Postgres instance, which the repository fully supports and which will
-produce different absolute values on different hardware.
+**Nothing from the run of 14 August 2026 is published.** Not the 4,500 pairs, not
+a log, not a transcript of the console output, not a release asset. `Bench.java`
+parses the stdout of its child JVMs in memory and prints aggregates; it opens no
+file for writing. None of the repository's 9 commits carries one either, so every
+figure in section 3, the headline that the rollback lost all 4,500 pairs
+included, rests on numbers a person read off a terminal. A reader can rerun the
+harness. A reader cannot check what this run produced. No claim here should be
+given the weight of a checkable one. Rerunning against a Postgres instance is
+fully supported and will produce different absolute values on different
+hardware.
 
 **One machine, one moment.** The bootstrap interval describes sampling error on
 that machine at that time. It says nothing about other hardware, another schema
@@ -228,12 +250,13 @@ stable. They do not cover everything JMH covers.
 
 **One schema shape.** The model is a single table of name and value pairs. A
 wider schema, a different index layout or a write path with triggers would move
-the constant, though the argument that it is a constant rests on the statement
-count rather than on the schema.
+the price, though the argument that it barely tracks the work rests on the
+statement count rather than on the schema.
 
-**Percentiles use the nearest rank convention.** For an even sample the reported
-p50 is the upper of the 2 middle values, which shifts a median by one
-observation and matters at no point in this comparison.
+**Percentiles use the nearest rank convention.** `quantile` returns
+`sorted[ceil(q*n)-1]`, so for an even sample the reported p50 is the lower of
+the 2 middle values. That shifts a median by one observation and matters at no
+point in this comparison.
 
 ## 6. Prior work
 
@@ -275,15 +298,48 @@ expensive it is.
 
 What was not found is a paired, interleaved, forked measurement of the same
 computation fed once through a write and rollback and once from an in memory
-copy. Searched arXiv, Semantic Scholar and Crossref on 29 August 2026. GitHub and
-general web search were covered on 27 August 2026.
+copy.
+
+Searched arXiv, Semantic Scholar and GitHub on 29 August 2026. Semantic Scholar
+rate limited most queries and general web search was unavailable that day, so the
+open web outside those sources is not claimed as checked.
+
+The novelty check for this measurement was written on 27 August 2026, 13 days
+after the run of 14 August, so it stands after the numbers rather than before
+them. That order is wrong and is recorded as such; from 27 August 2026 the check
+is required beside the disproof condition, before the first count.
 
 ## 7. Availability
 
 The harness, the calculator, both preview strategies and the agreement test are
 in the repository under an MIT licence. `gradle test` runs the agreement test on
 H2 with nothing installed, `gradle run` runs the benchmark, `--url` points it
-at a Postgres instance to reproduce the configuration used here. The raw per
-pair timings from the run of 14 August 2026 were not retained, so the numbers in
-section 3 are reproducible by rerunning rather than by recomputation. The
-archived release carries the DOI above.
+at a Postgres instance to reproduce the configuration used here.
+
+**No data from the run of 14 August 2026 is in the repository.** No timings, no
+log, no console transcript, no release asset, in any of the 9 commits. The
+numbers in section 3 are reproducible by rerunning and are not checkable against
+a stored artifact, which is the weakest availability position of anything
+published here and is stated rather than left to be discovered. The archived
+release carries the DOI above and contains the same source and no data.
+
+## 8. References
+
+- Ruby on Rails. Testing Rails applications: transactional tests.
+  https://guides.rubyonrails.org/testing.html
+- Django. Testing tools: `TestCase` and transaction wrapping. Django 5.2
+  documentation.
+  https://docs.djangoproject.com/en/5.2/topics/testing/tools/
+- Spring Framework. Transaction management in the TestContext framework.
+  https://docs.spring.io/spring-framework/reference/testing/testcontext-framework/tx.html
+- allaboutapps. IntegreSQL: isolated PostgreSQL databases for integration tests.
+  https://github.com/allaboutapps/integresql
+- Peter Downs. pgtestdb: ephemeral PostgreSQL databases from a template.
+  https://github.com/peterldowns/pgtestdb
+- Testcontainers for Java. https://github.com/testcontainers/testcontainers-java
+- Eric Radman. `pg_tmp`, ephemeral PostgreSQL.
+  https://github.com/eradman/ephemeralpg
+- Neon. Branching. https://neon.com/docs/introduction/branching
+- Felix S. Campbell, Bahareh Sadat Arab, Boris Glavic. Efficient answering of
+  historical what if queries. arXiv, 2022. arXiv:2203.12860.
+  https://arxiv.org/abs/2203.12860

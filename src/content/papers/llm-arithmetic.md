@@ -1,5 +1,5 @@
 ---
-title: 'All 4 models land within 0.145% on founder arithmetic; only 1 of them is exact 10 times out of 10'
+title: 'All 4 models land within 0.146% on founder arithmetic; only 1 of them is exact 10 times out of 10'
 subtitle: '10 seeded SaaS problems, every tool and MCP server disabled, ground truth computed in code'
 abstract: >-
   The shorthand that language models cannot do arithmetic is stated far more
@@ -11,8 +11,9 @@ abstract: >-
   server disabled, so each model had to do the arithmetic itself. Answers were
   single shot with no working shown. Expected values were computed in code and
   the model that answered was verified from the API response rather than assumed
-  from the flag. Every model answered every question. Every answer landed within
-  0.145% of the truth. Separation appears only at the cent. Exact matches,
+  from the flag. Every model answered every question. The worst relative error
+  anywhere in the run was 0.145127%, so every answer landed within 0.146% of the
+  truth. Separation appears only at the cent. Exact matches,
   meaning a relative error at or under 1e-6, were 10 of 10, 9 of 10, 9 of 10 and
   3 of 10. The weakest model was never wildly wrong; it was slightly wrong 7
   times out of 10. On one 36 month cash forecast that slight wrongness came to
@@ -62,7 +63,9 @@ claude -p --output-format json --model <model> \
 ```
 
 Isolation was checked with a probe rather than assumed: asked to read a local
-file containing a random string, the model answers that it has no Read tool.
+file containing a random string, the model answers that it has no Read tool. That
+probe was run by hand outside the harness. Its reply was not stored, so the check
+is reported here rather than reproducible from the repository.
 
 ### 2.2 The problems
 
@@ -112,8 +115,9 @@ Expected values are computed in `run.ts`. No model grades anything.
 Relative error is the absolute difference between the answer and the expected
 value, divided by the expected value. **Exact** means the answer differs from
 the computed value by no more than display rounding, a relative error at or
-under 1e-6. A looser bar would score a $199 miss on a $4.8M forecast
-as correct.
+under 1e-6. The bar has to be that tight to separate anything. Loosening it by 1
+order of magnitude, to 1e-5, would score the $37.90 that `claude-haiku-4-5`
+missed the 60 month cash forecast by as exact, on a forecast running to $4.86M.
 
 Wall clock time is deliberately not measured, because it measures the connection
 as much as the model. Reasoning token counts are reported instead: they come out
@@ -121,7 +125,7 @@ of the API response and do not depend on the link.
 
 ## 3. Results
 
-**Every model answered every question and every answer landed within 0.145% of
+**Every model answered every question and every answer landed within 0.146% of
 the truth. Exact matches were 10 of 10 for `claude-opus-5` against 3 of 10 for
 `claude-haiku-4-5`.**
 
@@ -137,8 +141,10 @@ the truth. Exact matches were 10 of 10 for `claude-opus-5` against 3 of 10 for
 1% of the truth, which is already at odds with the shorthand.
 
 **Separation is at the cent.** The 3 problems `claude-haiku-4-5` got exactly
-right are the single division and the 2 integer month answers. Every problem
-requiring a compounded sequence came back slightly wrong.
+right are 1 of the 2 LTV divisions and the 2 integer month answers. Every problem
+requiring a compounded sequence came back slightly wrong. So did the other
+division, `ltv-7`, missed by $0.52 with no compounding in it at all, so
+compounding is where most of the drift sits rather than all of it.
 
 | task | expected | `claude-haiku-4-5` | off by |
 |---|---|---|---|
@@ -146,9 +152,10 @@ requiring a compounded sequence came back slightly wrong.
 | `two-phase-3`, 60 months | 18,578.75 | 18,553 | $25.75 |
 | `cash-1`, 60 months | 4,864,506.92 | 4,864,544.82 | $37.90 |
 
-The $8,451 miss on `cash-6` is a relative error of 0.145%. It reads as a
-perfectly reasonable number. Nothing in the reply signals that it is off. The
-prompt asked for no working, so there is nothing to inspect either.
+The $8,451 miss on `cash-6` is a relative error of 0.1451%, the worst anywhere in
+the run. It reads as a perfectly reasonable number. Nothing in the reply signals
+that it is off. The prompt asked for no working, so there is nothing to inspect
+either.
 
 **More reasoning went with less accuracy.** `claude-haiku-4-5` spent 58,027
 reasoning tokens, roughly 7.5 times the 7,771 of `claude-opus-5`, then finished
@@ -177,9 +184,13 @@ detect in the text, while asking for working would only produce more text to
 check. The defence is arithmetic done outside the model, with the model used for
 setting the problem up rather than for evaluating it.
 
-The reasoning result points the same way. If accuracy came from thinking longer,
-the fix would be a budget. It did not: the model with the largest reasoning
-spend placed last, so buying more tokens is not the lever here.
+The reasoning result points the same way with a much weaker claim attached. If
+accuracy came from thinking longer, the fix would be a budget. Across these 4
+points it did not: the model with the largest reasoning spend placed last. That
+comparison runs between models rather than inside one. n is 4 and token spend is
+perfectly confounded with model identity, so nothing here says what a larger
+thinking budget would do to any single model. Section 5 puts the same limit on
+it.
 
 ## 5. Threats to validity
 
@@ -215,9 +226,9 @@ session in which this run was made. That does not affect the score, because
 expected values are computed in `run.ts` and no model grades itself: it submits
 an answer that the script checks.
 
-One correction to the write up in the repository belongs here. Its per task
-table labels the horizon of `mrr-5`, `cash-6` and `two-phase-8` wrongly. It also
-calls `cash-6` a 5 year forecast. Read from the questions stored in
+One correction to `RESULTS.md` in the repository belongs here. Its per task table
+labels the horizon of `mrr-5`, `cash-6` and `two-phase-8` wrongly and its prose
+calls `cash-6` a 5 year forecast. The README is not the file at fault. Read from the questions stored in
 `results.json`, `mrr-5` runs 60 months, `cash-6` runs 36 and `two-phase-8` runs
 36. The expected values, the answers and the errors are unaffected; every number
 in this paper was recomputed from `results.json` rather than copied from that
@@ -246,6 +257,12 @@ comparison inside 1 vendor family rather than a new benchmark.
   ([arXiv:2602.17072](https://arxiv.org/abs/2602.17072), February 2026) is the
   closest in domain, covering everyday banking computations that need exponents
   and geometric progressions.
+- [wesm/llm-arithmetic-benchmark](https://github.com/wesm/llm-arithmetic-benchmark)
+  (December 2025) is the nearest neighbour and it is code rather than a paper. It
+  measures tool free arithmetic aggregation, a sum grouped by key over CSV rows,
+  under the same no calculator condition used here. Its model list runs to 4
+  Anthropic models beside OpenAI and locally hosted ones, so a within family
+  comparison on identical arithmetic tasks already exists.
 - Inverse Scaling in Test-Time Compute
   ([arXiv:2507.14417](https://arxiv.org/abs/2507.14417), July 2025) constructs
   tasks on which extending a reasoning model's chain of thought lowers accuracy
@@ -254,20 +271,55 @@ comparison inside 1 vendor family rather than a new benchmark.
   distractors injected on purpose. Here the effect is incidental, on clean and
   well posed problems, which makes it weaker evidence on a more ordinary task.
 
-2 things were searched for and not found. Nothing scores a near miss
-separately from an exact match, meaning no paper reporting "within 0.1%
-relative" and "exact to the cent" as different numbers on the same problem set;
-every hit on rounding turned out to be about quantization. Nothing compares
-several models of 1 vendor family on identical arithmetic tasks. Those 2 gaps
-are where this measurement sits. It sits there as a small comparison rather than
-as a benchmark.
+1 thing was searched for and not found. Nothing scores a near miss separately
+from an exact match, meaning no paper reporting "within 0.1% relative" and "exact
+to the cent" as different numbers on the same problem set; every hit on rounding
+turned out to be about quantization.
 
-Searched arXiv and GitHub on 29 August 2026, with partial coverage of Semantic
-Scholar, which rate limited most queries. General web search was unavailable
-that day, so the open web outside those sources is not claimed as checked.
+An earlier version of this section claimed a second gap: that nothing compares
+several models of 1 vendor family on identical arithmetic tasks. The repository's
+own prior work list names `wesm/llm-arithmetic-benchmark` doing exactly that, so
+the claim is withdrawn rather than narrowed. What is particular here is the
+problem set, 10 questions a founder types rather than aggregation over CSV rows,
+together with an isolation that cuts MCP as well as built in tools. This is a
+small comparison rather than a benchmark.
+
+Searched arXiv, Semantic Scholar and GitHub on 29 August 2026. Semantic Scholar
+rate limited most queries and general web search was unavailable that day, so the
+open web outside those sources is not claimed as checked. The prior work list
+kept in the repository was compiled on 27 August 2026, 11 days after the run
+rather than before it.
 
 ## 7. Availability
 
 The harness, the seeded task generator, the structured results and the full
 transcript of every question and reply are in the repository. The archived
 release carries the DOI above.
+
+## 8. References
+
+1. Zheng Yuan and others. How well do Large Language Models perform in Arithmetic
+   tasks? arXiv preprint, 2023. arXiv:2304.02015.
+   https://arxiv.org/abs/2304.02015
+2. Zhen Yang and others. GPT Can Solve Mathematical Problems Without a
+   Calculator. arXiv preprint, 2023. arXiv:2309.03241.
+   https://arxiv.org/abs/2309.03241
+3. Zichen Tang and others. FinanceReasoning: Benchmarking Financial Numerical
+   Reasoning More Credible, Comprehensive and Challenging. arXiv preprint, 2025.
+   arXiv:2506.05828.
+   https://arxiv.org/abs/2506.05828
+4. Yunseung Lee and others. BankMathBench: A Benchmark for Numerical Reasoning in
+   Banking Scenarios. arXiv preprint, 2026. arXiv:2602.17072.
+   https://arxiv.org/abs/2602.17072
+5. Wes McKinney. llm-arithmetic-benchmark. GitHub repository, December 2025.
+   https://github.com/wesm/llm-arithmetic-benchmark
+6. Aryo Pradipta Gema and others. Inverse Scaling in Test-Time Compute. arXiv
+   preprint, 2025. arXiv:2507.14417.
+   https://arxiv.org/abs/2507.14417
+7. Dmitriy Semenkevich. llm-arithmetic: harness, seeded task generator and raw
+   results. GitHub, 2026.
+   https://github.com/dimhold/llm-arithmetic
+8. Dmitriy Semenkevich. All 4 models land within 0.146% on founder arithmetic;
+   only 1 of them is exact 10 times out of 10. Zenodo, 2026.
+   doi:10.5281/zenodo.22128841.
+   https://doi.org/10.5281/zenodo.22128841

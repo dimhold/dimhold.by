@@ -13,9 +13,11 @@ abstract: >-
   it in 39 of 40 calls. When the tool returned a corrupted value and announced
   nothing, the answer disclosed it in 0 of 40 and passed the corrupted value on
   in all 40. 2 unrelated corruption shapes produced identical behaviour, which
-  is what a single mechanism predicts. The practical consequence is that an
-  agent's disclosure of tool failure is bounded above by the tool's own error
-  reporting, so validation of a tool's output has to sit outside the model.
+  is what a single mechanism predicts. Across these 100 calls the agent's
+  disclosure of tool failure never rose above the tool's own error reporting.
+  That rests on 2 models, 1 tool and 2 shapes of silent corruption, so it is
+  offered as a ceiling worth designing against rather than as a general law:
+  validation of a tool's output has to sit outside the model.
 date: 2026-08-14
 doi: 10.5281/zenodo.22128837
 repo: https://github.com/dimhold/tool-failure
@@ -135,6 +137,12 @@ Both models and both framings produced the same split. Nothing was invented in
 any of the 100 calls: with a working tool present, the fabrication measured in
 the earlier study disappears entirely.
 
+The 1 cell under `empty` that is not a disclosure is `claude-haiku-4-5`, format
+framing, trial 5. Its whole reply is `TOKEN: ` with nothing after the colon, so
+the classifier files it as `other`: no value asserted and no failure named. It is
+the only cell in the announcing group where the reply neither reports the failure
+nor hands anything over.
+
 `truncated` and `wrong` are different bugs, a cut off stream and a swapped
 value, yet they produced identical behaviour: 20 of 20 relayed in each, no
 hedge, no remark that the value looked short, nothing. That is what a single
@@ -152,11 +160,13 @@ handed over because nothing announced it and there is no schema to check it
 against. From inside the reply there is no difference between a good value and
 a bad one, so this is not a lapse in judgement. It is an absence of information.
 
-The practical consequence is a ceiling: **an agent's disclosure of tool failure
-is bounded above by the tool's own error reporting.** Anything that checks a
-tool's output has to live outside the model. If a tool can return a wrong value
-without erroring, no amount of prompting will make the answer mention it,
-because the answer has nothing to mention it with.
+The practical consequence is a ceiling: **in this run the disclosure of tool
+failure never rose above the tool's own error reporting.** 2 models, 1 tool and 2
+shapes of silent corruption stand behind that sentence, which is enough to design
+against and short of a law; section 5 gives the limits. Taken at face value it
+says that anything checking a tool's output has to live outside the model. If a
+tool can return a wrong value without erroring, no amount of prompting will make
+the answer mention it, because the answer has nothing to mention it with.
 
 3 cases, taken together with the earlier run:
 
@@ -184,8 +194,10 @@ One operational note is worth passing on because it nearly cost the run. The
 probe server is plain JavaScript run by `node`, not TypeScript run through a
 loader, because the TypeScript path cold starts in seconds, the CLI gives up
 waiting for the MCP handshake, so the model then runs with no tool at all while
-looking like it ran normally. A first pass lost 41 of 100 calls that way,
-unevenly across models. It was discarded rather than filtered.
+looking like it ran normally. A first pass lost calls that way, unevenly across
+models. It was discarded rather than filtered. Nothing from it was kept, so the
+count quoted in the repository README, 41 of 100, cannot be checked against any
+stored data. It stands here as an operational note rather than as a measurement.
 
 ## 6. Prior work
 
@@ -211,11 +223,56 @@ not first to the question.
 What was not found stated anywhere is the number: disclosure at 39 of 40 when
 the tool announces its own failure against 0 of 40 when it corrupts the value
 quietly, judged against the server's log rather than against anyone's reading of
-the reply. Searched arXiv, Semantic Scholar, GitHub and general web search on
-27 August 2026.
+the reply.
+
+This is the second of 3 measurements on the same axis and the other 2 bound it.
+`tool-honesty`
+([10.5281/zenodo.22128833](https://doi.org/10.5281/zenodo.22128833)) removes the
+tools altogether. That is the case where nothing at all announces itself and it
+comes back with 0 of 40 disclosures. `tool-reach`
+([10.5281/zenodo.22128831](https://doi.org/10.5281/zenodo.22128831)) puts a live
+MCP server over government data in front of 4 models and gets its outage by
+accident rather than by injection, where disclosure ran from 20 of 20 down to 2
+of 19 depending on which model held the tool. The variation this study did not
+find across 2 models on an announcing failure is the whole of what that one
+found across 4.
+
+Searched arXiv, Semantic Scholar and GitHub on 29 August 2026. Semantic Scholar
+rate limited most queries and general web search was unavailable that day, so the
+open web outside those sources is not claimed as checked. The prior work list
+kept in the repository was compiled on 27 August 2026, 13 days after the run
+rather than before it.
 
 ## 7. Availability
 
 Code, the probe server, the classifier, the raw results and the full transcript
 of all 100 replies are in the repository. The archived release carries the DOI
 above and the code is also deposited in Software Heritage.
+
+## 8. References
+
+1. Jimin Sun and others. Tools Fail: Detecting Silent Errors in Faulty Tools.
+   arXiv preprint, 2024. arXiv:2406.19228.
+   https://arxiv.org/abs/2406.19228
+2. Junjie Ye and others. RoTBench: A Multi-Level Benchmark for Evaluating the
+   Robustness of Large Language Models in Tool Learning. arXiv preprint, 2024.
+   arXiv:2401.08326.
+   https://arxiv.org/abs/2401.08326
+3. Abdulrahman AlRabah and others. PredAct-Bench: Benchmarking Tool-Augmented
+   Dialogue under Controlled Tool Noise. arXiv preprint, 2026. arXiv:2608.02372.
+   https://arxiv.org/abs/2608.02372
+4. Ajin Baby. mcp-chaos: chaos engineering for the MCP tool call plane. GitHub
+   repository, 2026.
+   https://github.com/ajinb/mcp-chaos
+5. Thomas Chardonnens. chaos-mcp: a fault injection playground for debugging MCP
+   clients and servers. GitHub repository, 2026.
+   https://github.com/tchardonnens/chaos-mcp
+6. Dmitriy Semenkevich. In 40 calls with the tools removed, not one reply said
+   the tools were missing. Zenodo, 2026. doi:10.5281/zenodo.22128833.
+   https://doi.org/10.5281/zenodo.22128833
+7. Dmitriy Semenkevich. Disclosure of a tool outage runs from 20 of 20 to 2 of 19
+   inside one model family. Zenodo, 2026. doi:10.5281/zenodo.22128831.
+   https://doi.org/10.5281/zenodo.22128831
+8. Dmitriy Semenkevich. tool-failure: probe server, classifier and raw results.
+   GitHub, 2026.
+   https://github.com/dimhold/tool-failure

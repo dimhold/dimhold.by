@@ -16,9 +16,9 @@ abstract: >-
   the WAL and ended 1.27 times larger at 49.8% leaf fragmentation against 0% on
   identical data. It does not start slow: the first 5 batches run at 1026 ms and
   the last 5 at 2496 ms, while the ordered key is flat from 681 ms to 665 ms.
-  Point lookups show no difference at all. A 762 MB index at 49.8% fragmentation
-  answers in 236 us cold, the same as a 428 MB index at zero, reading 1.07 index
-  blocks per lookup against 1.04.
+  Point lookups show no difference at all. A 762 MiB index at 49.8% fragmentation
+  answers in 236 us cold, the same as a 428 MiB index at zero, reading 1.07 index
+  blocks per lookup against 1.04. Sizes are byte counts printed in powers of 1024.
 date: 2026-08-27
 doi: 10.5281/zenodo.22128828
 repo: https://github.com/dimhold/key-order
@@ -99,8 +99,20 @@ was sold for more than it is worth.
 
 Postgres 16.14, `shared_buffers=256MB`, `max_wal_size=4GB`,
 `checkpoint_timeout=30min`, `work_mem=64MB`, `maintenance_work_mem=256MB`. The
-full server settings are recorded inside every row of the output, not only in
-the write up.
+full server settings are recorded inside every row of the insert output, not
+only in the write up. The read rows carry the index statistics and the buffer
+counters but no settings block, which is a gap in the artifact rather than in
+the run.
+
+**Units.** The harness records byte counts and this paper prints them in powers
+of 1024, labelled MiB and GiB. The 762 MiB index is 799,064,064 bytes, which a
+tool counting in powers of 1000 would call 799 MB. Figures quoted from other
+people's write ups keep whatever units they used. A Postgres setting such as
+`shared_buffers=256MB` is the string the server takes rather than a measurement.
+
+**Dates.** The insert passes ran on 26 August 2026 and every batch row carries
+its own timestamp. The read passes ran on 27 August 2026 against the tables the
+insert passes left behind.
 
 ### 2.3 What is counted
 
@@ -122,7 +134,9 @@ query inside plpgsql and timed individually. The keys are materialised before
 the timed section. The server is restarted so that `shared_buffers` is empty, a
 cold series runs, then a warm series over the same keys. Buffer reads are
 counted next to the clock, because a cache hit and a disk read differ by 2
-orders of magnitude and must never be averaged together.
+orders of magnitude and must never be averaged together. Percentiles are
+`percentile_cont`, which interpolates between the 2 neighbouring observations
+rather than picking a stored one.
 
 ## 3. Results
 
@@ -132,13 +146,20 @@ ordered by time, wrote 1.32 times the WAL and finished 1.27 times larger with
 
 | | total insert | first 5 batches | last 5 batches | WAL | index | leaf fragmentation | leaf density |
 |---|---|---|---|---|---|---|---|
-| **R** random uuid | **152.9 s** | 1026 ms | **2496 ms** | 5.23 GB | 762 MB | **49.8%** | 71.2% |
-| **T** uuid v7 | 54.5 s | 681 ms | 665 ms | 3.97 GB | 602 MB | 0% | 90.0% |
-| **B** bigint TSID | 51.2 s | 627 ms | 640 ms | 3.67 GB | 428 MB | 0% | 90.1% |
+| **R** random uuid | **152.9 s** | 1026 ms | **2496 ms** | 5.23 GiB | 762 MiB | **49.8%** | 71.2% |
+| **T** uuid v7 | 54.5 s | 681 ms | 665 ms | 3.97 GiB | 602 MiB | 0% | 90.0% |
+| **B** bigint TSID | 51.2 s | 627 ms | 640 ms | 3.67 GiB | 428 MiB | 0% | 90.1% |
 
-80 batches of 250,000 rows. The threshold fixed in advance was 1.5x on any 1 of
-insert time, WAL or index size. Insert time cleared it by a wide margin, the
-other 2 did not clear it at all.
+80 batches of 250,000 rows. **The table prints run totals for insert time and
+WAL while the preregistered threshold names something narrower.** `CRITERIA.md`
+asks for at least 1.5x on 1 of 3 quantities: insert time on the last batch, WAL
+on the last batch and index size at the end. On those 3 the random key comes in
+at 3.73x, 1.18x and 1.27x, so insert time clears the bar by a wide margin and
+the other 2 do not clear it at all. On the totals the same 3 read 2.80x, 1.32x
+and 1.27x. The criterion passes either way and the 2 sets of numbers are printed
+side by side rather than swapped for each other, because a total is what a
+person filling a table pays while the last batch is what the registration
+asked for.
 
 **The shape matters more than the ratio.** The random key does not start slow,
 it becomes slow. 1026 ms across the first 5 batches, 2496 ms across the last 5,
@@ -151,12 +172,12 @@ to see.
 
 | pass | order | | insert | WAL | index | fragmentation |
 |---|---|---|---|---|---|---|
-| 1 | R, T, B | R | 14.7 s | 0.53 GB | 122 MB | 49.82% |
-| 1 | | T | 7.8 s | 0.46 GB | 90 MB | 0% |
-| 1 | | B | 6.9 s | 0.40 GB | 64 MB | 0% |
-| 2 | B, T, R | B | 6.6 s | 0.41 GB | 64 MB | 0% |
-| 2 | | T | 7.6 s | 0.47 GB | 90 MB | 0% |
-| 2 | | R | 13.4 s | 0.52 GB | 122 MB | 49.82% |
+| 1 | R, T, B | R | 14.7 s | 0.53 GiB | 122 MiB | 49.82% |
+| 1 | | T | 7.8 s | 0.46 GiB | 90 MiB | 0% |
+| 1 | | B | 6.9 s | 0.40 GiB | 64 MiB | 0% |
+| 2 | B, T, R | B | 6.6 s | 0.41 GiB | 64 MiB | 0% |
+| 2 | | T | 7.6 s | 0.47 GiB | 90 MiB | 0% |
+| 2 | | R | 13.4 s | 0.52 GiB | 122 MiB | 49.82% |
 
 Reversing the order moves the timings by a few percent and moves nothing else.
 Index sizes and `pgstatindex` output are identical to the decimal between the 2
@@ -185,12 +206,12 @@ million row tables.
 
 | | cold p50 | cold p90 | cold p99 | warm p50 | index blocks read | tree levels | index size | leaf fragmentation |
 |---|---|---|---|---|---|---|---|---|
-| **R** random uuid | 236 / 254 us | 427 / 462 | 611 / 700 | 6 / 7 us | 5,340 | 3 | 762 MB | **49.8%** |
-| **T** uuid v7 | 236 / 247 us | 429 / 350 | 1193 / 556 | 5 / 5 us | 5,379 | 3 | 602 MB | 0% |
-| **B** bigint TSID | 242 / 223 us | 415 / 313 | 563 / 527 | 5 / 5 us | 5,193 | 2 | 428 MB | 0% |
+| **R** random uuid | 236 / 254 us | 427 / 462 | 611 / 700 | 6 / 7 us | 5,340 | 3 | 762 MiB | **49.8%** |
+| **T** uuid v7 | 236 / 247 us | 429 / 350 | 1193 / 556 | 5 / 5 us | 5,379 | 3 | 602 MiB | 0% |
+| **B** bigint TSID | 242 / 223 us | 415 / 313 | 563 / 527 | 5 / 5 us | 5,193 | 2 | 428 MiB | 0% |
 
-**There is no difference.** A 762 MB index at 49.8% leaf fragmentation answers a
-point lookup as fast as a 428 MB index at zero fragmentation and it reads
+**There is no difference.** A 762 MiB index at 49.8% leaf fragmentation answers a
+point lookup as fast as a 428 MiB index at zero fragmentation and it reads
 essentially the same number of blocks doing it: 1.07 index blocks per lookup
 against 1.04.
 
@@ -266,17 +287,29 @@ first.
   against 0%, reproduce that on a different major version at 20 times the row
   count.
 - **Umang Sinha, *Benchmarking Random (v4) and Time-based (v7) UUIDs***
-  ([dev.to](https://dev.to/umangsinha12/postgresql-uuid-performance-benchmarking-random-v4-and-time-based-v7-uuids-n9b))
+  ([dev.to](https://dev.to/umangsinha12/postgresql-uuid-performance-benchmarking-random-v4-and-time-based-v7-uuids-n9b),
+  23 May 2025)
   loads 10 million rows in batches of 10,000 and reports v7 inserting about
   34.8% faster, with an index of roughly 793 MB against 619 MB, a reduction of
   about 22%. On point lookups it reports v7 with significantly lower planning
   and execution times than v4. **That is the one place where this replication
-  disagrees with its neighbour.** Under per query timing with the buffer cache
+  disagrees with its neighbour. The asymmetry is the reason the disagreement is
+  worth naming: n = 1 against 4,999 cold lookups per strategy per pass.**
+  The point lookup comparison there is a single pair of `EXPLAIN ANALYZE`
+  statements typed into pgAdmin, 1 query per version, with no repeats and no
+  percentiles. The reported figures are planning 0.316 ms and execution 0.167 ms
+  for v4 against planning 0.068 ms and execution 0.038 ms for v7. An execution
+  time of 0.038 ms is a buffer cache hit rather than a read from disk.
+  Under per query timing with the buffer cache
   emptied and cold reads separated from warm ones, the 2 strategies are
-  indistinguishable at every percentile measured here. The disagreement is worth
-  naming rather than smoothing: a lookup measured through `EXPLAIN` timings on a
-  warm instance and a lookup measured cold, one query at a time, are different
-  measurements.
+  indistinguishable at every percentile measured here.
+
+  The planning half of that gap cannot be caused by the thing it is offered as
+  evidence for. Planning happens before the index is descended, so leaf
+  fragmentation cannot reach it: 0.316 ms against 0.068 ms, a factor of 4.6, is
+  the cost of the first statement in a session against a later one. A lookup
+  measured through `EXPLAIN` timings on a warm instance and a lookup measured
+  cold, one query at a time, are different measurements.
 - **Kakolaki, *A Comparative Analysis of Identifier Schemes: UUIDv4, UUIDv7 and
   ULID for Distributed Systems***
   ([arXiv:2509.08969](https://arxiv.org/abs/2509.08969), September 2025)
@@ -285,7 +318,8 @@ first.
   measures a different axis: nothing about B-tree behaviour or index size.
 - **[equenum/postgre_uuid_performance](https://github.com/equenum/postgre_uuid_performance)**
   and **[mikeblum/pg-uuidv7-benchmark](https://github.com/mikeblum/pg-uuidv7-benchmark)**
-  are existing public harnesses for the same comparison, both from 2024.
+  are existing public harnesses for the same comparison, created in 2023 and
+  2024 respectively.
 - **RFC 9562** defines UUID version 7 and the timestamp layout used by strategy
   T here.
 
@@ -294,15 +328,42 @@ generated deterministically from the row number so that the generator's cost
 stays out of the timed section and a rerun produces the same keys; buffer
 accounting alongside the clock so that a cache hit and a disk read are never
 averaged; cold and warm series reported separately, a factor of 47 apart; and a
-disproof condition written down before counting. Searched GitHub, Semantic
-Scholar and arXiv on 29 August 2026; the general web search that surfaced the 2
-blog posts above was run on 27 August 2026.
+disproof condition written down before counting. Searched arXiv, Semantic
+Scholar and GitHub on 29 August 2026. Semantic Scholar rate limited most queries
+and general web search was unavailable that day, so the open web outside those
+sources is not claimed as checked. The general web search that surfaced the 2
+blog posts above was run on 27 August 2026, after the insert passes had already
+produced their numbers rather than before them.
 
 ## 7. Availability
 
-Every pass writes 1 JSON line per strategy carrying every batch timing, every
-WAL delta, the `pgstatindex` output, the sizes and the full server settings that
-produced them. The read passes write cold and warm percentiles with their
-per phase buffer deltas. Both machines are in the repository, along with the
+Every insert pass writes 1 JSON line per strategy carrying every batch timing,
+every WAL delta, the `pgstatindex` output, the sizes and the full server
+settings that produced them. The read passes write cold and warm percentiles
+with their per phase buffer deltas, the same `pgstatindex` output and the sizes,
+but no settings block. Both machines are in the repository, along with the
 harness and the criteria file with its dated amendments. The archived release
 carries the DOI above.
+
+## 8. References
+
+1. Josef Machytka. A deeper look at old UUIDv4 vs new UUIDv7 in PostgreSQL 18.
+   credativ blog, 5 December 2025.
+   https://www.credativ.de/en/blog/postgresql-en/a-deeper-look-at-old-uuidv4-vs-new-uuidv7-in-postgresql-18/
+2. Umang Sinha. PostgreSQL UUID performance: benchmarking random (v4) and time
+   based (v7) UUIDs. dev.to, 23 May 2025.
+   https://dev.to/umangsinha12/postgresql-uuid-performance-benchmarking-random-v4-and-time-based-v7-uuids-n9b
+3. Nima Karimian Kakolaki. A comparative analysis of identifier schemes: UUIDv4,
+   UUIDv7 and ULID for distributed systems. arXiv preprint, 2025.
+   arXiv:2509.08969.
+   https://arxiv.org/abs/2509.08969
+4. K. Davis, B. Peabody, P. Leach. Universally Unique IDentifiers (UUIDs). RFC
+   9562, IETF, May 2024. doi:10.17487/RFC9562.
+   https://www.rfc-editor.org/rfc/rfc9562
+5. equenum. `postgre_uuid_performance`. GitHub, 2024.
+   https://github.com/equenum/postgre_uuid_performance
+6. mikeblum. `pg-uuidv7-benchmark`. GitHub, 2023.
+   https://github.com/mikeblum/pg-uuidv7-benchmark
+7. Dmitriy Semenkevich. `key-order`: harness, preregistration and raw
+   measurements. GitHub, 2026.
+   https://github.com/dimhold/key-order

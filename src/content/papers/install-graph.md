@@ -9,7 +9,8 @@ abstract: >-
   the author and counts physical copies, bytes and files. 5,127 packages were
   found on disk behind 192 lines of dependencies. On the 3 front ends, copies
   after the first hold 14.0%, 14.4% and 17.2% of all bytes under node_modules,
-  which is 102.5 MB, 52.2 MB and 60.6 MB. Between 59% and 64% of those copies
+  which is 102.5 MiB, 52.2 MiB and 60.6 MiB. Byte figures are binary throughout
+  because the scanner divides by 1024. Between 58.8% and 64.1% of those copies
   are the same name at the same version rather than a version conflict a
   resolver had to keep apart. Counting copies and weighing them disagree by
   about a factor of 2: copies are 30.8% to 31.6% of installed packages but only
@@ -90,10 +91,23 @@ emitting usable JSON on stdout; that case is recorded as degraded and the run
 continues, because old projects are inconsistent and that is the field rather
 than an error.
 
-All of this is fixed in `CRITERIA.md`, committed before the first number
+**Byte figures are binary.** The scanner divides by 1024 twice, so every quantity
+the data calls MB is a MiB and this paper writes MiB and KiB throughout. The
+363.3 MiB below is 380,920,515 bytes, which a decimal reading would print as
+380.9 MB.
+
+Most of this is fixed in `CRITERIA.md`, committed before the first number
 existed, with a disproof condition written at the same time: if the ratio had
 come out around 3 to 5 and been the same for large projects and small ones,
 there would have been nothing to publish.
+
+2 things are not in that file. It defines `installed`, `distinctNames`, `bytes`
+and `files` and it says duplicate versions are not collapsed. It does not define
+a duplicate copy and it does not contain the charging rule of the next section.
+Both were settled while the counting was being written, so the headline of this
+paper rests on a definition the criteria file does not hold. The disproof
+condition that file does hold is about the ratio in section 3.3 rather than about
+duplicates.
 
 ### 2.3 How a duplicate is charged
 
@@ -122,10 +136,10 @@ pulled on that day.
 ## 3. Results
 
 **On the 3 front ends, copies after the first hold 14.0% to 17.2% of every byte
-under `node_modules` and 59% to 64% of those copies are the same name at the
+under `node_modules` and 58.8% to 64.1% of those copies are the same name at the
 same version.**
 
-| project | installed | distinct names | copies after the first | duplicate MB | share of bytes | same version |
+| project | installed | distinct names | copies after the first | duplicate MiB | share of bytes | same version |
 |---|---|---|---|---|---|---|
 | `frontend-a` | 1,729 | 1,197 | 532 | 52.2 | **14.4%** | 313 |
 | `frontend-b` | 1,542 | 1,055 | 487 | 102.5 | 14.0% | 312 |
@@ -134,9 +148,12 @@ same version.**
 | `social-media` | 6 | 6 | 0 | 0 | 0.0% | 0 |
 
 On `frontend-a` that is 532 copies holding 7,904 files inside a tree of 1,729
-packages, 363.3 MB and 50,649 files. 165 names are present at more than one
-version at once. The equivalent counts for the other 2 front ends are 137 and
-154 names.
+packages, 363.3 MiB and 50,649 files. Those last 2 figures are the walk of the
+whole directory and they come from `out/projects.json` rather than from the per
+package file: adding up the 1,729 package rows gives 362.33 MiB and 50,306 files,
+the remainder being files that sit under `node_modules` outside any package
+directory. 165 names are present at more than one version at once. The equivalent
+counts for the other 2 front ends are 137 and 154 names.
 
 ### 3.1 Counting copies overstates the disk cost by about a factor of 2
 
@@ -149,10 +166,18 @@ stable across all 3 front ends.
 | `frontend-b` | 31.6% | 14.0% | 2.26 |
 | `frontend-c` | 30.9% | 17.2% | 1.80 |
 
-The cause is size. A duplicated copy averages 100.6 KB, 215.6 KB and 117.5 KB on
-the 3 front ends against an average installed package of 214.6 KB, 470.7 KB and
-210.6 KB. Duplication concentrates in small packages, so a headline built on the
-count of copies claims roughly twice the disk it can support.
+The cause is size. A duplicated copy averages 100.6 KiB, 215.6 KiB and 117.5 KiB
+on the 3 front ends against an average installed package of 214.6 KiB, 470.7 KiB
+and 210.6 KiB. Duplication concentrates in small packages, so a headline built on
+the count of copies claims roughly twice the disk it can support.
+
+The 2 quantities in that sentence do not share a denominator. The byte share
+divides duplicate bytes by the whole tree walk. The average package size divides
+the sum of the per package rows by the package count. On `frontend-a` and
+`frontend-c` the 2 totals are 0.26% apart and nothing turns on the choice. On
+`frontend-b` they are 3.39% apart, so its duplicate share is 14.0% against the
+tree and 14.47% against the sum over packages. Every share in this paper uses the
+tree, because the tree is what the disk actually holds.
 
 ### 3.2 Most duplication is not version resolution
 
@@ -279,6 +304,18 @@ nothing in it reads as a claim of priority.
   Dependencies](https://cpojer.net/posts/dependency-managers-dont-manage-your-dependencies)
   makes the qualitative case for the same discomfort without measuring it.
 
+2 companion measurements of ours look at the same ecosystem from the registry
+side and their figures for the same 2 quantities are far higher. A census of all
+4,296,340 npm packages
+([10.5281/zenodo.22128843](https://doi.org/10.5281/zenodo.22128843)) finds 84.9%
+listing exactly 1 maintainer and 65.8% silent for 2 years, against the 50.0% and
+44.7% in section 3.4. A resolution of 42 frozen manifests from registry metadata
+([10.5281/zenodo.22128854](https://doi.org/10.5281/zenodo.22128854)) counts the
+same kind of tree as a logical graph rather than as directories. The gap is the
+frame: the census counts the registry as a warehouse, where most entries are a
+single publish nobody ever installed, while section 3.4 counts only names that a
+real project resolved to and put on a disk.
+
 Duplication on disk is thoroughly occupied by tooling and not by measurement.
 `npm dedupe` exists as a command, pnpm stores package content once and links it,
 Yarn Plug and Play removes the directory layout altogether and a search returns
@@ -287,8 +324,9 @@ found is a study that walks real installed trees and reports the duplicate share
 in bytes, the share of duplicates that are copies of one version and the gap
 between counting copies and weighing them.
 
-Searched arXiv, Semantic Scholar, GitHub and general web search on 29 August
-2026.
+Searched arXiv, Semantic Scholar and GitHub on 29 August 2026. Semantic Scholar
+rate limited most queries and general web search was unavailable that day, so the
+open web outside those sources is not claimed as checked.
 
 One order of work is recorded because it was wrong. The novelty check for this
 measurement was written on 27 August 2026, after the numbers existed. From that
@@ -301,11 +339,39 @@ The 3 scripts, the per package byte and file counts for every installed copy,
 the registry pass output and the criteria file are in the repository. The
 archived release carries the DOI above.
 
-Every duplicate figure in section 3 recomputes exactly from the published per
-package data in `out/packages-*.json`, which carries a name, a version, a
-nesting depth, a byte count and a file count for all 5,127 installed copies. The
-copy of `scan.mjs` in the repository is an earlier revision that does not
-contain the duplicate accounting, so those figures verify against the published
-data rather than against the published script. The registry aggregates in
-section 3.4 recompute from `out/maintainers.ndjson`, which does verify against
-the published `analyze.mjs`.
+Every duplicate figure in section 3 recomputes from the published per package
+data in `out/packages-*.json`, which carries a name, a version, a nesting depth,
+a byte count and a file count for all 5,127 installed copies. 2 figures in that
+section come from somewhere else and are marked where they appear. The 363.3 MiB
+and 50,649 files quoted for `frontend-a` are the whole tree walk in
+`out/projects.json`. Every byte share divides by that same walk.
+
+**The published `scan.mjs` cannot produce any of it.** It writes
+`{name, version, nesting}` for each package, with no byte count and no file
+count, so it is not merely missing the duplicate accounting: it could not have
+written `out/packages-*.json` at all. No script in the repository produces the
+data the repository ships. The figures verify against the data and the data
+verifies against nothing published. The fix is one commit carrying the scanner
+that actually ran. It has not been made.
+
+The registry aggregates in section 3.4 recompute from `out/maintainers.ndjson`,
+which does verify against the published `analyze.mjs`.
+
+## 8. References
+
+- Jahidul Arafat. How deep does your dependency tree go? An empirical study of
+  dependency amplification across 10 package ecosystems. arXiv, 2025.
+  arXiv:2512.14739. https://arxiv.org/abs/2512.14739
+- César Soto-Valero, Nicolas Harrand, Martin Monperrus, Benoit Baudry. A
+  comprehensive study of bloated dependencies in the Maven ecosystem. arXiv,
+  2020. arXiv:2001.07808. https://arxiv.org/abs/2001.07808
+- Yuxin Liu, Deepika Tiwari, Cristian Bogdan, Benoit Baudry. Detecting and
+  removing bloated dependencies in CommonJS packages. arXiv, 2024.
+  arXiv:2405.17939. https://arxiv.org/abs/2405.17939
+- Dependency managers do not manage your dependencies. cpojer.net.
+  https://cpojer.net/posts/dependency-managers-dont-manage-your-dependencies
+- Dmitriy Semenkevich. A census of 4,296,340 npm packages. 2026.
+  DOI 10.5281/zenodo.22128843. https://doi.org/10.5281/zenodo.22128843
+- Dmitriy Semenkevich. Dependency trees did not grow: 25 of 39 frozen manifests
+  held flat or shrank. 2026. DOI 10.5281/zenodo.22128854.
+  https://doi.org/10.5281/zenodo.22128854

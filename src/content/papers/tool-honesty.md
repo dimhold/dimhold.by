@@ -187,8 +187,9 @@ That is a stricter failure than making the value up, because the conclusion is
 honest and the reasoning is sound. One reply went further still and fabricated a
 `<system-reminder>`, a message from the harness rather than from the model.
 
-**Demanding a format roughly doubles the fabrication rate.** For
-`claude-haiku-4-5`:
+**Demanding a format took the fabrication rate from 5 of 10 to 9 of 10, a factor
+of 1.8.** For `claude-haiku-4-5`, on 10 calls per cell, so the direction is worth
+reporting and the multiplier is not a rate anyone should carry away:
 
 | framing | asserted a fabricated value |
 |---|---|
@@ -196,7 +197,8 @@ honest and the reasoning is sound. One reply went further still and fabricated a
 | format, "reply with exactly one line: `TOKEN: <the token>`" | **9 of 10** |
 
 This is the same instruction style that makes structured output convenient to
-parse, which is where a large share of production prompts live.
+parse, which is where a large share of production prompts live. Section 5 puts
+the same caution on every per cell number here.
 
 ## 4. What arrives instead of a refusal
 
@@ -218,8 +220,9 @@ something that executed. In this run 30 of the 40 replies carry a tool call the
 model composed itself. None was invoked.
 
 Removing a tool is not the same as a tool that fails while attached. The follow
-up study in this series does the second: it leaves the tool in place and breaks
-it 5 ways over 100 calls. When the tool announced its own failure the
+up study in this series, `tool-failure`
+([10.5281/zenodo.22128837](https://doi.org/10.5281/zenodo.22128837)), does the
+second: it leaves the tool in place and breaks it 5 ways over 100 calls. When the tool announced its own failure the
 answer disclosed it in 39 of 40 calls, which is the opposite of the 0 of 40 here.
 When the tool corrupted its value silently the answer disclosed it in 0 of 40.
 The 2 results together put the boundary at the tool's own error reporting rather
@@ -281,12 +284,53 @@ actually stripped by flag, ground truth regenerated per run so no value can
 exist in any training set, plus replies judged deterministically against it. The
 fabricated tool results, including an invented error and an invented system
 reminder, come from that setting. This is a field probe of a known phenomenon
-rather than its discovery. Searched arXiv and GitHub on 29 August 2026, with
-partial coverage of Semantic Scholar, which rate limited most queries. General
-web search was unavailable that day, so the open web outside those sources is
-not claimed as checked.
+rather than its discovery.
+
+The other 2 measurements in this series take the same question forward by
+changing what the tool does. `tool-failure`
+([10.5281/zenodo.22128837](https://doi.org/10.5281/zenodo.22128837)) leaves the
+tool attached and breaks it 5 ways, separating failures that announce themselves
+from failures that do not. `tool-reach`
+([10.5281/zenodo.22128831](https://doi.org/10.5281/zenodo.22128831)) attaches a
+live MCP server over government data to 4 models and catches a real outage of a
+public API rather than an injected one, where disclosure ran from 20 of 20 down
+to 2 of 19 depending on the model.
+
+Searched arXiv, Semantic Scholar and GitHub on 29 August 2026. Semantic Scholar
+rate limited most queries and general web search was unavailable that day, so the
+open web outside those sources is not claimed as checked. The prior work list
+kept in the repository was compiled on 27 August 2026, 14 days after the run
+rather than before it.
 
 ## 7. Availability
 
 The harness, the classifier, the structured results and the full transcript of
 every reply are in the repository. The archived release carries the DOI above.
+
+## 8. References
+
+1. Yuxiang Zhang and others. ToolBeHonest: A Multi-level Hallucination
+   Diagnostic Benchmark for Tool-Augmented Large Language Models. arXiv preprint,
+   2024. arXiv:2406.20015.
+   https://arxiv.org/abs/2406.20015
+2. Chenlong Yin and others. The Reasoning Trap: How Enhancing LLM Reasoning
+   Amplifies Tool Hallucination. arXiv preprint, 2025. arXiv:2510.22977.
+   https://arxiv.org/abs/2510.22977
+3. Hongshen Xu and others. Reducing Tool Hallucination via Reliability Alignment.
+   arXiv preprint, 2024. arXiv:2412.04141.
+   https://arxiv.org/abs/2412.04141
+4. Zhangyue Yin and others. Do Large Language Models Know What They Don't Know?
+   arXiv preprint, 2023. arXiv:2305.18153.
+   https://arxiv.org/abs/2305.18153
+5. Richard Ren and others. The MASK Benchmark: Disentangling Honesty From
+   Accuracy in AI Systems. arXiv preprint, 2025. arXiv:2503.03750.
+   https://arxiv.org/abs/2503.03750
+6. Dmitriy Semenkevich. Disclosure of tool failure is bounded by the tool: 39 of
+   40 against 0 of 40. Zenodo, 2026. doi:10.5281/zenodo.22128837.
+   https://doi.org/10.5281/zenodo.22128837
+7. Dmitriy Semenkevich. Disclosure of a tool outage runs from 20 of 20 to 2 of 19
+   inside one model family. Zenodo, 2026. doi:10.5281/zenodo.22128831.
+   https://doi.org/10.5281/zenodo.22128831
+8. Dmitriy Semenkevich. tool-honesty: harness, classifier and raw results.
+   GitHub, 2026.
+   https://github.com/dimhold/tool-honesty

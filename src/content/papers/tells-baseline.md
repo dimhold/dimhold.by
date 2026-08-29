@@ -91,11 +91,20 @@ would hide both.
 | A, essays before 2020 | 32 | 48,914 |
 | A, RFCs before 2020 | 8 | 23,168 |
 
-152 candidate documents were rejected by the gate. Every rejection carries its
+The corpus was assembled on 21 August 2026. 152 candidate documents were
+rejected by the gate. Every rejection carries its
 reason in `corpus-a.json`: 117 for a date at or after the cutoff, 25 for being
 under 400 words, 5 for exceeding 6,000 and 5 for carrying too much code. The texts themselves are not
 redistributed. What ships is the URL, the date, the word count and the sha256 of
 the cleaned text, with the download script beside it.
+
+**The 2 strata stay apart in every statistic below and the essays are the
+denominator.** Each AUC, each bootstrap interval, each ratio and each mention of
+the human range compares the 32 essays against the machine documents. The 8 RFCs
+appear in the rate columns and nowhere else. Pooling them in would flatter the
+result rather than measure it: a specification runs at 0.04 dashes per 1,000
+words against 1.33 for the essays, so adding it to the human side would widen
+every gap for free.
 
 ### 2.3 Corpus B, the same topics written by 4 models
 
@@ -105,8 +114,15 @@ this title, about 1,150 words, as prose in paragraphs. No style guidance in
 either direction, because asking for human sounding prose or for machine
 sounding prose would answer the question inside the prompt.
 
-4 models, 30 texts each, the same 30 topics throughout, tools isolated with
-`--tools ""` and an empty MCP config.
+4 models, 30 texts each, the same 30 topics throughout, generated on
+21 August 2026 with claude CLI 2.1.238, tools isolated with `--tools ""` and an
+empty MCP config.
+
+The 30 topics are the first 30 corpus A essays in corpus order. The run was
+fixed at 30 texts per model before it started, so the 2 essays that sit last in
+that order, `A-031` and `A-032`, both by Julia Evans, have no machine
+counterpart. Nothing about those 2 texts caused the omission and both stay in
+corpus A.
 
 | | documents | words |
 |---|---:|---:|
@@ -150,10 +166,19 @@ would rescue.**
 | `hype-emoji` | 0.00 | 0.00 | 0.00 | n/a | 0.50 | 0.50 to 0.50 |
 | `staccato-run` | 0.00 | 0.00 | 0.00 | n/a | 0.50 | 0.50 to 0.50 |
 
-Rates are matches per 1,000 words. Ratio is machine over human essays. 4 of the
-10 rules never fired in either corpus, which is itself worth reporting. In
-engineering prose the hype emoji and the comment bait ending are absent from
-both sides, so they carry no weak signal to argue about.
+Rates are matches per 1,000 words. Ratio is machine over human essays. The AUC
+column compares the 32 essays against the 120 machine documents.
+
+**The headline says the best of 10 and the honest count of testable rules is 7.**
+3 of the 10 rules produced 0 matches in all 160 documents: `engagement-bait`,
+`hype-emoji` and `staccato-run`. Their AUC of 0.50 is arithmetic rather than
+evidence, since 2 samples of identical zeros can only tie. In engineering prose
+the hype emoji and the comment bait ending are simply absent from both sides, so
+they carry no weak signal to argue about. That leaves 7 rules the data can rank
+and the best of those 7 is what fails the threshold. Saying so makes the result
+narrower and firmer: the 3 empty rules are not padding the failure.
+`llm-vocabulary` is the marginal case, 13 matches in corpus B against 0 in
+corpus A, which is why its ratio is infinite and its AUC is still 0.55.
 
 ### 3.1 The em dash, measured
 
@@ -172,8 +197,19 @@ folklore has the direction right. It has the strength wrong.
 47% of `claude-sonnet-5` essays contain no dash at all, against 34% of the human
 ones, so the absence of a dash carries no information whatever. 69% of machine
 documents sit inside the range spanned by the human documents, so the presence
-of one carries very little. Every dash counted in corpus B is a real em dash;
-no spaced hyphens standing in for one were found.
+of one carries very little.
+
+**The reverse figure is the worse one and it is 100%.** Every one of the 32
+human essays sits inside the range spanned by the machine documents, on the dash
+and on `tricolon` alike. Every rate an essay by Graham, Spolsky, Gregg or Evans
+reaches falls between the lowest and the highest machine rate, so a threshold
+built on either tell cannot exclude a human document at all.
+
+645 dashes were counted in corpus B and 643 of them are em dashes. The other 2
+are en dashes inside the date range October 29-31, 1 in `claude-fable-5`
+`text-B-023` and 1 in `claude-opus-5` `text-B-023`. The rule counts the en dash
+on purpose. No spaced hyphen standing in for a dash was found anywhere in
+the corpus.
 
 ### 3.2 Why 0.80 is still a failure
 
@@ -280,7 +316,8 @@ study is not first to it.
 - Kobak, González-Márquez, Horvát and Lause, *Delving into LLM assisted writing
   in biomedical publications through excess vocabulary*
   ([arXiv:2406.07016](https://arxiv.org/abs/2406.07016), Science Advances 11(27),
-  2025) is the closest neighbour and the most rigorous work in the area. It
+  2025, [doi:10.1126/sciadv.adt3813](https://doi.org/10.1126/sciadv.adt3813))
+  is the closest neighbour and the most rigorous work in the area. It
   tracks word frequencies across more than 15 million PubMed abstracts from 2010
   to 2024 and estimates that at least 13.5% of 2024 abstracts were processed
   with a language model. It measures words, in one corpus, over time. It does not
@@ -306,8 +343,12 @@ What was not found is a frozen, dated corpus of prose written before language
 models existed, with per feature frequencies and an overlap statistic reported
 next to each one. The public argument about whether the em dash marks machine
 writing has run for over a year without a shared number to argue over. Searched
-arXiv, Semantic Scholar, GitHub, Hugging Face and Zenodo on 29 August 2026 and
-general web search on 27 August 2026.
+arXiv, Semantic Scholar and GitHub on 29 August 2026, along with Hugging Face
+and Zenodo on the same day. Semantic Scholar rate limited most queries and
+general web search was unavailable that day, so the open web outside those
+sources is not claimed as checked. The general web search that produced the list
+above was run on 27 August 2026, which is 6 days after the measurement rather
+than before it.
 
 ## 7. Availability
 
@@ -315,3 +356,25 @@ Corpus B in full, the corpus A manifest with dates and hashes, the rule file,
 the analysis script, the machine readable statistics and the contaminated corpus
 kept as an exhibit are in the repository. The archived release carries the DOI
 above.
+
+## 8. References
+
+1. Dmitry Kobak, Rita González-Márquez, Emőke-Ágnes Horvát, Jan Lause. Delving
+   into LLM assisted writing in biomedical publications through excess
+   vocabulary. Science Advances 11(27), 2025. doi:10.1126/sciadv.adt3813.
+   arXiv:2406.07016.
+   https://doi.org/10.1126/sciadv.adt3813
+2. Weixin Liang, Mert Yuksekgonul, Yining Mao, Eric Wu, James Zou. GPT detectors
+   are biased against non-native English writers. Patterns 4(7), 100779, 2023.
+   doi:10.1016/j.patter.2023.100779. arXiv:2304.02819.
+   https://doi.org/10.1016/j.patter.2023.100779
+3. Tanzila Kehkashan, Raja Adil Riaz, Ahmad Sami Al-Shamayleh, Adnan Akhunzada,
+   Noman Ali, Muhammad Hamza, Faheem Akbar. AI generated text detection: a
+   comprehensive review of methods, datasets and applications. Computer Science
+   Review 58, 2025. doi:10.1016/j.cosrev.2025.100793.
+   https://doi.org/10.1016/j.cosrev.2025.100793
+4. artem9k. `ai-text-detection-pile`. Hugging Face dataset, 2023.
+   https://huggingface.co/datasets/artem9k/ai-text-detection-pile
+5. Dmitriy Semenkevich. `tells-baseline`: corpus, preregistration, rule file and
+   raw counts. GitHub, 2026.
+   https://github.com/dimhold/tells-baseline
