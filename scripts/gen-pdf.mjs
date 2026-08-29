@@ -15,6 +15,12 @@
  * prints each page, the files land in public/papers, and the next build copies
  * them into dist. Run `npm run build` again afterwards, or let the deploy do it.
  *
+ * One trap worth knowing: the site's palette follows the clock, so a PDF
+ * printed after 22:00 used to come out with the night tokens live and every
+ * inline code chip became a black bar. The print block in global.css now pins
+ * the day palette, and that is the only thing standing between this script and
+ * unreadable output. Do not remove it.
+ *
  * Usage: npm run pdf
  */
 import { spawn } from 'node:child_process';

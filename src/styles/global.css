@@ -3970,6 +3970,47 @@ html[data-mode='night'] .kata-sound[aria-pressed='true'] {
     display: none !important;
   }
 
+  /* Paper is always day.
+
+     The palette is a clock: the boot script in Base.astro stamps
+     data-mode="night" between 22:00 and 06:00, and `npm run pdf` prints at
+     whatever hour the build happens to run. The first 10 paper PDFs were
+     generated at 03:32 and went out with the night tokens live, so every
+     inline code chip printed as a black bar over light text and every link
+     came out in the night accent. The old print block reset only html and
+     body, which left --surface and --ink untouched.
+
+     Both selectors are needed: html[data-mode='night'] outranks a bare html,
+     so matching its specificity here is the only way a print rule wins. */
+  html,
+  html[data-mode='night'] {
+    --bg: #fff;
+    --surface: #fff;
+    --ink: #111;
+    --muted: #444;
+    --line: #bbb;
+    --accent: #1a4b8c;
+    --accent-deep: #123a6e;
+    --accent-wash: transparent;
+    --shadow: none;
+    --shadow-lift: none;
+    color-scheme: light;
+  }
+
+  /* Shiki keeps its own pair of themes and sets them with !important, so the
+     day theme has to be asked for by name. */
+  html[data-mode='night'] .astro-code,
+  html[data-mode='night'] .astro-code span {
+    color: var(--shiki-light) !important;
+    background-color: var(--shiki-light-bg) !important;
+  }
+
+  .prose code {
+    background: #fff !important;
+    border-color: #bbb !important;
+    color: #111 !important;
+  }
+
   /* System faces on paper. The site's three variable fonts get embedded whole
      when Chrome prints, which turned a text-only paper into a 3 MB file; the
      typography is worth nothing in a PDF and the weight is worth a lot. */
