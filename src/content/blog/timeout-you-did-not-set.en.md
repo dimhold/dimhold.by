@@ -12,7 +12,7 @@ The kernel has an opinion about how long to wait. You get that opinion for free.
 
 The setup is 2 machines and 1 address that goes nowhere. 192.0.2.0/24 is the range reserved for documentation, so packets sent there are dropped somewhere upstream. No answer ever comes back. A connect to `192.0.2.1:80` therefore does the one thing I wanted to time: it waits for a reply that will not arrive.
 
-On the server, running Linux 6.8 with `tcp_syn_retries` at the default 6, it waited 135.3 seconds and then failed with `ETIMEDOUT`. Nothing in my code chose that number.
+On the server, with `tcp_syn_retries` at its default of 6, it waited 135.3 seconds and then failed with `ETIMEDOUT`. Nothing in my code chose that number.
 
 <figure class="fig">
 <svg viewBox="0 0 640 200" role="img" aria-label="A timeline of a connect that never succeeds. The first SYN goes out at 0 seconds, and retransmissions follow at 1, 3, 7, 15, 31 and 63 seconds of elapsed time, each interval twice the one before. The doubling model puts the moment of giving up at 127 seconds. The measured failure came at 135.3 seconds, 8.3 seconds later than the model.">

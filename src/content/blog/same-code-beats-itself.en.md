@@ -8,7 +8,7 @@ translationKey: same-code-beats-itself
 
 Somebody posts a benchmark, one version is 8 percent faster, the discussion moves on to why. I have posted numbers like that myself. What I had never done is find out what my own machine says when there is nothing to find, so I wrote the smallest version of that: 1 function, declared twice under 2 names, timed against each other. The true difference between them is 0 by construction.
 
-They alternate inside each round, A then B, so that any drift in the machine hits both. 200 rounds, a loop over 200000 doubles, node 22 on Linux 6.8, an otherwise idle server.
+They alternate inside each round, A then B, so that any drift in the machine hits both. 200 rounds, a loop over 200000 doubles, a quiet Linux server with 4 cores and nothing else on it.
 
 The first round took 2.118 milliseconds. The settled median is 0.593. That is 3.57 times, the only part of this everybody already knows about.
 
