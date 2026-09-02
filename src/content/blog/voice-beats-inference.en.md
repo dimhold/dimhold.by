@@ -1,7 +1,7 @@
 ---
 title: "A model reading my essays gives back 2 of my 16 rules"
 description: "I keep being told the voice guide is unnecessary: show the model what you have already published and let it work the voice out. I gave claude-opus-5 8 of my 11 English essays and asked for the guide. Over 5 runs it wrote 92 entries and 2 of them are mine. All 16 checks score 0 across 12587 words of published prose, and for 6 of them even the baselines score 0, so there was nothing there to find."
-date: 2026-09-24
+date: 2026-09-02
 lang: en
 translationKey: voice-beats-inference
 ---

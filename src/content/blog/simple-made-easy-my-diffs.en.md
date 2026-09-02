@@ -1,7 +1,7 @@
 ---
 title: "Simple Made Easy on my own diffs: 85% of the discarded code went in one commit"
 description: "I took a dashboard out of this workspace 2 days and 22 hours after the machine wrote it and never counted how much else went the same way. 508 commits later: 57.4% of the code words are gone and 85.0% of that went in one commit. The 5 files with the widest braid in the history are the 5 that commit deleted."
-date: 2026-09-10
+date: 2026-08-30
 lang: en
 translationKey: simple-made-easy-my-diffs
 ---

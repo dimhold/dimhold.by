@@ -1,7 +1,7 @@
 ---
 title: "The index I said would buy nothing: 2.8 ms against 8.3"
 description: "This workspace keeps its state in markdown files and I explain that with a sentence about speed I had never measured. I built the SQLite index I said would buy nothing and timed it at 1x, 10x and 100x. It wins everywhere, and then I found out I had been timing an fsync."
-date: 2026-09-03
+date: 2026-08-29
 lang: en
 translationKey: files-as-state
 ---

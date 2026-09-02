@@ -1,7 +1,7 @@
 ---
 title: "15 years after Simple Made Easy: 0 of my 102 local variables were final in 2013 and 91.6% of the code I keep is const now. I chose neither"
 description: "In may 2013 I started a repository to translate a Rich Hickey talk into Russian. It is still at 0%. That same week I committed synchronized collections to a Java server. I rebuilt that shape and measured it. The commit did not move the failure rate at all. Then I ran the checklist from Simple Made Easy over my own code. 0 of my 102 local variables were final in 2013 and 91.6% of the code I keep is const now. I chose neither."
-date: 2026-09-17
+date: 2026-09-01
 lang: en
 translationKey: hickey-fifteen-years
 ---
@@ -79,7 +79,7 @@ The ORM row reads 0 annotations. But `pom.xml` pulls `spring-data-jpa` with `hib
 
 Conditionals is the row where a decision comes up on every line. His replacement for it is rules. I split the 2026 code in 2. What I keep and rework is 20 files. The measurement scripts I run once and abandon are 89.
 
-The code I keep runs 16.7 branches per 100 lines. The scripts I throw away run 14.6. Medians per file say the same, 17.0 against 15.0, so one fat file is not carrying the sum. On the one row of his table that still costs me something, the code that has to survive is the denser one, which is the wrong way round. Branches here are `if`, ternary, `switch` and short circuit, taken from the syntax tree. Last week I published 21.9 for this repository, counted by keyword over a different set of paths and with loops included.
+The code I keep runs 16.7 branches per 100 lines. The scripts I throw away run 14.6. Medians per file say the same, 17.0 against 15.0, so one fat file is not carrying the sum. On the one row of his table that still costs me something, the code that has to survive is the denser one, which is the wrong way round. Branches here are `if`, ternary, `switch` and short circuit, taken from the syntax tree. A few days ago I published 21.9 for this repository, counted by keyword over a different set of paths and with loops included.
 
 There is 1 place where I did it his way and I got there by accident. `src/lib/tells.ts` holds 19 mechanical checks on my writing. 15 of them are rows in a data table, each with an id and a regular expression. Those 53 lines hold 0 branches. The file runs 8.1 branches per 100 lines. That is the lowest of anything I keep above 100 lines and the next one up is 12.0.
 
@@ -102,7 +102,7 @@ The other 4 would not go into the table. They are the 3 dash checks plus the com
 <figcaption>The 19 mechanical checks on my writing, split by how they are expressed. 15 are rows of data and cost 3.5 lines each with no branch at all. The 4 that would not fit cost 10 lines and 3 branches each.</figcaption>
 </figure>
 
-Being data did not make them right. Last week I published a check of 6 of these against what the manual promises. 2 had drifted and both are table rows. That is a weak comparison, since 5 of the 6 probed were table rows, but it is the comparison I have. The dash checks are 3 of those 4 and the manual restates them in prose in 5 documents besides the code.
+Being data did not make them right. A few days ago I published a check of 6 of these against what the manual promises. 2 had drifted and both are table rows. That is a weak comparison, since 5 of the 6 probed were table rows, but it is the comparison I have. The dash checks are 3 of those 4 and the manual restates them in prose in 5 documents besides the code.
 
 ## What I did not check
 
