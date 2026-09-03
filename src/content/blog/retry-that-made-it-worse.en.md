@@ -4,6 +4,7 @@ description: "I set out to measure how retries knock over a service under load. 
 date: 2013-04-10
 lang: en
 translationKey: retry-that-made-it-worse
+tags: ["reliability", "networking"]
 ---
 
 The story everybody tells about an outage is that the retries finished it off. A service gets slow, every client tries again, the extra load lands on a machine that is already behind. The thing never comes back until you turn the clients off. I believed it well enough to repeat it in a design review. I had never seen the numbers with the retries removed.

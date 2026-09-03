@@ -1,0 +1,21 @@
+---
+import type { Dictionary } from '../i18n';
+import type { Post } from '../lib/blog';
+import { postPath, fmtDate } from '../lib/blog';
+
+interface Props {
+  t: Dictionary;
+  post: Post;
+}
+
+const { t, post } = Astro.props;
+---
+
+<li class="post-row">
+  <a href={postPath(post)}>
+    <time class="post-row-date" datetime={post.data.date.toISOString().slice(0, 10)}>
+      {fmtDate(post.data.date, t.lang)}
+    </time>
+    <span class="post-row-title">{post.data.title}</span>
+  </a>
+</li>

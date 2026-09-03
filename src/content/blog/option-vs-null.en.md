@@ -4,6 +4,7 @@ description: "3 broken links in one chain give the same NullPointerException wit
 date: 2011-11-30
 lang: en
 translationKey: option-vs-null
+tags: ["types", "code-quality"]
 ---
 
 A NullPointerException came out of a line with 3 dots in it.

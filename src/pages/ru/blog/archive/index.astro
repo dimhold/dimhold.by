@@ -1,0 +1,22 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import ArchivePage from '../../../../components/ArchivePage.astro';
+import { ru } from '../../../../i18n';
+import { archivePath } from '../../../../lib/blog';
+
+const alternates = [
+  { lang: 'en', href: archivePath('en') },
+  { lang: 'ru', href: archivePath('ru') },
+  { lang: 'be', href: archivePath('be') },
+];
+---
+
+<Base
+  t={ru}
+  title={ru.blog.archiveTitle}
+  description={ru.blog.archiveDescription}
+  alternates={alternates}
+  ogType="website"
+>
+  <ArchivePage t={ru} />
+</Base>

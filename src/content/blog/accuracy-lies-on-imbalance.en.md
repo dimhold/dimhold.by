@@ -4,6 +4,7 @@ description: "On a task with 6.8 percent positives, every threshold I tried scor
 date: 2014-06-11
 lang: en
 translationKey: accuracy-lies-on-imbalance
+tags: ["machine-learning", "statistics"]
 ---
 
 Somebody presents a model at 93 percent accuracy and the room nods. I have been in that room and I nodded. This is what I should have asked for instead.

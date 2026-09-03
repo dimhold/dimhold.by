@@ -1,0 +1,40 @@
+---
+import type { Dictionary } from '../i18n';
+import type { Post } from '../lib/blog';
+import { postPath, readingMinutes, fmtDate } from '../lib/blog';
+import { tagLabel, tagPath } from '../lib/tags';
+
+interface Props {
+  t: Dictionary;
+  post: Post;
+}
+
+const { t, post } = Astro.props;
+---
+
+<article class="post-card reveal">
+  {/* The link is stretched over the whole card by CSS, so the card is one click
+      target, and the tag pills are lifted back above it so they stay their own
+      links. Nesting them inside the anchor would be invalid HTML and a screen
+      reader would read the card as one long name. */}
+  <a class="post-card-link" href={postPath(post)}>
+    <span class="post-card-date">{fmtDate(post.data.date, t.lang)}</span>
+    <h2 class="post-card-title">{post.data.title}</h2>
+    <p class="post-card-desc">{post.data.description}</p>
+    <span class="post-card-meta">
+      {readingMinutes(post.body)} {t.blog.min}
+      {post.data.lang !== t.lang && ` · ${post.data.lang.toUpperCase()}`}
+    </span>
+  </a>
+  {
+    post.data.tags.length > 0 && (
+      <p class="tag-row">
+        {post.data.tags.map((slug) => (
+          <a class="tag-pill" href={tagPath(slug, t.lang)}>
+            {tagLabel(slug, t.lang)}
+          </a>
+        ))}
+      </p>
+    )
+  }
+</article>

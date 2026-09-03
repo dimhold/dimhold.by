@@ -4,6 +4,7 @@ description: "Тры розныя абрывы аднаго ланцужка д�
 date: 2011-11-30
 lang: be
 translationKey: option-vs-null
+tags: ["types", "code-quality"]
 ---
 
 NullPointerException прыляцеў з радка, у якім тры кропкі.

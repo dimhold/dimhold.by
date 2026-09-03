@@ -63,6 +63,11 @@ function ogCard(pathname: string) {
   if (seg.length === 0) return `/og/home-${lang}.jpg`;
   if (seg.length === 1 && (seg[0] === 'blog' || seg[0] === 'projects' || seg[0] === 'games'))
     return `/og/${seg[0]}-${lang}.jpg`;
+  /* /blog/archive/ is a section, not a post, and asking for a post card by that
+     name links a file that was never drawn. The other 2 sections under /blog/
+     carry a further segment and fall through on their own. */
+  if (seg.length === 2 && seg[0] === 'blog' && seg[1] === 'archive') return `/og/blog-${lang}.jpg`;
+  if (seg.length >= 2 && seg[0] === 'blog' && (seg[1] === 'page' || seg[1] === 'tag')) return `/og/blog-${lang}.jpg`;
   if (seg.length === 2 && seg[0] === 'blog') return `/og/post-${seg[1]}-${lang}.jpg`;
   if (seg.length === 2 && seg[0] === 'games') return `/og/game-${seg[1]}-${lang}.jpg`;
   return '/og.jpg';

@@ -4,6 +4,7 @@ description: "I keep being told the voice guide is unnecessary: show the model w
 date: 2026-09-02
 lang: en
 translationKey: voice-beats-inference
+tags: ["llm", "machine-learning"]
 ---
 On 20 August I had a post typed into the LinkedIn composer and I changed 1 word before it went out. It said `Six node processes` and I made it `7 node processes`. The day before, the same phrase had gone out on X with `Six` spelled. That edit is a line in a file now, with a regular expression under it. The machine that drafts for me runs it over every English text before I read one. There are 19 of those checks and 16 apply to English. 5 arrived one at a time after that day, each out of a correction like it. The other 11 went in on the first day. Part of them are a generic list of machine tells and part are preferences I stated that evening.
 

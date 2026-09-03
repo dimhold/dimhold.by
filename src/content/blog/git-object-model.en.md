@@ -4,6 +4,7 @@ description: "5 plumbing calls make a commit that git log reads. 11 revisions of
 date: 2011-12-07
 lang: en
 translationKey: git-object-model
+tags: ["git", "text"]
 ---
 
 My working git was 6 commands and one rule. The commands were `add`, `commit`, `pull`, `push`, `checkout` and `log`. The rule was that when the repository got into a state I did not recognize, I deleted the directory and cloned it again. The rule works. It also means I never knew what I was deleting.

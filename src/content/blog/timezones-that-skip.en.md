@@ -4,6 +4,7 @@ description: "I read every zone in the database for 2011 and refined each jump t
 date: 2011-12-21
 lang: en
 translationKey: timezones-that-skip
+tags: ["time", "git"]
 ---
 
 I add 24 hours when I want tomorrow. Everybody knows that this breaks twice a year, everybody says the word timezone in the review, then the change goes in with the 24 hours still in it because the fix is a library nobody wants to add today. That is roughly how it went for me in March. What I had never done is look at what the database says the year actually contains.

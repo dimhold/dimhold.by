@@ -1,0 +1,44 @@
+---
+import type { Dictionary } from '../i18n';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+---
+
+{/* Hidden until the script that makes it work has booted: a search box that
+    swallows a query and does nothing is worse than no search box. The strings
+    ride on the element because the script is a plain module shared by 3
+    languages and has no dictionary of its own. */}
+<form
+  class="blog-search"
+  role="search"
+  hidden
+  data-search
+  data-index={`/search/${t.lang}.json`}
+  data-empty={t.blog.searchEmpty}
+  data-found={t.blog.searchFound}
+  data-forms={t.blog.posts.join('|')}
+  data-lang={t.lang}
+  onsubmit="return false"
+>
+  <label class="sr-only" for="blog-q">{t.blog.searchLabel}</label>
+  <svg class="blog-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <circle cx="11" cy="11" r="7"></circle>
+    <path d="m20 20-3.5-3.5"></path>
+  </svg>
+  <input
+    id="blog-q"
+    type="search"
+    name="q"
+    autocomplete="off"
+    spellcheck="false"
+    placeholder={t.blog.searchPlaceholder}
+    aria-describedby="blog-q-hint"
+    data-search-input
+  />
+  <button type="button" class="blog-search-clear" hidden data-search-clear>{t.blog.searchClear}</button>
+</form>
+<p class="blog-search-hint" id="blog-q-hint" hidden data-search-hint>{t.blog.searchHint}</p>

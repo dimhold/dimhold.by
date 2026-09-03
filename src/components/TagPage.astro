@@ -1,0 +1,44 @@
+---
+import type { Dictionary, Lang } from '../i18n';
+import { postsFor, postsWithTag, tagCounts, plural } from '../lib/blog';
+import { tagLabel, tagPath } from '../lib/tags';
+import { langBase } from '../lib/blog';
+import Masthead from './Masthead.astro';
+import SiteFooter from './SiteFooter.astro';
+import PostRow from './PostRow.astro';
+import TagCloud from './TagCloud.astro';
+
+interface Props {
+  t: Dictionary;
+  tag: string;
+}
+
+const { t, tag } = Astro.props;
+const all = await postsFor(t.lang);
+const posts = postsWithTag(all, tag);
+const counts = tagCounts(all);
+const langHrefs: Partial<Record<Lang, string>> = {
+  en: tagPath(tag, 'en'),
+  ru: tagPath(tag, 'ru'),
+  be: tagPath(tag, 'be'),
+};
+---
+
+<Masthead t={t} active="blog" langHrefs={langHrefs} />
+
+<main id="main" class="blog-page">
+  <a class="post-back" href={langBase(t.lang)}>← {t.blog.tagBack}</a>
+  <header class="section-head">
+    <h1 class="blog-title">{t.blog.taggedWith.replace('{tag}', tagLabel(tag, t.lang))}</h1>
+  </header>
+  <p class="blog-bar-meta"><span>{plural(posts.length, t.blog.posts, t.lang)}</span></p>
+
+  <ul class="post-rows">
+    {posts.map((p) => <PostRow t={t} post={p} />)}
+  </ul>
+
+  <h2 class="blog-subhead">{t.blog.tagsLabel}</h2>
+  <TagCloud t={t} counts={counts} current={tag} />
+</main>
+
+<SiteFooter t={t} />

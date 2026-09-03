@@ -4,6 +4,7 @@ description: "On a 4 core server I produced a load average of 8.19 with the proc
 date: 2012-08-15
 lang: en
 translationKey: load-average-is-not-cpu
+tags: ["linux", "performance"]
 ---
 
 Load average 8 on a 4 core box, so the box needs more cores. I have said that sentence in a meeting. Nobody objected. What I had never done is make the number go up on purpose in more than 1 way, so I did that on a quiet 4 core server with nothing else on it.

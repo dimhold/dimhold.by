@@ -1,0 +1,40 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import BlogIndex from '../../../../components/BlogIndex.astro';
+import { be } from '../../../../i18n';
+import { postsFor, pageCount, pagePath } from '../../../../lib/blog';
+
+/* Page 1 keeps the bare address, so this route starts at 2. Anything else
+   would give the same list 2 URLs and split it in the sitemap. */
+export async function getStaticPaths() {
+  const posts = await postsFor('be');
+  const pages = pageCount(posts.length);
+  return Array.from({ length: Math.max(0, pages - 1) }, (_, i) => ({
+    params: { page: String(i + 2) },
+    props: { page: i + 2, pages },
+  }));
+}
+
+interface Props {
+  page: number;
+  pages: number;
+}
+
+const { page, pages } = Astro.props;
+const label = be.blog.pageOf.replace('{n}', String(page)).replace('{m}', String(pages));
+const alternates = [
+  { lang: 'en', href: pagePath('en', page) },
+  { lang: 'ru', href: pagePath('ru', page) },
+  { lang: 'be', href: pagePath('be', page) },
+];
+---
+
+<Base
+  t={be}
+  title={`${label} · ${be.blog.title}`}
+  description={be.blog.description}
+  alternates={alternates}
+  ogType="website"
+>
+  <BlogIndex t={be} page={page} />
+</Base>

@@ -4,6 +4,7 @@ description: "2 phones, one wood, an hour and twenty. One in a pocket, one in a 
 date: 2026-08-20
 lang: en
 translationKey: dog-walks-further
+tags: ["statistics", "numbers"]
 walk: true
 ---
 

@@ -4075,3 +4075,460 @@ html[data-mode='night'] .kata-sound[aria-pressed='true'] {
     text-decoration: underline;
   }
 }
+
+/* ——— blog navigation: search, tags, pager, archive ——— */
+
+.blog-bar {
+  margin-top: 1.4rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.blog-bar-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.blog-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.15rem 0.4rem 0.15rem 0.85rem;
+  box-shadow: var(--shadow);
+}
+
+.blog-search:focus-within {
+  border-color: var(--accent);
+}
+
+.blog-search-icon {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  color: var(--muted);
+}
+
+.blog-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.62rem 0;
+  outline: none;
+}
+
+.blog-search input::placeholder {
+  color: var(--muted);
+}
+
+/* The browser's own clear cross sits in a different place in every engine and
+   tells the script nothing, so the button beside it is the real one. */
+.blog-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.blog-search-clear {
+  flex: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+}
+
+.blog-search-clear:hover {
+  color: var(--accent-deep);
+  background: var(--accent-wash);
+}
+
+html[data-mode='night'] .blog-search-clear:hover {
+  color: var(--accent);
+}
+
+.blog-search-hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  padding: 0 0.9rem;
+}
+
+.search-results {
+  margin-top: 1.4rem;
+}
+
+.search-count {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+/* ——— tags ——— */
+
+.tag-cloud {
+  margin: 1.5rem 0 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.5rem;
+  line-height: 1.35;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  text-decoration: none;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.22rem 0.7rem;
+  font-size: 0.78rem;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.tag-pill:hover {
+  color: var(--accent-deep);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+html[data-mode='night'] .tag-pill:hover {
+  color: var(--accent);
+}
+
+.tag-pill[aria-current='page'] {
+  color: var(--accent-deep);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+
+html[data-mode='night'] .tag-pill[aria-current='page'] {
+  color: var(--accent);
+}
+
+.tag-count {
+  font-family: var(--font-mono);
+  font-size: 0.68em;
+  opacity: 0.65;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+}
+
+.post-tags {
+  margin-top: 2.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+}
+
+/* ——— cards, now that a card holds links of its own ——— */
+
+.post-card {
+  position: relative;
+}
+
+.post-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* One click target for the whole card without wrapping the tag links inside the
+   anchor, which would be invalid and would read as one very long name. */
+.post-card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+}
+
+.post-card .tag-row {
+  position: relative;
+  z-index: 1;
+}
+
+.post-card:has(.post-card-link:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ——— compact rows: tag pages, the archive, search results ——— */
+
+.post-rows {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.post-row + .post-row {
+  border-top: 1px solid var(--line);
+}
+
+.post-row a {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0.2rem 1rem;
+  align-items: baseline;
+  padding: 0.62rem 0.2rem;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 10px;
+}
+
+.post-row a:hover {
+  background: var(--accent-wash);
+}
+
+.post-row-date {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.post-row-title {
+  font-weight: 600;
+  text-wrap: pretty;
+}
+
+.post-row a:hover .post-row-title {
+  color: var(--accent-deep);
+}
+
+html[data-mode='night'] .post-row a:hover .post-row-title {
+  color: var(--accent);
+}
+
+@media (max-width: 40rem) {
+  .post-row a {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ——— pager ——— */
+
+.pager {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.pager-step {
+  text-decoration: none;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+}
+
+.pager-step:hover {
+  color: var(--accent-deep);
+  border-color: var(--accent);
+}
+
+html[data-mode='night'] .pager-step:hover {
+  color: var(--accent);
+}
+
+.pager-off {
+  opacity: 0.35;
+}
+
+.pager-nums {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.pager-num {
+  text-decoration: none;
+  color: var(--muted);
+  padding: 0.3rem 0.55rem;
+  border-radius: 8px;
+}
+
+.pager-num:hover {
+  background: var(--accent-wash);
+  color: var(--accent-deep);
+}
+
+html[data-mode='night'] .pager-num:hover {
+  color: var(--accent);
+}
+
+.pager-num[aria-current='page'] {
+  color: var(--ink);
+  font-weight: 700;
+  background: var(--accent-wash);
+}
+
+.pager-gap {
+  color: var(--muted);
+  padding: 0 0.15rem;
+}
+
+/* ——— archive ——— */
+
+.blog-subhead {
+  margin-top: 2.4rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  scroll-margin-top: 5rem;
+}
+
+.archive-year-count {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.archive-lead {
+  margin-top: 0.9rem;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.cal-wrap {
+  margin-top: 1.2rem;
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 0.9rem 1rem;
+  box-shadow: var(--shadow);
+}
+
+.cal {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 30rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.cal th {
+  font-weight: 500;
+  color: var(--muted);
+  padding: 0.25rem 0.2rem;
+  text-align: center;
+}
+
+.cal thead th {
+  font-size: 0.66rem;
+  text-transform: lowercase;
+}
+
+.cal tbody th {
+  text-align: right;
+  padding-right: 0.6rem;
+  white-space: nowrap;
+}
+
+.cal tbody th a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.cal tbody th a:hover {
+  color: var(--accent-deep);
+}
+
+html[data-mode='night'] .cal tbody th a:hover {
+  color: var(--accent);
+}
+
+.cal td {
+  text-align: center;
+  padding: 0;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 6px;
+}
+
+.cal td a,
+.cal td span {
+  display: block;
+  padding: 0.34rem 0;
+  border-radius: 5px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cal-off {
+  color: var(--line);
+}
+
+/* 4 steps rather than a gradient: the eye reads a handful of shades, and the
+   count is printed inside the cell anyway. */
+.cal-n1 {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.cal-n2 {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.cal-n3 {
+  background: color-mix(in srgb, var(--accent) 48%, transparent);
+}
+
+.cal-n4 {
+  background: color-mix(in srgb, var(--accent) 68%, transparent);
+}
+
+.cal-on a {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.cal-on:hover {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.archive-month {
+  margin-top: 1rem;
+}
+
+.archive-month-head {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--muted);
+  scroll-margin-top: 5rem;
+}

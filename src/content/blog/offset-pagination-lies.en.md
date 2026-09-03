@@ -4,6 +4,7 @@ description: "A single insert at the front of the order made the second page sta
 date: 2012-10-10
 lang: en
 translationKey: offset-pagination-lies
+tags: ["databases", "performance"]
 ---
 
 Somebody reported seeing the same item twice while paging through a list. There was nothing in the logs, the query was ordinary, so I spent an afternoon looking for a bug in the application. The bug is in the paging itself, needing no concurrency drama to reproduce: 1 insert is enough.

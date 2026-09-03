@@ -4,6 +4,7 @@ description: "Benford's law is sold as a screen you point at a column of numbers
 date: 2013-06-12
 lang: en
 translationKey: benford-first-digits
+tags: ["statistics", "numbers"]
 ---
 
 The pitch for Benford's law is that you point it at a column of numbers and the faked ones stand out. Real quantities start with 1 about 30 percent of the time and with 9 about 4.6 percent of the time, invented ones spread out flat, so the histogram does the accusing for you. I have seen that histogram in slides for 2 years and I never once ran it on numbers I knew were clean.

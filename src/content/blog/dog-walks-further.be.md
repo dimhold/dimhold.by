@@ -4,6 +4,7 @@ description: "Два тэлефоны, адзін лес, гадзіна два�
 date: 2026-08-20
 lang: be
 translationKey: dog-walks-further
+tags: ["statistics", "numbers"]
 walk: true
 ---
 

@@ -4,6 +4,7 @@ description: "На задачы з 6.8 адсотка станоўчых пры�
 date: 2014-06-11
 lang: be
 translationKey: accuracy-lies-on-imbalance
+tags: ["machine-learning", "statistics"]
 ---
 
 Нехта паказвае мадэль з accuracy 93 адсоткі, і зала ківае. Я ў гэтай зале сядзеў і ківаў. Вось што трэба было пытаць замест гэтага.

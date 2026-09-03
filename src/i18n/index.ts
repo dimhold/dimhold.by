@@ -238,6 +238,30 @@ export interface Dictionary {
     title: string;
     description: string;
     min: string;
+    /** Plural forms of "post": one, few, many. English repeats the plural. */
+    posts: [string, string, string];
+    searchLabel: string;
+    searchPlaceholder: string;
+    searchHint: string;
+    /** Carries {q}, the query as typed. */
+    searchEmpty: string;
+    /** Carries {n}, already pluralised. */
+    searchFound: string;
+    searchClear: string;
+    tagsLabel: string;
+    /** Carries {tag}, the label of the tag in this language. */
+    taggedWith: string;
+    tagBack: string;
+    /** Reader-facing name per tag slug; a slug missing here falls back to itself. */
+    tagLabels: Record<string, string>;
+    archiveLabel: string;
+    archiveTitle: string;
+    archiveDescription: string;
+    archiveLead: string;
+    newer: string;
+    older: string;
+    /** Carries {n} and {m}. */
+    pageOf: string;
   };
   hero: {
     greeting: string;
@@ -359,6 +383,45 @@ export const en: Dictionary = {
     description:
       'Essays and build logs by Dmitriy Semenkevich: AI products that don’t guess, financial engines, web experiments.',
     min: 'min read',
+    posts: ['post', 'posts', 'posts'],
+    searchLabel: 'Search the writing',
+    searchPlaceholder: 'titles, tags, first lines',
+    searchHint: 'Filters every post at once, not just the page you are on.',
+    searchEmpty: 'Nothing matches {q}.',
+    searchFound: '{n} found',
+    searchClear: 'clear',
+    tagsLabel: 'Tags',
+    taggedWith: 'Tagged {tag}',
+    tagBack: 'all writing',
+    archiveLabel: 'Archive',
+    archiveTitle: 'Archive of the writing · Dmitriy Semenkevich',
+    archiveDescription: 'Every essay on dimhold.by laid out by year and by month.',
+    archiveLead: 'Everything published, by year and by month. A filled square is a month with something in it.',
+    newer: 'newer',
+    older: 'older',
+    pageOf: 'page {n} of {m}',
+    tagLabels: {
+      agents: 'agents',
+      algorithms: 'algorithms',
+      'code-quality': 'code quality',
+      compilers: 'compilers',
+      databases: 'databases',
+      debugging: 'debugging',
+      dependencies: 'dependencies',
+      git: 'git',
+      linux: 'linux',
+      llm: 'language models',
+      'machine-learning': 'machine learning',
+      networking: 'networking',
+      numbers: 'numbers',
+      'open-data': 'open data',
+      performance: 'performance',
+      reliability: 'reliability',
+      statistics: 'statistics',
+      text: 'text and encodings',
+      time: 'time',
+      types: 'types',
+    },
   },
   hero: {
     greeting: 'hi, I’m',
@@ -948,6 +1011,45 @@ export const ru: Dictionary = {
     description:
       'Статьи и билд-логи Дмитрия Семенкевича: ИИ-продукты, которые не угадывают, финансовые движки, веб-эксперименты.',
     min: 'мин чтения',
+    posts: ['статья', 'статьи', 'статей'],
+    searchLabel: 'Поиск по статьям',
+    searchPlaceholder: 'заголовки, теги, первые строки',
+    searchHint: 'Ищет по всем статьям сразу, а не по открытой странице.',
+    searchEmpty: 'По запросу {q} ничего нет.',
+    searchFound: 'найдено: {n}',
+    searchClear: 'очистить',
+    tagsLabel: 'Теги',
+    taggedWith: 'Тег: {tag}',
+    tagBack: 'все статьи',
+    archiveLabel: 'Архив',
+    archiveTitle: 'Архив статей — Дмитрий Семенкевич',
+    archiveDescription: 'Все статьи dimhold.by, разложенные по годам и месяцам.',
+    archiveLead: 'Всё опубликованное по годам и месяцам. Закрашенный квадрат это месяц, в котором что-то вышло.',
+    newer: 'новее',
+    older: 'старше',
+    pageOf: 'страница {n} из {m}',
+    tagLabels: {
+      agents: 'агенты',
+      algorithms: 'алгоритмы',
+      'code-quality': 'качество кода',
+      compilers: 'компиляторы',
+      databases: 'базы данных',
+      debugging: 'отладка',
+      dependencies: 'зависимости',
+      git: 'git',
+      linux: 'linux',
+      llm: 'языковые модели',
+      'machine-learning': 'машинное обучение',
+      networking: 'сети',
+      numbers: 'числа',
+      'open-data': 'открытые данные',
+      performance: 'производительность',
+      reliability: 'надёжность',
+      statistics: 'статистика',
+      text: 'текст и кодировки',
+      time: 'время',
+      types: 'типы',
+    },
   },
   hero: {
     greeting: 'привет, я',
@@ -1537,6 +1639,45 @@ export const be: Dictionary = {
     description:
       'Артыкулы і білд-логі Дзмітрыя Семянкевіча: ШІ-прадукты, якія не гадаюць, фінансавыя рухавікі, веб-эксперыменты.',
     min: 'хв чытання',
+    posts: ['артыкул', 'артыкулы', 'артыкулаў'],
+    searchLabel: 'Пошук па артыкулах',
+    searchPlaceholder: 'загалоўкі, тэгі, першыя радкі',
+    searchHint: 'Шукае па ўсіх артыкулах адразу, а не па адкрытай старонцы.',
+    searchEmpty: 'Па запыце {q} нічога няма.',
+    searchFound: 'знойдзена: {n}',
+    searchClear: 'ачысціць',
+    tagsLabel: 'Тэгі',
+    taggedWith: 'Тэг: {tag}',
+    tagBack: 'усе артыкулы',
+    archiveLabel: 'Архіў',
+    archiveTitle: 'Архіў артыкулаў — Дзмітрый Семянкевіч',
+    archiveDescription: 'Усе артыкулы dimhold.by, раскладзеныя па гадах і месяцах.',
+    archiveLead: 'Усё апублікаванае па гадах і месяцах. Зафарбаваны квадрат гэта месяц, у якім нешта выйшла.',
+    newer: 'навейшыя',
+    older: 'старэйшыя',
+    pageOf: 'старонка {n} з {m}',
+    tagLabels: {
+      agents: 'агенты',
+      algorithms: 'алгарытмы',
+      'code-quality': 'якасць кода',
+      compilers: 'кампілятары',
+      databases: 'базы даных',
+      debugging: 'адладка',
+      dependencies: 'залежнасці',
+      git: 'git',
+      linux: 'linux',
+      llm: 'моўныя мадэлі',
+      'machine-learning': 'машыннае навучанне',
+      networking: 'сеткі',
+      numbers: 'лікі',
+      'open-data': 'адкрытыя даныя',
+      performance: 'хуткадзейнасць',
+      reliability: 'надзейнасць',
+      statistics: 'статыстыка',
+      text: 'тэкст і кадоўкі',
+      time: 'час',
+      types: 'тыпы',
+    },
   },
   hero: {
     greeting: 'прывітанне, я',

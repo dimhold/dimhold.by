@@ -4,6 +4,7 @@ description: "I took a dashboard out of this workspace 2 days and 22 hours after
 date: 2026-08-30
 lang: en
 translationKey: simple-made-easy-my-diffs
+tags: ["code-quality", "git"]
 ---
 On 14 August 2026 I took the dashboard out of this workspace. The commit strips 3748 lines. 3581 of those are 10 files deleted whole, plus a SQLite database. The machine had written the first of those files 2 days and 22 hours before that commit. The reason sits in the commit body and it is about the premise. The thing was a queue of cards with approve and reject buttons, built as if I service a queue, when every real decision here happens in a conversation.
 

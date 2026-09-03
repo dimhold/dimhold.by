@@ -4,6 +4,7 @@ description: "Чатыры цаны са ста дакладныя ў double. Н
 date: 2011-11-16
 lang: be
 translationKey: money-in-a-double
+tags: ["numbers", "types"]
 ---
 
 У мяне была цана 4.35. Яе трэба было перавесці ў капейкі:

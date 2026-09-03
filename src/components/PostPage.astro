@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import type { Dictionary } from '../i18n';
 import type { Post } from '../lib/blog';
 import { langBase, readingMinutes, fmtDate } from '../lib/blog';
+import { tagLabel, tagPath } from '../lib/tags';
 import Masthead from './Masthead.astro';
 import SiteFooter from './SiteFooter.astro';
 
@@ -29,6 +30,17 @@ const { Content } = await render(post);
   <article class="prose">
     <Content />
   </article>
+  {
+    post.data.tags.length > 0 && (
+      <nav class="tag-row post-tags" aria-label={t.blog.tagsLabel}>
+        {post.data.tags.map((slug) => (
+          <a class="tag-pill" href={tagPath(slug, t.lang)}>
+            {tagLabel(slug, t.lang)}
+          </a>
+        ))}
+      </nav>
+    )
+  }
 </main>
 
 {

@@ -4,6 +4,7 @@ description: "Три разных обрыва одной цепочки даю�
 date: 2011-11-30
 lang: ru
 translationKey: option-vs-null
+tags: ["types", "code-quality"]
 ---
 
 NullPointerException прилетел из строки, в которой три точки.

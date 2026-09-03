@@ -4,6 +4,7 @@ description: "16 bytes against 8 is 40 percent more index. Arrival order adds an
 date: 2011-11-23
 lang: en
 translationKey: uuid-against-bigint
+tags: ["databases", "performance"]
 ---
 
 Every argument I have had about uuid keys was about the width of the key. 16 bytes against 8, the index gets bigger, move on. I set 4 tables next to each other to see whether that is the whole bill.

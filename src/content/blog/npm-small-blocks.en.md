@@ -4,6 +4,7 @@ description: "I walked the dependency graph of 6 packages as the registry record
 date: 2012-05-16
 lang: en
 translationKey: npm-small-blocks
+tags: ["dependencies", "open-data"]
 ---
 
 The pitch for npm is small blocks. Write a module that does 1 thing, publish it, let other people assemble. I have repeated that pitch for months without ever counting what a single install actually puts on my disk.

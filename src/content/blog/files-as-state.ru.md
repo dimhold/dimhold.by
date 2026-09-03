@@ -4,6 +4,7 @@ description: "Состояние этой машины лежит в файла�
 date: 2026-08-29
 lang: ru
 translationKey: files-as-state
+tags: ["agents", "databases", "performance"]
 ---
 14 августа 2026 года я убрал из этого рабочего пространства дашборд, а вместе с ним базу. Причина записана в коммите. "The dashboard was a queue UI built as if DS services a queue. He does not: the decisions here need argument and context, which is a conversation..." Дашборд был интерфейсом очереди, построенным так, будто DS обслуживает очередь. Он её не обслуживает: решения здесь требуют доводов и контекста, а это разговор.
 

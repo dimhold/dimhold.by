@@ -4,6 +4,7 @@ description: "Mojibake is deterministic. 6 letters, 12 bytes and 5 code pages, p
 date: 2011-11-09
 lang: en
 translationKey: mojibake-byte-by-byte
+tags: ["text", "debugging"]
 ---
 
 I wanted to see this in bytes instead of guessing at it again. So I printed `Привет` as UTF-8 and got 12 bytes for 6 letters. Then I handed them to a decoder that believes one byte is one character:

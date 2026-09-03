@@ -4,6 +4,7 @@ description: "26 public repositories and 510 of my own commits. Guessing a timez
 date: 2026-08-27
 lang: en
 translationKey: red-line-open-data
+tags: ["git", "time", "open-data"]
 ---
 
 Last week I published a post about walking my dog. It carried 2 GPS tracks. I shifted every coordinate into the Pacific first, which keeps the shape of a walk and drops where it happened. That felt like the whole of my duty on the subject.

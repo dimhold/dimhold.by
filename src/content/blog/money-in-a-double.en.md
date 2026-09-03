@@ -4,6 +4,7 @@ description: "4 prices in every 100 are exact doubles. Across a million amounts 
 date: 2011-11-16
 lang: en
 translationKey: money-in-a-double
+tags: ["numbers", "types"]
 ---
 
 I had a price of 4.35. I needed it in kopecks:

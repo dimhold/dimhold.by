@@ -4,6 +4,7 @@ description: "I declared one function twice and timed the 2 copies against each 
 date: 2013-09-11
 lang: en
 translationKey: same-code-beats-itself
+tags: ["performance", "statistics"]
 ---
 
 Somebody posts a benchmark, one version is 8 percent faster, the discussion moves on to why. I have posted numbers like that myself. What I had never done is find out what my own machine says when there is nothing to find, so I wrote the smallest version of that: 1 function, declared twice under 2 names, timed against each other. The true difference between them is 0 by construction.

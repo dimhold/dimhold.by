@@ -4,6 +4,7 @@ description: "The fixed window counter leaks double at the boundary, which is th
 date: 2012-11-14
 lang: en
 translationKey: window-that-leaks-double
+tags: ["algorithms", "reliability"]
 ---
 
 I needed a rate limit and wrote the 3 line version: a counter and the start of the current window. In review somebody said the words boundary problem, I switched to a token bucket, everybody nodded, the change went in. I could not have told you what either one lets through, so I built all of them and pushed 4 shapes of traffic at each.

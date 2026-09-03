@@ -9,6 +9,11 @@ const blog = defineCollection({
     date: z.coerce.date(),
     lang: z.enum(['en', 'ru', 'be']),
     translationKey: z.string(),
+    /* Slugs from src/lib/tags.json, 2 or 3 of them. The vocabulary is closed so
+       the cloud stays navigation instead of a list of synonyms; the acceptance
+       gate in the writing workspace enforces that, not this schema, because a
+       typo should fail the article rather than the whole build. */
+    tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     /* Set when the post drops a <div data-walk> into its prose; only then does
        the page pay for the player's script and its 190 KB of coordinates. */

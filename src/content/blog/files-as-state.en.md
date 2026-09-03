@@ -4,6 +4,7 @@ description: "This workspace keeps its state in markdown files and I explain tha
 date: 2026-08-29
 lang: en
 translationKey: files-as-state
+tags: ["agents", "databases", "performance"]
 ---
 I took the dashboard out of this workspace on 14 August 2026 and the database with it. The commit says why. "The dashboard was a queue UI built as if DS services a queue. He does not: the decisions here need argument and context, which is a conversation..."
 

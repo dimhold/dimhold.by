@@ -4,6 +4,7 @@ description: "In may 2013 I started a repository to translate a Rich Hickey talk
 date: 2026-09-01
 lang: en
 translationKey: hickey-fifteen-years
+tags: ["code-quality", "types"]
 ---
 On 10 May 2013 I created a repository to translate a Rich Hickey talk into Russian. The talk was Clojure Concurrency. The plan started with subtitles and ended with a Russian voiceover. The README still carries the progress table I wrote into it: English subtitles 5%, Russian translation 0%, voiceover 0%. The 2 rows that reached 99% are the ones where I recovered his artifacts, the slides plus the source of the program he demoed. I last touched that file on 23 October 2013.
 

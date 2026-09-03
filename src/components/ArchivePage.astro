@@ -1,0 +1,101 @@
+---
+import type { Dictionary, Lang } from '../i18n';
+import { postsFor, archiveByYear, yearAnchor, monthAnchor, monthShort, fmtMonth, langBase, archivePath, plural } from '../lib/blog';
+import Masthead from './Masthead.astro';
+import SiteFooter from './SiteFooter.astro';
+import PostRow from './PostRow.astro';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const all = await postsFor(t.lang);
+const years = archiveByYear(all);
+const months = Array.from({ length: 12 }, (_, i) => i + 1);
+/* How dark a filled cell is drawn. 4 steps, because the eye reads a handful of
+   shades and not a gradient, and the number is printed in the cell anyway. */
+const busiest = Math.max(1, ...years.flatMap((y) => y.months.map((m) => m.posts.length)));
+function step(n: number): number {
+  return Math.min(4, Math.ceil((n / busiest) * 4));
+}
+const byYear = new Map(years.map((y) => [y.year, new Map(y.months.map((m) => [m.month, m.posts.length]))]));
+const langHrefs: Partial<Record<Lang, string>> = {
+  en: archivePath('en'),
+  ru: archivePath('ru'),
+  be: archivePath('be'),
+};
+---
+
+<Masthead t={t} active="blog" langHrefs={langHrefs} />
+
+<main id="main" class="blog-page archive-page">
+  <a class="post-back" href={langBase(t.lang)}>← {t.blog.tagBack}</a>
+  <header class="section-head">
+    <h1 class="blog-title">{t.blog.archiveLabel}</h1>
+  </header>
+  <p class="archive-lead">{t.blog.archiveLead}</p>
+  <p class="blog-bar-meta"><span>{plural(all.length, t.blog.posts, t.lang)}</span></p>
+
+  <div class="cal-wrap">
+    <table class="cal">
+      <caption class="sr-only">{t.blog.archiveDescription}</caption>
+      <thead>
+        <tr>
+          <th scope="col" class="cal-corner"><span class="sr-only">{t.blog.archiveLabel}</span></th>
+          {months.map((m) => <th scope="col">{monthShort(m, t.lang)}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          years.map((y) => (
+            <tr>
+              <th scope="row">
+                <a href={`#${yearAnchor(y.year)}`}>{y.year}</a>
+              </th>
+              {months.map((m) => {
+                const n = byYear.get(y.year)?.get(m) ?? 0;
+                return (
+                  <td class={n ? `cal-on cal-n${step(n)}` : 'cal-off'}>
+                    {n > 0 ? (
+                      <a href={`#${monthAnchor(y.year, m)}`} title={`${fmtMonth(y.year, m, t.lang)}: ${plural(n, t.blog.posts, t.lang)}`}>
+                        {n}
+                      </a>
+                    ) : (
+                      <span aria-hidden="true">·</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  {
+    years.map((y) => (
+      <section class="archive-year">
+        <h2 class="blog-subhead" id={yearAnchor(y.year)}>
+          {y.year}
+          <span class="archive-year-count">{plural(y.count, t.blog.posts, t.lang)}</span>
+        </h2>
+        {y.months.map((m) => (
+          <div class="archive-month">
+            <h3 class="archive-month-head" id={monthAnchor(y.year, m.month)}>
+              {fmtMonth(y.year, m.month, t.lang)}
+            </h3>
+            <ul class="post-rows">
+              {m.posts.map((p) => (
+                <PostRow t={t} post={p} />
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+    ))
+  }
+</main>
+
+<SiteFooter t={t} />

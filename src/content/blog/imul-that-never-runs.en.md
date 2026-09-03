@@ -4,6 +4,7 @@ description: "javac keeps the difference between x * 2 and x << 1. Nothing below
 date: 2011-12-14
 lang: en
 translationKey: imul-that-never-runs
+tags: ["compilers", "performance"]
 ---
 
 I got one comment on a code review this week. I had written `total = count * 2` and the comment asked for `count << 1` instead, because a shift is cheaper than a multiply. I did not argue. I had nothing to argue with. I write Java every working day and I had never opened a class file to see what javac makes of it.

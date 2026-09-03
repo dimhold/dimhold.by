@@ -1,0 +1,54 @@
+---
+import type { Dictionary } from '../i18n';
+import { pagePath, pageWindow } from '../lib/blog';
+
+interface Props {
+  t: Dictionary;
+  page: number;
+  pages: number;
+}
+
+const { t, page, pages } = Astro.props;
+const window = pageWindow(page, pages);
+const label = t.blog.pageOf.replace('{n}', String(page)).replace('{m}', String(pages));
+---
+
+{
+  pages > 1 && (
+    <nav class="pager" aria-label={label}>
+      {page > 1 ? (
+        <a class="pager-step" href={pagePath(t.lang, page - 1)} rel="prev">
+          ← {t.blog.newer}
+        </a>
+      ) : (
+        <span class="pager-step pager-off">← {t.blog.newer}</span>
+      )}
+
+      <span class="pager-nums">
+        {window.map((n) =>
+          n === 'gap' ? (
+            <span class="pager-gap" aria-hidden="true">
+              …
+            </span>
+          ) : n === page ? (
+            <span class="pager-num" aria-current="page">
+              {n}
+            </span>
+          ) : (
+            <a class="pager-num" href={pagePath(t.lang, n)}>
+              {n}
+            </a>
+          ),
+        )}
+      </span>
+
+      {page < pages ? (
+        <a class="pager-step" href={pagePath(t.lang, page + 1)} rel="next">
+          {t.blog.older} →
+        </a>
+      ) : (
+        <span class="pager-step pager-off">{t.blog.older} →</span>
+      )}
+    </nav>
+  )
+}

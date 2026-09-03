@@ -4,6 +4,7 @@ description: "Четыре цены из ста точны в double. На ми�
 date: 2011-11-16
 lang: ru
 translationKey: money-in-a-double
+tags: ["numbers", "types"]
 ---
 
 У меня была цена 4.35. Её надо было перевести в копейки:

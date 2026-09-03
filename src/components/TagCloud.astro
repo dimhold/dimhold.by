@@ -1,0 +1,43 @@
+---
+import type { Dictionary } from '../i18n';
+import type { TagCount } from '../lib/blog';
+import { plural } from '../lib/blog';
+import { tagLabel, tagPath } from '../lib/tags';
+
+interface Props {
+  t: Dictionary;
+  counts: TagCount[];
+  /** The tag whose page we are on, drawn as current rather than as a link out. */
+  current?: string;
+}
+
+const { t, counts, current } = Astro.props;
+
+/* Weight by the square root of the count, not the count itself: one tag that
+   collects a third of the posts would otherwise be 3 times the height of the
+   rest and the cloud would read as a headline with debris around it. */
+const max = Math.max(...counts.map((c) => c.count), 1);
+const min = Math.min(...counts.map((c) => c.count), 1);
+const span = Math.sqrt(max) - Math.sqrt(min);
+function size(n: number): string {
+  const k = span === 0 ? 1 : (Math.sqrt(n) - Math.sqrt(min)) / span;
+  return `${(0.82 + k * 0.58).toFixed(2)}rem`;
+}
+---
+
+<nav class="tag-cloud" aria-label={t.blog.tagsLabel}>
+  {
+    counts.map((c) => (
+      <a
+        class="tag-pill tag-cloud-item"
+        href={tagPath(c.slug, t.lang)}
+        style={`font-size: ${size(c.count)}`}
+        aria-current={c.slug === current ? 'page' : undefined}
+        title={plural(c.count, t.blog.posts, t.lang)}
+      >
+        {tagLabel(c.slug, t.lang)}
+        <span class="tag-count">{c.count}</span>
+      </a>
+    ))
+  }
+</nav>

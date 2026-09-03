@@ -1,0 +1,38 @@
+---
+import Base from '../../../layouts/Base.astro';
+import TagPage from '../../../components/TagPage.astro';
+import { en } from '../../../i18n';
+import { postsFor, tagCounts, plural } from '../../../lib/blog';
+import { tagLabel, tagPath } from '../../../lib/tags';
+
+/* Only tags that actually carry a post get a page. The vocabulary is closed and
+   most of it is used, but a tag nobody has written under yet would otherwise be
+   an empty page in the sitemap. */
+export async function getStaticPaths() {
+  const posts = await postsFor('en');
+  return tagCounts(posts).map((c) => ({ params: { tag: c.slug }, props: { tag: c.slug, count: c.count } }));
+}
+
+interface Props {
+  tag: string;
+  count: number;
+}
+
+const { tag, count } = Astro.props;
+const label = en.blog.taggedWith.replace('{tag}', tagLabel(tag, 'en'));
+const alternates = [
+  { lang: 'en', href: tagPath(tag, 'en') },
+  { lang: 'ru', href: tagPath(tag, 'ru') },
+  { lang: 'be', href: tagPath(tag, 'be') },
+];
+---
+
+<Base
+  t={en}
+  title={`${label} · ${en.blog.title}`}
+  description={`${label}: ${plural(count, en.blog.posts, 'en')}.`}
+  alternates={alternates}
+  ogType="website"
+>
+  <TagPage t={en} tag={tag} />
+</Base>

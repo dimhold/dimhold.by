@@ -1,16 +1,32 @@
 ---
-import type { Dictionary } from '../i18n';
-import { postsFor, postPath, readingMinutes, fmtDate } from '../lib/blog';
+import type { Dictionary, Lang } from '../i18n';
+import { postsFor, pageSlice, pageCount, pagePath, archivePath, tagCounts, plural } from '../lib/blog';
 import Masthead from './Masthead.astro';
 import SiteFooter from './SiteFooter.astro';
+import PostCard from './PostCard.astro';
+import TagCloud from './TagCloud.astro';
+import BlogSearch from './BlogSearch.astro';
+import Pager from './Pager.astro';
 
 interface Props {
   t: Dictionary;
+  /** 1 for /blog/, higher for /blog/page/N/. */
+  page?: number;
 }
 
-const { t } = Astro.props;
-const posts = await postsFor(t.lang);
-const langHrefs = { en: '/blog/', ru: '/ru/blog/', be: '/be/blog/' };
+const { t, page = 1 } = Astro.props;
+const all = await postsFor(t.lang);
+const pages = pageCount(all.length);
+const shown = pageSlice(all, page);
+const counts = tagCounts(all);
+/* Every language has the same number of posts, because a missing translation
+   falls back rather than disappearing, so page N exists in all 3 and the
+   switcher can stay on the page the reader is looking at. */
+const langHrefs: Partial<Record<Lang, string>> = {
+  en: pagePath('en', page),
+  ru: pagePath('ru', page),
+  be: pagePath('be', page),
+};
 ---
 
 <Masthead t={t} active="blog" langHrefs={langHrefs} />
@@ -23,21 +39,29 @@ const langHrefs = { en: '/blog/', ru: '/ru/blog/', be: '/be/blog/' };
     </svg>
   </header>
 
-  <div class="post-list">
-    {
-      posts.map((p) => (
-        <a class="post-card reveal" href={postPath(p)}>
-          <span class="post-card-date">{fmtDate(p.data.date, t.lang)}</span>
-          <h2 class="post-card-title">{p.data.title}</h2>
-          <p class="post-card-desc">{p.data.description}</p>
-          <span class="post-card-meta">
-            {readingMinutes(p.body)} {t.blog.min}
-            {p.data.lang !== t.lang && ` · ${p.data.lang.toUpperCase()}`}
-          </span>
-        </a>
-      ))
-    }
+  <div class="blog-bar">
+    <BlogSearch t={t} />
+    <p class="blog-bar-meta">
+      <span>{plural(all.length, t.blog.posts, t.lang)}</span>
+      <a class="link-plain" href={archivePath(t.lang)}>{t.blog.archiveLabel} →</a>
+    </p>
+  </div>
+
+  {/* Results take the place of the list, so they sit below the whole bar rather
+      than between the search box and the counter that belongs to it. */}
+  <div class="search-results" hidden data-search-results aria-live="polite"></div>
+
+  <div data-search-hides>
+    <TagCloud t={t} counts={counts} />
+    <div class="post-list">
+      {shown.map((p) => <PostCard t={t} post={p} />)}
+    </div>
+    <Pager t={t} page={page} pages={pages} />
   </div>
 </main>
 
 <SiteFooter t={t} />
+
+<script>
+  import '../scripts/blog-search';
+</script>

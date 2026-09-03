@@ -4,6 +4,7 @@ description: "Стан гэтай машыны ляжыць у файлах mark
 date: 2026-08-29
 lang: be
 translationKey: files-as-state
+tags: ["agents", "databases", "performance"]
 ---
 14 жніўня 2026 года я прыбраў з гэтай рабочай прасторы дашборд, а разам з ім базу. Прычына запісана ў каміце. "The dashboard was a queue UI built as if DS services a queue. He does not: the decisions here need argument and context, which is a conversation..." Дашборд быў інтэрфейсам чаргі, пабудаваным так, быццам DS абслугоўвае чаргу. Ён яе не абслугоўвае: рашэнні тут патрабуюць доводаў і кантэксту, а гэта размова.
 

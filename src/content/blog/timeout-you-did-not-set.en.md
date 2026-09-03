@@ -4,6 +4,7 @@ description: "I used to say that a request without a timeout waits forever. Half
 date: 2013-03-13
 lang: en
 translationKey: timeout-you-did-not-set
+tags: ["networking", "linux"]
 ---
 
 A request of ours hung and the thread that made it hung with it. I said what I had said before, that a client without a timeout waits forever, so set one. It is the advice I would still give. I had just never checked whether the first half of it is true. It is not.

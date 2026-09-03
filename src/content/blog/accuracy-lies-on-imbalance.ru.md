@@ -4,6 +4,7 @@ description: "На задаче с 6.8 процента положительны
 date: 2014-06-11
 lang: ru
 translationKey: accuracy-lies-on-imbalance
+tags: ["machine-learning", "statistics"]
 ---
 
 Кто-то показывает модель с accuracy 93 процента. Зал кивает. Я в этом зале сидел и кивал. Вот что надо было спрашивать вместо этого.
