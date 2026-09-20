@@ -231,6 +231,7 @@ export interface Dictionary {
     projects: string;
     games: string;
     papers: string;
+    illusions: string;
   };
   blog: {
     label: string;
@@ -375,6 +376,7 @@ export const en: Dictionary = {
     projects: 'my projects',
     games: 'games',
     papers: 'papers',
+    illusions: 'illusions',
   },
   blog: {
     label: 'Writing',
@@ -967,7 +969,7 @@ export const en: Dictionary = {
   contact: {
     label: 'Say hello',
     lede: 'Consulting, product feedback, interesting problems: the inbox is open.',
-    email: 'dimhold@gmail.com',
+    email: 'dimhold@dimhold.by',
   },
   consent: {
     label: 'Cookie notice',
@@ -1003,6 +1005,7 @@ export const ru: Dictionary = {
     projects: 'мои проекты',
     games: 'игры',
     papers: 'papers',
+    illusions: 'иллюзии',
   },
   blog: {
     label: 'Статьи',
@@ -1595,7 +1598,7 @@ export const ru: Dictionary = {
   contact: {
     label: 'Скажите привет',
     lede: 'Консалтинг, фидбек по продукту, интересные задачи — почта открыта.',
-    email: 'dimhold@gmail.com',
+    email: 'dimhold@dimhold.by',
   },
   consent: {
     label: 'Про куки',
@@ -1631,6 +1634,7 @@ export const be: Dictionary = {
     projects: 'мае праекты',
     games: 'гульні',
     papers: 'papers',
+    illusions: 'ілюзіі',
   },
   blog: {
     label: 'Артыкулы',
@@ -2223,7 +2227,7 @@ export const be: Dictionary = {
   contact: {
     label: 'Скажыце прывітанне',
     lede: 'Кансалтынг, фідбэк па прадукце, цікавыя задачы — пошта адкрытая.',
-    email: 'dimhold@gmail.com',
+    email: 'dimhold@dimhold.by',
   },
   consent: {
     label: 'Пра кукі',
