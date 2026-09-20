@@ -7,11 +7,14 @@ import Masthead from '../../../components/Masthead.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import { ru } from '../../../i18n';
 import { entries, groups, dossier, generated, catLabel, modLabel, copyFor } from '../../../lib/illusions';
+import { hasDemo } from '../../../lib/illusions/demos';
 
 const alternates = [{ lang: 'ru', href: '/ru/illusions/' }];
 const mods = groups();
 const withCopy = entries.filter((e) => copyFor(e.id)).length;
-const withDemo = entries.filter((e) => copyFor(e.id)?.demo).length;
+/* Считаем построенные демонстрации, а не заявленные ключи: у части записей ключ
+   стоит как заметка на будущее, и учитывать его в цифре на главной было бы враньём. */
+const withDemo = entries.filter((e) => hasDemo(copyFor(e.id)?.demo)).length;
 
 /* Строка, по которой ищет браузер. Собирается на сборке, чтобы на клиенте не было ни
    индекса, ни загрузки: 258 строк DOM фильтруются быстрее, чем приходит запрос. */
@@ -109,7 +112,7 @@ const haystack = (e: (typeof entries)[number]) =>
                   class="ill-row"
                   data-ill-item
                   data-mod={e.modality}
-                  data-demo={c?.demo ? '1' : '0'}
+                  data-demo={hasDemo(c?.demo) ? '1' : '0'}
                   data-hay={haystack(e)}
                 >
                   <a class="ill-row-link" href={`/ru/illusions/${e.id}/`}>
@@ -119,8 +122,7 @@ const haystack = (e: (typeof entries)[number]) =>
                   <span class="ill-row-meta">
                     <span class="ill-row-cat">{catLabel(e.category)}</span>
                     {e.first?.year ? <span class="ill-row-year">{e.first.year}</span> : null}
-                    {c?.demo ? <span class="ill-badge is-demo">демо</span> : null}
-                    {c && !c.demo ? <span class="ill-badge">разбор</span> : null}
+                    {hasDemo(c?.demo) ? <span class="ill-badge is-demo">демо</span> : <span class="ill-badge">разбор</span>}
                   </span>
                 </li>
               );

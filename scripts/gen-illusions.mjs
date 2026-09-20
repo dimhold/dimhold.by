@@ -94,9 +94,23 @@ const catalog = {
           source: e.first_described.source ?? null,
         }
       : null,
-    /* Kept only so an editor writing the Russian has the working note to hand; the
-       pages never render it. */
+    /* Kept only so an editor writing the Russian has the working notes to hand; the
+       pages never render any of this. `mechanism` carries its own attribution in the
+       dossier and that attribution has to survive the trip, otherwise the Russian gets
+       written from a claim with no owner. */
     effectEn: e.effect ?? '',
+    mechanismEn: (e.mechanism ?? []).map((m) => ({
+      name: m.name,
+      by: m.by ?? '',
+      source: m.source ?? '',
+    })),
+    notesEn: e.notes ?? '',
+    impl: {
+      dim: e.implementation?.dim ?? '',
+      interactive: !!e.implementation?.interactive,
+      difficulty: e.implementation?.difficulty ?? null,
+      notes: e.implementation?.notes ?? '',
+    },
     difficulty: e.implementation?.difficulty ?? null,
     sources: e.sources ?? [],
   })),

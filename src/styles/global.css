@@ -5049,3 +5049,124 @@ html[data-mode='night'] .ill-conf.is-low {
     width: 100%;
   }
 }
+
+/* Демонстрации-опыты: поверх холста живёт обычный HTML — вопрос, кнопки ответа,
+   поле для свободного описания. Без него половина этой группы была бы картинками. */
+
+.ill-phones {
+  margin-bottom: 0.7rem;
+  padding: 0.4rem 0.7rem;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-wash);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.ill-stage {
+  margin-top: 0.8rem;
+}
+
+.ill-stage:empty {
+  display: none;
+}
+
+.ill-q {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.ill-answers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ill-answers-col {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.ill-word {
+  margin: 1.2rem 0;
+  font-size: clamp(2rem, 9vw, 3.4rem);
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.ill-text {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+
+.ill-num {
+  width: 7rem;
+  margin-right: 0.5rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.ill-pick {
+  padding: 0;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  cursor: pointer;
+  line-height: 0;
+}
+
+.ill-pick:hover {
+  border-color: var(--accent);
+}
+
+.ill-card {
+  display: block;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.ill-swatch {
+  width: 100%;
+  height: 9rem;
+  margin-top: 0.6rem;
+  border-radius: 10px;
+}
+
+.ill-ctl select {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.78rem;
+}
+
+.ill-ctl input[type="range"]:disabled,
+.ill-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.ill-demo:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}

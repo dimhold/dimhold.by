@@ -7,6 +7,7 @@ import Base from '../../../layouts/Base.astro';
 import Masthead from '../../../components/Masthead.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import Demo from '../../../components/illusions/Demo.astro';
+import { hasDemo } from '../../../lib/illusions/demos';
 import { ru } from '../../../i18n';
 import {
   entries,
@@ -74,7 +75,9 @@ const desc = c?.lede ?? `${entry.ru} (${entry.en}) — ${catLabel(entry.category
 
     {c?.caution && <aside class="ill-caution"><b>Осторожно.</b> {c.caution}</aside>}
 
-    {c?.demo && <Demo id={c.demo} note={c.demoNote} />}
+    {/* Ключ демонстрации, для которого экспоната ещё нет, ничего не выводит: обещать
+        ручку и показать пустую рамку хуже, чем не обещать. */}
+    {c?.demo && hasDemo(c.demo) && <Demo id={c.demo} note={c.demoNote} />}
 
     {
       c && (

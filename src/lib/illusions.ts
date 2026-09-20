@@ -43,7 +43,12 @@ export interface Entry {
     confidence: 'high' | 'medium' | 'low' | 'disputed';
     source: string | null;
   } | null;
+  /* Рабочие заметки из досье. На страницы не выводятся: русский текст пишется руками,
+     а это — то, по чему его пишут, вместе с атрибуцией механизма. */
   effectEn: string;
+  mechanismEn: { name: string; by: string; source: string }[];
+  notesEn: string;
+  impl: { dim: string; interactive: boolean; difficulty: number | null; notes: string };
   difficulty: number | null;
   sources: string[];
 }

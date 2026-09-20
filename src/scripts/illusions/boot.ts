@@ -1,21 +1,30 @@
 /* Загрузчик демонстраций.
  *
- * На странице ровно одна демонстрация, но ключ её известен только в рантайме, поэтому
- * модули подключаются через import.meta.glob: Vite режет их на отдельные чанки, и
- * посетитель страницы про кафе-стену не скачивает синтезатор Шепарда.
+ * На странице ровно одна демонстрация, но ключ её известен только в рантайме. Реестр
+ * сопоставляет ключ семейству, семейство грузится динамическим импортом, и Vite режет
+ * его в отдельный чанк.
  */
-const modules = import.meta.glob<{ default: (root: HTMLElement) => void }>('./demos/*.ts');
+import { REGISTRY } from './registry';
 
 for (const root of document.querySelectorAll<HTMLElement>('[data-ill-demo]')) {
-  const key = root.dataset.illDemo;
-  const load = modules[`./demos/${key}.ts`];
-  if (!load) {
+  const key = root.dataset.illDemo ?? '';
+  const entry = REGISTRY[key];
+  if (!entry) {
     console.warn(`[illusions] нет модуля для демонстрации "${key}"`);
     continue;
   }
-  /* Демонстрация ниже первого экрана — грузим, когда до неё дойдут. Канвас, который
+  const [load, name] = entry;
+  const start = () =>
+    load().then((m) => {
+      const mount = m[name];
+      if (typeof mount !== 'function') {
+        console.warn(`[illusions] в семействе нет экспорта "${name}" для "${key}"`);
+        return;
+      }
+      mount(root);
+    });
+  /* Демонстрация ниже первого экрана грузится, когда до неё дойдут: канвас, который
      рисует сам себя в фоне вкладки, никому не нужен. */
-  const start = () => load().then((m) => m.default(root));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(
       (es) => {
@@ -24,7 +33,7 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-ill-demo]')) {
           start();
         }
       },
-      { rootMargin: '200px' },
+      { rootMargin: '250px' },
     );
     io.observe(root);
   } else {
