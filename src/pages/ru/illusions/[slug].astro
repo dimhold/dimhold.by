@@ -144,6 +144,8 @@ const desc = c?.lede ?? `${entry.ru} (${entry.en}) — ${catLabel(entry.category
         {
           list.map(({ id, s }) => {
             const url = href(s);
+            /* Пустой контейнер пометок оставляет после ссылки лишний отступ. */
+            const flagged = id === firstId || s.primary;
             return (
               <li class="ill-src">
                 {url ? (
@@ -153,21 +155,17 @@ const desc = c?.lede ?? `${entry.ru} (${entry.en}) — ${catLabel(entry.category
                 ) : (
                   <span>{cite(s)}</span>
                 )}
-                <span class="ill-src-flags">
-                  {id === firstId && <span class="ill-flag is-first">первое упоминание</span>}
-                  {s.primary && <span class="ill-flag">первоисточник</span>}
-                  {s.unread && <span class="ill-flag is-unread" title="запись о работе выверена, сам текст не открывался">не читано</span>}
-                </span>
+                {flagged && (
+                  <span class="ill-src-flags">
+                    {id === firstId && <span class="ill-flag is-first">первое упоминание</span>}
+                    {s.primary && <span class="ill-flag">первоисточник</span>}
+                  </span>
+                )}
               </li>
             );
           })
         }
       </ol>
-      <p class="ill-src-note">
-        «Не читано» значит, что выверена библиографическая запись, а не содержание: работу
-        не удалось открыть — платный доступ, бумага, отказ издательства. Каталог считает
-        честнее сказать это, чем промолчать.
-      </p>
     </section>
   </main>
 

@@ -4825,8 +4825,7 @@ html[data-mode='night'] .cal tbody th a:hover {
 }
 
 .ill-stub-note,
-.ill-first-note,
-.ill-src-note {
+.ill-first-note {
   color: var(--muted);
   font-size: 0.86rem;
   line-height: 1.65;
@@ -4914,14 +4913,6 @@ html[data-mode='night'] .ill-conf.is-low {
 .ill-flag.is-first {
   border-color: var(--accent);
   color: var(--accent-deep);
-}
-
-.ill-flag.is-unread {
-  border-style: dashed;
-}
-
-.ill-src-note {
-  margin-top: 1.2rem;
 }
 
 /* — демонстрации — */
