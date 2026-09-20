@@ -611,15 +611,28 @@ export const multistablePerception: Mount = demo((k) => {
 });
 
 export const pareidolia: Mount = demo((k) => {
-  let seed = 1, scale = 8, rolls = 0;
+  let seed = 1, scale = 8, rolls = 0, what = 'noise', hires = false;
+  const mars: Record<string, HTMLImageElement> = {};
+  let assets: Record<string, string> = {};
+  try { assets = JSON.parse(k.root.dataset.assets ?? '{}'); } catch { assets = {}; }
   const s = k.surface(({ ctx, w, h }) => {
+    ctx.fillStyle = grey(0.1);
+    ctx.fillRect(0, 0, w, h);
+    if (what === 'mars') {
+      /* Снимок «Викинга» 1976 года и то же место у Mars Global Surveyor: одна и та же
+         гора, и всё различие — в разрешении и в угле освещения. */
+      const img = mars[hires ? 'mars-mgs' : 'mars-viking'];
+      if (!img) return;
+      const sc = Math.min(w / img.width, h / img.height) * 0.95;
+      ctx.drawImage(img, (w - img.width * sc) / 2, (h - img.height * sc) / 2, img.width * sc, img.height * sc);
+      return;
+    }
     const r = rnd(seed);
     const cell = scale;
-    /* Процедурный шум, сглаженный до пятен: лицо, если оно появится, нарисовали вы. */
     const cols = Math.ceil(w / cell), rows = Math.ceil(h / cell);
-    const grid: number[] = [];
-    for (let i = 0; i < cols * rows; i++) grid.push(r());
-    const at = (c: number, rr: number) => grid[Math.max(0, Math.min(rows - 1, rr)) * cols + Math.max(0, Math.min(cols - 1, c))];
+    const gridv: number[] = [];
+    for (let i = 0; i < cols * rows; i++) gridv.push(r());
+    const at = (c: number, rr: number) => gridv[Math.max(0, Math.min(rows - 1, rr)) * cols + Math.max(0, Math.min(cols - 1, c))];
     for (let rr = 0; rr < rows; rr++)
       for (let c = 0; c < cols; c++) {
         let v = 0;
@@ -629,11 +642,27 @@ export const pareidolia: Mount = demo((k) => {
         ctx.fillRect(c * cell, rr * cell, cell + 1, cell + 1);
       }
   });
+  k.select('what', (v) => { what = v; s.draw(); });
   k.slider('scale', (v) => { scale = v; s.draw(); });
+  k.toggle('hires', (v) => {
+    hires = v;
+    s.draw();
+    if (what === 'mars') k.say(v ? 'та же гора при вчетверо большем разрешении: лица нет и не было.' : 'снимок 1976 года, 43 метра на пиксель. Лицо тут видят все.');
+  });
   k.button('roll', () => {
     seed = (seed * 1103515245 + 12345) >>> 0;
     rolls++;
+    what = 'noise';
+    const sel = k.el('[data-select="what"]') as HTMLSelectElement | null;
+    if (sel) sel.value = 'noise';
     s.draw();
     k.say(`бросок ${rolls}. Система опознания лиц настроена так, чтобы не пропустить ни одного, — а значит, обязана иногда срабатывать впустую.`);
   });
+  for (const id of ['mars-viking', 'mars-mgs']) {
+    const src = assets[id];
+    if (!src) continue;
+    const img = new Image();
+    img.onload = () => { mars[id] = img; s.draw(); };
+    img.src = src;
+  }
 });

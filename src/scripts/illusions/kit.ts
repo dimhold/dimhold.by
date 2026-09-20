@@ -154,6 +154,14 @@ export class Kit {
     this.root.tabIndex = 0;
   }
 
+  /** Во сколько раз физические пиксели холста мельче логических.
+      getImageData и putImageData не знают про setTransform и работают в физических:
+      без этого множителя любая попиксельная обработка уезжает и обрезается. */
+  get dpr(): number {
+    const canvas = this.root.querySelector<HTMLCanvasElement>('[data-canvas]');
+    return canvas ? canvas.width / (canvas.clientWidth || 1) : 1;
+  }
+
   /** Яркость пикселя основного холста в логических координатах. */
   probe(x: number, y: number): number {
     const canvas = this.root.querySelector<HTMLCanvasElement>('[data-canvas]')!;

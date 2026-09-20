@@ -170,18 +170,37 @@ export const impossibleCube = orbitDemo(cubeGeom, 'рёбра пересекаю
 
 export const impossibleObject: Mount = demo((k) => {
   let fig = 'tribar', orbit = 0;
+  let hogarth: HTMLImageElement | null = null;
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = PAPER;
     ctx.fillRect(0, 0, w, h);
+    if (fig === 'hogarth') {
+      if (!hogarth) return;
+      const sc = Math.min(w / hogarth.width, h / hogarth.height) * 0.98;
+      ctx.drawImage(hogarth, (w - hogarth.width * sc) / 2, (h - hogarth.height * sc) / 2, hogarth.width * sc, hogarth.height * sc);
+      return;
+    }
     const scale = Math.min(w, h) * 0.3;
     const yaw = (orbit / 100) * 0.7;
     if (fig === 'tribar') tribar(ctx, yaw, scale, w / 2, h / 2);
     else if (fig === 'stairs') stairsGeom(ctx, yaw, scale, w / 2, h / 2);
     else cubeGeom(ctx, yaw, scale, w / 2, h / 2);
   });
-  k.select('fig', (v) => { fig = v; s.draw(); });
+  k.select('fig', (v) => {
+    fig = v;
+    s.draw();
+    k.say(v === 'hogarth'
+      ? 'Хогарт, 1754: «Тот, кто напишет картину без знания перспективы, впадёт в нелепости вроде этих». Здесь их не меньше двух десятков — и это, вероятно, первая намеренно невозможная картинка.'
+      : 'один механизм, три костюма: зрительная система собирает соединения по одному и нигде не проверяет, сходятся ли они.');
+  });
   k.slider('orbit', (v) => { orbit = v; s.draw(); });
-  k.say('один механизм, три костюма: зрительная система собирает соединения по одному и нигде не проверяет, сходятся ли они.');
+  let assets: Record<string, string> = {};
+  try { assets = JSON.parse(k.root.dataset.assets ?? '{}'); } catch { assets = {}; }
+  if (assets['hogarth-perspective']) {
+    const img = new Image();
+    img.onload = () => { hogarth = img; s.draw(); };
+    img.src = assets['hogarth-perspective'];
+  }
 });
 
 export const blivet: Mount = demo((k) => {

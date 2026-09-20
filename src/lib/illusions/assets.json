@@ -1,0 +1,132 @@
+{
+ "duck-rabbit": {
+  "file": "/illusions/duck-rabbit.png",
+  "title": "Kaninchen und Ente",
+  "author": "аноним",
+  "date": "1892",
+  "source": "Fliegende Blätter, 23 октября 1892",
+  "rights": "общественное достояние",
+  "licence": "PD-old-70-1923",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AKaninchen_und_Ente.svg"
+ },
+ "all-is-vanity": {
+  "file": "/illusions/all-is-vanity.jpg",
+  "title": "All Is Vanity",
+  "author": "Charles Allan Gilbert",
+  "date": "1892",
+  "source": "рисунок 1892 года, широко перепечатывался с 1902-го",
+  "rights": "общественное достояние",
+  "licence": "PD-art",
+  "commons": "https://commons.wikimedia.org/wiki/File%3ACharles_Allan_Gilbert_-_All_is_Vanity.jpg"
+ },
+ "wife-mother-in-law": {
+  "file": "/illusions/wife-mother-in-law.jpg",
+  "title": "My Wife and My Mother-in-Law",
+  "author": "William Ely Hill",
+  "date": "1915",
+  "source": "журнал Puck, 6 ноября 1915",
+  "rights": "общественное достояние",
+  "licence": "PD-US",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AMy_Wife_and_My_Mother-in-Law.jpg"
+ },
+ "lincoln": {
+  "file": "/illusions/lincoln.jpg",
+  "title": "Портрет Авраама Линкольна (O-77)",
+  "author": "Alexander Gardner",
+  "date": "1863",
+  "source": "коллодионный отпечаток, 1863",
+  "rights": "общественное достояние",
+  "licence": "PD",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AAbraham_Lincoln_O-77_matte_collodion_print.jpg"
+ },
+ "hogarth-perspective": {
+  "file": "/illusions/hogarth-perspective.jpg",
+  "title": "Satire on False Perspective",
+  "author": "William Hogarth",
+  "date": "1754",
+  "source": "гравюра, фронтиспис к «Kirby’s Perspective»",
+  "rights": "общественное достояние",
+  "licence": "PD",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AWilliam_Hogarth_-_Absurd_perspectives.png"
+ },
+ "mars-viking": {
+  "file": "/illusions/mars-viking.jpg",
+  "title": "Лицо на Марсе, снимок «Викинга-1»",
+  "author": "NASA / «Викинг-1»",
+  "date": "1976",
+  "source": "NASA, 25 июля 1976",
+  "rights": "общественное достояние",
+  "licence": "PD-USGov-NASA",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AMartian_face_viking_cropped.jpg"
+ },
+ "mars-mgs": {
+  "file": "/illusions/mars-mgs.jpg",
+  "title": "То же место, съёмка Mars Global Surveyor",
+  "author": "NASA / JPL / Malin Space Science Systems",
+  "date": "2001",
+  "source": "NASA/JPL/MSSS",
+  "rights": "общественное достояние",
+  "licence": "PD-USGov-NASA",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AMars_face.png"
+ },
+ "strawberries": {
+  "file": "/illusions/strawberries.jpg",
+  "title": "Дикая земляника и гвоздика в ваньли-чаше",
+  "author": "Jacob van Hulsdonck",
+  "date": "около 1620",
+  "source": "National Gallery of Art, открытый доступ",
+  "rights": "CC0, Национальная галерея искусств (Вашингтон)",
+  "licence": "CC0",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AJacob_van_Hulsdonck%2C_Wild_Strawberries_and_a_Carnation_in_a_Wan-Li_Bowl%2C_c._1620%2C_NGA_161665.jpg"
+ },
+ "face-chekhov": {
+  "file": "/illusions/face-chekhov.jpg",
+  "title": "Антон Чехов",
+  "author": "В. Чеховский, Москва",
+  "date": "1889",
+  "source": "фотография 1889 года",
+  "rights": "общественное достояние",
+  "licence": "PD-US",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AAnton_Chekhov_1889.jpg"
+ },
+ "face-mendeleev": {
+  "file": "/illusions/face-mendeleev.jpg",
+  "title": "Дмитрий Менделеев",
+  "author": "неизвестен",
+  "date": "1890-е",
+  "source": "фотография 1890-х",
+  "rights": "общественное достояние",
+  "licence": "PD-Rus-Empire",
+  "commons": "https://commons.wikimedia.org/wiki/File%3ADmitri_Mendeleev_1890s.jpg"
+ },
+ "face-kovalevskaya": {
+  "file": "/illusions/face-kovalevskaya.jpg",
+  "title": "Софья Ковалевская",
+  "author": "неизвестен",
+  "date": "до 1891",
+  "source": "фотография XIX века",
+  "rights": "общественное достояние",
+  "licence": "PD-old",
+  "commons": "https://commons.wikimedia.org/wiki/File%3ASofja_Wassiljewna_Kowalewskaja_1.jpg"
+ },
+ "face-curie": {
+  "file": "/illusions/face-curie.jpg",
+  "title": "Мария Склодовская-Кюри",
+  "author": "Henri Manuel",
+  "date": "около 1920",
+  "source": "фотография около 1920 года",
+  "rights": "общественное достояние",
+  "licence": "PD-old-auto-1923",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AMarie_Curie_c1920.jpg"
+ },
+ "face-tesla": {
+  "file": "/illusions/face-tesla.jpg",
+  "title": "Никола Тесла",
+  "author": "неизвестен",
+  "date": "1890-е",
+  "source": "фотография 1890-х",
+  "rights": "общественное достояние",
+  "licence": "PD-old",
+  "commons": "https://commons.wikimedia.org/wiki/File%3AN.Tesla.JPG"
+ }
+}

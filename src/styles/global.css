@@ -5170,3 +5170,41 @@ html[data-mode='night'] .ill-conf.is-low {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+
+/* Подпись о происхождении материала. Выводится под каждой демонстрацией, где взята
+   чужая картинка, даже если это общественное достояние и подписи не требуют: раздел
+   собирался ради того, чтобы источник был виден. */
+.ill-credit {
+  margin-top: 0.6rem;
+  font-size: 0.74rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.ill-credit-label {
+  display: inline-block;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.ill-credit ul {
+  list-style: none;
+  padding: 0;
+}
+
+.ill-credit li + li {
+  margin-top: 0.2rem;
+}
+
+.ill-credit a {
+  color: var(--muted);
+  text-decoration-style: dotted;
+}
+
+.ill-credit a:hover {
+  color: var(--accent-deep);
+}

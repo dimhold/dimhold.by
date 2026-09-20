@@ -19,6 +19,7 @@ const stereo: Loader = () => import('./demos/stereo');
 const attention: Loader = () => import('./demos/attention');
 const cognition: Loader = () => import('./demos/cognition');
 const audio: Loader = () => import('./demos/audio');
+const photo: Loader = () => import('./demos/photo');
 
 /* [загрузчик семейства, имя экспорта]. Имя отличается от ключа там, где ключ
    с дефисами, — camelCase в модуле и kebab-case в каталоге. */
@@ -158,6 +159,15 @@ export const REGISTRY: Record<string, [Loader, string]> = {
   'false-heart-rate-feedback': [cognition, 'falseHeartRateFeedback'],
   'missing-square-puzzle': [cognition, 'missingSquarePuzzle'],
   moire: [cognition, 'moire'],
+
+  'duck-rabbit': [photo, 'duckRabbit'],
+  'my-wife-mother-in-law': [photo, 'myWifeMotherInLaw'],
+  'all-is-vanity': [photo, 'allIsVanity'],
+  'lincoln-effect': [photo, 'lincolnEffect'],
+  'grey-strawberries': [photo, 'greyStrawberries'],
+  'mooney-faces': [photo, 'mooneyFaces'],
+  thatcher: [photo, 'thatcher'],
+  'face-inversion': [photo, 'faceInversion'],
 
   'shepard-tone': [audio, 'shepardTone'],
   'risset-rhythm': [audio, 'rissetRhythm'],

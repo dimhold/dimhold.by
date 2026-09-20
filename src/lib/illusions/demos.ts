@@ -28,6 +28,9 @@ export interface DemoSpec {
   controls?: Control[];
   /** Демонстрации со звуком: предупреждение про наушники выводится само. */
   headphones?: boolean;
+  /** Идентификаторы материалов из assets.json: подпись о происхождении Demo.astro
+      выводит сам, и она обязательна даже для общественного достояния. */
+  credits?: string[];
 }
 
 const sl = (name: string, label: string, min: number, max: number, value: number, fmt?: string, step = 1): Control =>
@@ -161,7 +164,11 @@ export const DEMOS: Record<string, DemoSpec> = {
   'impossible-cube': { ratio: 0.8, controls: [sl('orbit', 'отвести камеру', 0, 100, 0, '% %')] },
   'impossible-object': {
     ratio: 0.7,
-    controls: [{ kind: 'select', name: 'fig', label: 'фигура', options: [{ value: 'tribar', label: 'трибар' }, { value: 'stairs', label: 'лестница' }, { value: 'cube', label: 'куб' }] }, sl('orbit', 'отвести камеру', 0, 100, 0, '% %')],
+    credits: ['hogarth-perspective'],
+    controls: [
+      { kind: 'select', name: 'fig', label: 'фигура', options: [{ value: 'tribar', label: 'трибар' }, { value: 'stairs', label: 'лестница' }, { value: 'cube', label: 'куб' }, { value: 'hogarth', label: 'Хогарт, 1754' }] },
+      sl('orbit', 'отвести камеру', 0, 100, 0, '% %'),
+    ],
   },
   blivet: { ratio: 0.4, controls: [sl('mask', 'положение заслонки', 0, 100, 50, '% %')] },
   'shepard-elephant': { ratio: 0.6, controls: [sl('fix', 'поставить ступни на место', 0, 100, 0, '% %')] },
@@ -185,7 +192,16 @@ export const DEMOS: Record<string, DemoSpec> = {
     chart: 0.22,
     controls: [{ kind: 'select', name: 'fig', label: 'стимул', options: [{ value: 'necker', label: 'куб Неккера' }, { value: 'schroder', label: 'лестница Шрёдера' }, { value: 'rings', label: 'кольца' }] }, btn('tap', 'переключилось'), btn('reset', 'сбросить')],
   },
-  pareidolia: { ratio: 0.6, controls: [btn('roll', 'перебросить шум'), sl('scale', 'масштаб шума', 2, 20, 8), { kind: 'hint', label: 'жмите, пока не проступит лицо' }] },
+  pareidolia: {
+    ratio: 0.6,
+    credits: ['mars-viking', 'mars-mgs'],
+    controls: [
+      { kind: 'select', name: 'what', label: 'что смотрим', options: [{ value: 'noise', label: 'процедурный шум' }, { value: 'mars', label: 'лицо на Марсе' }] },
+      btn('roll', 'перебросить шум'),
+      sl('scale', 'масштаб шума', 2, 20, 8),
+      tog('hires', 'снимок 2001 года', 'снимок 1976 года'),
+    ],
+  },
 
   /* — внимание — */
   'change-blindness': { ratio: 0.6, controls: [btn('start', 'начать'), btn('give', 'сдаюсь'), { kind: 'clock', name: 'clock' }] },
@@ -214,6 +230,51 @@ export const DEMOS: Record<string, DemoSpec> = {
   'false-heart-rate-feedback': { ratio: 0, stage: true, headphones: true, controls: [btn('go', 'начать')] },
   'missing-square-puzzle': { ratio: 0.5, controls: [tog('swap', 'переложить части', 'вернуть как было'), tog('ruler', 'приложить линейку', 'убрать линейку'), sl('exag', 'растянуть по вертикали', 1, 12, 1, '%×')] },
   moire: { ratio: 0.6, controls: [sl('rot', 'поворот верхнего слоя', 0, 90, 4, '%°'), sl('pitch', 'шаг верхнего слоя', 3, 20, 6, '% px')] },
+
+
+  /* — на открытых материалах: подпись о происхождении строит Demo.astro — */
+  'duck-rabbit': {
+    ratio: 0.72,
+    credits: ['duck-rabbit'],
+    controls: [sl('bias', 'подсказка', 0, 100, 50, '% %'), btn('duck', 'обвести утку'), btn('rabbit', 'обвести кролика')],
+  },
+  'my-wife-mother-in-law': {
+    ratio: 1.1,
+    credits: ['wife-mother-in-law'],
+    controls: [btn('young', 'обвести молодую'), btn('old', 'обвести старуху')],
+  },
+  'all-is-vanity': {
+    ratio: 0.82,
+    credits: ['all-is-vanity'],
+    controls: [sl('blur', 'размытие', 0, 30, 0, '% px'), sl('zoom', 'отойти', 10, 100, 100, '% %')],
+  },
+  'lincoln-effect': {
+    ratio: 0.78,
+    credits: ['lincoln'],
+    controls: [sl('block', 'размер блока', 1, 40, 22, '% px'), sl('blur', 'размытие', 0, 24, 0, '% px')],
+  },
+  'grey-strawberries': {
+    ratio: 0.72,
+    credits: ['strawberries'],
+    controls: [sl('cast', 'голубой налёт', 0, 100, 85, '% %'), { kind: 'hint', label: 'наведите курсор — покажет настоящий оттенок' }],
+  },
+  'mooney-faces': {
+    ratio: 0.9,
+    credits: ['face-curie'],
+    controls: [sl('threshold', 'порог', 20, 80, 50, '% %'), sl('blurm', 'сглаживание', 0, 12, 4, '% px'), btn('found', 'вижу лицо'), { kind: 'clock', name: 'clock' }],
+  },
+  thatcher: {
+    ratio: 0.9,
+    credits: ['face-curie'],
+    controls: [sl('rot', 'поворот', 0, 180, 180, '%°'), tog('flip', 'перевернуть глаза и рот', 'вернуть как было')],
+  },
+  'face-inversion': {
+    ratio: 0.5,
+    stage: true,
+    chart: 0.3,
+    credits: ['face-chekhov', 'face-mendeleev', 'face-kovalevskaya', 'face-curie', 'face-tesla'],
+    controls: [btn('start', 'начать серию')],
+  },
 
   /* — звук — */
   'shepard-tone': { chart: 0.2, headphones: false, controls: [btn('play', 'играть'), sl('speed', 'скорость', 5, 60, 22, undefined, 1), sl('width', 'ширина колокола', 10, 60, 28), { kind: 'check', name: 'down', label: 'вниз' }, { kind: 'check', name: 'glide', label: 'непрерывно' }] },

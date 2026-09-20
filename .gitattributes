@@ -1,0 +1,16 @@
+# Переводы строк в репозитории — LF, независимо от того, чем правили файл.
+# Скриптовые правки на Windows молча переводят файл в CRLF, и тогда любая
+# однострочная правка выглядит как переписанный файл целиком.
+* text=auto eol=lf
+
+# Двоичное не трогать.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.pdf binary

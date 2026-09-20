@@ -4,6 +4,7 @@
    data-атрибутам и подгружается отдельным чанком: страница без демонстрации не тянет
    ничего, а страница с демонстрацией тянет только свою. */
 import { DEMOS } from '../../lib/illusions/demos';
+import { asset, creditLine } from '../../lib/illusions/credits';
 
 interface Props {
   /** Ключ демонстрации: он же имя в реестре. */
@@ -15,9 +16,17 @@ interface Props {
 const { id, note } = Astro.props;
 const spec = DEMOS[id];
 const controls = spec?.controls ?? [];
+/* Материалы подписываются всегда, даже общественное достояние, где подписи не требуют.
+   Каталог собирался ради того, чтобы источник был виден. */
+const credits = (spec?.credits ?? []).map((id) => asset(id)).filter(Boolean);
 ---
 
-<figure class="ill-demo" data-ill-demo={id} tabindex="-1">
+<figure
+  class="ill-demo"
+  data-ill-demo={id}
+  data-assets={spec?.credits?.length ? JSON.stringify(Object.fromEntries((spec.credits ?? []).map((cid) => [cid, asset(cid)?.file]))) : undefined}
+  tabindex="-1"
+>
   {spec?.headphones && <p class="ill-phones">Нужны наушники: на динамиках это другой стимул, и иллюзии там нет.</p>}
 
   {/* Пропорции едут в атрибуте: описание живёт на сервере, а рисовальщику нужно
@@ -81,4 +90,21 @@ const controls = spec?.controls ?? [];
 
   <p class="ill-readout" data-readout aria-live="polite"></p>
   {note && <figcaption class="ill-demo-note">{note}</figcaption>}
+  {
+    credits.length > 0 && (
+      <figcaption class="ill-credit">
+        <span class="ill-credit-label">материал</span>
+        <ul>
+          {credits.map((a) => (
+            <li>
+              {creditLine(a!)}{' '}
+              <a href={a!.commons} rel="noopener">
+                {a!.licence}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </figcaption>
+    )
+  }
 </figure>
