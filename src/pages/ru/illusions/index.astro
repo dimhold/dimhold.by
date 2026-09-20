@@ -1,0 +1,170 @@
+---
+/* Каталог иллюзий, русская версия. Тестовая: en и be появятся позже, поэтому текст
+   лежит здесь, а не в словарях — переносить его в i18n имеет смысл только тогда, когда
+   будет что переносить во все три языка сразу. */
+import Base from '../../../layouts/Base.astro';
+import Masthead from '../../../components/Masthead.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import { ru } from '../../../i18n';
+import { entries, groups, dossier, generated, catLabel, modLabel, copyFor } from '../../../lib/illusions';
+
+const alternates = [{ lang: 'ru', href: '/ru/illusions/' }];
+const mods = groups();
+const withCopy = entries.filter((e) => copyFor(e.id)).length;
+const withDemo = entries.filter((e) => copyFor(e.id)?.demo).length;
+
+/* Строка, по которой ищет браузер. Собирается на сборке, чтобы на клиенте не было ни
+   индекса, ни загрузки: 258 строк DOM фильтруются быстрее, чем приходит запрос. */
+const haystack = (e: (typeof entries)[number]) =>
+  [e.ru, e.en, ...e.aka, catLabel(e.category), modLabel(e.modality), String(e.first?.year ?? '')]
+    .join(' ')
+    .toLowerCase();
+---
+
+<Base
+  t={ru}
+  title="Иллюзии — каталог | dimhold.by"
+  description={`Каталог иллюзий: ${entries.length} записей десяти модальностей, с первоисточниками и демонстрациями, написанными с нуля.`}
+  alternates={alternates}
+  ogType="website"
+>
+  <Masthead t={ru} active="illusions" langHrefs={{ ru: '/ru/illusions/' }} />
+
+  <main id="main" class="ill-page">
+    <header class="section-head">
+      <h1 class="blog-title">Иллюзии</h1>
+      <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+        <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+      </svg>
+    </header>
+
+    <p class="projects-lede">
+      Восприятие — не окно, а догадка. Обычно догадка верна, и мы её не замечаем. Иллюзия —
+      это место, где догадку видно: там, где она ошибается, наконец понятно, из чего она
+      была собрана.
+    </p>
+
+    <p class="ill-framing">
+      Это каталог. Про каждую запись он отвечает на три вопроса: <b>где её упомянули
+      впервые</b>, <b>где посмотреть примеры</b> и <b>откуда взято то, что здесь
+      написано</b>. Ссылки ведут на источники, а не на пересказы источников. Где вместо
+      прочитанной работы есть только запись о её существовании — так и написано.
+    </p>
+
+    <p class="ill-framing">
+      Демонстрации написаны с нуля. Ни одна не скопирована с чужой реализации, и почти у
+      каждой есть ручка, которая иллюзию <i>ломает</i>: объяснение, которое нельзя
+      опровергнуть прямо на странице, — это не объяснение, а подпись к картинке.
+    </p>
+
+    <p class="ill-note">
+      {entries.length} записей · {mods.length} модальностей · {withCopy} с разбором ·
+      {withDemo} с демонстрацией. За ними — рабочее досье на {dossier.rows} строк
+      и {dossier.sources} источников; сюда попадает только доведённая часть.
+      Обновлено {generated}.
+    </p>
+
+    <form class="ill-search" role="search" onsubmit="return false" data-ill-search>
+      <label class="sr-only" for="ill-q">Найти иллюзию</label>
+      <svg class="blog-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <input
+        id="ill-q"
+        type="search"
+        name="q"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="мюллер, кафе, шепард, 1832…"
+        data-ill-input
+      />
+      <button type="button" class="blog-search-clear" hidden data-ill-clear>сбросить</button>
+    </form>
+
+    <div class="ill-filters">
+      <button type="button" class="ill-chip is-on" data-ill-filter="" aria-pressed="true">всё</button>
+      <button type="button" class="ill-chip" data-ill-filter="__demo" aria-pressed="false">с демонстрацией</button>
+      {
+        mods.map(([m, list]) => (
+          <button type="button" class="ill-chip" data-ill-filter={m} aria-pressed="false">
+            {modLabel(m)} <span class="ill-chip-n">{list.length}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="ill-count" data-ill-count aria-live="polite"></p>
+
+    {
+      mods.map(([m, list]) => (
+        <section class="ill-group" data-ill-group={m}>
+          <h2 class="ill-group-title">
+            {modLabel(m)} <span class="ill-group-n">{list.length}</span>
+          </h2>
+          <ul class="ill-list">
+            {list.map((e) => {
+              const c = copyFor(e.id);
+              return (
+                <li
+                  class="ill-row"
+                  data-ill-item
+                  data-mod={e.modality}
+                  data-demo={c?.demo ? '1' : '0'}
+                  data-hay={haystack(e)}
+                >
+                  <a class="ill-row-link" href={`/ru/illusions/${e.id}/`}>
+                    <span class="ill-row-name">{e.ru}</span>
+                    <span class="ill-row-en">{e.en}</span>
+                  </a>
+                  <span class="ill-row-meta">
+                    <span class="ill-row-cat">{catLabel(e.category)}</span>
+                    {e.first?.year ? <span class="ill-row-year">{e.first.year}</span> : null}
+                    {c?.demo ? <span class="ill-badge is-demo">демо</span> : null}
+                    {c && !c.demo ? <span class="ill-badge">разбор</span> : null}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))
+    }
+
+    <p class="ill-empty" data-ill-empty hidden>Ничего не нашлось. Попробуйте по-английски — многие записи известны только под английским именем.</p>
+
+    <section class="section ill-about" aria-labelledby="ill-about-h">
+      <h2 id="ill-about-h" class="projects-sub">Чего здесь нет</h2>
+      <p>
+        Собрать все иллюзии невозможно: их придумывают быстрее, чем каталогизируют, и
+        «одна иллюзия» — вопрос вкуса, а не факта. Поэтому каталог собран по категориям, а
+        не по экземплярам. Иллюзия формы, проделанная с треугольником, квадратом и ромбом,
+        — это одна запись, а не три.
+      </p>
+      <p>
+        На уровне категорий вопрос о полноте уже осмысленный. Проверка — сетка Ричарда
+        Грегори: что именно не так с восприятием (двойственность, искажение, парадокс,
+        вымысел) против того, где вошла ошибка (оптика, сигналы, правила, знание).
+        Шестнадцать клеток. Все шестнадцать заполнены.
+      </p>
+      <p>
+        Дальше начинается спорное. Каталогу показалось, что сетке не хватает пятой
+        строки — для случаев, где восприятие не добавляет лишнего, а <i>вычитает</i>
+        существующее: угасание Трокслера, слепота к изменениям, вызванная движением
+        слепота. Проверка на предшественников это опровергла: класс описан давно и
+        называется иначе — psychophysical blinding у Кима и Блейка, 2005. Так же
+        закончились ещё три догадки.
+      </p>
+      <p>
+        Это нормальный исход, и он записан здесь намеренно. Каталог, который печатает
+        только удачные ходы, — реклама, а не каталог.
+      </p>
+    </section>
+  </main>
+
+  <SiteFooter t={ru} />
+</Base>
+
+<script>
+  import '../../../scripts/illusions/index-filter';
+</script>

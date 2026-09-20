@@ -4532,3 +4532,529 @@ html[data-mode='night'] .cal tbody th a:hover {
   color: var(--muted);
   scroll-margin-top: 5rem;
 }
+
+/* ==========================================================================
+   Иллюзии
+   Раздел живёт по своим правилам освещения: демонстрации рисуются в
+   фиксированных серых, а не в цветах темы. Кафе-стена, у которой яркость шва
+   зависит от режима сайта, — это не иллюзия, а лотерея. Поэтому у канваса
+   собственная светлая подложка в обеих темах, и ночной режим её не трогает.
+   ========================================================================== */
+
+.ill-page,
+.ill-entry {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 0 1.25rem 5rem;
+}
+
+.ill-framing {
+  margin-top: 0.9rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.ill-note {
+  margin-top: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* — поиск и фильтры — */
+
+.ill-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.8rem;
+  padding: 0.55rem 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+
+.ill-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.ill-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.ill-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+}
+
+.ill-chip {
+  padding: 0.28rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.ill-chip:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.ill-chip.is-on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.ill-chip-n {
+  opacity: 0.6;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.ill-count {
+  margin-top: 0.8rem;
+  min-height: 1.1em;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+/* — список — */
+
+.ill-group {
+  margin-top: 2.2rem;
+}
+
+.ill-group-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.35rem;
+}
+
+.ill-group-n {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.ill-list {
+  list-style: none;
+}
+
+.ill-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.8rem;
+  padding: 0.5rem 0.2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+}
+
+/* [hidden] задаёт display: none, но у строки свой display: flex, и он сильнее.
+   Без этой строчки фильтр считает правильно и не прячет ничего. */
+.ill-row[hidden],
+.ill-group[hidden] {
+  display: none;
+}
+
+.ill-row-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 12rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.ill-row-link:hover .ill-row-name {
+  color: var(--accent-deep);
+  text-decoration: underline;
+}
+
+.ill-row-name {
+  font-weight: 500;
+}
+
+.ill-row-en {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.ill-row-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.ill-row-year {
+  opacity: 0.75;
+}
+
+.ill-badge {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 0.64rem;
+  letter-spacing: 0.03em;
+}
+
+.ill-badge.is-demo {
+  border-color: var(--accent);
+  color: var(--accent-deep);
+}
+
+.ill-empty {
+  margin-top: 2rem;
+  color: var(--muted);
+}
+
+.ill-about {
+  margin-top: 3.2rem;
+}
+
+.ill-about p {
+  margin-top: 0.8rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* — страница иллюзии — */
+
+.ill-back {
+  display: inline-block;
+  margin-bottom: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.ill-back:hover {
+  color: var(--accent-deep);
+}
+
+.ill-entry-en {
+  margin-top: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.ill-entry-aka {
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.ill-entry-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+
+.ill-tag {
+  padding: 0.16rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.ill-tag:hover {
+  border-color: var(--accent);
+  color: var(--accent-deep);
+}
+
+.ill-lede {
+  margin-top: 1.4rem;
+  font-size: 1.12rem;
+  line-height: 1.6;
+}
+
+.ill-sec {
+  margin-top: 2.2rem;
+}
+
+.ill-sec h2 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.ill-sec p {
+  margin-top: 0.75rem;
+  line-height: 1.72;
+}
+
+.ill-sec p:first-of-type {
+  margin-top: 0;
+}
+
+.ill-stub-note,
+.ill-first-note,
+.ill-src-note {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+.ill-caution {
+  margin-top: 1.4rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid #c9822f;
+  background: color-mix(in srgb, #c9822f 9%, transparent);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.ill-first-line {
+  font-size: 1rem;
+}
+
+.ill-conf {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.ill-conf.is-high {
+  border-color: #4c8055;
+  color: #3f6c48;
+}
+
+.ill-conf.is-disputed,
+.ill-conf.is-low {
+  border-color: #c9822f;
+  color: #a8681f;
+}
+
+html[data-mode='night'] .ill-conf.is-high {
+  color: #8fc79a;
+}
+
+html[data-mode='night'] .ill-conf.is-disputed,
+html[data-mode='night'] .ill-conf.is-low {
+  color: #e0a95f;
+}
+
+/* — источники — */
+
+.ill-src-list {
+  padding-left: 1.2rem;
+}
+
+.ill-src {
+  margin-top: 0.7rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.ill-src a {
+  color: var(--ink);
+}
+
+.ill-src-flags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-left: 0.4rem;
+  vertical-align: baseline;
+}
+
+.ill-flag {
+  padding: 0.06rem 0.38rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.ill-flag.is-first {
+  border-color: var(--accent);
+  color: var(--accent-deep);
+}
+
+.ill-flag.is-unread {
+  border-style: dashed;
+}
+
+.ill-src-note {
+  margin-top: 1.2rem;
+}
+
+/* — демонстрации — */
+
+.ill-demo {
+  --ill-ink: #1b1b1b;
+  --ill-bg: #f7f5f0;
+  margin: 1.8rem 0 0;
+  padding: 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.ill-demo:focus {
+  outline: none;
+}
+
+.ill-canvas,
+.ill-chart {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  background: var(--ill-bg);
+}
+
+.ill-chart {
+  margin-top: 0.6rem;
+}
+
+.ill-ctl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.1rem;
+  margin-top: 0.85rem;
+}
+
+.ill-ctl label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.ill-ctl input[type="range"] {
+  width: 8.5rem;
+  accent-color: var(--accent);
+}
+
+.ill-ctl output {
+  min-width: 2.6rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.ill-check {
+  gap: 0.3rem;
+}
+
+.ill-btn {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent-deep);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.ill-btn:hover,
+.ill-btn[aria-pressed="true"] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.ill-btn.is-quiet {
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+.ill-btn.is-quiet:hover {
+  background: var(--line);
+  color: var(--ink);
+}
+
+.ill-clock,
+.ill-hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ill-readout {
+  margin-top: 0.7rem;
+  min-height: 1.2em;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.ill-readout:empty {
+  display: none;
+}
+
+.ill-demo-note {
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--line);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .ill-row-meta {
+    width: 100%;
+  }
+
+  .ill-ctl input[type="range"] {
+    width: 100%;
+    flex: 1;
+  }
+
+  .ill-ctl label {
+    width: 100%;
+  }
+}

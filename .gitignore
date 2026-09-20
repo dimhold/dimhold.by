@@ -18,3 +18,8 @@ data/tracks/
 # for a mark that is never larger than 180 pixels. The trimmed square that
 # actually feeds the script is committed as src/assets/favicon-source.png.
 data/me2.png
+
+# Working research dossiers: harvested source data and notes that are still wrong
+# in places. Only the finished part is exported into src/ and published — for the
+# illusions catalogue that is scripts/gen-illusions.mjs writing src/lib/illusions/.
+research/

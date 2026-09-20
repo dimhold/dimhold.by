@@ -1,0 +1,169 @@
+---
+/* Разметка демонстраций. Один файл на все: у каждой свои ручки, но каркас общий —
+   канвас, панель управления, строка вывода. Скрипт находит их по data-атрибутам и
+   подгружается отдельным чанком, так что страница без демонстрации не тянет ничего.
+   Ключ должен совпадать с именем модуля в scripts/illusions/demos/. */
+
+interface Props {
+  /** Ключ демонстрации: он же имя модуля. */
+  id: string;
+  /** Что делает ручка и зачем она тут. */
+  note?: string;
+}
+
+const { id, note } = Astro.props;
+
+/* Единственная демонстрация без картинки — там рисуется только спектр. */
+const hasCanvas = id !== 'shepard-tone';
+---
+
+<figure class="ill-demo" data-ill-demo={id} tabindex="-1">
+  {hasCanvas && <canvas class="ill-canvas" data-canvas />}
+
+  {
+    id === 'mueller-lyer' && (
+      <div class="ill-ctl">
+        <label>
+          <span>угол наконечников</span>
+          <input type="range" min="0" max="75" value="45" step="1" data-slider="angle" data-fmt="%°" />
+          <output data-out="angle" />
+        </label>
+        <button type="button" class="ill-btn" data-btn="ruler" aria-pressed="false">приложить линейку</button>
+      </div>
+    )
+  }
+
+  {
+    id === 'cafe-wall' && (
+      <div class="ill-ctl">
+        <label>
+          <span>сдвиг рядов</span>
+          <input type="range" min="0" max="100" value="50" step="1" data-slider="offset" data-fmt="%&#8201;%" />
+          <output data-out="offset" />
+        </label>
+        <label>
+          <span>толщина шва</span>
+          <input type="range" min="0" max="8" value="3" step="1" data-slider="mortar" data-fmt="% px" />
+          <output data-out="mortar" />
+        </label>
+        <label>
+          <span>яркость шва</span>
+          <input type="range" min="0" max="100" value="50" step="1" data-slider="lum" data-fmt="%&#8201;%" />
+          <output data-out="lum" />
+        </label>
+      </div>
+    )
+  }
+
+  {
+    id === 'hermann-grid' && (
+      <div class="ill-ctl">
+        <label>
+          <span>ширина улиц</span>
+          <input type="range" min="6" max="26" value="14" step="1" data-slider="street" data-fmt="% px" />
+          <output data-out="street" />
+        </label>
+        <button type="button" class="ill-btn" data-btn="wavy" aria-pressed="false">сделать улицы волнистыми</button>
+      </div>
+    )
+  }
+
+  {
+    id === 'kanizsa-triangle' && (
+      <div class="ill-ctl">
+        <label>
+          <span>поворот вырезов</span>
+          <input type="range" min="0" max="180" value="0" step="1" data-slider="spin" data-fmt="%°" />
+          <output data-out="spin" />
+        </label>
+        <button type="button" class="ill-btn" data-btn="probe">измерить яркость</button>
+      </div>
+    )
+  }
+
+  {
+    id === 'troxler' && (
+      <div class="ill-ctl">
+        <label>
+          <span>мягкость края</span>
+          <input type="range" min="0" max="100" value="70" step="1" data-slider="soft" data-fmt="%&#8201;%" />
+          <output data-out="soft" />
+        </label>
+        <button type="button" class="ill-btn" data-btn="go">начать</button>
+        <span class="ill-clock" data-clock>0,0 с</span>
+      </div>
+    )
+  }
+
+  {
+    id === 'ebbinghaus' && (
+      <div class="ill-ctl">
+        <label>
+          <span>размер правого круга</span>
+          {/* Числа у этого ползунка нет намеренно: как только видно значение,
+              задача превращается в арифметику. */}
+          <input type="range" min="14" max="50" value="44" step="1" data-slider="mine" />
+        </label>
+        <button type="button" class="ill-btn" data-btn="check">проверить</button>
+      </div>
+    )
+  }
+
+  {
+    id === 'necker-cube' && (
+      <div class="ill-ctl">
+        <button type="button" class="ill-btn" data-btn="tap">перевернулся</button>
+        <button type="button" class="ill-btn is-quiet" data-btn="reset">сбросить</button>
+        <span class="ill-hint">или пробел</span>
+      </div>
+    )
+  }
+
+  {id === 'necker-cube' && <canvas class="ill-chart" data-chart aria-label="распределение интервалов между переворотами" />}
+
+  {
+    id === 'ponzo' && (
+      <div class="ill-ctl">
+        <label>
+          <span>схождение рельсов</span>
+          <input type="range" min="0" max="40" value="16" step="1" data-slider="deg" data-fmt="%°" />
+          <output data-out="deg" />
+        </label>
+      </div>
+    )
+  }
+
+  {
+    id === 'checker-shadow' && (
+      <div class="ill-ctl">
+        <button type="button" class="ill-btn" data-btn="bridge" aria-pressed="false">соединить A и B</button>
+        <button type="button" class="ill-btn" data-btn="probe">измерить обе клетки</button>
+      </div>
+    )
+  }
+
+  {
+    id === 'shepard-tone' && (
+      <div class="ill-ctl">
+        <button type="button" class="ill-btn" data-btn="play" aria-pressed="false">играть</button>
+        <label>
+          <span>скорость</span>
+          <input type="range" min="0.05" max="0.6" value="0.22" step="0.01" data-slider="speed" />
+        </label>
+        <label>
+          <span>ширина колокола</span>
+          <input type="range" min="10" max="60" value="28" step="1" data-slider="width" />
+        </label>
+        <label class="ill-check">
+          <input type="checkbox" data-slider="down" />
+          <span>вниз</span>
+        </label>
+      </div>
+    )
+  }
+
+  {id === 'shepard-tone' && <canvas class="ill-chart" data-chart aria-label="спектр: громкость каждой октавы" />}
+
+  <p class="ill-readout" data-readout aria-live="polite"></p>
+  {note && <figcaption class="ill-demo-note">{note}</figcaption>}
+</figure>

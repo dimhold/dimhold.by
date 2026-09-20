@@ -1,0 +1,179 @@
+---
+/* Страница одной иллюзии.
+   У записи с разбором — текст, демонстрация и источники. У записи без разбора — всё
+   равно источники: каталог обещает ответить, где иллюзию упомянули впервые и откуда
+   взято написанное, и это обещание не зависит от того, дошли ли до неё руки. */
+import Base from '../../../layouts/Base.astro';
+import Masthead from '../../../components/Masthead.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import Demo from '../../../components/illusions/Demo.astro';
+import { ru } from '../../../i18n';
+import {
+  entries,
+  sources,
+  copyFor,
+  catLabel,
+  modLabel,
+  cite,
+  href,
+  CONFIDENCE_RU,
+  type Entry,
+} from '../../../lib/illusions';
+
+export function getStaticPaths() {
+  return entries.map((e) => ({ params: { slug: e.id }, props: { entry: e } }));
+}
+
+const { entry } = Astro.props as { entry: Entry };
+const c = copyFor(entry.id);
+
+/* Источник первого упоминания идёт первым и помечен: он отвечает на главный вопрос
+   каталога, а остальные — на вопрос «откуда это всё». */
+const firstId = entry.first?.source ?? null;
+const list = [...new Set([firstId, ...entry.sources].filter(Boolean) as string[])]
+  .map((id) => ({ id, s: sources[id] }))
+  .filter((x) => x.s);
+
+/* Собирается строкой, а не тремя выражениями подряд: между выражениями в разметке
+   появляется перенос строки, и он превращается в пробел перед запятой. */
+const firstLine = entry.first
+  ? [entry.first.by, entry.first.where].filter(Boolean).map((x) => `, ${x}`).join('')
+  : '';
+
+const alternates = [{ lang: 'ru', href: `/ru/illusions/${entry.id}/` }];
+const desc = c?.lede ?? `${entry.ru} (${entry.en}) — ${catLabel(entry.category)}. Первоисточник и литература в каталоге иллюзий dimhold.by.`;
+---
+
+<Base
+  t={ru}
+  title={`${entry.ru} — иллюзии | dimhold.by`}
+  description={desc}
+  alternates={alternates}
+  ogType="article"
+>
+  <Masthead t={ru} active="illusions" langHrefs={{ ru: '/ru/illusions/' }} />
+
+  <main id="main" class="ill-entry">
+    <a class="ill-back" href="/ru/illusions/">← каталог</a>
+
+    <header class="ill-entry-head">
+      <h1 class="post-title">{entry.ru}</h1>
+      <p class="ill-entry-en">{entry.en}</p>
+      {entry.aka.length > 0 && <p class="ill-entry-aka">Также: {entry.aka.join(' · ')}</p>}
+      <p class="ill-entry-tags">
+        <a class="ill-tag" href={`/ru/illusions/?q=${encodeURIComponent(modLabel(entry.modality))}`}>
+          {modLabel(entry.modality)}
+        </a>
+        <a class="ill-tag" href={`/ru/illusions/?q=${encodeURIComponent(catLabel(entry.category))}`}>
+          {catLabel(entry.category)}
+        </a>
+      </p>
+    </header>
+
+    {c && <p class="ill-lede">{c.lede}</p>}
+
+    {c?.caution && <aside class="ill-caution"><b>Осторожно.</b> {c.caution}</aside>}
+
+    {c?.demo && <Demo id={c.demo} note={c.demoNote} />}
+
+    {
+      c && (
+        <section class="ill-sec">
+          <h2>Что видно</h2>
+          <p>{c.what}</p>
+        </section>
+      )
+    }
+
+    {
+      c && (
+        <section class="ill-sec">
+          <h2>Как это работает</h2>
+          {c.how.map((p) => (
+            <p>{p}</p>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      c?.twist && (
+        <section class="ill-sec">
+          <h2>Отдельно стоит знать</h2>
+          <p>{c.twist}</p>
+        </section>
+      )
+    }
+
+    {
+      !c && (
+        <section class="ill-sec">
+          <p class="ill-stub-note">
+            Разбора на русском пока нет — его пишут руками, по одной записи за раз, и до
+            этой очередь ещё не дошла. Всё, что каталог про неё знает, ниже: кто описал
+            первым, где и откуда это известно. Ради этого каталог и собирался.
+          </p>
+        </section>
+      )
+    }
+
+    {
+      entry.first && (
+        <section class="ill-sec ill-first">
+          <h2>Где упомянута впервые</h2>
+          <p class="ill-first-line">
+            <b>{entry.first.year}</b>{firstLine}
+            <span class={`ill-conf is-${entry.first.confidence}`}>
+              {CONFIDENCE_RU[entry.first.confidence] ?? entry.first.confidence}
+            </span>
+          </p>
+          {entry.first.confidence === 'disputed' && (
+            <p class="ill-first-note">
+              Приоритет оспаривается: в литературе встречаются разные даты и разные имена.
+              Здесь стоит та версия, под которой есть проверяемая ссылка.
+            </p>
+          )}
+        </section>
+      )
+    }
+
+    <section class="ill-sec ill-sources">
+      <h2>Откуда это известно</h2>
+      {list.length === 0 && <p>Источники по этой записи ещё не выверены.</p>}
+      <ol class="ill-src-list">
+        {
+          list.map(({ id, s }) => {
+            const url = href(s);
+            return (
+              <li class="ill-src">
+                {url ? (
+                  <a href={url} rel="noopener">
+                    {cite(s)}
+                  </a>
+                ) : (
+                  <span>{cite(s)}</span>
+                )}
+                <span class="ill-src-flags">
+                  {id === firstId && <span class="ill-flag is-first">первое упоминание</span>}
+                  {s.primary && <span class="ill-flag">первоисточник</span>}
+                  {s.unread && <span class="ill-flag is-unread" title="запись о работе выверена, сам текст не открывался">не читано</span>}
+                </span>
+              </li>
+            );
+          })
+        }
+      </ol>
+      <p class="ill-src-note">
+        «Не читано» значит, что выверена библиографическая запись, а не содержание: работу
+        не удалось открыть — платный доступ, бумага, отказ издательства. Каталог считает
+        честнее сказать это, чем промолчать.
+      </p>
+    </section>
+  </main>
+
+  <SiteFooter t={ru} />
+</Base>
+
+<script>
+  import '../../../scripts/illusions/boot';
+</script>
