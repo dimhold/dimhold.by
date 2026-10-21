@@ -1,14 +1,14 @@
 ---
 title: "Мой інжэктар збояў паўтарае прагон па адным seed. Профіль аказаўся часткай seed"
 description: "Мой інжэктар збояў для MCP паўтарыў 3000 выклікаў байт у байт на 4 версіях Node, а прагон агента 5 разоў. Правіла, устаўленае наверх профілю, змяніла 48,52% вынікаў, новы seed 53,17%."
-date: 2026-10-12
+date: 2026-12-13
 lang: be
 translationKey: faultmcp-seed
 tags: ["agents", "reliability"]
 ---
 У жніўні я апублікаваў [`fault-mcp`](https://github.com/dimhold/fault-mcp), сервер MCP, які наўмысна ламае ўласныя інструменты. У яго 6 тыпаў збояў. `error` і `empty` паведамляюць пра сябе самі, а `latency` аддае правільны адказ са спазненнем. Астатнія 3 вяртаюць нешта няправільнае і маўчаць, `corrupt` у тым ліку. Гэта не першы такі інструмент. [`mcp-chaos`](https://github.com/ajinb/mcp-chaos) старэйшы прыкладна на 2 месяцы, у яго таксама ёсць seed, а яго README прайгравае сваё дэма з seed 42.
 
-Сёння я ўжо праверыў адзін сказ з README `fault-mcp` на сапраўдных кліентах і ён пацвердзіўся толькі для часткі з іх. Таму я ўзяў абзац, у якім быў упэўнены больш за ўсё, той, што называецца Reproducibility:
+Крыху раней я ўжо праверыў адзін сказ з README `fault-mcp` на сапраўдных кліентах і ён пацвердзіўся толькі для часткі з іх. Таму я ўзяў абзац, у якім быў упэўнены больш за ўсё, той, што называецца Reproducibility:
 
 > The decision for a given call depends only on `(seed, tool name, call number)`. Call 7 rolls the same numbers whether or not calls 1 through 6 ever happened, so a bad run replays from the seed alone with no session to re-drive. Change the seed and you get a different run; keep it and you get the same one, on any machine.
 

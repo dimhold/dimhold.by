@@ -1,12 +1,12 @@
 ---
 title: "Nothing changed in the script and 24 of my 36 agents ran again"
 description: "A measurement here is 36 agents and I have been calling the way I run them deterministic without ever measuring what the word covers. The pipeline shape beats the barrier by 23.9 percent of wall clock. It also hands out call numbers by who finished first, which means a journal keyed by position replays 12 of 36 agents on a run where nothing was edited at all."
-date: 2026-10-16
+date: 2026-12-19
 lang: en
 translationKey: deterministic-orchestration
 tags: ["agents", "performance", "reliability"]
 ---
-A measurement here is rarely one agent. A normal job for me is 12 things to look at and 3 things to do with each one: read the source, then pull the numbers out and check them back against it. That comes to 36 agents and the thing that runs them is a JavaScript file with a loop in it. I describe that setup as deterministic whenever somebody asks how it works. This week I sat down to find out which part of the run the word covers.
+A measurement here is rarely one agent. A normal job for me is 12 things to look at and 3 things to do with each one: read the source, then pull the numbers out and check them back against it. That comes to 36 agents and the thing that runs them is a JavaScript file with a loop in it. I describe that setup as deterministic whenever somebody asks how it works. In September I sat down to find out which part of the run the word covers.
 
 What I want out of it is resume. A run of 36 costs money and about 20 minutes of waiting. So when I fix a sentence in the third stage I want to pay for the third stage and take the other 24 agents out of the journal of the previous run. That is the whole promise. It holds only if the second run asks for the same things in the same order and I had never checked that it does.
 

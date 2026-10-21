@@ -1,7 +1,7 @@
 ---
 title: "The same question to opus 5 gave 21 different answers in 64 calls, so I went looking for where the difference starts"
 description: "I blamed temperature for every different answer and never checked it. On a CPU with sampling off, Qwen2.5 0.5B in float32 gave the same tokens under repeats, threads and batches. In bfloat16 a batch of 8 changed the text in 4 prompts of 8, once on the first token, where Sure and Certainly had exactly the same logit. opus 5 through the CLI gave 21 different numbers to one arithmetic question in 64 calls."
-date: 2026-09-28
+date: 2026-10-17
 lang: en
 translationKey: llm-determinism
 tags: ["llm", "numbers", "reliability"]

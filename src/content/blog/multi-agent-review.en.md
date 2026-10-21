@@ -1,14 +1,14 @@
 ---
 title: "2 comment lines turned 62 findings into 0"
 description: "Code review here runs in 3 stages and I had never picked the size of any of them on evidence. After 191 model calls the stage I would have defended hardest had not once disagreed with itself. The thing that kept turning out to be wrong was my own apparatus: 2 comment lines in the control file took 62 findings down to 0."
-date: 2026-09-06
+date: 2026-09-19
 lang: en
 translationKey: multi-agent-review
 tags: ["agents", "code-quality", "llm"]
 ---
 Code review here runs in 3 stages. N agents read the file and report defects, K skeptics try to refute every report, one agent merges what survives into a list. I set it up that way because the claude CLI I run agents with ships a research workflow built on that shape. Its phases sit in the binary as plain strings: fan out the searches, extract falsifiable claims, 3 votes of adversarial verification per claim with 2 refutes to kill, then merge the semantic duplicates. I copied that into code review without asking whether code review wants it. I have been paying for all 3 stages since and I never once picked N or K on evidence.
 
-This week I measured it. 191 model calls and $11.76, counting a control round I threw away. The stage I would have defended hardest took $4.57 of that and never once disagreed with itself. What I did not expect is how often the thing that turned out to be wrong was my own apparatus rather than the agents. It happened 5 times. The worst of the 5 nearly went out as the headline of this post.
+On 5 September I measured it. 191 model calls and $11.76, counting a control round I threw away. The stage I would have defended hardest took $4.57 of that and never once disagreed with itself. What I did not expect is how often the thing that turned out to be wrong was my own apparatus rather than the agents. It happened 5 times. The worst of the 5 nearly went out as the headline of this post.
 
 ## The file
 

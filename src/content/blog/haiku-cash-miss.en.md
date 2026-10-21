@@ -1,7 +1,7 @@
 ---
 title: "I quoted Haiku's $8k miss twice. The miss that matters is $684k and comes from dividing by 0.10"
 description: "In August I quoted a Haiku 4.5 miss on a 36 month cash forecast twice, $5,775 short and then $8,451 off, from 1 answer per run. I asked the same question 150 times with no tools. 7 of 30 Haiku answers were $684k too high. With the working shown every such answer divides by 0.10 where the formula says 1.11 - 1. The smaller misses track the error in its own 1.11^36. Asked to flag doubt, it marked 7 close answers and none of the 4 big ones."
-date: 2026-10-12
+date: 2026-12-06
 lang: en
 translationKey: haiku-cash-miss
 tags: ["llm", "numbers", "reliability"]

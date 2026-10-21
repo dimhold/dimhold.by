@@ -1,14 +1,14 @@
 ---
 title: "On my Windows laptop whotop found who holds each port. 11 of its answers quoted a word that was not there"
 description: "I took one snapshot from my Windows laptop at 01:59 and checked what whotop 0.4.1 said about each of the 33 processes holding a listening port. The port column held. 8 astro processes sat on a port their command line did not name and whotop showed the real one. But 11 rows quoted vite as evidence when the word is not in the command line. 8 inferred directories were the npx cache or a temp folder and the service names reached only the interactive screen."
-date: 2026-10-09
+date: 2026-11-21
 lang: en
 translationKey: whotop-windows-ports
 tags: ["debugging", "networking"]
 ---
 I wrote [whotop](https://github.com/dimhold/whotop) in August, after an evening when port 4310 was taken and I killed the wrong node. On 19 August I put the package on npm. The README promises one thing above the others: whotop says a value is unavailable and why instead of making a confident guess. Every role carries the rule that produced it.
 
-I checked that promise on fixtures I recorded myself and on CI runners. I never took a real evening of my own machine and asked it, row by row, the one question the tool exists for. A few days ago I wrote about [a night log of my laptop](https://dimhold.by/blog/night-noise/). The same log has the answer: 96 snapshots of `whotop ls --all --json`, version 0.4.1, on Windows, not elevated. I took the snapshot from 01:59 on 29 September, when my agent sessions had just stopped working. I looked only at the processes that hold a listening TCP socket.
+I checked that promise on fixtures I recorded myself and on CI runners. I never took a real evening of my own machine and asked it, row by row, the one question the tool exists for. In October I wrote about [a night log of my laptop](https://dimhold.by/blog/night-noise/). The same log has the answer: 96 snapshots of `whotop ls --all --json`, version 0.4.1, on Windows, not elevated. I took the snapshot from 01:59 on 29 September, when my agent sessions had just stopped working. I looked only at the processes that hold a listening TCP socket.
 
 There are 33 of them, out of 484 processes. whotop gave a role to 21: 20 node processes it calls dev servers and Postgres. The other 12 are unknown. 11 of those did not disclose a command line at all.
 

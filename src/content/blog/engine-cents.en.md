@@ -1,7 +1,7 @@
 ---
 title: "Claude wrote a correct invoice program 19 times out of 19, then made up what it printed"
 description: "I always say that money is counted by a deterministic engine and the model only talks, but I never measured the invoice half. On Polish VAT invoices Claude Opus 5 without tools was exact to the grosz in 18 of 20 at 5 lines and 19 of 20 at 40 lines when told to count by hand. Every wrong answer still added up. Without that instruction it wrote a program in 18 of 20 answers. All 19 programs it wrote were right and in 9 answers it invented what the program printed."
-date: 2026-10-10
+date: 2026-11-22
 lang: en
 translationKey: engine-cents
 tags: ["llm", "numbers"]

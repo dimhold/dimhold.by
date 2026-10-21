@@ -1,14 +1,14 @@
 ---
 title: "earshot promised no network calls and onnxruntime broke that the day it went public"
 description: "The earshot README says network calls: none. With the network cut it really works, 10 of 10 transcripts identical. With the network on, every start asks Hugging Face for the model revision. onnxruntime, pulled in for voice activity filtering, sends telemetry to Microsoft since 1.29.0. Offline sessions queue the event until the machine is online again. 2 environment variables bring it to 0 connections."
-date: 2026-10-11
+date: 2026-11-28
 lang: en
 translationKey: earshot-network-off
 tags: ["networking", "dependencies"]
 ---
 earshot, my local transcriber, has a green badge at the top of its README that says "Network calls: none". Further down the README says "No account, no key, no telemetry" and "After that you can run earshot with the network off". The `--help` text ends with "Nothing leaves the machine. There is no network call anywhere in the pipeline." The model is `base.en` from `faster-whisper`, 145 MB, downloaded once.
 
-I wrote all of that from the design. Nobody had measured it, me included. The transcription code comes from a private project I wrote in late May and early June. In mid August I cut it down into earshot and wrote the README. This week I installed it from scratch in an empty folder, the way the README tells a stranger to do it. Then I watched its sockets.
+I wrote all of that from the design. Nobody had measured it, me included. The transcription code comes from a private project I wrote in late May and early June. In mid August I cut it down into earshot and wrote the README. On 11 October I installed it from scratch in an empty folder, the way the README tells a stranger to do it. Then I watched its sockets.
 
 ## The setup
 

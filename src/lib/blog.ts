@@ -14,9 +14,26 @@ function byDateDesc(a: Post, b: Post): number {
   return b.data.date.getTime() - a.data.date.getTime();
 }
 
+/** The build's day in Minsk, as YYYY-MM-DD. */
+const TODAY = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Minsk' }).format(new Date());
+
+/**
+ * A post dated ahead of the build is scheduled, not published: it stays out of
+ * the lists, tags, archive, feed and search until its day, and the daily
+ * rebuild in deploy.yml lets it in. Its own page is still built, so a link that
+ * went out before the post was rescheduled keeps working.
+ */
+export function isPublished(post: Post): boolean {
+  return import.meta.env.DEV || post.data.date.toISOString().slice(0, 10) <= TODAY;
+}
+
+async function everyPost(): Promise<Post[]> {
+  return getCollection('blog', ({ data }) => (!data.draft || import.meta.env.DEV));
+}
+
 export async function allPosts(): Promise<Post[]> {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.sort(byDateDesc);
+  const posts = await everyPost();
+  return posts.filter(isPublished).sort(byDateDesc);
 }
 
 /** One post per translationKey, preferring the reader's language. */
@@ -42,7 +59,7 @@ export async function postsFor(lang: Lang): Promise<Post[]> {
 }
 
 export async function translationsOf(post: Post): Promise<Post[]> {
-  const posts = await allPosts();
+  const posts = await everyPost();
   return posts.filter((p) => p.data.translationKey === post.data.translationKey);
 }
 

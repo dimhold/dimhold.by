@@ -1,7 +1,7 @@
 ---
 title: "Who holds the key to an npm package. In 2026 most releases carry the name of a machine"
 description: "I read the publish record of the 5000 most downloaded npm packages. Almost half have 1 maintainer, in 19 percent the first author is gone from the list and 1798 have not released for 2 years. In 2026 most releases come from a machine, 1429 through trusted publishing. That change made my own count of abandoned packages wrong: the honest range is 213 to 369."
-date: 2026-10-08
+date: 2026-11-07
 lang: en
 translationKey: npm-maintainer-life
 tags: ["dependencies", "open-data", "statistics"]

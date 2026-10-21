@@ -1,14 +1,14 @@
 ---
 title: "Please costs 24 dollars per million calls, which is nothing. Just the answer cost me 32.5 points of accuracy."
 description: "A year ago I stripped every please and thank you out of my prompt templates because of a joke Sam Altman made about electricity. I never checked what I saved. 20171 calls later the polite wrapper costs 24 dollars per million requests on sonnet and moves the answer no more than a control wrapper with no social word in it. The wrapper that did move things was the one telling the model how much to write: Just the answer takes haiku on GSM8K from 88.5 percent down to 56.0."
-date: 2026-09-14
+date: 2026-09-27
 lang: en
 translationKey: politeness-cost
 tags: ["llm", "statistics", "performance"]
 ---
 In April 2025 someone on X wondered out loud how much electricity OpenAI was burning on people saying please and thank you to its models. Sam Altman answered the next day: tens of millions of dollars well spent, you never know. It was a joke. No calculation was ever published. I took it as a budget figure anyway, opened the prompt templates in my own tooling and pulled every please and every thank you out of them. It cost me an afternoon and I felt slightly better about the bill afterwards.
 
-I never checked what I'd saved. The number I was reacting to came with no denominator anywhere near it. My own monthly total moves by more than a rounding error whenever one agent run goes badly, so the saving stayed a feeling for more than a year. This week I put it on a bench. The number I came back with was not the one I went looking for.
+I never checked what I'd saved. The number I was reacting to came with no denominator anywhere near it. My own monthly total moves by more than a rounding error whenever one agent run goes badly, so the saving stayed a feeling for more than a year. In mid-September I put it on a bench. The number I came back with was not the one I went looking for.
 
 ## The bench
 

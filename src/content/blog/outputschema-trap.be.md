@@ -1,7 +1,7 @@
 ---
 title: "Мой інжэктар збояў хавае outputSchema ад строгіх кліентаў. Claude Code 2.1.292 яе не правяраў зусім"
 description: "README майго інжэктара збояў для MCP кажа, што ён хавае outputSchema, бо строгі кліент адкіне збой схемы раней за агента. Я прагнаў 9 профіляў збояў праз сыры JSON-RPC, TypeScript SDK 1.32.1, Python SDK 2.3.0 і Claude Code 2.1.292. З апублікаванай схемай TypeScript пасля listTools і Python кінулі выключэнне на 4 збоях з 8, у тым ліку empty і truncate. Без listTools кліент TypeScript не правяраў нічога. Claude Code прапусціў да мадэлі кожны збой схемы. Мадэль кожны раз адказвала $40 718,77. Адзін збой не выйшаў нават з майго сервера."
-date: 2026-10-12
+date: 2026-12-12
 lang: be
 translationKey: outputschema-trap
 tags: ["agents", "reliability"]

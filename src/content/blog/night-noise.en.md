@@ -1,7 +1,7 @@
 ---
 title: "8 hours of snapshots and no gap. A quarter of the new processes the log caught were my logger"
 description: "My process inspector whotop logged my Windows laptop every 5 minutes overnight. There was not one gap, so the laptop did not sleep. Until 01:58 my agent sessions were still building. In the 6 quiet hours after that, 30 percent of the 711 new processes caught were the logger itself, then Chrome extensions, WMI and Windows maintenance. All night 14 ports were held by dev servers up to 4 days old."
-date: 2026-10-06
+date: 2026-10-25
 lang: en
 translationKey: night-noise
 tags: ["debugging", "agents"]

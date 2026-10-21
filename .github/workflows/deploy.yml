@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master]
+  # Scheduled posts (date ahead of the build) appear on their day: 00:10 in Minsk.
+  schedule:
+    - cron: '10 21 * * *'
   workflow_dispatch:
 
 permissions:

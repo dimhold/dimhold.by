@@ -1,7 +1,7 @@
 ---
 title: "The npm graph over 15 years. It grew to 4.45 million packages and one account still reaches a quarter of them"
 description: "I took a random sample of 30000 npm names and rebuilt the dependency graph for every year from 2011 to October 2026, with a GIF of it growing. Packages went from about 2800 to 4.45 million and edges to 19.4 million. The jump of 2024 came from packages created that year, many of them spam that depends on spam. The 100 most used packages get half the share of edges they had in 2015, but the top account still reaches 25 percent of all packages and 14 to 19 accounts reach half."
-date: 2026-10-08
+date: 2026-11-01
 lang: en
 translationKey: npm-graph-years
 tags: ["dependencies", "open-data", "statistics"]

@@ -1,7 +1,7 @@
 ---
 title: "codecard refuses to render a snippet that names a codebase. It missed all 569 Kotlin package lines I gave it"
 description: "codecard refuses to render a code card when the snippet names a codebase. I ran its guard over 9 public repositories and 31 leak shapes. It refused 2.2% of random windows of public code, partly because of a case flag that turns /users/ routes into build paths. It caught 0 of 569 Kotlin package lines because the rule wants a semicolon. Next to gitleaks 8.30.1 it caught 10 of 18 shapes that name a codebase and 6 of 13 secrets."
-date: 2026-10-01
+date: 2026-10-18
 lang: en
 translationKey: codecard-guard
 tags: ["code-quality", "text"]

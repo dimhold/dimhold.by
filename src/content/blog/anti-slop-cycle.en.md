@@ -1,12 +1,12 @@
 ---
 title: "The critic passes 13 of the 16 drafts my checks fail"
 description: "Every draft here goes past 19 mechanical checks and then past a model critic that scores it from 0 to 10. I have been saying the checks own what has one answer while the critic owns judgment. I never put a number on that. On 16 real drafts all 16 fire the checks and 13 land at or under the passing score. Inject 8 violations of my comma rule and the critic still says 2.7."
-date: 2026-09-03
+date: 2026-09-12
 lang: en
 translationKey: anti-slop-cycle
 tags: ["llm", "code-quality"]
 ---
-Yesterday I ran my drafting cycle over 16 of my own topics and read the reports. The draft of a blog essay about keeping state in files came back with a critic score of 2 out of 10. In this setup that means it does not smell of a model and goes to me for reading. The mechanical checks on the same file counted 10 hits, 8 of them a comma before `and`.
+On 2 September I ran my drafting cycle over 16 of my own topics and read the reports. The draft of a blog essay about keeping state in files came back with a critic score of 2 out of 10. In this setup that means it does not smell of a model and goes to me for reading. The mechanical checks on the same file counted 10 hits, 8 of them a comma before `and`.
 
 That comma is not something the critic has to work out from my style. It is hard check number 3 in the critic's own prompt, written there as `Comma before and / or → 0`. And the critic did see one of the 8: its remarks on that draft quote a comma before `and` and call it a violation of the hard check. It named the thing and still returned a 2. The sentence I use to explain this cycle says anything with a definite answer gets decided in code before the model is asked anything. The model keeps only the judgement calls. That line sits in the header comment of `tells.ts` and I repeat it whenever somebody asks how the drafting works. I had never measured it.
 

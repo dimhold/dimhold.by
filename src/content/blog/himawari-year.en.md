@@ -1,7 +1,7 @@
 ---
 title: "A year of Himawari dawns in 30 seconds. One frame tells the date within a day 335 times of 358"
 description: "I took 365 dawn frames of Himawari-9, one a day at 21:00 UTC, and made a year of Earth into 30 seconds. The edge between day and night swings with the seasons and slides with the equation of time, so I tried to read the date from 1 frame. It worked within a day for 335 of 358 frames once I used the real scan time of each row: the frame at 21:00 is a 9 minute scan. The misses sit where the analemma crosses itself, in April and August, and in June."
-date: 2026-10-04
+date: 2026-10-24
 lang: en
 translationKey: himawari-year
 tags: ["open-data", "time"]

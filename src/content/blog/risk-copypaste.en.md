@@ -1,7 +1,7 @@
 ---
 title: "Companies copy their risk factors. Only 15% of the 2026 text was already there in 2016"
 description: "I cut the Risk Factors section out of 11 years of 10-K reports of 500 random US companies. Year to year 75% of it is copied word for word, but only 15% of the 2026 text was already there in 2016. COVID still sits in 37% of the sections, LIBOR in 1%."
-date: 2026-10-08
+date: 2026-11-08
 lang: en
 translationKey: risk-copypaste
 tags: ["open-data", "text", "statistics"]

@@ -1,7 +1,7 @@
 ---
 title: "Haiku 4.5 found the key 243 times of 245 in prompts up to 96 thousand tokens. For a key that was not there, it returned a value 12 times of 20."
 description: "I had the Lost in the Middle chart in my head and never checked it on the model I use every day. On a key and value lookup haiku 4.5 found the key 243 times of 245 across 11 depths in prompts up to about 96 thousand tokens, with no dip in the middle. The degradation was somewhere else: asked for a key that was not in the object, it began returning values instead of NOT FOUND after 2000 pairs and at 6000 pairs returned a value 12 times of 20."
-date: 2026-09-21
+date: 2026-10-04
 lang: en
 translationKey: context-position
 tags: ["llm", "reliability"]

@@ -1,7 +1,7 @@
 ---
 title: "My fault injector hides outputSchema from strict clients. Claude Code 2.1.292 did not check it at all"
 description: "The README of my MCP fault injector says it hides outputSchema because a strict client would reject a schema fault before the agent sees it. I ran 9 fault profiles through raw JSON-RPC, the TypeScript SDK 1.32.1, the Python SDK 2.3.0 and Claude Code 2.1.292. With the schema published, TypeScript after listTools and Python threw on 4 of 8 faults, including empty and truncate. Without listTools the TypeScript client checked nothing. Claude Code passed every schema fault to the model, which answered $40,718.77 each time. One fault never left my own server."
-date: 2026-10-12
+date: 2026-12-12
 lang: en
 translationKey: outputschema-trap
 tags: ["agents", "reliability"]

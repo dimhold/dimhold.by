@@ -1,14 +1,14 @@
 ---
 title: "On Linux recording the speakers is free until you touch the volume"
 description: "The earshot README says system audio works out of the box on Linux and that macOS has no capture API at all. The macOS line is wrong since macOS 13; a virtual device on Windows and macOS is still needed because of ffmpeg. On Linux the monitor is bit for bit at 100%, but on PulseAudio the output slider and mute reach it. On PipeWire the app slider does. With the PulseAudio output slider at 60% earshot cuts no clip at all from 10 spoken sentences."
-date: 2026-10-11
+date: 2026-10-19
 lang: en
 translationKey: system-audio-linux-volume
 tags: ["linux", "debugging"]
 ---
 earshot, my local transcriber, went public in August. Its README has a table I wrote about audio capture. Microphone works on all 3 systems. For system audio, meaning what the speakers are playing, the table says "works out of the box" on Linux. Windows needs Stereo Mix or VB-CABLE and "macOS 12 and later" needs BlackHole. Under the table I wrote that macOS gives an ordinary process no system audio capture API at all.
 
-I wrote that line from memory. The memory is from the years when everybody installed Soundflower to record a Mac. I never checked if it was still true. The Linux row I never questioned either, because on my machine it just worked. This week I went through both rows.
+I wrote that line from memory. The memory is from the years when everybody installed Soundflower to record a Mac. I never checked if it was still true. The Linux row I never questioned either, because on my machine it just worked. In October I went through both rows.
 
 ## What the operating systems actually offer
 
@@ -16,7 +16,7 @@ I don't have a Windows or a Mac machine for this, so this part is from the docum
 
 Windows has had loopback capture in WASAPI since Vista. You open a capture stream on a playback device with the `AUDCLNT_STREAMFLAGS_LOOPBACK` flag. There is also process loopback, which captures one application and its child processes. Microsoft lists Windows 10 build 20348 as its minimum. No Windows 10 client release reached that build, it is the build of Windows Server 2022, so in practice it means Windows 11 or that server. macOS got audio in ScreenCaptureKit with macOS 13. Since macOS 14.2 Core Audio also has `AudioHardwareCreateProcessTap`, a tap on the output of one process or of all of them. So my sentence about macOS is wrong for every version since 13.
 
-earshot still needs a virtual device because of ffmpeg. earshot never opens an audio device itself, it starts ffmpeg, reads 16 kHz mono PCM from its stdout and leaves the platform to ffmpeg. Today, on 11 October, I listed `libavdevice` on the ffmpeg master branch. For Windows audio it has `dshow` and no WASAPI input. On macOS the `avfoundation` input has no ScreenCaptureKit code, so for audio it sees capture devices and nothing else.
+earshot still needs a virtual device because of ffmpeg. earshot never opens an audio device itself, it starts ffmpeg, reads 16 kHz mono PCM from its stdout and leaves the platform to ffmpeg. On 11 October I listed `libavdevice` on the ffmpeg master branch. For Windows audio it has `dshow` and no WASAPI input. On macOS the `avfoundation` input has no ScreenCaptureKit code, so for audio it sees capture devices and nothing else.
 
 <figure class="fig">
 <svg viewBox="0 0 640 218" role="img" aria-label="Table. Linux: PulseAudio and PipeWire offer a monitor source, ffmpeg reads it with -f pulse, earshot needs nothing extra. Windows: WASAPI loopback since Vista and process loopback since Windows 10 build 20348, but ffmpeg has only dshow and no WASAPI input, so earshot needs Stereo Mix or VB-CABLE. macOS: ScreenCaptureKit audio since macOS 13 and a process tap since 14.2, but ffmpeg's avfoundation input sees capture devices only, so earshot needs BlackHole.">

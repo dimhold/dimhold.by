@@ -1,7 +1,7 @@
 ---
 title: "The grid hum dated 111 of 128 recordings to within 5 seconds. One reference file holds the same hour 7 times"
 description: "I took the 130 phone and voice recorder recordings of the open Wuhan dataset and a plain search: find the grid hum, follow it second by second, slide the curve along the day. At 50 Hz it found 4 of 130, at 100 Hz the same search found 116. With a harmonic chosen without looking at the answer it found 113. 2 of them sit in an hour that one reference file holds 7 times, so only 111 of 128 can be checked. Then the same errors went into a month of the British grid."
-date: 2026-09-09
+date: 2026-09-20
 lang: en
 translationKey: mains-enf
 tags: ["time", "open-data"]

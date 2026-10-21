@@ -1,7 +1,7 @@
 ---
 title: "I wrote \"rerun it yourself\" under 4 gists. None of them ran as written"
 description: "In August 4 posts on X linked a gist with the whole run and the promise that anyone can rerun it. I cloned each gist into an empty folder and ran its own command. 0 of 4 worked: the files carry number prefixes, a package.json is missing and the Java gist reported a green build with 0 tests. After 2 fixes each, the stored results reproduced and small live runs matched August. One gist was updated in place under a post that now quotes different numbers."
-date: 2026-10-12
+date: 2026-12-05
 lang: en
 translationKey: gist-proof
 tags: ["reliability", "llm", "git"]
@@ -10,7 +10,7 @@ In August I published small measurements on X and under 4 of those posts the fir
 
 I never opened those gists the way a stranger would. I checked that the page showed all the files and that the encoding survived the upload, then moved on to the next measurement. The scripts ran fine in my workspace, which is the only place I ever ran them.
 
-Today I did it. A fresh `git clone` of each gist into an empty folder, then the exact command from its own instructions. Node 22.23.1, tsx 4.23.15 through `npx`, Claude Code 2.1.292 and for the Java gist Temurin 25 with Gradle 9.8.0. The stranger here is me, a generous stranger who knows what the files are supposed to do. The problem is old: [Gistable](https://arxiv.org/abs/1808.04919) found that 75.6% of the Python gists it studied need real setup before they run. I had just never checked my own.
+On 12 October I did it. A fresh `git clone` of each gist into an empty folder, then the exact command from its own instructions. Node 22.23.1, tsx 4.23.15 through `npx`, Claude Code 2.1.292 and for the Java gist Temurin 25 with Gradle 9.8.0. The stranger here is me, a generous stranger who knows what the files are supposed to do. The problem is old: [Gistable](https://arxiv.org/abs/1808.04919) found that 75.6% of the Python gists it studied need real setup before they run. I had just never checked my own.
 
 ## 0 of 4
 
@@ -120,7 +120,7 @@ On H2 in memory, its default, the Java benchmark ran fine. Rollback was slower i
 
 ## The gist moved under the post
 
-The post of August 12 says haiku's worst answer was $5,775 short on a 5 year cash forecast. It also says haiku spent 3 times more reasoning tokens than opus. On August 16 I ran the same 10 questions on 4 models and updated the gist in place. I did it on purpose, so the old link would lead to the fuller run. That same link now shows haiku $8,451 over on the same task and 7.5 times the reasoning tokens of opus. Today's run gave a third answer, $200 over.
+The post of August 12 says haiku's worst answer was $5,775 short on a 5 year cash forecast. It also says haiku spent 3 times more reasoning tokens than opus. On August 16 I ran the same 10 questions on 4 models and updated the gist in place. I did it on purpose, so the old link would lead to the fuller run. That same link now shows haiku $8,451 over on the same task and 7.5 times the reasoning tokens of opus. My run on 12 October gave a third answer, $200 over.
 
 Both runs are honest, but a reader who clicks from the August 12 post to check a number finds a different number. Nothing on the page says the post was about an earlier revision. That revision has not gone anywhere, because a gist is a git repository with an address for every revision, `gist.github.com/dimhold/<id>/<revision>`. I linked the bare id and the bare id always opens the latest.
 
@@ -141,7 +141,7 @@ Both runs are honest, but a reader who clicks from the August 12 post to check a
   <text x="276" y="176" class="f-mono f-ink" style="font-size:12px">haiku $8,451 over</text>
   <text x="276" y="196" class="f-mono f-ink" style="font-size:11.5px">tokens 7.5x of opus</text>
   <text x="626" y="112" text-anchor="end" class="f-mono f-muted" style="font-size:10.5px">still there, at its own address</text>
-  <text x="626" y="236" text-anchor="end" class="f-mono f-accent" style="font-size:11px">what the link opens today</text>
+  <text x="626" y="236" text-anchor="end" class="f-mono f-accent" style="font-size:11px">what the link opens now</text>
   <path d="M 150 150 C 200 170, 220 174, 256 174" class="f-line" fill="none"/>
   <path d="M 262 174 l -8 -4 l 0 8 z" class="f-accent"/>
 </svg>

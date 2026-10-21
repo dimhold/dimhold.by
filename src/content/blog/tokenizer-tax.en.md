@@ -1,12 +1,12 @@
 ---
 title: "Tokenizers made Russian cheap and left Belarusian behind"
 description: "The same 1012 FLORES-200 sentences on 8 tokenizers. Russian fell from 2.46 times English on cl100k to 1.42 on o200k and on the newer ones is not dearer than Polish. Belarusian still costs 1.40 to 1.69 times Russian. Swapping ў and і for Russian letters does not help."
-date: 2026-10-08
+date: 2026-11-14
 lang: en
 translationKey: tokenizer-tax
 tags: ["llm", "text"]
 ---
-Every article on this blog goes out in 3 languages and a model helps with each of them. So I pay for the same meaning 3 times. I also had a number in my head for how much more the other 2 cost. It came from Petrov et al. 2023, who ran about 2000 FLORES-200 sentences through 27 tokenizers and encodings. On cl100k_base, the GPT-4 tokenizer, Polish costs 1.91 times the English tokens, Russian 2.49 and Belarusian 3.55. I quoted these numbers myself a month ago in another measurement.
+Every article on this blog goes out in 3 languages and a model helps with each of them. So I pay for the same meaning 3 times. I also had a number in my head for how much more the other 2 cost. It came from Petrov et al. 2023, who ran about 2000 FLORES-200 sentences through 27 tokenizers and encodings. On cl100k_base, the GPT-4 tokenizer, Polish costs 1.91 times the English tokens, Russian 2.49 and Belarusian 3.55. I quoted these numbers myself in September in another measurement.
 
 From that row I had built a simple picture. The tax is a Cyrillic tax and Latin script gets a discount. When I opened their data for this article, the other rows did not agree. Llama 1 and Qwen already had Russian at or below Polish in 2023. I had taken the one row everybody quotes and never looked at the rest. And I never checked any of it on the tokenizers I use now.
 
@@ -307,7 +307,7 @@ The text becomes misspelled Belarusian written in Russian letters. It should hav
 <figcaption>Capital Ў and І are swapped too. The percentage on the right is the share of the gap between Belarusian and Russian that the swap closes.</figcaption>
 </figure>
 
-The o200k result still made me check the swap twice, because a result in the wrong direction looks like a bug. It was not a bug. My reading is that whole words are missing from the vocabulary. On o200k 83% of running English words are a single token and only 33% of Belarusian ones, with Russian at 47%. That fits, but it does not prove it, because Polish has 37% and is still cheaper than Belarusian. Where that comes from is a guess. The previous article here counted 1 Belarusian page for every 399 Russian pages in Common Crawl. A merge table learned from text like that would plausibly end up like this. I did not train a tokenizer to check it.
+The o200k result still made me check the swap twice, because a result in the wrong direction looks like a bug. It was not a bug. My reading is that whole words are missing from the vocabulary. On o200k 83% of running English words are a single token and only 33% of Belarusian ones, with Russian at 47%. That fits, but it does not prove it, because Polish has 37% and is still cheaper than Belarusian. Where that comes from is a guess. An earlier article here counted 1 Belarusian page for every 399 Russian pages in Common Crawl. A merge table learned from text like that would plausibly end up like this. I did not train a tokenizer to check it.
 
 ## Claude counts differently
 

@@ -1,7 +1,7 @@
 ---
 title: "Мой инъектор сбоев прячет outputSchema от строгих клиентов. Claude Code 2.1.292 её не проверял вообще"
 description: "README моего инъектора сбоев для MCP говорит, что он прячет outputSchema, потому что строгий клиент отбросит сбой схемы раньше агента. Я прогнал 9 профилей сбоев через сырой JSON-RPC, TypeScript SDK 1.32.1, Python SDK 2.3.0 и Claude Code 2.1.292. С опубликованной схемой TypeScript после listTools и Python бросили исключение на 4 сбоях из 8, включая empty и truncate. Без listTools клиент TypeScript не проверял ничего. Claude Code пропустил к модели каждый сбой схемы. Модель каждый раз отвечала $40 718,77. Один сбой не вышел даже из моего сервера."
-date: 2026-10-12
+date: 2026-12-12
 lang: ru
 translationKey: outputschema-trap
 tags: ["agents", "reliability"]

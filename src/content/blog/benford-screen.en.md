@@ -1,7 +1,7 @@
 ---
 title: "Benford's law flags 84% of the 2025 annual reports. A perfectly honest source would get 60%"
 description: "I ran Nigrini's first digit screen over 5399 annual reports filed with the SEC in 2025. It calls 83.9% of them nonconforming. An honest Benford source of the same sizes would get 60.3%. The flag did not point at later error corrections. To catch 60% of reports 70% of their numbers had to be invented."
-date: 2026-10-08
+date: 2026-10-31
 lang: en
 translationKey: benford-screen
 tags: ["statistics", "open-data", "numbers"]

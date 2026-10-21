@@ -1,7 +1,7 @@
 ---
 title: "The median home page went from 540 KB to 3009 KB. The crawler that weighs it does not scroll"
 description: "15 years of HTTP Archive page weight as a GIF: where the method changed, why the image line went flat and what my own crawler found below the fold."
-date: 2026-10-08
+date: 2026-10-12
 lang: en
 translationKey: web-weight
 tags: ["performance", "open-data", "statistics"]

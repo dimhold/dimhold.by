@@ -1,14 +1,14 @@
 ---
 title: "My watch asks my laptop for $0 in API and every new question still costs 7 cents"
 description: "The README of my watch app says one reply from the watch costs about $0.07 of subscription limit. I took it for the price of a cold start and measured it. 10 new questions cost $0.070 to $0.072 each and only a word for word repeat drops to about a cent, because every new question writes about 6,300 tokens to the one hour cache at double price. Without Claude Code's tools a new question costs $0.009."
-date: 2026-10-11
+date: 2026-11-29
 lang: en
 translationKey: watch-ask-price
 tags: ["llm", "agents"]
 ---
 `watch-ask` has been public since August. It is a Galaxy Watch app plus a small Node server. I press a button and say a question. The watch recognises the words on the device and posts the text to my own machine, where headless Claude Code answers. In the README I wrote "$0 in API". Under it I added that on my setup a single reply consumed roughly $0.07 of subscription limit and pulled about 27k tokens of context.
 
-That sentence came from one reply. I looked at the log line, saw 7 cents, wrote it down and moved on. My silent assumption was that this was the price of a cold start and the prompt cache would make the next questions almost free. I never checked it, so this week I did.
+That sentence came from one reply. I looked at the log line, saw 7 cents, wrote it down and moved on. My silent assumption was that this was the price of a cold start and the prompt cache would make the next questions almost free. I never checked it, so in October I did.
 
 ## The setup
 

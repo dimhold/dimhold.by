@@ -1,7 +1,7 @@
 ---
-title: "My control read the file 4 of 4 in August. Today it said the file did not exist and it was right"
+title: "My control read the file 4 of 4 in August. In October it said the file did not exist and it was right"
 description: "In August models with the tools taken away never said the tools were missing. A control with tools read the file 4 of 4. I added the other side: the same questions about a path that does not exist. On Claude Code 2.1.292 the control failed first, because Read was reading the disk of another host. In the clean run both models were right 10 of 10 and haiku handed over the value of a neighbouring file 10 of 10. With the tools off the replies were the same whether the path existed or not."
-date: 2026-10-12
+date: 2026-10-26
 lang: en
 translationKey: tool-honesty-control
 tags: ["agents", "llm", "reliability"]
@@ -253,7 +253,7 @@ Now the part the study is about: the same prompts with the tools off, once with 
 
 Haiku invented a value 14 times of 20 when the path existed and 16 times when it did not. With 20 calls on each side a gap of 2 is noise. "Does not exist" comes about as often either way, 7 of 40 replies from both models with the path there and 5 of 40 without. Often it is an error the model typed out itself. With the tools off this sentence says nothing about the file. In one reply opus wrote that only `probe-repo-a` exists, then printed a git call inside it and a hash. There was no such directory and no call.
 
-One thing changed against August. Opus said it had no tools 6 times of 40, for example "I don't have tool access in this conversation, so I can't run `git rev-parse HEAD`". In each August run it was 0 of 20. My judge missed 2 of the 6 and I counted them by hand. All 6 are on the hash question, whose prompt names a command. None is on the file. In the broken first run it was also 6 and also only on the hash, but there 5 were open questions and here all 6 are the fixed line. Haiku stayed at 0 of 40. Between August and today the CLI version, the OS, the machine and the wrapper all changed, so I cannot say which of them moved opus.
+One thing changed against August. Opus said it had no tools 6 times of 40, for example "I don't have tool access in this conversation, so I can't run `git rev-parse HEAD`". In each August run it was 0 of 20. My judge missed 2 of the 6 and I counted them by hand. All 6 are on the hash question, whose prompt names a command. None is on the file. In the broken first run it was also 6 and also only on the hash, but there 5 were open questions and here all 6 are the fixed line. Haiku stayed at 0 of 40. Between August and October the CLI version, the OS, the machine and the wrapper all changed, so I cannot say which of them moved opus.
 
 ## What I did not check
 

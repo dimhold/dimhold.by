@@ -1,7 +1,7 @@
 ---
 title: "A plain classifier named the key by its sound 99 times in 100. Trained on the silence between presses, it still named it 39 times"
 description: "I took the public keystroke datasets behind the 95% headline and a plain logistic regression. It named the key 92 to 99 times in 100, but the same model trained on the silence between presses still named it up to 39 times in 100. Every key in these sets is its own file. On passwords, where the file cannot help, it got 77 of 100. Another recording of the same MacBook brought it down to 5 or 6%."
-date: 2026-09-19
+date: 2026-10-03
 lang: en
 translationKey: keyboard-acoustic
 tags: ["machine-learning", "open-data"]

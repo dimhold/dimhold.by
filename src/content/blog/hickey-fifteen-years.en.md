@@ -1,7 +1,7 @@
 ---
 title: "15 years after Simple Made Easy: 0 of my 102 local variables were final in 2013 and 91.6% of the code I keep is const now. I chose neither"
 description: "In may 2013 I started a repository to translate a Rich Hickey talk into Russian. It is still at 0%. That same week I committed synchronized collections to a Java server. I rebuilt that shape and measured it. The commit did not move the failure rate at all. Then I ran the checklist from Simple Made Easy over my own code. 0 of my 102 local variables were final in 2013 and 91.6% of the code I keep is const now. I chose neither."
-date: 2026-09-05
+date: 2026-09-07
 lang: en
 translationKey: hickey-fifteen-years
 tags: ["code-quality", "types"]

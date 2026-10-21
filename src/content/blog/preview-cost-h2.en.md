@@ -1,7 +1,7 @@
 ---
 title: "My README said H2 cannot reproduce my Postgres numbers. Over TCP it landed next to local Postgres"
 description: "The README of my preview benchmark says H2 in memory does not reproduce what a write and discard costs a real database. I ran the unchanged harness on H2 2.3.232 and on local PostgreSQL 16.14. H2 gave the same verdict with a penalty of 0.5 ms against 0.8 to 1.2. H2 as a TCP server landed within 0.1 ms of local Postgres on a quiet machine. A proxy that delays each of the 3 round trips reaches the 6 ms of the README at about 1.6 ms per round trip. The 10 seconds are true from the second run, the first one took 24 s."
-date: 2026-09-27
+date: 2026-10-11
 lang: en
 translationKey: preview-cost-h2
 tags: ["databases", "performance"]

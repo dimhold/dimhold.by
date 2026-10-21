@@ -1,14 +1,14 @@
 ---
 title: "My fault injector replays a run from one seed. The profile turned out to be part of the seed"
 description: "My MCP fault injector replayed 3000 calls byte for byte on 4 Node versions and an agent run 5 times. A rule inserted at the top of the profile changed 48.52% of results, a new seed 53.17%."
-date: 2026-10-12
+date: 2026-12-13
 lang: en
 translationKey: faultmcp-seed
 tags: ["agents", "reliability"]
 ---
 In August I published [`fault-mcp`](https://github.com/dimhold/fault-mcp), an MCP server that breaks its own tools on purpose. It has 6 fault types. `error` and `empty` announce themselves and `latency` gives the right answer late. The other 3 return something wrong and say nothing, `corrupt` among them. It is not the first tool of this kind. [`mcp-chaos`](https://github.com/ajinb/mcp-chaos) is about 2 months older, has a seed too and its README replays its demo from seed 42.
 
-Earlier today I checked one sentence of the `fault-mcp` README against real clients and it held only for some of them. So I took the paragraph I was most sure about, the one called Reproducibility:
+Earlier I checked one sentence of the `fault-mcp` README against real clients and it held only for some of them. So I took the paragraph I was most sure about, the one called Reproducibility:
 
 > The decision for a given call depends only on `(seed, tool name, call number)`. Call 7 rolls the same numbers whether or not calls 1 through 6 ever happened, so a bad run replays from the seed alone with no session to re-drive. Change the seed and you get a different run; keep it and you get the same one, on any machine.
 
