@@ -1,7 +1,7 @@
 ---
 title: "The sky from Proxima Centauri. Half the stars move less than a Moon width, Sirius moves 27 degrees"
 description: "I wanted the whole sky seen from Proxima Centauri, built from a catalog. Gaia DR3 does not have the 7 brightest stars within 10 parsecs, so the sky is Hipparcos 2007 with Gaia's distance to Proxima. With catalog parallaxes Alpha Centauri B lands 70 degrees from A. The Sun is a 0.38 star in Cassiopeia, the median naked eye star moves 0.50 degrees and Sirius 27, into Orion."
-date: 2026-10-03
+date: 2026-07-26
 lang: en
 translationKey: proxima-sky
 tags: ["open-data", "numbers"]

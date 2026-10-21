@@ -1,7 +1,7 @@
 ---
 title: "Money in a double: 4.35 * 100 comes out 434"
 description: "4 prices in every 100 are exact doubles. Across a million amounts the wrong kopeck only ever turned up on an exact half: 3656 of them at 18 percent, none at 20."
-date: 2011-11-16
+date: 2011-11-08
 lang: en
 translationKey: money-in-a-double
 tags: ["numbers", "types"]

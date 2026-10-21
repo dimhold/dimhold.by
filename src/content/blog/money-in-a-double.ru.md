@@ -1,7 +1,7 @@
 ---
 title: "Деньги в double: 4.35 * 100 выходит 434"
 description: "Четыре цены из ста точны в double. На миллионе сумм копейка терялась только на точной половине: 3656 таких при ставке 18 процентов, ноль при 20."
-date: 2011-11-16
+date: 2011-11-08
 lang: ru
 translationKey: money-in-a-double
 tags: ["numbers", "types"]

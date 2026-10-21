@@ -1,7 +1,7 @@
 ---
 title: "The fraud screen fires on numbers nobody faked"
 description: "Benford's law is sold as a screen you point at a column of numbers. I pointed it at 4 columns from one repository, where nobody had any reason to fake anything. 3 of them failed. Worse, the 2 standard tests disagree with each other on the same data: the one column MAD lets through is the one chi square rejects."
-date: 2013-06-12
+date: 2013-10-27
 lang: en
 translationKey: benford-first-digits
 tags: ["statistics", "numbers"]

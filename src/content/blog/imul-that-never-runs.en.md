@@ -1,7 +1,7 @@
 ---
 title: "The imul that never runs"
 description: "javac keeps the difference between x * 2 and x << 1. Nothing below javac keeps it in a form you can measure. The only multiply left in the compiled loop is one the compiler put there itself."
-date: 2011-12-14
+date: 2011-10-24
 lang: en
 translationKey: imul-that-never-runs
 tags: ["compilers", "performance"]

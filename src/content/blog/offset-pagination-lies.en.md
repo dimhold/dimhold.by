@@ -1,7 +1,7 @@
 ---
 title: "Page 2 repeated a row from page 1 and nothing was broken"
 description: "A single insert at the front of the order made the second page start with the last row of the first one. Both queries are correct. Paging by offset also reads 900020 rows to return 20 at the deep end, taking 69.5 ms against 1.5 for the same page fetched by key, and the plan says so out loud."
-date: 2012-10-10
+date: 2012-11-17
 lang: en
 translationKey: offset-pagination-lies
 tags: ["databases", "performance"]

@@ -1,7 +1,7 @@
 ---
 title: "199 requests through a limit of 100, with nobody attacking"
 description: "The fixed window counter leaks double at the boundary, which is the famous flaw. It also needs somebody who knows where the boundary is. The token bucket I switched to instead leaked 199 in a single window against ordinary steady traffic. Only the sliding log held the limit in all 4 traffic shapes, at 50 times the memory."
-date: 2012-11-14
+date: 2012-12-12
 lang: en
 translationKey: window-that-leaks-double
 tags: ["algorithms", "reliability"]

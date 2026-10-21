@@ -1,7 +1,7 @@
 ---
 title: "imul, который никогда не исполняется"
 description: "javac сохраняет разницу между x * 2 и x << 1. Ниже javac её уже не измерить. Единственное умножение, оставшееся в скомпилированном цикле, компилятор поставил туда сам."
-date: 2011-12-14
+date: 2011-10-24
 lang: ru
 translationKey: imul-that-never-runs
 tags: ["compilers", "performance"]

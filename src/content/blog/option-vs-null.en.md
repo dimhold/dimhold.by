@@ -1,7 +1,7 @@
 ---
 title: "Option instead of null: the 16 bytes I could not find"
 description: "3 broken links in one chain give the same NullPointerException with an empty message. Option turns all 3 into None. Then the allocation counter says the Some costs nothing and it takes -XX:-DoEscapeAnalysis to find it."
-date: 2011-11-30
+date: 2011-09-04
 lang: en
 translationKey: option-vs-null
 tags: ["types", "code-quality"]

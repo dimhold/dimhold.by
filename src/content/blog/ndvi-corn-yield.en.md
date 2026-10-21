@@ -1,7 +1,7 @@
 ---
 title: "From space, July 2012 in Illinois looked better than July 1990"
 description: "July satellite indices from NOAA against corn yield in 12 Corn Belt states, 2000 to 2021, forecast only from earlier years: greenness cuts the error of a trend line by 10%, VHI with its thermal part by 21%, the USDA August forecast is still better. In 2012 Illinois July greenness was only 10th lowest of 41."
-date: 2022-12-23
+date: 2022-09-03
 lang: en
 translationKey: ndvi-corn-yield
 tags: ["open-data", "statistics"]

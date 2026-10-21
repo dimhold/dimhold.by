@@ -1,7 +1,7 @@
 ---
 title: "Halfway through the upgrade, half of my corpus scored 0"
 description: "A version bump inside one model family looked like a patch release, so I measured what it does to retrieval. 2.19 of the top 10 slots change while nDCG@10 moves in the third decimal, a fixed 0.8 cosine cutoff goes from passing 97.5% of results to passing 1.8%. The index that is halfway through the migration returns 0 relevant documents for half the corpus."
-date: 2026-09-13
+date: 2026-09-26
 lang: en
 translationKey: embedding-version-drift
 tags: ["machine-learning", "llm", "reliability"]

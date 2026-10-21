@@ -1,7 +1,7 @@
 ---
 title: "Nothing changed in the script and 24 of my 36 agents ran again"
 description: "A measurement here is 36 agents and I have been calling the way I run them deterministic without ever measuring what the word covers. The pipeline shape beats the barrier by 23.9 percent of wall clock. It also hands out call numbers by who finished first, which means a journal keyed by position replays 12 of 36 agents on a run where nothing was edited at all."
-date: 2026-09-04
+date: 2026-10-16
 lang: en
 translationKey: deterministic-orchestration
 tags: ["agents", "performance", "reliability"]

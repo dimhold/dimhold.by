@@ -1,7 +1,7 @@
 ---
 title: "A hole in the Gaia star map and how far away it is"
 description: "In Gaia DR3 the dark cloud Barnard 68 has 0 stars in its central half arcminute where 175 are expected, while 2MASS in the near infrared still sees 41%, so it is dust. In the Pipe nebula the Gaia extinction of stars in dark cells jumps from 0.52 to 1.95 at 157 pc, near the published distances."
-date: 2022-12-24
+date: 2022-09-11
 lang: en
 translationKey: gaia-dust-voids
 tags: ["open-data", "statistics"]

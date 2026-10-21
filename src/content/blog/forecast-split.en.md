@@ -1,7 +1,7 @@
 ---
 title: "Claude forecast as well as ETS. When it explained the forecast, it invented a calendar"
 description: "60 monthly M4 series, 18 months ahead. Claude Opus 5 without tools matched AutoETS on median MASE and beat it on 30 and 32 of 60, but 2 runs of the same input disagreed on the winner in 10 series. Explaining an AutoETS forecast from the raw series, it got 5.1% of claims wrong or invented, mostly a calendar the input never had. With a table of facts computed by software it was 0.5%."
-date: 2026-10-08
+date: 2026-10-09
 lang: en
 translationKey: forecast-split
 tags: ["llm", "statistics"]

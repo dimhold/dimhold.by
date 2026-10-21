@@ -1,7 +1,7 @@
 ---
 title: "The same code beat itself by 33 percent"
 description: "I declared one function twice and timed the 2 copies against each other. On a single pair of rounds the identical code showed a 32.9 percent win, 10.6 percent of pairs produced a winner by more than 5 percent, and the first round of all ran 3.57 times slower than the settled median. Anything under about 3 percent on this machine is not a result."
-date: 2013-09-11
+date: 2013-11-23
 lang: en
 translationKey: same-code-beats-itself
 tags: ["performance", "statistics"]

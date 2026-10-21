@@ -1,7 +1,7 @@
 ---
 title: "Source maps in production. 55 of the top 1000 sites hand out their own code"
 description: "I crawled the first 1000 domains of the Tranco list to see how many sites serve source maps with their original code inside sourcesContent. 87 served a map with source text. After sorting them by hand, 55 serve their own code, among them GitHub, Atlassian and Trello, while 19 only leak through an embedded vendor script."
-date: 2026-10-02
+date: 2026-07-18
 lang: en
 translationKey: sourcemap-leak
 tags: ["code-quality", "networking", "statistics"]

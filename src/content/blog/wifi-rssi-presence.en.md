@@ -1,7 +1,7 @@
 ---
 title: "In one public recording, Wi-Fi signal strength notices a person who walks and mostly misses one who sits"
 description: "I replayed a public Wi-Fi dataset recorded with the Intel 5300 CSI Tool in 2018: 2 rooms, 6 links, one person who was outside, sitting or walking. With a threshold that lets through about 5% of empty room windows, the signal strength spread caught walking in 80% to 99% of 10 second windows and sitting in only 12% to 43%. The mean level was no help, because the empty room drifted more between days than a sitting person moved it."
-date: 2022-12-29
+date: 2022-10-29
 lang: en
 translationKey: wifi-rssi-presence
 tags: ["networking", "statistics", "open-data"]

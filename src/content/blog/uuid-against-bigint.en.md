@@ -1,7 +1,7 @@
 ---
 title: "A uuid primary key: 172 seconds against 59"
 description: "16 bytes against 8 is 40 percent more index. Arrival order adds another 23 percent on top of that, plus 3 times the insert time once the index outgrows shared_buffers."
-date: 2011-11-23
+date: 2011-12-17
 lang: en
 translationKey: uuid-against-bigint
 tags: ["databases", "performance"]

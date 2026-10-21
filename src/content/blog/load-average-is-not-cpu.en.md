@@ -1,7 +1,7 @@
 ---
 title: "Load average 8 twice, and it meant 2 different things"
 description: "On a 4 core server I produced a load average of 8.19 with the processor at 99 percent and a load average of 8.10 with the processor doing real work 36 percent of the time and 7 processes stuck on the disk. Same alarm, opposite fix. And after a full minute of 4 pegged cores the 1 minute figure still read 2.67."
-date: 2012-08-15
+date: 2012-09-16
 lang: en
 translationKey: load-average-is-not-cpu
 tags: ["linux", "performance"]

@@ -1,7 +1,7 @@
 ---
 title: "9 models, accuracy between 92.5 and 93.3, and 1 of them finds nothing"
 description: "On a task with 6.8 percent positives, every threshold I tried scored within 0.8 points of the same accuracy while recall fell from 19.6 percent to 0.6. Answering never at all scores 93.2. The confusion matrix separates these models instantly and the single number cannot tell them apart at all."
-date: 2014-06-11
+date: 2014-11-15
 lang: en
 translationKey: accuracy-lies-on-imbalance
 tags: ["machine-learning", "statistics"]

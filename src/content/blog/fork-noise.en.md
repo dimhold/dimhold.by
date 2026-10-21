@@ -1,7 +1,7 @@
 ---
 title: "My README said this benchmark needs a 2× difference to see anything. Given a known delay, it saw 3%"
 description: "In the README of my preview benchmark I wrote that the harness could not tell apart 2 strategies within 2× of each other. I gave it a busy wait of known size on PostgreSQL 16.14 and OpenJDK 21: 10 JVMs per delay, 300 pairs each. Paired inside one JVM it saw 25 µs on 800 (3%) in 10 of 10 JVMs, while the JVM medians differed by a third. Comparing 2 separate runs got the sign of a 100 µs delay right in 68 of 90 cases and the blocked order of the first version called a 50 µs slower block faster in 7 of 10."
-date: 2026-09-30
+date: 2026-09-06
 lang: en
 translationKey: fork-noise
 tags: ["performance", "statistics"]

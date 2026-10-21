@@ -1,7 +1,7 @@
 ---
 title: "The Big Dipper in 100,000 years. 5 of its 7 stars keep the shape within 0.17 degrees"
 description: "I wanted an animation of the Big Dipper from 100,000 years ago to 100,000 years ahead and expected 7 stars going in 7 directions. Gaia DR3 does not have Dubhe at all, so the data is Hipparcos 2007 with radial velocities from SIMBAD, straight lines in 3D. A fit on the 5 middle stars leaves them within 0.17 degrees after 100,000 years, while Dubhe is off by 6.9 and Alkaid by 7.3. The whole falling apart is the 2 end stars."
-date: 2026-10-07
+date: 2026-09-12
 lang: en
 translationKey: dipper-100k
 tags: ["open-data", "numbers"]

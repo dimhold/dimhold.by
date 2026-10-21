@@ -1,7 +1,7 @@
 ---
 title: "93 percent of the work went to clients who had already left"
 description: "I set out to measure how retries knock over a service under load. They do triple the traffic, 2.88 times in my rig, but they did not cause the collapse. The collapse was already there at 1.2 times capacity, because the queue got deeper than the client timeout and the server spent its whole day finishing requests nobody was waiting for."
-date: 2013-04-10
+date: 2013-07-21
 lang: en
 translationKey: retry-that-made-it-worse
 tags: ["reliability", "networking"]

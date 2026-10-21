@@ -1,7 +1,7 @@
 ---
 title: "Option вместо null: 16 байт, которых я не нашёл"
 description: "Три разных обрыва одной цепочки дают один и тот же NullPointerException с пустым сообщением. Option превращает все три в None. А потом счётчик аллокаций говорит, что Some не стоит ничего. Найти сам Some получается только через -XX:-DoEscapeAnalysis."
-date: 2011-11-30
+date: 2011-09-04
 lang: ru
 translationKey: option-vs-null
 tags: ["types", "code-quality"]

@@ -1,7 +1,7 @@
 ---
 title: "Source maps у прадакшне. 55 сайтаў з топ-1000 аддаюць свой код"
 description: "Я прайшоў краўлерам першыя 1000 даменаў спіса Tranco, каб даведацца, колькі сайтаў аддаюць source maps з зыходным кодам унутры sourcesContent. Карту з зыходным тэкстам аддалі 87. Пасля ручнога разбору свой код аддаюць 55, сярод іх GitHub, Atlassian і Trello, а 19 цякуць толькі праз чужы ўбудаваны скрыпт."
-date: 2026-10-02
+date: 2026-07-18
 lang: be
 translationKey: sourcemap-leak
 tags: ["code-quality", "networking", "statistics"]

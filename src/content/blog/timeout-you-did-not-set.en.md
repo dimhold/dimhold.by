@@ -1,7 +1,7 @@
 ---
 title: "The timeout you did not set is 135 seconds"
 description: "I used to say that a request without a timeout waits forever. Half of that is wrong. The kernel hands you a connect timeout whether you ask for it or not, and on this machine it fires after 135.3 seconds. The other half is worse than forever: once the connection is up, nobody is counting at all."
-date: 2013-03-13
+date: 2013-06-23
 lang: en
 translationKey: timeout-you-did-not-set
 tags: ["networking", "linux"]

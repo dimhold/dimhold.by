@@ -1,7 +1,7 @@
 ---
 title: "Option замест null: 16 байтаў, якіх я не знайшоў"
 description: "Тры розныя абрывы аднаго ланцужка даюць адзін і той жа NullPointerException з пустым паведамленнем. Option ператварае ўсе тры ў None. А потым лічыльнік алакацый кажа, што Some не каштуе нічога. Знайсці сам Some атрымліваецца толькі праз -XX:-DoEscapeAnalysis."
-date: 2011-11-30
+date: 2011-09-04
 lang: be
 translationKey: option-vs-null
 tags: ["types", "code-quality"]
