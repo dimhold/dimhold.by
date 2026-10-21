@@ -29,7 +29,7 @@ abstract: >-
   be wrong, 25 of 25 answers from 5 models fall 3 to 10 months before their
   own curves.
 date: 2026-10-21
-doi: '10.5281/zenodo.23544587'
+doi: '10.5281/zenodo.23544586'
 repo: https://github.com/dimhold/cutoff-probe
 draft: false
 keywords:

@@ -30,7 +30,7 @@ abstract: >-
   tool call markup instead of values. The CLI passed account context to the
   model; whether that shaped which names appear is untested.
 date: 2026-10-21
-doi: '10.5281/zenodo.23545745'
+doi: '10.5281/zenodo.23545744'
 repo: https://github.com/dimhold/fixture-entropy
 draft: false
 keywords:
