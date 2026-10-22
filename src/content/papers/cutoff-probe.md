@@ -616,7 +616,8 @@ by `analyze.py` or `intervals.py`, offline and seeded. The account email and
 local paths were redacted before publication and the redaction is listed in
 the README.
 
-**No DOI has been minted for this artifact yet.** Repository:
+Archived on Zenodo with DOI
+[10.5281/zenodo.23544586](https://doi.org/10.5281/zenodo.23544586). Repository:
 github.com/dimhold/cutoff-probe.
 
 ## 8. References

@@ -62,7 +62,7 @@ from a lock file would be counting something else.
 | `frontend-b` | Angular front end with Selenium end to end tests | 51 |
 | `frontend-c` | Angular front end with Selenium end to end tests | 62 |
 | `fault-mcp` | MCP server library | 6 |
-| `social-media` | TypeScript CLI | 3 |
+| `cli-tool` | TypeScript CLI | 3 |
 
 The 3 front ends belong to a former client. They are published as numbers only,
 with no names and no paths. The 2 small projects belong to the author and are a
@@ -145,7 +145,7 @@ same version.**
 | `frontend-b` | 1,542 | 1,055 | 487 | 102.5 | 14.0% | 312 |
 | `frontend-c` | 1,709 | 1,181 | 528 | 60.6 | **17.2%** | 332 |
 | `fault-mcp` | 141 | 139 | 2 | 0.03 | 0.0% | 1 |
-| `social-media` | 6 | 6 | 0 | 0 | 0.0% | 0 |
+| `cli-tool` | 6 | 6 | 0 | 0 | 0.0% | 0 |
 
 On `frontend-a` that is 532 copies holding 7,904 files inside a tree of 1,729
 packages, 363.3 MiB and 50,649 files. Those last 2 figures are the walk of the
@@ -197,7 +197,7 @@ rule that decides where a package lands is positional rather than content aware.
 | `frontend-c` | 62 | 1,709 | 27.6 |
 | `frontend-a` | 70 | 1,729 | 24.7 |
 | `fault-mcp` | 6 | 141 | 23.5 |
-| `social-media` | 3 | 6 | 2.0 |
+| `cli-tool` | 3 | 6 | 2.0 |
 
 A 6 dependency MCP server library sits in the same band as 3 large front ends.
 The outlier is the 3 dependency CLI, whose dependencies happen to be

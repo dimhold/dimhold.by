@@ -492,8 +492,8 @@ the prior work check, every reply in full with prompts, timings and token
 usage, the run logs and the scripts that produce every number in this paper are
 in the repository. The analysis needs no network and no model.
 
-**No DOI has been minted for this artifact yet.** Until a release exists, cite
-the repository.
+Archived on Zenodo with DOI
+[10.5281/zenodo.23545744](https://doi.org/10.5281/zenodo.23545744).
 
 ## 8. References
 

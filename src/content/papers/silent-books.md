@@ -407,10 +407,8 @@ their quotations and reasons, the per row results with costs and token counts,
 the run logs and the context check output are in the repository. 240 calls at a
 total of $5.91.
 
-**No DOI has been minted for this artifact yet.** The repository is public and
-carries a `CITATION.cff` with the author's ORCID iD, but Zenodo mints on a
-GitHub release and the repository carries 0 tags and 0 releases. Until one
-exists, cite the repository rather than a DOI.
+Archived on Zenodo with DOI
+[10.5281/zenodo.23572466](https://doi.org/10.5281/zenodo.23572466).
 
 ## 8. References
 
