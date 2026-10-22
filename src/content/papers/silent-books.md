@@ -22,9 +22,9 @@ abstract: >-
   false alarms after adjudication. Raising the defect to 30 to 50% left
   `claude-haiku-4-5` at 0 of 10.
 date: 2026-08-28
-doi: '10.5281/zenodo.PENDING'
+doi: '10.5281/zenodo.23572466'
 repo: https://github.com/dimhold/silent-books
-draft: true
+draft: false
 keywords:
   - LLM evaluation
   - financial statement verification
