@@ -6,6 +6,11 @@ import { socials } from '../i18n';
 import { postsFor, postPath, langBase, fmtDate } from '../lib/blog';
 import Masthead from './Masthead.astro';
 import SiteFooter from './SiteFooter.astro';
+import Findings from './home/Findings.astro';
+import Path from './home/Path.astro';
+import { homeCopy, DATASETS } from '../i18n/home';
+import { allPapers } from '../lib/papers';
+import { entries as illusions } from '../lib/illusions';
 
 interface Props {
   t: Dictionary;
@@ -13,7 +18,24 @@ interface Props {
 
 const { t } = Astro.props;
 const intlLocale = { en: 'en-US', ru: 'ru-RU', be: 'be-BY' }[t.lang];
-const posts = (await postsFor(t.lang)).slice(0, 3);
+const allOfThem = await postsFor(t.lang);
+const posts = allOfThem.slice(0, 3);
+const home = homeCopy(t.lang);
+const counters = [
+  { n: (await allPapers()).length, label: home.counters.papers },
+  { n: DATASETS, label: home.counters.datasets },
+  { n: allOfThem.length, label: home.counters.posts },
+  { n: illusions.length, label: home.counters.illusions },
+];
+/* Adlega used to open the page as a card of its own with a calculator in it.
+   It is one project among the others now, so it sits on the shelf with them,
+   after the two that are alive and open. */
+const adlega = t.work.items[0];
+const shelf = [
+  ...t.shelf.items.slice(0, 2),
+  { name: adlega.title, years: '2024 —', note: adlega.tag, status: 'alive' as const, href: adlega.href },
+  ...t.shelf.items.slice(2),
+];
 const projectsHref = t.lang === 'en' ? '/projects/' : `/${t.lang}/projects/`;
 
 /* Where each of the three sits in the picture, as a percentage of its square.
@@ -122,6 +144,9 @@ const SPOT_AUDIO = { me: '/audio/dmitriy.mp3', bird: '/audio/kenar.mp3', dog: '/
     </div>
   </section>
 
+  <Findings title={home.findingsTitle} lede={home.findingsLede} items={home.findings} comma={t.lang !== 'en'} />
+  <Path title={home.pathTitle} lede={home.pathLede} stops={home.stops} now={home.pathNow} counters={counters} />
+
   {
     posts.length > 0 && (
       <section class="section" aria-labelledby="writing-label">
@@ -150,60 +175,6 @@ const SPOT_AUDIO = { me: '/audio/dmitriy.mp3', bird: '/audio/kenar.mp3', dog: '/
     )
   }
 
-  <section class="section" aria-labelledby="work-label">
-    <div class="section-head reveal">
-      <h2 id="work-label">{t.work.label}</h2>
-      <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
-        <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
-      </svg>
-    </div>
-    <div class="cards">
-      {
-        t.work.items.map((item, idx) => (
-          <article class="card reveal">
-            <div class="card-head">
-              <h3>
-                <a href={item.href} rel="noopener">
-                  {item.title}
-                </a>
-              </h3>
-              <span class="card-meta">
-                {item.meta} · {item.linkLabel}
-              </span>
-            </div>
-            <p class="card-tag">{item.tag}</p>
-            <div class="card-body">
-              {item.body.map((p) => (
-                <p>{p}</p>
-              ))}
-            </div>
-            {idx === 0 && (
-              <div class="toy" data-toy data-locale={intlLocale} data-months={t.toy.months}>
-                <div class="toy-head">
-                  <span class="toy-title">{t.toy.title}</span>
-                  <span class="toy-target">{t.toy.target}</span>
-                </div>
-                <div class="toy-chart" data-chart></div>
-                <div class="toy-controls">
-                  <div class="toy-field">
-                    <label for={`growth-${t.lang}`}>{t.toy.growth}: <output data-growth-out></output></label>
-                    <input id={`growth-${t.lang}`} type="range" min="0" max="25" step="0.5" value="8" data-growth />
-                  </div>
-                  <div class="toy-field">
-                    <label for={`churn-${t.lang}`}>{t.toy.churn}: <output data-churn-out></output></label>
-                    <input id={`churn-${t.lang}`} type="range" min="0" max="12" step="0.5" value="3" data-churn />
-                  </div>
-                  <button class="toy-btn" type="button" data-solve>{t.toy.button}</button>
-                </div>
-                <p class="toy-note">{t.toy.note}</p>
-              </div>
-            )}
-          </article>
-        ))
-      }
-    </div>
-  </section>
-
   <section class="section" aria-labelledby="shelf-label">
     <div class="section-head reveal">
       <h2 id="shelf-label">{t.shelf.label}</h2>
@@ -213,7 +184,7 @@ const SPOT_AUDIO = { me: '/audio/dmitriy.mp3', bird: '/audio/kenar.mp3', dog: '/
     </div>
     <div class="shelf">
       {
-        t.shelf.items.map((item) =>
+        shelf.map((item) =>
           item.href ? (
             <a class="shelf-item reveal" href={item.href} rel="noopener">
               <div class="shelf-head">

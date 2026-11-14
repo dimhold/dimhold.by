@@ -59,7 +59,7 @@ const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site);
 /* The 404 is served at every missing address, so it has no address of its own
    to be canonical at and nothing a search result should point to. */
-const notFound = Astro.url.pathname.startsWith('/404') || Astro.url.pathname.includes('/home-next');
+const notFound = Astro.url.pathname.startsWith('/404');
 /* The page's own preview card, drawn by /scripts/gen-og.mjs. The name follows
    the URL rather than being passed down from each page, so a new post gets its
    card from `npm run og` and nothing here has to change. Anything without a
