@@ -5,6 +5,7 @@ import PostPage from '../../../components/PostPage.astro';
 import { ru } from '../../../i18n';
 import { postPath, translationsOf, langBase } from '../../../lib/blog';
 import type { Post } from '../../../lib/blog';
+import { withName } from '../../../lib/meta';
 import type { Lang } from '../../../i18n';
 
 export async function getStaticPaths() {
@@ -28,7 +29,7 @@ for (const l of ['en', 'ru', 'be'] as const) {
 
 <Base
   t={ru}
-  title={`${post.data.title} · Dmitriy Semenkevich`}
+  title={withName(post.data.title, 'ru')}
   description={post.data.description}
   alternates={alternates}
   ogType="article"

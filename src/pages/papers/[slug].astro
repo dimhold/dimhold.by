@@ -4,6 +4,7 @@ import PaperPage from '../../components/PaperPage.astro';
 import { en } from '../../i18n';
 import { allPapers, citationDate, pdfPath } from '../../lib/papers';
 import type { Paper } from '../../lib/papers';
+import { withName } from '../../lib/meta';
 
 export async function getStaticPaths() {
   const papers = await allPapers();
@@ -33,7 +34,7 @@ const citation = {
 
 <Base
   t={en}
-  title={`${d.title} — Dmitriy Semenkevich`}
+  title={withName(d.title, 'en')}
   description={d.abstract}
   alternates={[{ lang: 'en', href: `/papers/${paper.id}/` }]}
   ogType="article"

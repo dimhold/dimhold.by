@@ -1,15 +1,35 @@
 ---
 import Base from '../layouts/Base.astro';
 import { en, ru, be } from '../i18n';
+
+/* GitHub Pages serves this one file for every missing address, whatever
+   language the address was in. So it carries all three, and the script below
+   puts forward the one the address asked for. */
+const all = [en, ru, be];
 ---
 
 <Base t={en} title={`404 · ${en.notFound.title}`} description={en.notFound.text}>
   <main id="main" class="nf">
     <p class="mono">404</p>
-    <h1>{en.notFound.title}</h1>
-    <p class="mono">{ru.notFound.title} · {be.notFound.title}</p>
-    <p>
-      <a href="/">{en.notFound.home}</a>
+    <h1 data-nf-title>{en.notFound.title}</h1>
+    <p class="mono" data-nf-others>{ru.notFound.title} · {be.notFound.title}</p>
+    <p class="nf-links">
+      {all.map((d) => <a href={d.path} lang={d.lang} data-nf-home={d.lang}>{d.notFound.home}</a>)}
     </p>
   </main>
+  <script is:inline define:vars={{ titles: Object.fromEntries(all.map((d) => [d.lang, d.notFound.title])) }}>
+    (function () {
+      var m = location.pathname.match(/^\/(ru|be)(\/|$)/);
+      if (!m) return;
+      var lang = m[1];
+      document.documentElement.lang = lang;
+      document.querySelector('[data-nf-title]').textContent = titles[lang];
+      document.querySelector('[data-nf-others]').textContent = Object.keys(titles)
+        .filter(function (l) { return l !== lang; })
+        .map(function (l) { return titles[l]; })
+        .join(' · ');
+      var links = document.querySelector('.nf-links');
+      links.prepend(links.querySelector('[data-nf-home="' + lang + '"]'));
+    })();
+  </script>
 </Base>

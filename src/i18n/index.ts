@@ -250,6 +250,8 @@ export interface Dictionary {
     searchFound: string;
     searchClear: string;
     tagsLabel: string;
+    /** Heading over the few posts offered at the end of a post. */
+    related: string;
     /** Carries {tag}, the label of the tag in this language. */
     taggedWith: string;
     tagBack: string;
@@ -393,6 +395,7 @@ export const en: Dictionary = {
     searchFound: '{n} found',
     searchClear: 'clear',
     tagsLabel: 'Tags',
+    related: 'More like this',
     taggedWith: 'Tagged {tag}',
     tagBack: 'all writing',
     archiveLabel: 'Archive',
@@ -1022,6 +1025,7 @@ export const ru: Dictionary = {
     searchFound: 'найдено: {n}',
     searchClear: 'очистить',
     tagsLabel: 'Теги',
+    related: 'Ещё по теме',
     taggedWith: 'Тег: {tag}',
     tagBack: 'все статьи',
     archiveLabel: 'Архив',
@@ -1651,6 +1655,7 @@ export const be: Dictionary = {
     searchFound: 'знойдзена: {n}',
     searchClear: 'ачысціць',
     tagsLabel: 'Тэгі',
+    related: 'Яшчэ па тэме',
     taggedWith: 'Тэг: {tag}',
     tagBack: 'усе артыкулы',
     archiveLabel: 'Архіў',

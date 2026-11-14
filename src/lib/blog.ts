@@ -63,6 +63,26 @@ export async function translationsOf(post: Post): Promise<Post[]> {
   return posts.filter((p) => p.data.translationKey === post.data.translationKey);
 }
 
+/**
+ * What to read after this one: the published posts that share the most tags
+ * with it, and among equals the ones written closest to it in time. A post used
+ * to end on its tags, which is a dead end for anyone who came in from a search.
+ */
+export async function relatedTo(post: Post, lang: Lang, count = 3): Promise<Post[]> {
+  const tags = new Set(post.data.tags);
+  const at = post.data.date.getTime();
+  return (await postsFor(lang))
+    .filter((p) => p.data.translationKey !== post.data.translationKey)
+    .map((p) => ({ p, shared: p.data.tags.filter((x) => tags.has(x)).length }))
+    .filter((x) => x.shared > 0)
+    .sort(
+      (a, b) =>
+        b.shared - a.shared || Math.abs(a.p.data.date.getTime() - at) - Math.abs(b.p.data.date.getTime() - at),
+    )
+    .slice(0, count)
+    .map((x) => x.p);
+}
+
 export function langBase(lang: Lang): string {
   return lang === 'en' ? '/blog/' : `/${lang}/blog/`;
 }

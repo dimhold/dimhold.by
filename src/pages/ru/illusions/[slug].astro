@@ -42,12 +42,14 @@ const firstLine = entry.first
   : '';
 
 const alternates = [{ lang: 'ru', href: `/ru/illusions/${entry.id}/` }];
-const desc = c?.lede ?? `${entry.ru} (${entry.en}) — ${catLabel(entry.category)}. Первоисточник и литература в каталоге иллюзий dimhold.by.`;
+/* Лид — одна короткая фраза, для сниппета в поиске её мало. К ней добавляется
+   «что видно»; Base обрежет результат по границе предложения. */
+const desc = (c ? [c.lede, c.what].filter(Boolean).join(' ') : null) ?? `${entry.ru} (${entry.en}) — ${catLabel(entry.category)}. Первоисточник и литература в каталоге иллюзий dimhold.by.`;
 ---
 
 <Base
   t={ru}
-  title={`${entry.ru} — иллюзии | dimhold.by`}
+  title={`${entry.ru}. Иллюзии — Дмитрий Семенкевич`}
   description={desc}
   alternates={alternates}
   ogType="article"

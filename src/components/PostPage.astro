@@ -2,10 +2,11 @@
 import { render } from 'astro:content';
 import type { Dictionary } from '../i18n';
 import type { Post } from '../lib/blog';
-import { langBase, readingMinutes, fmtDate } from '../lib/blog';
+import { langBase, readingMinutes, fmtDate, relatedTo } from '../lib/blog';
 import { tagLabel, tagPath } from '../lib/tags';
 import Masthead from './Masthead.astro';
 import SiteFooter from './SiteFooter.astro';
+import PostRow from './PostRow.astro';
 
 interface Props {
   t: Dictionary;
@@ -16,6 +17,7 @@ interface Props {
 
 const { t, post, langHrefs } = Astro.props;
 const { Content } = await render(post);
+const related = await relatedTo(post, t.lang);
 ---
 
 <Masthead t={t} active="blog" langHrefs={langHrefs} />
@@ -39,6 +41,18 @@ const { Content } = await render(post);
           </a>
         ))}
       </nav>
+    )
+  }
+  {
+    related.length > 0 && (
+      <section class="post-more" aria-labelledby="post-more-label">
+        <h2 id="post-more-label" class="post-more-label">{t.blog.related}</h2>
+        <ul class="post-rows">
+          {related.map((p) => (
+            <PostRow t={t} post={p} />
+          ))}
+        </ul>
+      </section>
     )
   }
 </main>

@@ -1411,6 +1411,8 @@ html[data-mode='night'] .post-card:hover .post-card-title {
 }
 
 .prose a {
+  /* Bare URLs in reference lists are one unbreakable word otherwise. */
+  overflow-wrap: anywhere;
   color: var(--accent-deep);
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
@@ -1428,6 +1430,9 @@ html[data-mode='night'] .prose a {
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: 0.08em 0.35em;
+  /* A hash or a long call inside a sentence has no place to break, and on a
+     phone it used to push the page sideways. */
+  overflow-wrap: anywhere;
 }
 
 .prose pre {
@@ -1439,6 +1444,7 @@ html[data-mode='night'] .prose a {
 }
 
 .prose pre code {
+  overflow-wrap: normal;
   background: none;
   border: 0;
   padding: 0;
@@ -1485,6 +1491,13 @@ html[data-mode='night'] .astro-code span {
 .nf h1 {
   font-size: clamp(2rem, 6vw, 3.2rem);
   font-weight: 800;
+}
+
+.nf-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.4rem;
 }
 
 /* ——— figures inside prose: inline SVG diagrams with a caption ——— */
@@ -3920,10 +3933,18 @@ html[data-mode='night'] .kata-sound[aria-pressed='true'] {
   font-weight: 700;
 }
 
+/* The scroll box every markdown table is wrapped in. A paper keeps its plain
+   ruled tables, so the box loses the card look it has in a blog post. */
+.paper-body .table-wrap {
+  margin: 1.4rem 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
 .paper-body table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.4rem 0;
   font-size: 0.9rem;
 }
 
@@ -4072,6 +4093,10 @@ html[data-mode='night'] .kata-sound[aria-pressed='true'] {
   .paper-body table,
   .paper-body pre {
     break-inside: avoid;
+  }
+
+  .prose .table-wrap {
+    overflow: visible;
   }
 
   a {
@@ -4245,6 +4270,20 @@ html[data-mode='night'] .tag-pill[aria-current='page'] {
   margin-top: 2.4rem;
   padding-top: 1.4rem;
   border-top: 1px solid var(--line);
+}
+
+/* The few posts offered once this one is read. */
+.post-more {
+  margin-top: 2.6rem;
+}
+
+.post-more-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--muted);
 }
 
 /* ——— cards, now that a card holds links of its own ——— */

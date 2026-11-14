@@ -7,6 +7,7 @@ import type { Dictionary } from '../i18n';
 import { dictionaries, socials } from '../i18n';
 import { TINT } from '../lib/ornament.js';
 import ConsentBanner from '../components/ConsentBanner.astro';
+import { shortDesc } from '../lib/meta';
 
 /* The GA4 web stream for dimhold.by. Public by nature — it travels in every
    request the tag makes — so it lives in the repo rather than in a secret.
@@ -56,6 +57,9 @@ const {
 
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site);
+/* The 404 is served at every missing address, so it has no address of its own
+   to be canonical at and nothing a search result should point to. */
+const notFound = Astro.url.pathname.startsWith('/404');
 /* The page's own preview card, drawn by /scripts/gen-og.mjs. The name follows
    the URL rather than being passed down from each page, so a new post gets its
    card from `npm run og` and nothing here has to change. Anything without a
@@ -162,12 +166,12 @@ const personLd = {
     </script>
 
     <title>{title}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={shortDesc(description)} />
     <meta name="author" content="Dmitriy Semenkevich" />
-    <link rel="canonical" href={canonical.href} />
+    {notFound ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical.href} />}
     {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
-    <link rel="alternate" type="application/rss+xml" title="dimhold.by" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title={`dimhold.by (${t.lang})`} href={t.lang === 'en' ? '/rss.xml' : `/${t.lang}/rss.xml`} />
     <!-- The head from src/assets/favicon-source.png, dropped on a disc of the
          deep accent blue by /scripts/gen-favicon.mjs. The .ico carries 16/32/48
          because Google Search asks for 48 by name; the .png is what a browser
