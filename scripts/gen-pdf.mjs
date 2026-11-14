@@ -28,6 +28,7 @@ import { mkdir, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { stampAuthor } from './pdf-author.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = path.join(root, 'public', 'papers');
@@ -110,6 +111,8 @@ try {
       `--print-to-pdf=${out}`,
       `http://localhost:${PORT}/papers/${slug}/`,
     ]);
+    // Chrome leaves the author property empty; see pdf-author.mjs.
+    await stampAuthor(out);
     const { size } = await stat(out);
     console.log(`${slug}.pdf  ${(size / 1024).toFixed(0)} KB`);
   }
