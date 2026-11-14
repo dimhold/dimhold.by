@@ -52,6 +52,9 @@ export function setConsent(v: Exclude<Choice, null>) {
     ad_user_data: 'denied',
     ad_personalization: 'denied',
   });
+  // Metrica has no consent mode: it is either on the page or not. The loader
+  // lives in Base.astro's inline head script and is absent in dev.
+  if (v === 'granted') (window as any).loadMetrica?.();
 }
 
 /** Send an event. Silent and harmless when no tag is present. */

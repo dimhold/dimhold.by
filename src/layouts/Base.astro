@@ -13,6 +13,9 @@ import ConsentBanner from '../components/ConsentBanner.astro';
    The env var is there for anyone forking this to point it at their own. */
 const GA_ID = import.meta.env.PUBLIC_GA_ID ?? 'G-B61RBJ7WTJ';
 const analytics = import.meta.env.PROD && GA_ID;
+/* Yandex Metrica counter, public for the same reason. Unlike GA it has no
+   consent mode, so it is not loaded at all until the visitor says yes. */
+const YM_ID = Number(import.meta.env.PUBLIC_YM_ID ?? 114254711);
 
 /**
  * Highwire Press citation metadata. Google Scholar reads these tags off the
@@ -177,6 +180,9 @@ const personLd = {
          but that proof dies the moment the tag is swapped or the property moves.
          This meta is a second, independent anchor: cheap, and it never expires. -->
     <meta name="google-site-verification" content="7fxwTcD9iTaEfMLm3-Wjf6_6D7oCSySQ1U4_B1PQUbc" />
+    <!-- Yandex Webmaster, same idea. Bing needs none: it was imported from
+         Search Console. -->
+    <meta name="yandex-verification" content="c02fe9de3a79a04f" />
 
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f2ebe0" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1d1813" />
@@ -233,7 +239,29 @@ const personLd = {
               Written as plain statements. Astro treats script children as raw
               text, so an expression wrapper around them is emitted verbatim and
               the whole tag quietly does nothing. */}
-          <script is:inline define:vars={{ gaId: GA_ID }}>
+          <script is:inline define:vars={{ gaId: GA_ID, ymId: YM_ID }}>
+            /* Metrica. Defined here and called from two places: below for a
+               returning visitor who already agreed, and from setConsent() in
+               analytics.ts the moment a new one clicks Allow. Webvisor is off
+               in the counter and stays off in the init. */
+            window.loadMetrica = function () {
+              if (!ymId || window.ym) return;
+              window.ym = function () {
+                (window.ym.a = window.ym.a || []).push(arguments);
+              };
+              window.ym.l = Date.now();
+              var s = document.createElement('script');
+              s.async = true;
+              s.src = 'https://mc.yandex.ru/metrika/tag.js?id=' + ymId;
+              document.head.appendChild(s);
+              window.ym(ymId, 'init', {
+                ssr: true,
+                clickmap: true,
+                trackLinks: true,
+                accurateTrackBounce: true,
+                webvisor: false,
+              });
+            };
             window.dataLayer = window.dataLayer || [];
             function gtag() {
               window.dataLayer.push(arguments);
@@ -253,6 +281,7 @@ const personLd = {
               var stored = JSON.parse(localStorage.getItem('consent-analytics') || 'null');
               if (stored && stored.v === 'granted' && Date.now() - stored.at < 182 * 864e5) {
                 gtag('consent', 'update', { analytics_storage: 'granted' });
+                window.loadMetrica();
               }
             } catch (e) {}
             gtag('js', new Date());

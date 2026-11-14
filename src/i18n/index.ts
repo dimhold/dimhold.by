@@ -973,7 +973,7 @@ export const en: Dictionary = {
   },
   consent: {
     label: 'Cookie notice',
-    text: 'I count visits with Google Analytics: how many people come and which pages get read. No advertising, no profiling, nothing sold on. Until you agree, nothing is written to your device.',
+    text: 'I count visits with Google Analytics and Yandex Metrica: how many people come and which pages get read. No advertising, no profiling, nothing sold on. Until you agree, nothing is written to your device.',
     more: 'What Google does with it',
     accept: 'Allow',
     decline: 'No thanks',
@@ -994,7 +994,7 @@ export const ru: Dictionary = {
     alsoLabel: 'он же',
     also: ['Dmitriy Semenkevich', 'Дзмітрый Семенкевіч'],
   },
-  metaTitle: 'Дмитрий Семенкевич (Dmitriy Semenkevich) — ИИ-архитектор и сооснователь Adlega',
+  metaTitle: 'Дмитрий Семенкевич — ИИ-архитектор, сооснователь Adlega',
   metaDescription:
     'Пятнадцать лет продакшен-разработки: платёжная инфраструктура, trade-in-платформа в 16 000 магазинов. Сооснователь Adlega — ИИ-финдиректора для SaaS-фаундеров.',
   langLabel: 'Язык',
@@ -1602,7 +1602,7 @@ export const ru: Dictionary = {
   },
   consent: {
     label: 'Про куки',
-    text: 'Я считаю визиты через Google Analytics: сколько людей заходит и какие страницы читают. Ни рекламы, ни профилирования, никакой продажи данных. Пока вы не согласитесь, на ваше устройство ничего не записывается.',
+    text: 'Я считаю визиты через Google Analytics и Яндекс Метрику: сколько людей заходит и какие страницы читают. Ни рекламы, ни профилирования, никакой продажи данных. Пока вы не согласитесь, на ваше устройство ничего не записывается.',
     more: 'Что с этим делает Google',
     accept: 'Разрешить',
     decline: 'Не надо',
@@ -1623,7 +1623,7 @@ export const be: Dictionary = {
     alsoLabel: 'ён жа',
     also: ['Dmitriy Semenkevich', 'Дмитрий Семенкевич', 'Дзмітрый Семянкевіч'],
   },
-  metaTitle: 'Дзмітрый Семенкевіч (Dmitriy Semenkevich) — ШІ-архітэктар і сузаснавальнік Adlega',
+  metaTitle: 'Дзмітрый Семенкевіч — ШІ-архітэктар, сузаснавальнік Adlega',
   metaDescription:
     'Пятнаццаць гадоў прадакшен-распрацоўкі: плацёжная інфраструктура, trade-in-платформа ў 16 000 крамах. Сузаснавальнік Adlega — ШІ-фіндырэктара для SaaS-заснавальнікаў.',
   langLabel: 'Мова',
@@ -2231,7 +2231,7 @@ export const be: Dictionary = {
   },
   consent: {
     label: 'Пра кукі',
-    text: 'Я лічу візіты праз Google Analytics: колькі людзей заходзіць і якія старонкі чытаюць. Ні рэкламы, ні прафілявання, ніякага продажу даных. Пакуль вы не пагодзіцеся, на вашу прыладу нічога не запісваецца.',
+    text: 'Я лічу візіты праз Google Analytics і Яндекс Метрыку: колькі людзей заходзіць і якія старонкі чытаюць. Ні рэкламы, ні прафілявання, ніякага продажу даных. Пакуль вы не пагодзіцеся, на вашу прыладу нічога не запісваецца.',
     more: 'Што з гэтым робіць Google',
     accept: 'Дазволіць',
     decline: 'Не трэба',

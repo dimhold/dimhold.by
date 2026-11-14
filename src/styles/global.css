@@ -378,6 +378,10 @@ html[data-mode='night'] .greeting {
   color: var(--accent);
 }
 
+.name .name-dot::after {
+  content: '.';
+}
+
 /* The other spellings of the name, under the heading. Quiet on purpose: it is
    there so a Cyrillic search finds him and so the three language pages read as
    one person, not as a design element. */
