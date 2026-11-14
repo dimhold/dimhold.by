@@ -1,0 +1,352 @@
+---
+/* The road here, drawn as one line of stitches that climbs from 2010 to now.
+   Wide screens get the curve; a phone gets the same stops as a list, because
+   twelve labels do not fit along a curve 340 pixels wide. */
+export interface Stop {
+  name: string;
+  note: string;
+  year?: string;
+  /** Which stretch of the road the stop belongs to; sets the colour of its mark. */
+  era: 'start' | 'product' | 'own' | 'now';
+}
+
+interface Props {
+  title: string;
+  lede: string;
+  stops: Stop[];
+  /** The line beside the last point of the curve. */
+  now: string;
+  counters: { n: number | string; label: string }[];
+}
+
+const { title, lede, stops, now, counters } = Astro.props;
+
+/* Twelve points on the curve, left to right. A stop takes its point by index,
+   and its label sits below the line on even stops and above it on odd ones. */
+const AT = [
+  [80, 520], [151, 512], [222, 496], [293, 474], [364, 447], [435, 415],
+  [505, 380], [576, 341], [647, 298], [718, 252], [789, 203], [860, 151],
+];
+const CURVE =
+  'M80 520 Q115 516 151 512 T222 496 T293 474 T364 447 T435 415 T505 380 T576 341 T647 298 T718 252 T789 203 T860 151 T900 120';
+---
+
+<section class="section" aria-labelledby="path-label">
+  <div class="section-head reveal">
+    <h2 id="path-label">{title}</h2>
+    <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+      <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+    </svg>
+  </div>
+  <p class="pt-lede reveal">{lede}</p>
+
+  <div class="pt-chart reveal" aria-hidden="true">
+    <svg viewBox="-70 70 1280 530" role="presentation">
+      <defs>
+        <mask id="pt-draw" maskUnits="userSpaceOnUse" x="-80" y="0" width="1300" height="640">
+          <path class="pt-reveal" d={CURVE} pathLength="1000" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"></path>
+        </mask>
+      </defs>
+      <path class="pt-thread" d={CURVE} fill="none" mask="url(#pt-draw)"></path>
+      {
+        stops.slice(0, AT.length).map((s, i) => {
+          const [x, y] = AT[i];
+          const below = i % 2 === 0;
+          const tx = below ? x + 12 : x - 12;
+          const ty = below ? y + 26 : y - 36;
+          return (
+            <g class={`pt-stop era-${s.era}`} style={`--i:${i}`}>
+              <path class="pt-mark" d={`M${x - 6} ${y - 6}l12 12M${x + 6} ${y - 6}l-12 12`} />
+              <text class="pt-name" x={tx} y={ty} text-anchor={below ? 'start' : 'end'}>
+                {s.year && <tspan class="pt-year">{s.year} </tspan>}
+                {s.name}
+              </text>
+              <text class="pt-note" x={tx} y={ty + 17} text-anchor={below ? 'start' : 'end'}>
+                {s.note}
+              </text>
+            </g>
+          );
+        })
+      }
+      <g class="pt-end" style={`--i:${AT.length}`}>
+        <circle class="pt-ring" cx="900" cy="120" r="9"></circle>
+        <circle class="pt-dot" cx="900" cy="120" r="6"></circle>
+        <text class="pt-now" x="922" y="125">{now}</text>
+      </g>
+    </svg>
+  </div>
+
+  <ol class="pt-list">
+    {
+      stops.map((s) => (
+        <li class={`reveal era-${s.era}`}>
+          <span class="pt-li-name">
+            {s.year && <span class="pt-li-year">{s.year}</span>}
+            {s.name}
+          </span>
+          <span class="pt-li-note">{s.note}</span>
+        </li>
+      ))
+    }
+    <li class="reveal era-now pt-li-now">{now}</li>
+  </ol>
+
+  <ul class="pt-counters">
+    {
+      counters.map((c, i) => (
+        <li class="reveal" style={`--i:${i}`}>
+          <b>{c.n}</b>
+          <span>{c.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .pt-lede {
+    margin: -0.6rem 0 0.6rem;
+    font-family: var(--font-hand);
+    font-size: 1.5rem;
+    color: var(--muted);
+  }
+
+  .pt-chart svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* The thread is a dashed stroke, so it reads as a row of stitches. It is
+     always fully there; what moves is the mask that uncovers it. */
+  .pt-thread {
+    stroke: var(--accent);
+    stroke-width: 5;
+    stroke-dasharray: 9 6;
+  }
+
+  .pt-reveal {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+
+  .pt-mark {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 3.2;
+    stroke-linecap: square;
+  }
+
+  .era-product .pt-mark {
+    stroke: #c9822f;
+  }
+
+  .era-own .pt-mark {
+    stroke: var(--accent);
+  }
+
+  .era-now .pt-mark {
+    stroke: #3f9d76;
+  }
+
+  .pt-name {
+    font-size: 16px;
+    font-weight: 700;
+    fill: var(--ink);
+  }
+
+  .pt-year {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    fill: var(--muted);
+  }
+
+  .pt-note {
+    font-size: 12.5px;
+    fill: var(--muted);
+  }
+
+  .pt-dot {
+    fill: #3f9d76;
+  }
+
+  .pt-ring {
+    fill: none;
+    stroke: #3f9d76;
+    stroke-width: 2;
+    transform-origin: 900px 120px;
+  }
+
+  .pt-now {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    fill: #3f9d76;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-mode]) .pt-chart .pt-reveal {
+      stroke-dashoffset: 1000;
+      transition: stroke-dashoffset 2600ms cubic-bezier(0.45, 0, 0.3, 1) 200ms;
+    }
+
+    :global(html[data-mode]) .pt-chart.in .pt-reveal {
+      stroke-dashoffset: 0;
+    }
+
+    :global(html[data-mode]) .pt-chart .pt-stop,
+    :global(html[data-mode]) .pt-chart .pt-end {
+      opacity: 0;
+      transition: opacity 450ms ease;
+      transition-delay: calc(350ms + var(--i) * 190ms);
+    }
+
+    :global(html[data-mode]) .pt-chart.in .pt-stop,
+    :global(html[data-mode]) .pt-chart.in .pt-end {
+      opacity: 1;
+    }
+
+    .pt-chart.in .pt-ring {
+      animation: pt-pulse 2400ms ease-out 3200ms infinite;
+    }
+  }
+
+  @keyframes pt-pulse {
+    from {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    to {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+
+  /* ——— the same road as a list, for narrow screens ——— */
+
+  .pt-list {
+    display: none;
+    list-style: none;
+    margin: 0.8rem 0 0 0.4rem;
+    padding: 0 0 0 1.3rem;
+    border-left: 4px dashed var(--accent);
+  }
+
+  .pt-list li {
+    position: relative;
+    display: grid;
+    padding: 0.5rem 0;
+  }
+
+  .pt-list li::before {
+    content: '×';
+    position: absolute;
+    left: -2.05rem;
+    top: 0.42rem;
+    width: 1.2rem;
+    text-align: center;
+    font-weight: 900;
+    line-height: 1.4;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  .pt-list .era-product::before {
+    color: #c9822f;
+  }
+
+  .pt-list .era-own::before {
+    color: var(--accent);
+  }
+
+  .pt-list .era-now::before {
+    color: #3f9d76;
+  }
+
+  .pt-li-name {
+    font-weight: 700;
+  }
+
+  .pt-li-year {
+    margin-right: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .pt-li-note {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .pt-li-now {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #3f9d76;
+  }
+
+  @media (max-width: 52rem) {
+    .pt-chart {
+      display: none;
+    }
+
+    .pt-list {
+      display: block;
+    }
+  }
+
+  /* ——— what the road adds up to ——— */
+
+  .pt-counters {
+    list-style: none;
+    margin: 1.4rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: 0.9rem;
+  }
+
+  .pt-counters li {
+    display: grid;
+    gap: 0.1rem;
+    padding: 1rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition-delay: calc(var(--i) * 90ms);
+  }
+
+  .pt-counters b {
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pt-counters li:nth-child(4n + 1) b {
+    color: #3f9d76;
+  }
+
+  .pt-counters li:nth-child(4n + 2) b {
+    color: var(--accent);
+  }
+
+  .pt-counters li:nth-child(4n + 3) b {
+    color: #c9822f;
+  }
+
+  .pt-counters li:nth-child(4n) b {
+    color: #c4605a;
+  }
+
+  .pt-counters span {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+</style>

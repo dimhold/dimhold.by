@@ -1,0 +1,68 @@
+---
+/* ЧЕРНОВИК новой главной. Не в меню, не в sitemap, noindex. Здесь только два
+   новых блока, чтобы посмотреть их вживую до замены главной. */
+import Base from '../../layouts/Base.astro';
+import Masthead from '../../components/Masthead.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Findings from '../../components/home/Findings.astro';
+import Path from '../../components/home/Path.astro';
+import type { Stop } from '../../components/home/Path.astro';
+import { ru } from '../../i18n';
+import { postsFor } from '../../lib/blog';
+import { allPapers } from '../../lib/papers';
+import { entries } from '../../lib/illusions';
+
+const papers = await allPapers();
+const posts = await postsFor('ru');
+
+const findings = [
+  { from: 40, to: 0, tpl: '{n} / 40', share: 0, text: 'ответов заметили, что инструмент тихо вернул неверное значение. Когда он падал громко: 39 из 40.', source: 'tool-failure', href: '/papers/tool-failure/' },
+  { from: 0, to: 20, tpl: '{n} / 20', share: 1, text: 'раз две модели повторили неверный подытог в отчёте о прибылях как факт. Одна фраза в промпте: 10 из 10.', source: 'silent-books', href: '/papers/silent-books/' },
+  { from: 0, to: 330, tpl: '{n} / 330', share: 1, text: 'верных ответов, когда арифметику делает код, а не модель. Пока единицы не нужно переводить: дальше 71,5%.', source: 'boundary-split', href: 'https://github.com/dimhold/boundary-split' },
+  { from: 0, to: 84.9, decimals: 1, tpl: '{n}%', share: 0.849, text: 'из 4 296 340 пакетов npm ведёт один человек. Посчитан весь реестр целиком.', source: 'npm-registry-census', href: '/papers/npm-registry-census/' },
+  { from: 14, to: 17, tpl: '14–{n}%', share: 0.17, text: 'node_modules занимают вторые копии пакетов, которые уже установлены. Измерено на диске.', source: 'install-graph', href: '/papers/install-graph/' },
+  { from: 1, to: 2.8, decimals: 1, tpl: '{n}×', text: 'медленнее вставка со случайными UUID в Postgres на 20 млн строк. На чтение по ключу разницы нет.', source: 'key-order', href: '/papers/key-order/' },
+];
+
+const stops: Stop[] = [
+  { year: '2010', name: 'EPAM', note: 'фулстек: Java и JavaScript', era: 'start' },
+  { name: 'UpMyGame', note: 'консалтинг для стартапа', era: 'start' },
+  { name: 'Rando4.me', note: 'open source, 10 лет', era: 'start' },
+  { year: '2014', name: 'Ciklum', note: 'аутстаф, много проектов', era: 'product' },
+  { name: 'HYLA Mobile', note: '16 000+ магазинов', era: 'product' },
+  { name: 'Assurant', note: 'trade-in для операторов США', era: 'product' },
+  { year: '2022', name: 'Modulr', note: 'банковские платежи, UK', era: 'product' },
+  { name: 'Архитектурный консалтинг', note: 'платформы, переросшие свою архитектуру', era: 'product' },
+  { name: 'Belun', note: '100+ инструментов в браузере', era: 'own' },
+  { name: 'whotop', note: 'open source CLI', era: 'own' },
+  { year: '2024', name: 'DScover', note: 'ИИ-архитектор', era: 'now' },
+  { name: 'Adlega', note: 'ИИ-финдиректор', era: 'now' },
+];
+
+const counters = [
+  { n: papers.length, label: 'исследований с DOI' },
+  { n: 15, label: 'открытых датасетов' },
+  { n: posts.length, label: 'статей на трёх языках' },
+  { n: entries.length, label: 'иллюзий в каталоге' },
+];
+---
+
+<Base t={ru} title="Черновик главной" alternates={[{ lang: 'ru', href: '/ru/home-next/' }]}>
+  <Masthead t={ru} />
+  <main id="main">
+    <Findings
+      title="Что показали замеры"
+      lede="Каждое число можно проверить: данные и скрипты лежат в открытом репозитории."
+      items={findings}
+      comma
+    />
+    <Path
+      title="Больше 15 лет там, где неверная цифра стоит денег"
+      lede="а потом я начал считать"
+      stops={stops}
+      now="2026 · исследования, open source"
+      counters={counters}
+    />
+  </main>
+  <SiteFooter t={ru} />
+</Base>

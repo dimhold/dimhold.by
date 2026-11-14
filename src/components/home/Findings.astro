@@ -1,0 +1,203 @@
+---
+/* What the measurements found: six numbers, each one a link to the study it
+   came from. The number counts to its value when the card scrolls into view,
+   and the row of stitches under it shows the same share at a glance. */
+export interface Finding {
+  /** The counter runs from `from` to `to` and is printed into `tpl` at {n}. */
+  from: number;
+  to: number;
+  decimals?: number;
+  tpl: string;
+  /** Share of the stitch row that is filled, 0 to 1. Omit for a ratio like 2.8x. */
+  share?: number;
+  text: string;
+  source: string;
+  href: string;
+}
+
+interface Props {
+  title: string;
+  lede: string;
+  items: Finding[];
+  /** Decimal mark of the page's language. */
+  comma?: boolean;
+}
+
+const { title, lede, items, comma = false } = Astro.props;
+const STITCHES = 20;
+const fmt = (n: number, d = 0) => (comma ? n.toFixed(d).replace('.', ',') : n.toFixed(d));
+---
+
+<section class="section" aria-labelledby="findings-label">
+  <div class="section-head reveal">
+    <h2 id="findings-label">{title}</h2>
+    <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+      <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+    </svg>
+  </div>
+  <p class="fd-lede reveal">{lede}</p>
+  <div class="fd-grid">
+    {
+      items.map((f, i) => (
+        <a class="fd-card reveal" href={f.href} style={`--i:${i}`}>
+          <span
+            class="fd-num"
+            data-count
+            data-from={f.from}
+            data-to={f.to}
+            data-decimals={f.decimals ?? 0}
+            data-tpl={f.tpl}
+            data-comma={comma ? '1' : undefined}
+          >
+            {f.tpl.replace('{n}', fmt(f.to, f.decimals))}
+          </span>
+          {f.share !== undefined && (
+            <span class="fd-row" aria-hidden="true">
+              {Array.from({ length: STITCHES }, (_, k) => (
+                <i class={k < Math.round(f.share! * STITCHES) ? 'on' : undefined} style={`--k:${k}`} />
+              ))}
+            </span>
+          )}
+          <span class="fd-text">{f.text}</span>
+          <span class="fd-src">{f.source} →</span>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function run(el: HTMLElement) {
+    const from = Number(el.dataset.from);
+    const to = Number(el.dataset.to);
+    const d = Number(el.dataset.decimals);
+    const tpl = el.dataset.tpl!;
+    const show = (n: number) => {
+      const s = n.toFixed(d);
+      el.textContent = tpl.replace('{n}', el.dataset.comma ? s.replace('.', ',') : s);
+    };
+    if (still || from === to) return show(to);
+    const t0 = performance.now();
+    const dur = 1100;
+    const step = (now: number) => {
+      const t = Math.min(1, (now - t0) / dur);
+      show(from + (to - from) * ease(t));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        io.unobserve(e.target);
+        const num = e.target.querySelector<HTMLElement>('[data-count]');
+        if (num) run(num);
+      }
+    },
+    { threshold: 0.35 },
+  );
+  for (const card of document.querySelectorAll('.fd-card')) io.observe(card);
+</script>
+
+<style>
+  .fd-lede {
+    max-width: 44rem;
+    margin: -0.6rem 0 1.6rem;
+    color: var(--muted);
+  }
+
+  .fd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
+    gap: 1.1rem;
+  }
+
+  .fd-card {
+    display: grid;
+    align-content: start;
+    gap: 0.55rem;
+    padding: 1.3rem 1.4rem 1.15rem;
+    text-decoration: none;
+    color: inherit;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    transition:
+      transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 250ms ease,
+      opacity 700ms ease;
+    transition-delay: 0ms, 0ms, calc(var(--i) * 70ms);
+  }
+
+  .fd-card:hover {
+    transform: translateY(-4px) rotate(-0.4deg);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .fd-num {
+    font-size: clamp(2.3rem, 5vw, 3rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-deep);
+  }
+
+  :global(html[data-mode='night']) .fd-num {
+    color: var(--accent);
+  }
+
+  /* A row of cross-stitches: filled ones are the share the number names. */
+  .fd-row {
+    display: flex;
+    gap: 3px;
+    margin: 0.1rem 0 0.2rem;
+  }
+
+  .fd-row i {
+    flex: 1 1 0;
+    max-width: 11px;
+    aspect-ratio: 1;
+    border-radius: 2px;
+    background: var(--line);
+  }
+
+  .fd-row i.on {
+    background: var(--accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-mode]) .fd-card .fd-row i.on {
+      background: var(--line);
+      transition: background-color 200ms ease;
+      transition-delay: calc(300ms + var(--k) * 40ms);
+    }
+
+    :global(html[data-mode]) .fd-card.in .fd-row i.on {
+      background: var(--accent);
+    }
+  }
+
+  .fd-text {
+    font-size: 0.98rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .fd-src {
+    margin-top: 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+
+  .fd-card:hover .fd-src {
+    color: var(--accent-deep);
+  }
+</style>

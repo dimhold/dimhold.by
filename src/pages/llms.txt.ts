@@ -12,9 +12,9 @@ export async function GET() {
   const lines = [
     '# Dmitriy Semenkevich (dimhold)',
     '',
-    '> Full stack engineer and co-founder of Adlega, an AI CFO for SaaS founders. Fifteen years of production software: payments infrastructure, a trade-in platform in 16000 stores. Publishes reproducible measurements of language models, package registries and databases, each with a DOI, a PDF and the code.',
+    '> Software engineer and AI architect who measures what software and AI really do. Publishes reproducible measurements of language models, package registries and databases, each with a DOI, a PDF and the code. More than fifteen years of production software behind them: payments infrastructure, a trade-in platform in 16000 stores.',
     '',
-    'Name spellings, all the same person: Dmitriy Semenkevich, Dmitry Semenkevich, Дмитрий Семенкевич, Дмитрий Дмитриевич Семенкевич, Дзмітрый Семенкевіч, Дзмітрый Семянкевіч. Nickname: dimhold, used on every profile below. Based in Warsaw, from Belarus. ORCID: 0009-0009-3013-4978.',
+    'Name spellings, all the same person: Dmitriy Semenkevich, Dmitry Semenkevich, Дмитрий Семенкевич, Дмитрий Дмитриевич Семенкевич, Дзмітрый Семенкевіч, Дзмітрый Семянкевіч. Nickname: dimhold, used on every profile below. From Belarus, works with teams worldwide. ORCID: 0009-0009-3013-4978.',
     '',
     '## Papers',
     '',

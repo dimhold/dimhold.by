@@ -273,7 +273,7 @@ export interface Dictionary {
     lead: string;
     lead2: string;
     ctaEmail: string;
-    ctaAdlega: string;
+    ctaPapers: string;
     photoAlt: string;
     hint: string;
     spots: HeroSpot[];
@@ -367,9 +367,9 @@ export const en: Dictionary = {
     alsoLabel: 'also written',
     also: ['Дмитрий Семенкевич', 'Дзмітрый Семенкевіч'],
   },
-  metaTitle: 'Dmitriy Semenkevich: full stack engineer & founder',
+  metaTitle: 'Dmitriy Semenkevich: software engineer, AI architect, researcher',
   metaDescription:
-    'Fifteen years of production software: payments infrastructure, a trade-in platform in 16,000 stores. Co-founder of Adlega, an AI CFO for SaaS founders.',
+    'I measure what software and AI really do. Open studies of language models, npm and Postgres, each with data, code and a DOI. 15+ years in production software.',
   langLabel: 'Language',
   skipLink: 'Skip to content',
   lampLabel: 'Toggle the lamp',
@@ -430,13 +430,13 @@ export const en: Dictionary = {
   },
   hero: {
     greeting: 'hi, I’m',
-    role: 'Full stack engineer · Co-founder of Adlega',
-    chips: ['engineer · 15 years', 'co-founder @ Adlega'],
-    lead: 'Fifteen years building software where a wrong number costs real money: payments, a device trade-in platform in 16,000 stores. Now Adlega, an AI CFO with one rule: the AI never does the math.',
+    role: 'Software engineer · AI architect · researcher',
+    chips: ['engineer · 15+ years', 'open studies with a DOI'],
+    lead: 'More than fifteen years building software where a wrong number costs real money: payments, a device trade-in platform in 16,000 stores. Now I measure what software and AI really do, and publish every study with its data and code.',
     lead2:
       'Between releases I poke at the digital world: experiments, new tools, pop science rabbit holes. This site is my workshop.',
     ctaEmail: 'Write me',
-    ctaAdlega: 'See Adlega',
+    ctaPapers: 'Read the papers',
     photoAlt:
       'A felt and clay figurine of Dmitriy: a laptop on his lap, a yellow canary on his shoulder, a grey dog sitting beside him',
     hint: 'it comes alive now and then. the marks tell you who is who.',
@@ -997,9 +997,9 @@ export const ru: Dictionary = {
     alsoLabel: 'он же',
     also: ['Dmitriy Semenkevich', 'Дзмітрый Семенкевіч'],
   },
-  metaTitle: 'Дмитрий Семенкевич — ИИ-архитектор, сооснователь Adlega',
+  metaTitle: 'Дмитрий Семенкевич — инженер-исследователь, ИИ-архитектор',
   metaDescription:
-    'Пятнадцать лет продакшен-разработки: платёжная инфраструктура, trade-in-платформа в 16 000 магазинов. Сооснователь Adlega — ИИ-финдиректора для SaaS-фаундеров.',
+    'Измеряю, что на самом деле делают софт и ИИ. Открытые исследования языковых моделей, npm и Postgres: с данными, кодом и DOI. Больше 15 лет в продакшен-разработке.',
   langLabel: 'Язык',
   skipLink: 'К содержанию',
   lampLabel: 'Переключить лампу',
@@ -1060,13 +1060,13 @@ export const ru: Dictionary = {
   },
   hero: {
     greeting: 'привет, я',
-    role: 'Фулстек-инженер · Сооснователь Adlega',
-    chips: ['инженер · 15 лет', 'сооснователь Adlega'],
-    lead: 'Пятнадцать лет строю софт, в котором неверная цифра стоит настоящих денег: платежи, trade-in-платформа в 16 000 магазинов. А теперь Adlega, ИИ-финдиректор с одним правилом: ИИ никогда не считает сам.',
+    role: 'Инженер-исследователь · ИИ-архитектор',
+    chips: ['инженер · 15+ лет', 'открытые замеры с DOI'],
+    lead: 'Больше пятнадцати лет строю софт, в котором неверная цифра стоит настоящих денег: платежи, trade-in-платформа в 16 000 магазинов. Теперь измеряю, что на самом деле делают софт и ИИ, и выкладываю каждое исследование вместе с данными и кодом.',
     lead2:
       'Между релизами копаюсь в цифровом мире: эксперименты, новые инструменты, науч-поп. Этот сайт — моя мастерская.',
     ctaEmail: 'Написать мне',
-    ctaAdlega: 'Смотреть Adlega',
+    ctaPapers: 'Читать исследования',
     photoAlt:
       'Фигурка Дмитрия из фетра и глины: ноутбук на коленях, жёлтая канарейка на плече, рядом сидит серая собака',
     hint: 'иногда оживает. метки расскажут, кто есть кто.',
@@ -1627,9 +1627,9 @@ export const be: Dictionary = {
     alsoLabel: 'ён жа',
     also: ['Dmitriy Semenkevich', 'Дмитрий Семенкевич', 'Дзмітрый Семянкевіч'],
   },
-  metaTitle: 'Дзмітрый Семенкевіч — ШІ-архітэктар, сузаснавальнік Adlega',
+  metaTitle: 'Дзмітрый Семенкевіч — інжынер-даследчык, ШІ-архітэктар',
   metaDescription:
-    'Пятнаццаць гадоў прадакшен-распрацоўкі: плацёжная інфраструктура, trade-in-платформа ў 16 000 крамах. Сузаснавальнік Adlega — ШІ-фіндырэктара для SaaS-заснавальнікаў.',
+    'Вымяраю, што насамрэч робяць софт і ШІ. Адкрытыя даследаванні моўных мадэляў, npm і Postgres: з данымі, кодам і DOI. Больш за 15 гадоў у прадакшен-распрацоўцы.',
   langLabel: 'Мова',
   skipLink: 'Да зместу',
   lampLabel: 'Пераключыць лямпу',
@@ -1690,13 +1690,13 @@ export const be: Dictionary = {
   },
   hero: {
     greeting: 'прывітанне, я',
-    role: 'Фулстэк-інжынер · Сузаснавальнік Adlega',
-    chips: ['інжынер · 15 гадоў', 'сузаснавальнік Adlega'],
-    lead: 'Пятнаццаць гадоў будую софт, у якім няправільная лічба каштуе сапраўдных грошай: плацяжы, trade-in-платформа ў 16 000 крамах. А цяпер Adlega, ШІ-фіндырэктар з адным правілам: ШІ ніколі не лічыць сам.',
+    role: 'Інжынер-даследчык · ШІ-архітэктар',
+    chips: ['інжынер · 15+ гадоў', 'адкрытыя замеры з DOI'],
+    lead: 'Больш за пятнаццаць гадоў будую софт, у якім няправільная лічба каштуе сапраўдных грошай: плацяжы, trade-in-платформа ў 16 000 крамах. Цяпер вымяраю, што насамрэч робяць софт і ШІ, і выкладаю кожнае даследаванне разам з данымі і кодам.',
     lead2:
       'Паміж рэлізамі корпаюся ў лічбавым свеце: эксперыменты, новыя інструменты, навук-поп. Гэты сайт — мая майстэрня.',
     ctaEmail: 'Напісаць мне',
-    ctaAdlega: 'Глядзець Adlega',
+    ctaPapers: 'Чытаць даследаванні',
     photoAlt:
       'Фігурка Дзмітрыя з фетру і гліны: ноўтбук на каленях, жоўтая канарэйка на плячы, побач сядзіць шэры сабака',
     hint: 'часам ажывае. меткі раскажуць, хто ёсць хто.',

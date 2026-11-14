@@ -31,7 +31,7 @@ export default defineConfig({
   site: 'https://dimhold.by',
   integrations: [
     sitemap({
-      filter: (page) => !scheduled.has(new URL(page).pathname),
+      filter: (page) => !scheduled.has(new URL(page).pathname) && !page.includes('/home-next'),
       i18n: {
         defaultLocale: 'en',
         locales: { en: 'en', ru: 'ru', be: 'be' },
