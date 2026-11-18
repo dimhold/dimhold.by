@@ -2,6 +2,8 @@
 import '@fontsource-variable/rubik';
 import '@fontsource-variable/jetbrains-mono';
 import '@fontsource-variable/caveat';
+import rubikLatin from '@fontsource-variable/rubik/files/rubik-latin-wght-normal.woff2?url';
+import rubikCyrillic from '@fontsource-variable/rubik/files/rubik-cyrillic-wght-normal.woff2?url';
 import '../styles/global.css';
 import type { Dictionary } from '../i18n';
 import { dictionaries, socials } from '../i18n';
@@ -86,6 +88,10 @@ const alternates = (
   alternatesProp ?? Object.values(dictionaries).map((d) => ({ lang: d.lang, href: d.path }))
 ).map((a) => ({ lang: a.lang, href: new URL(a.href, site).href }));
 const xDefault = alternates.find((a) => a.lang === 'en')?.href;
+/* Rubik is the body face and the first text painted. Without a hint the browser
+   only learns about it after the CSS is parsed; preloading the one subset the
+   page's language needs starts that download with the HTML. */
+const bodyFont = t.lang === 'en' ? rubikLatin : rubikCyrillic;
 
 const personLd = {
   '@context': 'https://schema.org',
@@ -163,6 +169,8 @@ const personLd = {
         } catch (e) {}
       })();
     </script>
+
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
 
     <title>{title}</title>
     <meta name="description" content={shortDesc(description)} />
@@ -292,8 +300,26 @@ const personLd = {
             // never logs the address anyway, and passing it only bolts a junk
             // custom parameter onto every single event.
             gtag('config', gaId);
+            /* The tag itself waits until the page has loaded and the main
+               thread is idle. It is ~75 KB of script that PageSpeed measured
+               holding the mobile main thread for up to 880 ms. The calls above
+               queue in dataLayer and are sent once it arrives, so nothing is
+               lost but the hit of a visitor who leaves before load. */
+            (function () {
+              function load() {
+                var s = document.createElement('script');
+                s.async = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+                document.head.appendChild(s);
+              }
+              function idle() {
+                if ('requestIdleCallback' in window) requestIdleCallback(load, { timeout: 3000 });
+                else setTimeout(load, 1);
+              }
+              if (document.readyState === 'complete') idle();
+              else window.addEventListener('load', idle, { once: true });
+            })();
           </script>
-          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
         </Fragment>
       )
     }

@@ -43,7 +43,10 @@ export default defineConfig({
     locales: ['en', 'ru', 'be'],
     routing: { prefixDefaultLocale: false },
   },
-  build: { inlineStylesheets: 'auto' },
+  /* All CSS goes into the page. The shared sheet is ~19 KB and was the one
+     render-blocking request PageSpeed flagged on mobile: inlined, first paint
+     no longer waits for a second round trip. */
+  build: { inlineStylesheets: 'always' },
   markdown: {
     rehypePlugins: [wrapTables],
     shikiConfig: {

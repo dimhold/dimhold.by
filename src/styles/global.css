@@ -8,8 +8,10 @@
   --font-mono: 'JetBrains Mono Variable', Consolas, monospace;
   --font-hand: 'Caveat Variable', 'Segoe Script', cursive;
 
-  /* fixed blue accent */
-  --accent: #2f7cd6;
+  /* fixed blue accent. White text sits on it in pills, buttons and the
+     consent banner, so it has to clear 4.5:1 against #fff: #2f7cd6 gave 4.22
+     and failed the Lighthouse contrast audit, #2b74c9 gives 4.73. */
+  --accent: #2b74c9;
   --accent-deep: #1d5aa8;
   --accent-wash: #d8dfe4;
 
