@@ -5,20 +5,26 @@
    ничего, а страница с демонстрацией тянет только свою. */
 import { DEMOS } from '../../lib/illusions/demos';
 import { asset, creditLine } from '../../lib/illusions/credits';
+import { dt } from '../../lib/illusions/demo-text';
+import { UI } from '../../lib/illusions/ui';
+import type { IllLang } from '../../lib/illusions/labels';
 
 interface Props {
   /** Ключ демонстрации: он же имя в реестре. */
   id: string;
   /** Что делает ручка и зачем она тут. */
   note?: string;
+  /** Язык страницы: подписи ручек берутся из demo-text.ts по русскому тексту. */
+  lang?: IllLang;
 }
 
-const { id, note } = Astro.props;
+const { id, note, lang = 'ru' } = Astro.props;
+const ui = UI[lang].demo;
 const spec = DEMOS[id];
 const controls = spec?.controls ?? [];
 /* Материалы подписываются всегда, даже общественное достояние, где подписи не требуют.
    Каталог собирался ради того, чтобы источник был виден. */
-const credits = (spec?.credits ?? []).map((id) => asset(id)).filter(Boolean);
+const credits = (spec?.credits ?? []).map((cid) => ({ cid, a: asset(cid) })).filter((x) => x.a);
 ---
 
 <figure
@@ -27,7 +33,7 @@ const credits = (spec?.credits ?? []).map((id) => asset(id)).filter(Boolean);
   data-assets={spec?.credits?.length ? JSON.stringify(Object.fromEntries((spec.credits ?? []).map((cid) => [cid, asset(cid)?.file]))) : undefined}
   tabindex="-1"
 >
-  {spec?.headphones && <p class="ill-phones">Нужны наушники: на динамиках это другой стимул, и иллюзии там нет.</p>}
+  {spec?.headphones && <p class="ill-phones">{ui.headphones}</p>}
 
   {/* Пропорции едут в атрибуте: описание живёт на сервере, а рисовальщику нужно
       знать высоту холста уже в браузере. */}
@@ -40,7 +46,7 @@ const credits = (spec?.credits ?? []).map((id) => asset(id)).filter(Boolean);
         {controls.map((c) =>
           c.kind === 'slider' ? (
             <label>
-              <span>{c.label}</span>
+              <span>{dt(lang, c.label)}</span>
               <input
                 type="range"
                 min={c.min}
@@ -55,31 +61,31 @@ const credits = (spec?.credits ?? []).map((id) => asset(id)).filter(Boolean);
               {c.fmt && <output data-out={c.name} />}
             </label>
           ) : c.kind === 'toggle' ? (
-            <button type="button" class="ill-btn" data-toggle={c.name} data-off={c.label} data-on={c.on} aria-pressed="false">
-              {c.label}
+            <button type="button" class="ill-btn" data-toggle={c.name} data-off={dt(lang, c.label)} data-on={c.on && dt(lang, c.on)} aria-pressed="false">
+              {dt(lang, c.label)}
             </button>
           ) : c.kind === 'button' ? (
             <button type="button" class="ill-btn" data-btn={c.name}>
-              {c.label}
+              {dt(lang, c.label)}
             </button>
           ) : c.kind === 'check' ? (
             <label class="ill-check">
               <input type="checkbox" data-check={c.name} />
-              <span>{c.label}</span>
+              <span>{dt(lang, c.label)}</span>
             </label>
           ) : c.kind === 'select' ? (
             <label>
-              <span>{c.label}</span>
+              <span>{dt(lang, c.label)}</span>
               <select data-select={c.name}>
                 {c.options.map((o) => (
-                  <option value={o.value}>{o.label}</option>
+                  <option value={o.value}>{dt(lang, o.label)}</option>
                 ))}
               </select>
             </label>
           ) : c.kind === 'clock' ? (
-            <span class="ill-clock" data-clock>0,0 с</span>
+            <span class="ill-clock" data-clock>{ui.clockZero}</span>
           ) : (
-            <span class="ill-hint">{c.label}</span>
+            <span class="ill-hint">{dt(lang, c.label)}</span>
           ),
         )}
       </div>
@@ -93,11 +99,11 @@ const credits = (spec?.credits ?? []).map((id) => asset(id)).filter(Boolean);
   {
     credits.length > 0 && (
       <figcaption class="ill-credit">
-        <span class="ill-credit-label">материал</span>
+        <span class="ill-credit-label">{ui.material}</span>
         <ul>
-          {credits.map((a) => (
+          {credits.map(({ cid, a }) => (
             <li>
-              {creditLine(a!)}{' '}
+              {creditLine(a!, lang, cid)}{' '}
               <a href={a!.commons} rel="noopener">
                 {a!.licence}
               </a>

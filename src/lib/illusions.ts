@@ -6,6 +6,14 @@
  */
 import catalog from './illusions/catalog.json';
 import { RU, type Copy } from './illusions/ru';
+import { EN } from './illusions/en';
+import { BE } from './illusions/be';
+import { NAMES_BE } from './illusions/names';
+import { MODALITY, CATEGORY, CONFIDENCE, type IllLang } from './illusions/labels';
+
+export type { IllLang };
+export const ILL_LANGS: IllLang[] = ['ru', 'en', 'be'];
+const COPY: Record<IllLang, Record<string, Copy>> = { ru: RU, en: EN, be: BE };
 
 export type Modality =
   | 'visual' | 'auditory' | 'tactile' | 'multisensory' | 'interoceptive'
@@ -58,102 +66,37 @@ export const sources = catalog.sources as Record<string, Source>;
 export const dossier = catalog.dossier;
 export const generated = catalog.generated;
 
-/* Reader-facing names. A slug that is missing here falls back to itself, which is ugly
-   enough to be noticed and fixed rather than quietly shipped. */
-export const MODALITY_RU: Record<Modality, string> = {
-  visual: 'зрение',
-  auditory: 'слух',
-  tactile: 'осязание',
-  multisensory: 'между чувствами',
-  interoceptive: 'сигналы тела',
-  vestibular: 'равновесие',
-  temporal: 'время',
-  cognitive: 'мышление',
-  chemical: 'вкус и запах',
-  physical: 'физика света',
-};
+/* Reader-facing names live in illusions/labels.ts, one block per language. The _RU
+   names stay exported for anything that still imports them. */
+export const MODALITY_RU = MODALITY.ru;
+export const CATEGORY_RU = CATEGORY.ru;
+export const CONFIDENCE_RU = CONFIDENCE.ru;
 
-export const CATEGORY_RU: Record<string, string> = {
-  'geometric-size': 'размер и длина',
-  'geometric-direction': 'направление линий',
-  'geometric-shape': 'форма и кривизна',
-  'brightness-contrast': 'светлота и контраст',
-  colour: 'цвет',
-  motion: 'движение',
-  'motion-position': 'движение сдвигает место',
-  'depth-3d': 'глубина и перспектива',
-  impossible: 'невозможные фигуры',
-  ambiguous: 'двойственные образы',
-  'contours-filling': 'контуры и заполнение',
-  'face-body': 'лица',
-  attention: 'внимание и незамечание',
-  'afterimage-adaptation': 'последействие и адаптация',
-  numerosity: 'количество',
-  'op-art': 'оп-арт',
-  clinical: 'клинические',
-  entoptic: 'собственный глаз',
-  binocular: 'два глаза',
-  'eye-movement': 'движения глаз',
-  material: 'материал и поверхность',
-  hallucination: 'вызванные образы',
-  pitch: 'высота звука',
-  loudness: 'громкость',
-  'spatial-audio': 'звук в пространстве',
-  speech: 'речь',
-  'rhythm-tempo': 'ритм и темп',
-  continuity: 'непрерывность звука',
-  'scene-analysis': 'что с чем звучит',
-  'body-ownership': 'владение телом',
-  proprioceptive: 'где находится тело',
-  'touch-location': 'где вас коснулись',
-  'weight-texture': 'вес и фактура',
-  temperature: 'температура',
-  pain: 'боль',
-  'shape-extent': 'форма на ощупь',
-  'motor-efferent': 'собственное движение',
-  'haptic-vr': 'тактильные интерфейсы',
-  crossmodal: 'между чувствами',
-  flavour: 'вкус еды',
-  'body-signals': 'сигналы изнутри',
-  'self-motion': 'движение себя',
-  locomotor: 'ходьба и качка',
-  'time-perception': 'течение времени',
-  judgement: 'суждение',
-  memory: 'память',
-  agency: 'авторство действия',
-  causality: 'причинность',
-  metacognition: 'знание о своём знании',
-  social: 'социальные',
-  linguistic: 'язык',
-  sleep: 'на границе сна',
-  satiation: 'насыщение повтором',
-  suggestion: 'внушение',
-  'taste-smell': 'вкус и запах',
-  chemesthesis: 'жжение и холод',
-  optics: 'оптика атмосферы',
-};
+export const catLabel = (slug: string, lang: IllLang = 'ru') => CATEGORY[lang][slug] ?? slug;
+export const modLabel = (m: Modality, lang: IllLang = 'ru') => MODALITY[lang][m] ?? m;
+export const confLabel = (c: string, lang: IllLang = 'ru') => CONFIDENCE[lang][c] ?? c;
 
-export const CONFIDENCE_RU: Record<string, string> = {
-  high: 'установлено',
-  medium: 'вероятно',
-  low: 'под вопросом',
-  disputed: 'спорно',
-};
+/** The entry's name in the reader's language. */
+export const nameFor = (e: Entry, lang: IllLang = 'ru') =>
+  lang === 'en' ? e.en : lang === 'be' ? (NAMES_BE[e.id] ?? e.ru) : e.ru;
 
-export const catLabel = (slug: string) => CATEGORY_RU[slug] ?? slug;
-export const modLabel = (m: Modality) => MODALITY_RU[m] ?? m;
+/** The name shown under the title: the English one, or the Russian one on an English page. */
+export const altNameFor = (e: Entry, lang: IllLang = 'ru') => (lang === 'en' ? e.ru : e.en);
 
-/** Russian copy for an entry, when someone has written it. */
-export const copyFor = (id: string): Copy | undefined => RU[id];
+/** Copy for an entry in a language, when someone has written it. */
+export const copyFor = (id: string, lang: IllLang = 'ru'): Copy | undefined => COPY[lang][id];
 
-/** Entries that have both Russian prose and, usually, a demo — the ones worth reading. */
+const LOCALE: Record<IllLang, string> = { ru: 'ru', en: 'en', be: 'be' };
+
+/** Entries that have prose in the language, and those of them with a demo. */
 export const written = entries.filter((e) => RU[e.id]);
 export const withDemo = entries.filter((e) => RU[e.id]?.demo);
 
 export const bySlug = new Map(entries.map((e) => [e.id, e]));
 
 /** Grouped for the index, biggest group first, with written entries at the top of each. */
-export function groups() {
+export function groups(lang: IllLang = 'ru') {
+  const copy = COPY[lang];
   const byMod = new Map<Modality, Entry[]>();
   for (const e of entries) {
     if (!byMod.has(e.modality)) byMod.set(e.modality, []);
@@ -161,8 +104,8 @@ export function groups() {
   }
   for (const list of byMod.values()) {
     list.sort((a, b) => {
-      const aw = RU[a.id] ? 0 : 1, bw = RU[b.id] ? 0 : 1;
-      return aw - bw || a.ru.localeCompare(b.ru, 'ru');
+      const aw = copy[a.id] ? 0 : 1, bw = copy[b.id] ? 0 : 1;
+      return aw - bw || nameFor(a, lang).localeCompare(nameFor(b, lang), LOCALE[lang]);
     });
   }
   return [...byMod.entries()].sort((a, b) => b[1].length - a[1].length);

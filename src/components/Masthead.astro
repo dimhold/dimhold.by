@@ -17,11 +17,7 @@ const { t, active, langHrefs = {}, lockLangs = false } = Astro.props;
 const suffix = t.lang === 'en' ? '' : `/${t.lang}`;
 const nav = [
   { key: 'projects' as const, href: `${suffix}/projects/`, label: t.nav.projects },
-  /* Иллюзии пока живут только по-русски, поэтому и пилюля пока только там.
-     Когда появятся en и be — убрать условие и добавить `${suffix}`. */
-  ...(t.lang === 'ru'
-    ? [{ key: 'illusions' as const, href: '/ru/illusions/', label: t.nav.illusions }]
-    : []),
+  { key: 'illusions' as const, href: `${suffix}/illusions/`, label: t.nav.illusions },
   { key: 'blog' as const, href: `${suffix}/blog/`, label: t.nav.blog },
   { key: 'games' as const, href: `${suffix}/games/`, label: t.nav.games },
   /* The papers live in English only, so every language points at the same

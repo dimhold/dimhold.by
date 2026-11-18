@@ -22,11 +22,17 @@ if (form && input && items.length) {
      Ещё убираем дефисы: «мюллер-лайер» должно находиться по «мюллер лайер». */
   const norm = (s: string) => s.toLowerCase().replace(/ё/g, 'е').replace(/[-–—]/g, ' ');
 
+  /* Формы слова приходят со страницы: «запись|записи|записей», «запіс|запісы|запісаў»,
+     «entry|entries|entries». Правило выбора у русского и беларусского одно, у
+     английского — своё. */
+  const forms = (countEl?.dataset.forms ?? 'запись|записи|записей').split('|');
+  const english = document.documentElement.lang === 'en';
   const plural = (n: number) => {
+    if (english) return n === 1 ? forms[0] : forms[2];
     const t = n % 10, h = n % 100;
-    if (t === 1 && h !== 11) return 'запись';
-    if (t >= 2 && t <= 4 && (h < 12 || h > 14)) return 'записи';
-    return 'записей';
+    if (t === 1 && h !== 11) return forms[0];
+    if (t >= 2 && t <= 4 && (h < 12 || h > 14)) return forms[1];
+    return forms[2];
   };
 
   function apply() {

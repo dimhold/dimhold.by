@@ -26,6 +26,18 @@ export const ASSETS = assets as Record<string, Asset>;
 
 export const asset = (id: string): Asset | undefined => ASSETS[id];
 
+/* assets.json пишет скрипт, и подписи в нём русские. Для других языков автор, источник
+   и права берутся отсюда по идентификатору материала; название остаётся оригинальным. */
+export const ASSET_TEXT: Record<'en' | 'be', Record<string, Partial<Pick<Asset, 'author' | 'source' | 'rights'>>>> = {
+  en: {},
+  be: {},
+};
+
+const QUOTES: Record<'ru' | 'en' | 'be', [string, string]> = { ru: ['«', '»'], be: ['«', '»'], en: ['“', '”'] };
+
 /** Строка подписи: кто, что, когда и на каких правах. */
-export const creditLine = (a: Asset): string =>
-  `${a.author}, «${a.title}», ${a.date}. ${a.source}. ${a.rights}.`;
+export const creditLine = (a: Asset, lang: 'ru' | 'en' | 'be' = 'ru', id = ''): string => {
+  const x = lang === 'ru' ? {} : (ASSET_TEXT[lang][id] ?? {});
+  const [o, c] = QUOTES[lang];
+  return `${x.author ?? a.author}, ${o}${a.title}${c}, ${a.date}. ${x.source ?? a.source}. ${x.rights ?? a.rights}.`;
+};

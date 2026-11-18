@@ -1,0 +1,179 @@
+---
+/* Страница одной иллюзии на любом из трёх языков.
+   У записи с разбором — текст, демонстрация и источники. У записи без разбора — всё
+   равно источники: каталог обещает ответить, где иллюзию упомянули впервые и откуда
+   взято написанное, и это обещание не зависит от того, дошли ли до неё руки. */
+import Base from '../../layouts/Base.astro';
+import Masthead from '../Masthead.astro';
+import SiteFooter from '../SiteFooter.astro';
+import Demo from './Demo.astro';
+import { hasDemo } from '../../lib/illusions/demos';
+import { dictionaries } from '../../i18n';
+import {
+  sources,
+  copyFor,
+  catLabel,
+  modLabel,
+  confLabel,
+  nameFor,
+  altNameFor,
+  cite,
+  href,
+  ILL_LANGS,
+  type Entry,
+  type IllLang,
+} from '../../lib/illusions';
+import { UI } from '../../lib/illusions/ui';
+
+interface Props {
+  lang: IllLang;
+  entry: Entry;
+}
+
+const { lang, entry } = Astro.props;
+const t = dictionaries[lang];
+const ui = UI[lang];
+const c = copyFor(entry.id, lang);
+/* Демонстрация от языка не зависит: ключ берётся из русского разбора, где он есть у
+   всех записей, а подпись к ручке — из разбора на языке страницы. */
+const demoKey = copyFor(entry.id, 'ru')?.demo;
+
+/* Источник первого упоминания идёт первым и помечен: он отвечает на главный вопрос
+   каталога, а остальные — на вопрос «откуда это всё». */
+const firstId = entry.first?.source ?? null;
+const list = [...new Set([firstId, ...entry.sources].filter(Boolean) as string[])]
+  .map((id) => ({ id, s: sources[id] }))
+  .filter((x) => x.s);
+
+/* Собирается строкой, а не тремя выражениями подряд: между выражениями в разметке
+   появляется перенос строки, и он превращается в пробел перед запятой. */
+const firstLine = entry.first
+  ? [entry.first.by, entry.first.where].filter(Boolean).map((x) => `, ${x}`).join('')
+  : '';
+
+const name = nameFor(entry, lang);
+const alternates = ILL_LANGS.map((l) => ({ lang: l, href: `${UI[l].base}${entry.id}/` }));
+const langHrefs = Object.fromEntries(alternates.map((a) => [a.lang, a.href]));
+/* Лид — одна короткая фраза, для сниппета в поиске её мало. К ней добавляется
+   «что видно»; Base обрежет результат по границе предложения. */
+const desc = c
+  ? [c.lede, c.what].filter(Boolean).join(' ')
+  : ui.entry.descFallback(name, altNameFor(entry, lang), catLabel(entry.category, lang));
+---
+
+<Base t={t} title={`${name}. ${ui.entry.titleSuffix}`} description={desc} alternates={alternates} ogType="article">
+  <Masthead t={t} active="illusions" langHrefs={langHrefs} />
+
+  <main id="main" class="ill-entry">
+    <a class="ill-back" href={ui.base}>{ui.entry.back}</a>
+
+    <header class="ill-entry-head">
+      <h1 class="post-title">{name}</h1>
+      <p class="ill-entry-en">{altNameFor(entry, lang)}</p>
+      {entry.aka.length > 0 && <p class="ill-entry-aka">{ui.entry.also}: {entry.aka.join(' · ')}</p>}
+      <p class="ill-entry-tags">
+        <a class="ill-tag" href={`${ui.base}?q=${encodeURIComponent(modLabel(entry.modality, lang))}`}>
+          {modLabel(entry.modality, lang)}
+        </a>
+        <a class="ill-tag" href={`${ui.base}?q=${encodeURIComponent(catLabel(entry.category, lang))}`}>
+          {catLabel(entry.category, lang)}
+        </a>
+      </p>
+    </header>
+
+    {c && <p class="ill-lede">{c.lede}</p>}
+
+    {c?.caution && <aside class="ill-caution"><b>{ui.entry.caution}</b> {c.caution}</aside>}
+
+    {/* Ключ демонстрации, для которого экспоната ещё нет, ничего не выводит: обещать
+        ручку и показать пустую рамку хуже, чем не обещать. */}
+    {demoKey && hasDemo(demoKey) && <Demo id={demoKey} note={c?.demoNote} lang={lang} />}
+
+    {
+      c && (
+        <section class="ill-sec">
+          <h2>{ui.entry.what}</h2>
+          <p>{c.what}</p>
+        </section>
+      )
+    }
+
+    {
+      c && (
+        <section class="ill-sec">
+          <h2>{ui.entry.how}</h2>
+          {c.how.map((p) => (
+            <p>{p}</p>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      c?.twist && (
+        <section class="ill-sec">
+          <h2>{ui.entry.twist}</h2>
+          <p>{c.twist}</p>
+        </section>
+      )
+    }
+
+    {
+      !c && (
+        <section class="ill-sec">
+          <p class="ill-stub-note">{ui.entry.stub}</p>
+        </section>
+      )
+    }
+
+    {
+      entry.first && (
+        <section class="ill-sec ill-first">
+          <h2>{ui.entry.firstH}</h2>
+          <p class="ill-first-line">
+            <b>{entry.first.year}</b>{firstLine}
+            <span class={`ill-conf is-${entry.first.confidence}`}>{confLabel(entry.first.confidence, lang)}</span>
+          </p>
+          {entry.first.confidence === 'disputed' && <p class="ill-first-note">{ui.entry.disputed}</p>}
+        </section>
+      )
+    }
+
+    <section class="ill-sec ill-sources">
+      <h2>{ui.entry.sourcesH}</h2>
+      {list.length === 0 && <p>{ui.entry.noSources}</p>}
+      <ol class="ill-src-list">
+        {
+          list.map(({ id, s }) => {
+            const url = href(s);
+            /* Пустой контейнер пометок оставляет после ссылки лишний отступ. */
+            const flagged = id === firstId || s.primary;
+            return (
+              <li class="ill-src">
+                {url ? (
+                  <a href={url} rel="noopener">
+                    {cite(s)}
+                  </a>
+                ) : (
+                  <span>{cite(s)}</span>
+                )}
+                {flagged && (
+                  <span class="ill-src-flags">
+                    {id === firstId && <span class="ill-flag is-first">{ui.entry.flagFirst}</span>}
+                    {s.primary && <span class="ill-flag">{ui.entry.flagPrimary}</span>}
+                  </span>
+                )}
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
+  </main>
+
+  <SiteFooter t={t} />
+</Base>
+
+<script>
+  import '../../scripts/illusions/boot';
+</script>

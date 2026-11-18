@@ -1,0 +1,132 @@
+---
+/* The catalogue of illusions, in any of the three languages. The page files under
+   /illusions/, /ru/illusions/ and /be/illusions/ only pick the language. */
+import Base from '../../layouts/Base.astro';
+import Masthead from '../Masthead.astro';
+import SiteFooter from '../SiteFooter.astro';
+import { dictionaries } from '../../i18n';
+import {
+  entries,
+  groups,
+  dossier,
+  generated,
+  catLabel,
+  modLabel,
+  copyFor,
+  nameFor,
+  altNameFor,
+  ILL_LANGS,
+  type IllLang,
+} from '../../lib/illusions';
+import { hasDemo } from '../../lib/illusions/demos';
+import { NAMES_BE } from '../../lib/illusions/names';
+import { UI } from '../../lib/illusions/ui';
+
+interface Props {
+  lang: IllLang;
+}
+
+const { lang } = Astro.props;
+const t = dictionaries[lang];
+const ui = UI[lang];
+const mods = groups(lang);
+const withCopy = entries.filter((e) => copyFor(e.id, lang)).length;
+/* Считаем построенные демонстрации, а не заявленные ключи: у части записей ключ
+   стоит как заметка на будущее, и учитывать его в цифре было бы враньём. */
+const withDemo = entries.filter((e) => hasDemo(copyFor(e.id, 'ru')?.demo)).length;
+const alternates = ILL_LANGS.map((l) => ({ lang: l, href: UI[l].base }));
+const langHrefs = Object.fromEntries(ILL_LANGS.map((l) => [l, UI[l].base]));
+
+/* Строка, по которой ищет браузер. Собирается на сборке, чтобы на клиенте не было ни
+   индекса, ни загрузки. Имена на всех трёх языках: человек ищет так, как запомнил. */
+const haystack = (e: (typeof entries)[number]) =>
+  [e.ru, e.en, NAMES_BE[e.id] ?? '', ...e.aka, catLabel(e.category, lang), modLabel(e.modality, lang), String(e.first?.year ?? '')]
+    .join(' ')
+    .toLowerCase();
+---
+
+<Base t={t} title={ui.index.title} description={ui.index.description(entries.length)} alternates={alternates} ogType="website">
+  <Masthead t={t} active="illusions" langHrefs={langHrefs} />
+
+  <main id="main" class="ill-page">
+    <header class="section-head">
+      <h1 class="blog-title">{ui.index.h1}</h1>
+      <svg class="squiggle" viewBox="0 0 60 14" fill="none" aria-hidden="true">
+        <path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+      </svg>
+    </header>
+
+    <p class="projects-lede">{ui.index.lede}</p>
+
+    {ui.index.framing.map((p) => <p class="ill-framing" set:html={p} />)}
+
+    <p class="ill-note">
+      {ui.index.note({ entries: entries.length, mods: mods.length, withCopy, withDemo, rows: dossier.rows, sources: dossier.sources, generated })}
+    </p>
+
+    <form class="ill-search" role="search" onsubmit="return false" data-ill-search>
+      <label class="sr-only" for="ill-q">{ui.index.searchLabel}</label>
+      <svg class="blog-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <input id="ill-q" type="search" name="q" autocomplete="off" spellcheck="false" placeholder={ui.index.placeholder} data-ill-input />
+      <button type="button" class="blog-search-clear" hidden data-ill-clear>{ui.index.clear}</button>
+    </form>
+
+    <div class="ill-filters">
+      <button type="button" class="ill-chip is-on" data-ill-filter="" aria-pressed="true">{ui.index.all}</button>
+      <button type="button" class="ill-chip" data-ill-filter="__demo" aria-pressed="false">{ui.index.withDemo}</button>
+      {
+        mods.map(([m, list]) => (
+          <button type="button" class="ill-chip" data-ill-filter={m} aria-pressed="false">
+            {modLabel(m, lang)} <span class="ill-chip-n">{list.length}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <p class="ill-count" data-ill-count data-forms={ui.index.countForms.join('|')} aria-live="polite"></p>
+
+    {
+      mods.map(([m, list]) => (
+        <section class="ill-group" data-ill-group={m}>
+          <h2 class="ill-group-title">
+            {modLabel(m, lang)} <span class="ill-group-n">{list.length}</span>
+          </h2>
+          <ul class="ill-list">
+            {list.map((e) => {
+              const demo = hasDemo(copyFor(e.id, 'ru')?.demo);
+              return (
+                <li class="ill-row" data-ill-item data-mod={e.modality} data-demo={demo ? '1' : '0'} data-hay={haystack(e)}>
+                  <a class="ill-row-link" href={`${ui.base}${e.id}/`}>
+                    <span class="ill-row-name">{nameFor(e, lang)}</span>
+                    <span class="ill-row-en">{altNameFor(e, lang)}</span>
+                  </a>
+                  <span class="ill-row-meta">
+                    <span class="ill-row-cat">{catLabel(e.category, lang)}</span>
+                    {e.first?.year ? <span class="ill-row-year">{e.first.year}</span> : null}
+                    {demo ? <span class="ill-badge is-demo">{ui.index.badgeDemo}</span> : <span class="ill-badge">{ui.index.badgeCopy}</span>}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))
+    }
+
+    <p class="ill-empty" data-ill-empty hidden>{ui.index.empty}</p>
+
+    <section class="section ill-about" aria-labelledby="ill-about-h">
+      <h2 id="ill-about-h" class="projects-sub">{ui.index.aboutH}</h2>
+      {ui.index.about.map((p) => <p set:html={p} />)}
+    </section>
+  </main>
+
+  <SiteFooter t={t} />
+</Base>
+
+<script>
+  import '../../scripts/illusions/index-filter';
+</script>
