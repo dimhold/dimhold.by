@@ -1,5 +1,6 @@
 /* Цвет, последействия и двойственные образы. */
 import { demo, grey, INK, MARK, PAPER, rnd, type Mount } from '../kit';
+import { num, tr } from '../i18n';
 
 export const negativeAfterimage: Mount = demo((k) => {
   let phase: 'idle' | 'adapt' | 'test' = 'idle';
@@ -34,18 +35,18 @@ export const negativeAfterimage: Mount = demo((k) => {
     phase = 'adapt';
     t0 = performance.now();
     el.disabled = true;
-    k.say('смотрите строго в точку в центре.');
+    k.say(tr('смотрите строго в точку в центре.'));
     s.draw();
     clearInterval(timer);
     timer = window.setInterval(() => {
       const left = 20 - (performance.now() - t0) / 1000;
-      k.clock(`${Math.max(0, left).toFixed(0)} с`);
+      k.clock(tr('{s} с', { s: Math.max(0, left).toFixed(0) }));
       if (left <= 0) {
         clearInterval(timer);
         phase = 'test';
         el.disabled = false;
         s.draw();
-        k.say('зелёное пятно там, где было красное. Никакого зелёного на экране нет.');
+        k.say(tr('зелёное пятно там, где было красное. Никакого зелёного на экране нет.'));
       }
     }, 100);
   });
@@ -86,10 +87,10 @@ export const benhamTop: Mount = demo((k) => {
   k.slider('speed', (v) => { speed = v; });
   k.toggle('dir', (v) => {
     dir = v ? -1 : 1;
-    k.say('цвета поменялись местами. У разных людей они разные — это одна из самых наглядных иллюзий, которая у каждого своя.');
+    k.say(tr('цвета поменялись местами. У разных людей они разные — это одна из самых наглядных иллюзий, которая у каждого своя.'));
   });
   k.loop((_, dt) => { a += dir * dt * speed; s.draw(); });
-  k.say('частота обновления вашего экрана здесь влияет на результат: вращение считается по настоящим меткам времени кадров.');
+  k.say(tr('частота обновления вашего экрана здесь влияет на результат: вращение считается по настоящим меткам времени кадров.'));
 });
 
 export const munkerWhite: Mount = demo((k) => {
@@ -118,7 +119,7 @@ export const munkerWhite: Mount = demo((k) => {
     const dpr = canvas.width / r.width;
     const ctx = canvas.getContext('2d')!;
     const d = ctx.getImageData(Math.round((ev.clientX - r.left) * dpr), Math.round((ev.clientY - r.top) * dpr), 1, 1).data;
-    k.say(`под курсором rgb(${d[0]} ${d[1]} ${d[2]}). Проведите по обоим шарам: краска у них одна.`);
+    k.say(tr('под курсором {rgb}. Проведите по обоим шарам: краска у них одна.', { rgb: `rgb(${d[0]} ${d[1]} ${d[2]})` }));
   });
 });
 
@@ -146,7 +147,7 @@ export const neonColourSpreading: Mount = demo((k) => {
   k.slider('lum', (v) => {
     lum = v;
     s.draw();
-    k.say(v < 20 || v > 85 ? 'окно по контрасту узкое, и здесь эффект схлопнулся.' : 'цвет растекается по прозрачному диску, которого не нарисовано.');
+    k.say(v < 20 || v > 85 ? tr('окно по контрасту узкое, и здесь эффект схлопнулся.') : tr('цвет растекается по прозрачному диску, которого не нарисовано.'));
   });
 });
 
@@ -180,7 +181,7 @@ export const watercolour: Mount = demo((k) => {
   k.toggle('swap', (v) => {
     swap = v;
     s.draw();
-    k.say(v ? 'окрасилось то, что было снаружи. Область не менялась — поменялись местами линии.' : '');
+    k.say(v ? tr('окрасилось то, что было снаружи. Область не менялась — поменялись местами линии.') : '');
   });
   k.slider('wave', (v) => { wave = v; s.draw(); });
 });
@@ -207,7 +208,7 @@ export const colourPhi: Mount = demo((k) => {
     if (last) { frames++; measured += now - last; }
     last = now;
     if (frames === 60) {
-      k.say(`кадр здесь идёт ${((measured / frames) * 1000).toFixed(1)} мс, значит интервал выставляется с такой же точностью, не лучше.`);
+      k.say(tr('кадр здесь идёт {ms} мс, значит интервал выставляется с такой же точностью, не лучше.', { ms: num((measured / frames) * 1000) }));
       frames = 0; measured = 0;
     }
   });
@@ -236,7 +237,7 @@ export const theDress: Mount = demo((k) => {
   k.slider('illum', (v) => {
     illum = v;
     s.draw();
-    k.say(v < 35 ? 'если считать свет тёплым, вычесть надо желтизну — и ткань выйдет синей с чёрным.' : v > 65 ? 'если считать свет холодным дневным, вычитается синева — и та же ткань выходит белой с золотым.' : 'здесь освещение неоднозначно, и системе не на чем остановиться.');
+    k.say(v < 35 ? tr('если считать свет тёплым, вычесть надо желтизну — и ткань выйдет синей с чёрным.') : v > 65 ? tr('если считать свет холодным дневным, вычитается синева — и та же ткань выходит белой с золотым.') : tr('здесь освещение неоднозначно, и системе не на чем остановиться.'));
   });
 });
 
@@ -263,7 +264,7 @@ export const colourConstancy: Mount = demo((k) => {
   k.slider('illum', (v) => {
     illum = v;
     s.draw();
-    k.say('краска у каждой плашки одна и та же во всём диапазоне. Меняется только множитель освещения — а цвета вы всё равно называете правильно.');
+    k.say(tr('краска у каждой плашки одна и та же во всём диапазоне. Меняется только множитель освещения — а цвета вы всё равно называете правильно.'));
   });
 });
 
@@ -299,22 +300,24 @@ export const tiltAftereffect: Mount = demo((k) => {
     t0 = performance.now();
     el.disabled = true;
     s.draw();
-    k.say('смотрите в красную точку, не отводя взгляд.');
+    k.say(tr('смотрите в красную точку, не отводя взгляд.'));
     clearInterval(timer);
     timer = window.setInterval(() => {
       const left = 45 - (performance.now() - t0) / 1000;
-      k.clock(`${Math.max(0, left).toFixed(0)} с`);
+      k.clock(tr('{s} с', { s: Math.max(0, left).toFixed(0) }));
       if (left <= 0) {
         clearInterval(timer);
         phase = 'test';
         el.disabled = false;
         s.draw();
-        k.say('теперь выставьте решётку в вертикаль и нажмите «проверить».');
+        k.say(tr('теперь выставьте решётку в вертикаль и нажмите «проверить».'));
       }
     }, 100);
   });
   k.button('check', () => {
-    k.say(guess === 0 ? 'ровно ноль — последействия у вас не осталось или оно уже прошло.' : `ваша ошибка ${Math.abs(guess)}° ${guess > 0 ? 'вправо' : 'влево'}. Адаптация шла на +15°, и отклонение должно быть в противоположную сторону.`);
+    k.say(guess === 0 ? tr('ровно ноль — последействия у вас не осталось или оно уже прошло.')
+      : guess > 0 ? tr('ваша ошибка {d}° вправо. Адаптация шла на +15°, и отклонение должно быть в противоположную сторону.', { d: Math.abs(guess) })
+      : tr('ваша ошибка {d}° влево. Адаптация шла на +15°, и отклонение должно быть в противоположную сторону.', { d: Math.abs(guess) }));
   });
 });
 
@@ -339,17 +342,17 @@ export const emmertLaw: Mount = demo((k) => {
     t0 = performance.now();
     el.disabled = true;
     s.draw();
-    k.say('смотрите в точку в центре пятна.');
+    k.say(tr('смотрите в точку в центре пятна.'));
     clearInterval(timer);
     timer = window.setInterval(() => {
       const left = 20 - (performance.now() - t0) / 1000;
-      k.clock(`${Math.max(0, left).toFixed(0)} с`);
+      k.clock(tr('{s} с', { s: Math.max(0, left).toFixed(0) }));
       if (left <= 0) {
         clearInterval(timer);
         phase = 'idle';
         el.disabled = false;
         s.draw();
-        k.say('теперь отведите взгляд от экрана: посмотрите на ладонь, потом на стол, потом на дальнюю стену. Образ на сетчатке один и тот же, а размер каждый раз новый.');
+        k.say(tr('теперь отведите взгляд от экрана: посмотрите на ладонь, потом на стол, потом на дальнюю стену. Образ на сетчатке один и тот же, а размер каждый раз новый.'));
       }
     }, 100);
   });
@@ -385,7 +388,7 @@ export const rubinVase: Mount = demo((k) => {
   k.slider('cue', (v) => {
     cue = v;
     s.draw();
-    k.say(v < 30 ? 'контур отдан вазе — лиц больше нет.' : v > 70 ? 'контур отдан профилям — вазы больше нет.' : 'контур никому не отдан, и прочтения меняются сами.');
+    k.say(v < 30 ? tr('контур отдан вазе — лиц больше нет.') : v > 70 ? tr('контур отдан профилям — вазы больше нет.') : tr('контур никому не отдан, и прочтения меняются сами.'));
   });
 });
 
@@ -419,7 +422,7 @@ export const figureGround: Mount = demo((k) => {
       ctx.fill();
     }
   });
-  const upd = () => { s.draw(); k.say('каждый ползунок тянет контур на свою сторону. Побеждает сумма, а не один признак.'); };
+  const upd = () => { s.draw(); k.say(tr('каждый ползунок тянет контур на свою сторону. Побеждает сумма, а не один признак.')); };
   k.slider('convex', (v) => { convex = v; upd(); });
   k.slider('area', (v) => { area = v; upd(); });
   k.slider('sym', (v) => { sym = v; upd(); });
@@ -466,9 +469,9 @@ export const cofferIllusion: Mount = demo((k) => {
   k.slider('len', (v) => { len = v; s.draw(); });
   k.button('circles', (el) => {
     circles = !circles;
-    el.textContent = circles ? 'убрать обводку' : 'обвести круги';
+    el.textContent = circles ? tr('убрать обводку') : tr('обвести круги');
     s.draw();
-    k.say(circles ? 'круги были нарисованы теми же отрезками всё это время. Они просто проиграли конкуренцию за владение контуром.' : '');
+    k.say(circles ? tr('круги были нарисованы теми же отрезками всё это время. Они просто проиграли конкуренцию за владение контуром.') : '');
   });
 });
 
@@ -517,8 +520,8 @@ export const neckerCube: Mount = demo((k) => {
     });
     ctx.fillStyle = '#6b6b70';
     ctx.font = '11px system-ui, sans-serif';
-    ctx.fillText('0 с', 2, 11);
-    const lbl = `${max.toFixed(1)} с`;
+    ctx.fillText(tr('{s} с', { s: 0 }), 2, 11);
+    const lbl = tr('{s} с', { s: num(max) });
     ctx.fillText(lbl, w - ctx.measureText(lbl).width - 2, 11);
   });
   const tap = () => {
@@ -526,12 +529,12 @@ export const neckerCube: Mount = demo((k) => {
     if (last) gaps.push((now - last) / 1000);
     last = now;
     hist.draw();
-    if (!gaps.length) { k.say('засекли. Жмите на каждом следующем перевороте.'); return; }
+    if (!gaps.length) { k.say(tr('засекли. Жмите на каждом следующем перевороте.')); return; }
     const mean = gaps.reduce((a, b) => a + b, 0) / gaps.length;
-    k.say(`${gaps.length} ${gaps.length === 1 ? 'интервал' : gaps.length < 5 ? 'интервала' : 'интервалов'}, в среднем ${mean.toFixed(1)} с. У большинства выходит от полутора до пяти.`);
+    k.say(tr('интервалов: {n}, в среднем {s} с. У большинства выходит от полутора до пяти.', { n: gaps.length, s: num(mean) }));
   };
   k.button('tap', tap);
-  k.button('reset', () => { gaps.length = 0; last = 0; hist.draw(); k.say('счёт сброшен.'); });
+  k.button('reset', () => { gaps.length = 0; last = 0; hist.draw(); k.say(tr('счёт сброшен.')); });
   k.space((down) => { if (down) tap(); });
 });
 
@@ -595,7 +598,7 @@ export const multistablePerception: Mount = demo((k) => {
       ctx.fillStyle = key === fig ? MARK : '#c9ccd4';
       ctx.fillRect(i * bw + 10, h - 14 - Math.min(mean / 8, 1) * (h - 26), bw - 20, Math.min(mean / 8, 1) * (h - 26));
       ctx.fillStyle = '#6b6b70';
-      ctx.fillText(mean ? `${mean.toFixed(1)} с` : '—', i * bw + 12, h - 3);
+      ctx.fillText(mean ? tr('{s} с', { s: num(mean) }) : '—', i * bw + 12, h - 3);
     });
   });
   k.select('fig', (v) => { fig = v; last = 0; s.draw(); });
@@ -604,7 +607,7 @@ export const multistablePerception: Mount = demo((k) => {
     if (last) gaps[fig].push((now - last) / 1000);
     last = now;
     hist.draw();
-    k.say('столбики внизу — ваши средние по трём стимулам. Сравнение между ними и есть самое интересное.');
+    k.say(tr('столбики внизу — ваши средние по трём стимулам. Сравнение между ними и есть самое интересное.'));
   };
   k.button('tap', tap);
   k.button('reset', () => { for (const key of Object.keys(gaps)) gaps[key].length = 0; last = 0; hist.draw(); });
@@ -647,7 +650,7 @@ export const pareidolia: Mount = demo((k) => {
   k.toggle('hires', (v) => {
     hires = v;
     s.draw();
-    if (what === 'mars') k.say(v ? 'та же гора при вчетверо большем разрешении: лица нет и не было.' : 'снимок 1976 года, 43 метра на пиксель. Лицо тут видят все.');
+    if (what === 'mars') k.say(v ? tr('та же гора при вчетверо большем разрешении: лица нет и не было.') : tr('снимок 1976 года, 43 метра на пиксель. Лицо тут видят все.'));
   });
   k.button('roll', () => {
     seed = (seed * 1103515245 + 12345) >>> 0;
@@ -656,7 +659,7 @@ export const pareidolia: Mount = demo((k) => {
     const sel = k.el('[data-select="what"]') as HTMLSelectElement | null;
     if (sel) sel.value = 'noise';
     s.draw();
-    k.say(`бросок ${rolls}. Система опознания лиц настроена так, чтобы не пропустить ни одного, — а значит, обязана иногда срабатывать впустую.`);
+    k.say(tr('бросок {n}. Система опознания лиц настроена так, чтобы не пропустить ни одного, — а значит, обязана иногда срабатывать впустую.', { n: rolls }));
   });
   for (const id of ['mars-viking', 'mars-mgs']) {
     const src = assets[id];

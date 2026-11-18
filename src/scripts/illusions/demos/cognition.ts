@@ -2,6 +2,7 @@
    опыты: они спрашивают до объяснения, записывают ответ и только потом разбирают.
    Где есть обман, разбор идёт сразу, а не в конце страницы. */
 import { demo, grey, INK, MARK, PAPER, rnd, type Mount } from '../kit';
+import { num, pageLang, tr } from '../i18n';
 
 export const launchingEffect: Mount = demo((k) => {
   let delay = 0, t0 = -1;
@@ -24,7 +25,7 @@ export const launchingEffect: Mount = demo((k) => {
   });
   k.slider('delay', (v) => {
     delay = v;
-    k.say(v === 0 ? 'это столкновение: причину видно так же прямо, как цвет.' : v > 150 ? 'причинность вытекла: два несвязанных события, и никакое знание её не возвращает.' : 'причинность слабеет.');
+    k.say(v === 0 ? tr('это столкновение: причину видно так же прямо, как цвет.') : v > 150 ? tr('причинность вытекла: два несвязанных события, и никакое знание её не возвращает.') : tr('причинность слабеет.'));
   });
   k.button('go', () => { t0 = performance.now(); });
   k.loop(() => { if (t0 > 0) s.draw(); });
@@ -72,13 +73,15 @@ export const heiderSimmelAnimacy: Mount = demo((k) => {
   const stage = k.stage;
   k.button('play', () => {
     t0 = performance.now();
-    stage.innerHTML = '<p class="ill-q">что здесь произошло? Опишите своими словами.</p><textarea class="ill-text" rows="3" placeholder="…"></textarea>';
-    k.say('почти никто не описывает это геометрическими словами.');
+    stage.innerHTML = `<p class="ill-q">${tr('что здесь произошло? Опишите своими словами.')}</p><textarea class="ill-text" rows="3" placeholder="…"></textarea>`;
+    k.say(tr('почти никто не описывает это геометрическими словами.'));
   });
   k.loop(() => { if (t0 > 0) s.draw(); });
 });
 
-const COLOURS: [string, string][] = [['красный', '#d8342c'], ['синий', '#2f62d0'], ['зелёный', '#2e8b45'], ['жёлтый', '#d6a41a']];
+/* Слова цвета — на языке читателя: помеха Струпа идёт от автоматического чтения,
+   а автоматически читается только свой язык. */
+const COLOURS: [string, string][] = [[tr('красный'), '#d8342c'], [tr('синий'), '#2f62d0'], [tr('зелёный'), '#2e8b45'], [tr('жёлтый'), '#d6a41a']];
 
 export const stroop: Mount = demo((k) => {
   const stage = k.stage;
@@ -97,7 +100,7 @@ export const stroop: Mount = demo((k) => {
       const inc = times.filter((t) => !t.congruent);
       const mean = (a: typeof times) => a.reduce((s, t) => s + t.ms, 0) / Math.max(a.length, 1);
       stage.innerHTML = '';
-      k.say(`согласованные ${Math.round(mean(c))} мс, рассогласованные ${Math.round(mean(inc))} мс. Ваша цена помехи — ${Math.round(mean(inc) - mean(c))} мс.`);
+      k.say(tr('согласованные {c} мс, рассогласованные {i} мс. Ваша цена помехи — {d} мс.', { c: Math.round(mean(c)), i: Math.round(mean(inc)), d: Math.round(mean(inc) - mean(c)) }));
       return;
     }
     const [word, ink] = trials[i];
@@ -132,7 +135,7 @@ export const stroop: Mount = demo((k) => {
     i = 0;
     times.length = 0;
     t0 = performance.now();
-    k.say('называйте цвет чернил, а не слово. Двадцать проб.');
+    k.say(tr('называйте цвет чернил, а не слово. Двадцать проб.'));
     render();
   });
 });
@@ -164,37 +167,38 @@ export const montyHall: Mount = demo((k) => {
     ctx.stroke();
     ctx.fillStyle = '#6b6b70';
     ctx.font = '11px ui-monospace, monospace';
-    ctx.fillText('красная — менять, синяя — оставлять', 4, 12);
+    ctx.fillText(tr('красная — менять, синяя — оставлять'), 4, 12);
   });
   const play = () => {
     const r = rnd(Date.now() % 88883);
     const car = Math.floor(r() * 3);
-    stage.innerHTML = '<p class="ill-q">три двери, за одной машина. Выбирайте.</p>';
+    stage.innerHTML = `<p class="ill-q">${tr('три двери, за одной машина. Выбирайте.')}</p>`;
     const row = document.createElement('div');
     row.className = 'ill-answers';
     for (let d = 0; d < 3; d++) {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'ill-btn';
-      b.textContent = `дверь ${d + 1}`;
+      b.textContent = tr('дверь {n}', { n: d + 1 });
       b.onclick = () => {
         /* Ведущий знает, где машина, и открывает заведомо пустую — его действие
            несёт сведения, и потому двери не симметричны. */
         let open = 0;
         for (let x = 0; x < 3; x++) if (x !== d && x !== car) { open = x; break; }
         const other = [0, 1, 2].find((x) => x !== d && x !== open)!;
-        stage.innerHTML = `<p class="ill-q">ведущий открыл дверь ${open + 1} — она пустая. Что делаете?</p>`;
+        stage.innerHTML = `<p class="ill-q">${tr('ведущий открыл дверь {n} — она пустая. Что делаете?', { n: open + 1 })}</p>`;
         const row2 = document.createElement('div');
         row2.className = 'ill-answers';
-        for (const [label, choice] of [['оставить', d], ['поменять', other]] as const) {
+        for (const [label, choice, stay] of [[tr('оставить'), d, true], [tr('поменять'), other, false]] as const) {
           const bb = document.createElement('button');
           bb.type = 'button';
           bb.className = 'ill-btn';
           bb.textContent = label;
           bb.onclick = () => {
             const win = choice === car;
-            if (label === 'оставить') { stayN++; if (win) stayWins++; } else { switchN++; if (win) switchWins++; }
-            k.say(`${win ? 'машина' : 'коза'}. Ваш счёт: оставляли ${stayWins}/${stayN}, меняли ${switchWins}/${switchN}.`);
+            if (stay) { stayN++; if (win) stayWins++; } else { switchN++; if (win) switchWins++; }
+            const score = { sw: stayWins, sn: stayN, cw: switchWins, cn: switchN };
+            k.say(win ? tr('машина. Ваш счёт: оставляли {sw}/{sn}, меняли {cw}/{cn}.', score) : tr('коза. Ваш счёт: оставляли {sw}/{sn}, меняли {cw}/{cn}.', score));
             play();
           };
           row2.append(bb);
@@ -216,7 +220,7 @@ export const montyHall: Mount = demo((k) => {
       if (i % 50 === 0) curve.push([st / i, sw / i]);
     }
     chart.draw();
-    k.say(`на десяти тысячах партий: оставлять — ${((st / 10000) * 100).toFixed(1)} %, менять — ${((sw / 10000) * 100).toFixed(1)} %.`);
+    k.say(tr('на десяти тысячах партий: оставлять — {st} %, менять — {sw} %.', { st: num((st / 10000) * 100), sw: num((sw / 10000) * 100) }));
   });
   k.button('reset', () => { stayWins = stayN = switchWins = switchN = 0; curve = []; chart.draw(); play(); });
   play();
@@ -241,34 +245,35 @@ export const anchoring: Mount = demo((k) => {
     ctx.fillStyle = '#6b6b70';
     ctx.font = '11px ui-monospace, monospace';
     ctx.fillText('0', 4, h - 4);
-    ctx.fillText('2000 км', w - 54, h - 4);
+    const end = tr('{n} км', { n: 2000 });
+    ctx.fillText(end, w - ctx.measureText(end).width - 4, h - 4);
   });
   /* Якорь достаётся честно случайно, и разбор идёт сразу после ответа. */
-  stage.innerHTML = `<p class="ill-q">Длина Днепра больше или меньше ${anchor} км?</p>`;
+  stage.innerHTML = `<p class="ill-q">${tr('Длина Днепра больше или меньше {n} км?', { n: anchor })}</p>`;
   const row = document.createElement('div');
   row.className = 'ill-answers';
-  for (const label of ['больше', 'меньше']) {
+  for (const label of [tr('больше'), tr('меньше')]) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'ill-btn';
     b.textContent = label;
     b.onclick = () => {
-      stage.innerHTML = '<p class="ill-q">А сколько именно, по-вашему?</p>';
+      stage.innerHTML = `<p class="ill-q">${tr('А сколько именно, по-вашему?')}</p>`;
       const inp = document.createElement('input');
       inp.type = 'number';
       inp.className = 'ill-num';
-      inp.placeholder = 'км';
+      inp.placeholder = tr('км');
       const ok = document.createElement('button');
       ok.type = 'button';
       ok.className = 'ill-btn';
-      ok.textContent = 'ответить';
+      ok.textContent = tr('ответить');
       ok.onclick = () => {
         const g = Number(inp.value);
         if (!g) return;
         answers.push({ anchor, guess: g });
         chart.draw();
         stage.innerHTML = '';
-        k.say(`вы ответили ${g} км. Число ${anchor}, которое вы видели до вопроса, выпало вам случайно и к Днепру отношения не имеет — а оценки тех, кому выпало другое, систематически другие. Настоящая длина — 2201 км.`);
+        k.say(tr('вы ответили {g} км. Число {a}, которое вы видели до вопроса, выпало вам случайно и к Днепру отношения не имеет — а оценки тех, кому выпало другое, систематически другие. Настоящая длина — 2201 км.', { g, a: anchor }));
       };
       stage.append(inp, ok);
     };
@@ -280,19 +285,19 @@ export const anchoring: Mount = demo((k) => {
 export const lindaProblem: Mount = demo((k) => {
   const stage = k.stage;
   /* Вопрос задаётся до всяких объяснений: в этом вся конструкция. */
-  stage.innerHTML = '<p class="ill-q">Лине 31 год, она не замужем, говорит прямо и очень неглупа. В университете изучала философию, занималась вопросами справедливости и ходила на демонстрации. Что вероятнее?</p>';
+  stage.innerHTML = `<p class="ill-q">${tr('Лине 31 год, она не замужем, говорит прямо и очень неглупа. В университете изучала философию, занималась вопросами справедливости и ходила на демонстрации. Что вероятнее?')}</p>`;
   const row = document.createElement('div');
   row.className = 'ill-answers ill-answers-col';
-  for (const [label, ok] of [['Лина — кассир в банке', true], ['Лина — кассир в банке и участвует в феминистском движении', false]] as const) {
+  for (const [label, ok] of [[tr('Лина — кассир в банке'), true], [tr('Лина — кассир в банке и участвует в феминистском движении'), false]] as const) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'ill-btn';
     b.textContent = label;
     b.onclick = () => {
-      stage.innerHTML = '<p class="ill-q">Множество «кассир и феминистка» целиком лежит внутри множества «кассир». Второе не может быть вероятнее первого ни при каком описании.</p>';
+      stage.innerHTML = `<p class="ill-q">${tr('Множество «кассир и феминистка» целиком лежит внутри множества «кассир». Второе не может быть вероятнее первого ни при каком описании.')}</p>`;
       k.say(ok
-        ? 'вы выбрали то, что не может быть менее вероятным. Большинство выбирает второе.'
-        : 'так отвечает большинство. Есть и возражение: услышав «кассир», собеседник понимает «кассир и больше ничего» — тогда это не провал логики, а нормальный разговорный вывод.');
+        ? tr('вы выбрали то, что не может быть менее вероятным. Большинство выбирает второе.')
+        : tr('так отвечает большинство. Есть и возражение: услышав «кассир», собеседник понимает «кассир и больше ничего» — тогда это не провал логики, а нормальный разговорный вывод.'));
     };
     row.append(b);
   }
@@ -315,7 +320,7 @@ export const illusionOfControl: Mount = demo((k) => {
     /* Кнопка не подключена ни к чему: лампа зажигается случайно и сама по себе. */
     if (lit) hits++;
     if (presses === 15) {
-      stage.innerHTML = '<p class="ill-q">Насколько вы управляли лампой? От 0 до 10.</p>';
+      stage.innerHTML = `<p class="ill-q">${tr('Насколько вы управляли лампой? От 0 до 10.')}</p>`;
       const inp = document.createElement('input');
       inp.type = 'range';
       inp.min = '0';
@@ -324,10 +329,10 @@ export const illusionOfControl: Mount = demo((k) => {
       const ok = document.createElement('button');
       ok.type = 'button';
       ok.className = 'ill-btn';
-      ok.textContent = 'ответить';
+      ok.textContent = tr('ответить');
       ok.onclick = () => {
         stage.innerHTML = '';
-        k.say(`вы оценили своё влияние в ${inp.value} из 10. Кнопка не была подключена ни к чему: лампа всё это время зажигалась сама, и совпало ${hits} раз из ${presses}.`);
+        k.say(tr('вы оценили своё влияние в {v} из 10. Кнопка не была подключена ни к чему: лампа всё это время зажигалась сама. Совпадений: {h} из {n}.', { v: inp.value, h: hits, n: presses }));
       };
       stage.append(inp, ok);
     }
@@ -368,8 +373,8 @@ export const intentionalBinding: Mount = demo((k) => {
     pressAt = -1;
     toneAt = -1;
     t0 = performance.now();
-    stage.innerHTML = '<p class="ill-q">нажмите пробел в любой момент — через четверть секунды прозвучит сигнал.</p>';
-    k.say('часы Либета: стрелка делает оборот за 2,56 с.');
+    stage.innerHTML = `<p class="ill-q">${tr('нажмите пробел в любой момент — через четверть секунды прозвучит сигнал.')}</p>`;
+    k.say(tr('часы Либета: стрелка делает оборот за {s} с.', { s: num(2.56, 2) }));
   });
   k.space((down) => {
     if (!down || !running || pressAt >= 0) return;
@@ -386,7 +391,7 @@ export const intentionalBinding: Mount = demo((k) => {
       osc.stop(ctxA.currentTime + 0.08);
       setTimeout(() => ctxA.close(), 300);
       running = false;
-      stage.innerHTML = '<p class="ill-q">где стояла стрелка, когда вы нажали?</p>';
+      stage.innerHTML = `<p class="ill-q">${tr('где стояла стрелка, когда вы нажали?')}</p>`;
       const inp = document.createElement('input');
       inp.type = 'range';
       inp.min = '0';
@@ -395,12 +400,12 @@ export const intentionalBinding: Mount = demo((k) => {
       const ok = document.createElement('button');
       ok.type = 'button';
       ok.className = 'ill-btn';
-      ok.textContent = 'ответить';
+      ok.textContent = tr('ответить');
       ok.onclick = () => {
         const real = ((pressAt - t0) % 2560);
         const err = Number(inp.value) - real;
         stage.innerHTML = '';
-        k.say(`ваша оценка разошлась с настоящим моментом на ${Math.round(err)} мс. При произвольном действии оценка обычно сдвигается позже, а оценка звука — раньше: они сближаются.`);
+        k.say(tr('ваша оценка разошлась с настоящим моментом на {ms} мс. При произвольном действии оценка обычно сдвигается позже, а оценка звука — раньше: они сближаются.', { ms: Math.round(err) }));
       };
       stage.append(inp, ok);
     }, 250);
@@ -410,10 +415,28 @@ export const intentionalBinding: Mount = demo((k) => {
   });
 });
 
-/* Списки строятся для русского, а не переводятся: ассоциативная структура перевода
-   не переживает, и приманка перестаёт работать. */
-const DRM_LIST = ['кровать', 'отдых', 'бодрствовать', 'устал', 'мечта', 'будильник', 'дремота', 'одеяло', 'храп', 'зевать', 'ночь', 'покой', 'подушка', 'сновидение'];
-const DRM_LURE = 'сон';
+/* Списки строятся для каждого языка, а не переводятся: ассоциативная структура перевода
+   не переживает, и приманка перестаёт работать. Английский — исходный список «sleep»
+   Рёдигера и Макдермотта; беларуский собран заново вокруг «сон». */
+const DRM = pageLang === 'en'
+  ? {
+      list: ['bed', 'rest', 'awake', 'tired', 'dream', 'wake', 'snooze', 'blanket', 'doze', 'slumber', 'snore', 'nap', 'yawn', 'drowsy'],
+      lure: 'sleep',
+      probes: ['blanket', 'sleep', 'phone', 'snore'],
+    }
+  : pageLang === 'be'
+    ? {
+        list: ['ложак', 'адпачынак', 'прачнуцца', 'стомлены', 'калыханка', 'будзільнік', 'дрымота', 'коўдра', 'храп', 'пазяхаць', 'ноч', 'спакой', 'падушка', 'сніцца'],
+        lure: 'сон',
+        probes: ['падушка', 'сон', 'тэлефон', 'ноч'],
+      }
+    : {
+        list: ['кровать', 'отдых', 'бодрствовать', 'устал', 'мечта', 'будильник', 'дремота', 'одеяло', 'храп', 'зевать', 'ночь', 'покой', 'подушка', 'сновидение'],
+        lure: 'сон',
+        probes: ['подушка', 'сон', 'телефон', 'ночь'],
+      };
+const DRM_LIST = DRM.list;
+const DRM_LURE = DRM.lure;
 
 export const drmFalseMemory: Mount = demo((k) => {
   const stage = k.stage;
@@ -423,16 +446,16 @@ export const drmFalseMemory: Mount = demo((k) => {
       stage.innerHTML = `<p class="ill-word">${word}</p>`;
       await new Promise((r) => setTimeout(r, 900));
     }
-    stage.innerHTML = '<p class="ill-q">теперь посчитайте вслух от 30 до 1. Не торопитесь.</p>';
+    stage.innerHTML = `<p class="ill-q">${tr('теперь посчитайте вслух от 30 до 1. Не торопитесь.')}</p>`;
     await new Promise((r) => setTimeout(r, 6000));
-    const probes = ['подушка', DRM_LURE, 'телефон', 'ночь'];
+    const probes = DRM.probes;
     const said: Record<string, boolean> = {};
     for (const p of probes) {
       await new Promise<void>((resolve) => {
-        stage.innerHTML = `<p class="ill-q">слово «${p}» было в списке?</p>`;
+        stage.innerHTML = `<p class="ill-q">${tr('слово «{w}» было в списке?', { w: p })}</p>`;
         const row = document.createElement('div');
         row.className = 'ill-answers';
-        for (const [label, yes] of [['было', true], ['не было', false]] as const) {
+        for (const [label, yes] of [[tr('было'), true], [tr('не было'), false]] as const) {
           const b = document.createElement('button');
           b.type = 'button';
           b.className = 'ill-btn';
@@ -446,8 +469,8 @@ export const drmFalseMemory: Mount = demo((k) => {
     stage.innerHTML = '';
     el.disabled = false;
     k.say(said[DRM_LURE]
-      ? `слова «${DRM_LURE}» в списке не было ни разу. Вы его помните, потому что извлечение восстанавливает смысл, а не проигрывает запись.`
-      : `вы устояли: слова «${DRM_LURE}» действительно не было. Большинство его вспоминает — и уверенно.`);
+      ? tr('слова «{w}» в списке не было ни разу. Вы его помните, потому что извлечение восстанавливает смысл, а не проигрывает запись.', { w: DRM_LURE })
+      : tr('вы устояли: слова «{w}» действительно не было. Большинство его вспоминает — и уверенно.', { w: DRM_LURE }));
   });
 });
 
@@ -462,7 +485,7 @@ export const choiceBlindness: Mount = demo((k) => {
     return svg + '</svg>';
   };
   const a = Math.floor(r() * 1e6), b = Math.floor(r() * 1e6);
-  stage.innerHTML = '<p class="ill-q">какая картинка вам нравится больше?</p>';
+  stage.innerHTML = `<p class="ill-q">${tr('какая картинка вам нравится больше?')}</p>`;
   const row = document.createElement('div');
   row.className = 'ill-answers';
   [a, b].forEach((seed, i) => {
@@ -473,17 +496,17 @@ export const choiceBlindness: Mount = demo((k) => {
     btn.onclick = () => {
       /* Возвращается отвергнутая карточка. Разбор идёт сразу же после ответа. */
       const shown = i === 0 ? b : a;
-      stage.innerHTML = `<p class="ill-q">вы выбрали эту. Почему?</p>${card(shown)}`;
+      stage.innerHTML = `<p class="ill-q">${tr('вы выбрали эту. Почему?')}</p>${card(shown)}`;
       const t = document.createElement('textarea');
       t.className = 'ill-text';
       t.rows = 2;
       const ok = document.createElement('button');
       ok.type = 'button';
       ok.className = 'ill-btn';
-      ok.textContent = 'ответить';
+      ok.textContent = tr('ответить');
       ok.onclick = () => {
         stage.innerHTML = '';
-        k.say('вам вернули ту картинку, которую вы отвергли. Подмену замечает примерно один человек из восьми; остальные объясняют выбор подробно и убедительно. Отчёт о собственном решении собирается задним числом — записи решения просто нет.');
+        k.say(tr('вам вернули ту картинку, которую вы отвергли. Подмену замечает примерно один человек из восьми; остальные объясняют выбор подробно и убедительно. Отчёт о собственном решении собирается задним числом — записи решения просто нет.'));
       };
       stage.append(t, ok);
     };
@@ -518,10 +541,10 @@ export const boubaKiki: Mount = demo((k) => {
     ctx.fill();
   });
   const stage = k.stage;
-  stage.innerHTML = '<p class="ill-q">какая из них «буба», а какая «кики»?</p>';
+  stage.innerHTML = `<p class="ill-q">${tr('какая из них «буба», а какая «кики»?')}</p>`;
   const row = document.createElement('div');
   row.className = 'ill-answers';
-  for (const [label, typical] of [['слева буба, справа кики', true], ['слева кики, справа буба', false]] as const) {
+  for (const [label, typical] of [[tr('слева буба, справа кики'), true], [tr('слева кики, справа буба'), false]] as const) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'ill-btn';
@@ -529,8 +552,8 @@ export const boubaKiki: Mount = demo((k) => {
     b.onclick = () => {
       stage.innerHTML = '';
       k.say(typical
-        ? 'так отвечают девять человек из десяти, в большинстве языков и систем письма. Округлым губам отвечает округлый контур, резкому взрыву — угол.'
-        : 'необычный ответ: так отвечает примерно один из десяти. Межкультурная работа 2022 года нашла языки, в которых эффект слабее, — и это честная версия утверждения.');
+        ? tr('так отвечают девять человек из десяти, в большинстве языков и систем письма. Округлым губам отвечает округлый контур, резкому взрыву — угол.')
+        : tr('необычный ответ: так отвечает примерно один из десяти. Межкультурная работа 2022 года нашла языки, в которых эффект слабее, — и это честная версия утверждения.'));
     };
     row.append(b);
   }
@@ -558,7 +581,7 @@ export const kappaEffect: Mount = demo((k) => {
   k.slider('pos', (v) => { pos = v; s.draw(); });
   k.button('go', () => {
     t0 = performance.now();
-    k.say('интервалы по времени равны — по 0,4 с. Если средняя вспышка стоит не посередине, они перестают быть равными на слух и на глаз.');
+    k.say(tr('интервалы по времени равны — по 0,4 с. Если средняя вспышка стоит не посередине, они перестают быть равными на слух и на глаз.'));
   });
   k.loop(() => { if (t0 > 0) s.draw(); });
 });
@@ -589,10 +612,10 @@ export const oddballEffect: Mount = demo((k) => {
       s.draw();
       await new Promise((r) => setTimeout(r, 90));
     }
-    stage.innerHTML = '<p class="ill-q">сколько длился красный квадрат по сравнению с кругами?</p>';
+    stage.innerHTML = `<p class="ill-q">${tr('сколько длился красный квадрат по сравнению с кругами?')}</p>`;
     const row = document.createElement('div');
     row.className = 'ill-answers';
-    for (const [label, over] of [['дольше', true], ['столько же', false], ['короче', false]] as const) {
+    for (const [label, over] of [[tr('дольше'), true], [tr('столько же'), false], [tr('короче'), false]] as const) {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'ill-btn';
@@ -600,8 +623,8 @@ export const oddballEffect: Mount = demo((k) => {
       b.onclick = () => {
         stage.innerHTML = '';
         k.say(over
-          ? 'все кадры шли ровно по 400 мс, включая красный. Внимание ускоряет обработку, а больше обработки читается как больше времени.'
-          : 'вы устояли. Большинство говорит «дольше» — все кадры шли ровно по 400 мс.');
+          ? tr('все кадры шли ровно по 400 мс, включая красный. Внимание ускоряет обработку, а больше обработки читается как больше времени.')
+          : tr('вы устояли. Большинство говорит «дольше» — все кадры шли ровно по 400 мс.'));
       };
       row.append(b);
     }
@@ -630,7 +653,7 @@ export const representationalMomentum: Mount = demo((k) => {
     const x = ev.clientX - r.left;
     errs.push(x - stopX);
     const mean = errs.reduce((a, b) => a + b, 0) / errs.length;
-    k.say(`${errs.length} попыток, средний промах ${mean > 0 ? '+' : ''}${mean.toFixed(0)} px по ходу движения. Систематический сдвиг вперёд — это и есть инерция представления.`);
+    k.say(tr('попыток: {n}, средний промах {d} px по ходу движения. Систематический сдвиг вперёд — это и есть инерция представления.', { n: errs.length, d: `${mean > 0 ? '+' : ''}${mean.toFixed(0)}` }));
     done = false;
     t0 = -1;
     s.draw();
@@ -640,7 +663,7 @@ export const representationalMomentum: Mount = demo((k) => {
     stopX = w * (0.4 + Math.random() * 0.45);
     t0 = performance.now();
     done = false;
-    k.say('запомните, где он остановился, и щёлкните там.');
+    k.say(tr('запомните, где он остановился, и щёлкните там.'));
   });
   k.loop(() => { if (t0 > 0) s.draw(); });
 });
@@ -665,14 +688,14 @@ export const chronostasis: Mount = demo((k) => {
     show = true;
     secs = 0;
     t0 = performance.now();
-    k.say('смотрите на красную точку слева, потом резко переведите взгляд на счётчик справа. Первая цифра простоит дольше секунды.');
+    k.say(tr('смотрите на красную точку слева, потом резко переведите взгляд на счётчик справа. Первая цифра простоит дольше секунды.'));
   });
   k.loop(() => {
     if (!show) return;
     const n = Math.floor((performance.now() - t0) / 1000);
     if (n !== secs) { secs = n; s.draw(); }
   });
-  k.say('настоящие стрелочные часы работают лучше и стоят дешевле — это тот случай, когда экран проигрывает предмету.');
+  k.say(tr('настоящие стрелочные часы работают лучше и стоят дешевле — это тот случай, когда экран проигрывает предмету.'));
 });
 
 export const pseudoHaptics: Mount = demo((k) => {
@@ -719,7 +742,7 @@ export const pseudoHaptics: Mount = demo((k) => {
     lastX = ev.offsetX; lastY = ev.offsetY;
     s.draw();
   });
-  k.select('mode', (v) => { mode = v; k.say('мышь при этом не умеет ничего. Ощущение целиком собрано из расхождения между командой и результатом.'); });
+  k.select('mode', (v) => { mode = v; k.say(tr('мышь при этом не умеет ничего. Ощущение целиком собрано из расхождения между командой и результатом.')); });
 });
 
 export const vection: Mount = demo((k) => {
@@ -746,7 +769,7 @@ export const vection: Mount = demo((k) => {
   });
   k.toggle('go', (v) => {
     go = v;
-    k.say(v ? 'если станет мутить — жмите «остановить» немедленно. Векция без согласованного вестибулярного сигнала — это ровно тот конфликт, от которого укачивает.' : 'остановлено.');
+    k.say(v ? tr('если станет мутить — жмите «остановить» немедленно. Векция без согласованного вестибулярного сигнала — это ровно тот конфликт, от которого укачивает.') : tr('остановлено.'));
   });
   k.slider('speed', (v) => { speed = v; });
   k.loop((now) => { t = now; s.draw(); });
@@ -778,14 +801,14 @@ export const somatogravic: Mount = demo((k) => {
       ctx.font = '13px system-ui, sans-serif';
       ctx.fillText(label, x2 + 6, y2);
     };
-    arrow(cx, cy, cx, cy + g, '#6f7682', 'тяжесть');
-    arrow(cx, cy, cx - a, cy, '#3b6fd0', 'ускорение');
-    arrow(cx, cy, cx - a, cy + g, MARK, 'то, что меряют отолиты');
+    arrow(cx, cy, cx, cy + g, '#6f7682', tr('тяжесть'));
+    arrow(cx, cy, cx - a, cy, '#3b6fd0', tr('ускорение'));
+    arrow(cx, cy, cx - a, cy + g, MARK, tr('то, что меряют отолиты'));
   });
   k.slider('accel', (v) => {
     accel = v;
     s.draw();
-    k.say('отолиты меряют сумму и разложить её на слагаемые не могут. Это не сбой обработки: сведений, чтобы различить разгон и задирание носа, в сигнале физически нет.');
+    k.say(tr('отолиты меряют сумму и разложить её на слагаемые не могут. Это не сбой обработки: сведений, чтобы различить разгон и задирание носа, в сигнале физически нет.'));
   });
 });
 
@@ -810,7 +833,7 @@ export const falseHeartRateFeedback: Mount = demo((k) => {
     el.disabled = true;
     const fast = Math.random() > 0.5;
     const bpm = fast ? 105 : 62;
-    stage.innerHTML = '<p class="ill-q">послушайте несколько секунд и посмотрите на узор.</p><div class="ill-swatch"></div>';
+    stage.innerHTML = `<p class="ill-q">${tr('послушайте несколько секунд и посмотрите на узор.')}</p><div class="ill-swatch"></div>`;
     const sw = stage.querySelector('.ill-swatch') as HTMLElement;
     sw.style.background = 'conic-gradient(#d8342c, #2f62d0, #2e8b45, #d6a41a, #d8342c)';
     clearInterval(timer);
@@ -819,18 +842,18 @@ export const falseHeartRateFeedback: Mount = demo((k) => {
     clearInterval(timer);
     ctxA?.close();
     ctxA = null;
-    stage.innerHTML = '<p class="ill-q">насколько узор вам понравился? От 0 до 10.</p>';
+    stage.innerHTML = `<p class="ill-q">${tr('насколько узор вам понравился? От 0 до 10.')}</p>`;
     const inp = document.createElement('input');
     inp.type = 'range'; inp.min = '0'; inp.max = '10'; inp.value = '5';
     const ok = document.createElement('button');
     ok.type = 'button';
     ok.className = 'ill-btn';
-    ok.textContent = 'ответить';
+    ok.textContent = tr('ответить');
     ok.onclick = () => {
       stage.innerHTML = '';
       el.disabled = false;
       /* Обман кончается здесь и сразу, а не в конце страницы. */
-      k.say(`оценка ${inp.value} из 10. Скажем прямо: этот звук никогда не был вашим пульсом. Он шёл с частотой ${bpm} ударов в минуту, выпавшей случайно, и в опыте Валинса именно такая подмена сдвигала оценки.`);
+      k.say(tr('оценка {v} из 10. Скажем прямо: этот звук никогда не был вашим пульсом. Он шёл с частотой {bpm} в минуту, выпавшей случайно, и в опыте Валинса именно такая подмена сдвигала оценки.', { v: inp.value, bpm }));
     };
     stage.append(inp, ok);
   });
@@ -874,7 +897,7 @@ export const missingSquarePuzzle: Mount = demo((k) => {
   k.slider('exag', (v) => {
     exag = v;
     s.draw();
-    k.say(v > 3 ? 'при растянутой вертикали видно: гипотенуза изгибается в одну сторону и в другую. Разница площадей ровно одна клетка.' : 'наклоны 3/8 и 2/5 отличаются примерно на градус. Глаз тут не ошибается — его просто просят различить градус.');
+    k.say(v > 3 ? tr('при растянутой вертикали видно: гипотенуза изгибается в одну сторону и в другую. Разница площадей ровно одна клетка.') : tr('наклоны 3/8 и 2/5 отличаются примерно на градус. Глаз тут не ошибается — его просто просят различить градус.'));
   });
 });
 
@@ -897,5 +920,5 @@ export const moire: Mount = demo((k) => {
   });
   k.slider('rot', (v) => { rot = v; s.draw(); });
   k.slider('pitch', (v) => { pitch = v; s.draw(); });
-  k.say('узор физически есть в изображении: обманываться здесь нечему, и камера снимет его так же.');
+  k.say(tr('узор физически есть в изображении: обманываться здесь нечему, и камера снимет его так же.'));
 });

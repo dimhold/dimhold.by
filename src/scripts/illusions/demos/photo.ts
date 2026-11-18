@@ -6,6 +6,7 @@
  * налёт считаются на канвасе, а не приносятся готовой картинкой.
  */
 import { demo, grey, INK, MARK, PAPER, rnd, type Kit, type Mount } from '../kit';
+import { num, tr } from '../i18n';
 
 const assets = (k: Kit): Record<string, string> => {
   try {
@@ -66,10 +67,10 @@ export const duckRabbit: Mount = demo((k) => {
   k.slider('bias', (v) => {
     bias = v;
     s.draw();
-    k.say(v < 25 ? 'клюв встал горизонтально — утка.' : v > 75 ? 'уши легли назад — кролик.' : 'ровно — и переключается само.');
+    k.say(v < 25 ? tr('клюв встал горизонтально — утка.') : v > 75 ? tr('уши легли назад — кролик.') : tr('ровно — и переключается само.'));
   });
-  k.button('duck', () => { trace = trace === 'duck' ? 'none' : 'duck'; s.draw(); k.say('обведён клюв.'); });
-  k.button('rabbit', () => { trace = trace === 'rabbit' ? 'none' : 'rabbit'; s.draw(); k.say('те же два отростка — уши, а вмятина справа — рот.'); });
+  k.button('duck', () => { trace = trace === 'duck' ? 'none' : 'duck'; s.draw(); k.say(tr('обведён клюв.')); });
+  k.button('rabbit', () => { trace = trace === 'rabbit' ? 'none' : 'rabbit'; s.draw(); k.say(tr('те же два отростка — уши, а вмятина справа — рот.')); });
   load(assets(k)['duck-rabbit']).then((i) => { img = i; s.draw(); });
 });
 
@@ -92,24 +93,24 @@ export const myWifeMotherInLaw: Mount = demo((k) => {
       ctx.beginPath();
       ctx.ellipse(...at(0.5, 0.54), box.w * 0.07, box.h * 0.05, 0, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.fillText('ухо', ...at(0.57, 0.53));
+      ctx.fillText(tr('ухо'), ...at(0.57, 0.53));
       ctx.beginPath();
       ctx.ellipse(...at(0.36, 0.69), box.w * 0.09, box.h * 0.05, -0.3, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.fillText('подбородок', ...at(0.06, 0.78));
+      ctx.fillText(tr('подбородок'), ...at(0.06, 0.78));
     } else {
       ctx.beginPath();
       ctx.ellipse(...at(0.5, 0.54), box.w * 0.07, box.h * 0.05, 0, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.fillText('глаз', ...at(0.57, 0.53));
+      ctx.fillText(tr('глаз'), ...at(0.57, 0.53));
       ctx.beginPath();
       ctx.ellipse(...at(0.36, 0.69), box.w * 0.09, box.h * 0.05, -0.3, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.fillText('нос', ...at(0.18, 0.79));
+      ctx.fillText(tr('нос'), ...at(0.18, 0.79));
     }
   });
-  k.button('young', () => { trace = trace === 'young' ? 'none' : 'young'; s.draw(); k.say('молодая отвернулась: то, что обведено, — ухо и подбородок.'); });
-  k.button('old', () => { trace = trace === 'old' ? 'none' : 'old'; s.draw(); k.say('те же две области у старухи — глаз и кончик носа. Линии одни и те же.'); });
+  k.button('young', () => { trace = trace === 'young' ? 'none' : 'young'; s.draw(); k.say(tr('молодая отвернулась: то, что обведено, — ухо и подбородок.')); });
+  k.button('old', () => { trace = trace === 'old' ? 'none' : 'old'; s.draw(); k.say(tr('те же две области у старухи — глаз и кончик носа. Линии одни и те же.')); });
   load(assets(k)['wife-mother-in-law']).then((i) => { img = i; s.draw(); });
 });
 
@@ -129,7 +130,7 @@ export const allIsVanity: Mount = demo((k) => {
   k.slider('blur', (v) => {
     blur = v;
     s.draw();
-    k.say(v > 8 ? 'подробности срезаны — и вместо дамы у зеркала виден череп.' : '');
+    k.say(v > 8 ? tr('подробности срезаны — и вместо дамы у зеркала виден череп.') : '');
   });
   k.slider('zoom', (v) => { zoom = v; s.draw(); });
   load(assets(k)['all-is-vanity']).then((i) => { img = i; s.draw(); });
@@ -164,7 +165,7 @@ export const lincolnEffect: Mount = demo((k) => {
   k.slider('blur', (v) => {
     blur = v;
     s.draw();
-    k.say(v > 6 ? 'добавили размытия — и лицо проступило. Размытие срезало ложные края, которые внесло квантование.' : 'блоки добавили высоких частот, которых в лице не было. Они и маскируют.');
+    k.say(v > 6 ? tr('добавили размытия — и лицо проступило. Размытие срезало ложные края, которые внесло квантование.') : tr('блоки добавили высоких частот, которых в лице не было. Они и маскируют.'));
   });
   load(assets(k)['lincoln']).then((i) => { img = i; s.draw(); });
 });
@@ -199,7 +200,8 @@ export const greyStrawberries: Mount = demo((k) => {
     const ctx = canvas.getContext('2d')!;
     const d = ctx.getImageData(Math.round((ev.clientX - r.left) * dpr), Math.round((ev.clientY - r.top) * dpr), 1, 1).data;
     const red = d[0] > d[1] && d[0] > d[2];
-    k.say(`под курсором rgb(${d[0]} ${d[1]} ${d[2]}) — ${red ? 'красноватый' : 'не красный: зелёного и синего в нём больше'}.`);
+    const rgb = `rgb(${d[0]} ${d[1]} ${d[2]})`;
+    k.say(red ? tr('под курсором {rgb} — красноватый.', { rgb }) : tr('под курсором {rgb} — не красный: зелёного и синего в нём больше.', { rgb }));
   });
   load(assets(k)['strawberries']).then((i) => { img = i; s.draw(); });
 });
@@ -235,9 +237,9 @@ export const mooneyFaces: Mount = demo((k) => {
     if (found) return;
     found = true;
     el.disabled = true;
-    k.say(`${((performance.now() - t0) / 1000).toFixed(1)} с до узнавания. Второй раз этот секундомер на этой картинке уже не запустить: найденная организация применяется дальше автоматически.`);
+    k.say(tr('{s} с до узнавания. Второй раз этот секундомер на этой картинке уже не запустить: найденная организация применяется дальше автоматически.', { s: num((performance.now() - t0) / 1000) }));
   });
-  k.loop(() => { if (!found) k.clock(`${((performance.now() - t0) / 1000).toFixed(1)} с`); });
+  k.loop(() => { if (!found) k.clock(tr('{s} с', { s: num((performance.now() - t0) / 1000) })); });
   load(assets(k)['face-curie']).then((i) => { img = i; s.draw(); });
 });
 
@@ -300,7 +302,7 @@ export const thatcher: Mount = demo((k) => {
   k.slider('rot', (v) => {
     rot = v;
     s.draw();
-    k.say(v > 150 ? 'вверх ногами — почти нормальное лицо.' : v < 40 ? 'прямо — и это гримаса. Пиксели те же самые.' : v > 60 && v < 130 ? 'где-то здесь у большинства и появляется гримаса.' : '');
+    k.say(v > 150 ? tr('вверх ногами — почти нормальное лицо.') : v < 40 ? tr('прямо — и это гримаса. Пиксели те же самые.') : v > 60 && v < 130 ? tr('где-то здесь у большинства и появляется гримаса.') : '');
   });
   k.toggle('flip', (v) => { flip = !v; s.draw(); }, false);
   load(assets(k)['face-curie']).then((i) => { img = i; s.draw(); });
@@ -336,6 +338,13 @@ const house = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h
 
 export const faceInversion: Mount = demo((k) => {
   const imgs: HTMLImageElement[] = [];
+  /* Ключи внутренние, на графике — подписи на языке страницы. */
+  const LABEL: Record<string, string> = {
+    'лица прямо': tr('лица прямо'),
+    'лица вверх ногами': tr('лица вверх ногами'),
+    'дома прямо': tr('дома прямо'),
+    'дома вверх ногами': tr('дома вверх ногами'),
+  };
   const results: Record<string, [number, number, number]> = {
     'лица прямо': [0, 0, 0],
     'лица вверх ногами': [0, 0, 0],
@@ -383,8 +392,8 @@ export const faceInversion: Mount = demo((k) => {
       ctx.fillStyle = key.startsWith('лица') ? MARK : '#3b6fd0';
       ctx.fillRect(i * bw + 8, h - 16 - acc * (h - 30), bw - 16, acc * (h - 30));
       ctx.fillStyle = '#6b6b70';
-      ctx.fillText(key, i * bw + 6, h - 4);
-      if (n) ctx.fillText(`${Math.round(acc * 100)} % / ${Math.round(ms / n)} мс`, i * bw + 6, 12);
+      ctx.fillText(LABEL[key], i * bw + 6, h - 4);
+      if (n) ctx.fillText(tr('{p} % / {ms} мс', { p: Math.round(acc * 100), ms: Math.round(ms / n) }), i * bw + 6, 12);
     });
   });
   const stage = k.stage;
@@ -395,7 +404,7 @@ export const faceInversion: Mount = demo((k) => {
       const fi = results['лица вверх ногами'][1] ? results['лица вверх ногами'][0] / results['лица вверх ногами'][1] : 0;
       const ho = results['дома прямо'][1] ? results['дома прямо'][0] / results['дома прямо'][1] : 0;
       const hi = results['дома вверх ногами'][1] ? results['дома вверх ногами'][0] / results['дома вверх ногами'][1] : 0;
-      k.say(`цена переворота: у лиц ${Math.round((f - fi) * 100)} процентных пунктов, у домов ${Math.round((ho - hi) * 100)}. Если первое заметно больше второго, вы только что воспроизвели Йина.`);
+      k.say(tr('цена переворота: у лиц {f} п. п., у домов {h}. Если первое заметно больше второго, вы только что воспроизвели Йина.', { f: Math.round((f - fi) * 100), h: Math.round((ho - hi) * 100) }));
       return;
     }
     const r = rnd(Date.now() % 99991 + left);
@@ -407,10 +416,10 @@ export const faceInversion: Mount = demo((k) => {
     trial = { kind, inverted, same, a, b };
     t0 = performance.now();
     s.draw();
-    stage.innerHTML = '<p class="ill-q">одно и то же или разное?</p>';
+    stage.innerHTML = `<p class="ill-q">${tr('одно и то же или разное?')}</p>`;
     const row = document.createElement('div');
     row.className = 'ill-answers';
-    for (const [label, said] of [['одно и то же', true], ['разное', false]] as const) {
+    for (const [label, said] of [[tr('одно и то же'), true], [tr('разное'), false]] as const) {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'ill-btn';

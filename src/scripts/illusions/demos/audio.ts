@@ -2,6 +2,7 @@
    дают включать звук самостоятельно, и это правильно. Где нужны наушники, Demo.astro
    пишет об этом сам. */
 import { demo, MARK, PAPER, rnd, type Mount } from '../kit';
+import { tr } from '../i18n';
 
 /* Один звуковой контекст на демонстрацию, закрывается при уходе со страницы. */
 class Audio {
@@ -54,8 +55,9 @@ const shepardBank = (glide: boolean): Mount =>
       }
       ctx.fillStyle = '#6b6b70';
       ctx.font = '11px system-ui, sans-serif';
-      ctx.fillText('низ', pad - 6, h - 3);
-      ctx.fillText('верх', w - pad - 20, h - 3);
+      ctx.fillText(tr('низ'), pad - 6, h - 3);
+      const top = tr('верх');
+      ctx.fillText(top, w - pad - ctx.measureText(top).width + 6, h - 3);
     });
     /* Колокол в логарифмических координатах: хрома едет, общая высота стоит. */
     const bell = (pos: number, width: number) => {
@@ -94,8 +96,8 @@ const shepardBank = (glide: boolean): Mount =>
         for (const v of voices) { v.gain.gain.setTargetAtTime(0, a.ctx!.currentTime, 0.05); v.osc.stop(a.ctx!.currentTime + 0.3); }
         voices = [];
         a.close();
-        el.textContent = 'играть';
-        k.say('остановлено.');
+        el.textContent = tr('играть');
+        k.say(tr('остановлено.'));
         return;
       }
       const ctx = a.open(0.28);
@@ -108,8 +110,8 @@ const shepardBank = (glide: boolean): Mount =>
         osc.start();
         return { osc, gain };
       });
-      el.textContent = 'стоп';
-      k.say('следите за спектром: верхняя полоска гаснет ровно там, где снизу вступает новая.');
+      el.textContent = tr('стоп');
+      k.say(tr('следите за спектром: верхняя полоска гаснет ровно там, где снизу вступает новая.'));
       raf = requestAnimationFrame(tick);
     });
   });
@@ -163,11 +165,11 @@ export const rissetRhythm: Mount = demo((k) => {
     raf = requestAnimationFrame(tick);
   };
   k.button('play', (el) => {
-    if (a.on) { cancelAnimationFrame(raf); raf = 0; last = 0; a.close(); el.textContent = 'играть'; return; }
+    if (a.on) { cancelAnimationFrame(raf); raf = 0; last = 0; a.close(); el.textContent = tr('играть'); return; }
     a.open(0.3);
     next.fill(a.ctx!.currentTime + 0.1);
-    el.textContent = 'стоп';
-    k.say('доля разгоняется без конца. Расписание считается наперёд по часам звукового движка, иначе на загруженной странице всё рассыпается.');
+    el.textContent = tr('стоп');
+    k.say(tr('доля разгоняется без конца. Расписание считается наперёд по часам звукового движка, иначе на загруженной странице всё рассыпается.'));
     raf = requestAnimationFrame(tick);
   });
 });
@@ -203,10 +205,10 @@ export const pitchCircularity: Mount = demo((k) => {
     const t = ctx.currentTime + 0.05;
     chromaTone(ctx, a.out!, c1, t, 0.5);
     chromaTone(ctx, a.out!, c2, t + 0.6, 0.5);
-    stage.innerHTML = '<p class="ill-q">второй тон выше или ниже первого?</p>';
+    stage.innerHTML = `<p class="ill-q">${tr('второй тон выше или ниже первого?')}</p>`;
     const row = document.createElement('div');
     row.className = 'ill-answers';
-    for (const [label, up] of [['выше', true], ['ниже', false]] as const) {
+    for (const [label, up] of [[tr('выше'), true], [tr('ниже'), false]] as const) {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'ill-btn';
@@ -218,10 +220,10 @@ export const pitchCircularity: Mount = demo((k) => {
         if (step >= 3) {
           const ups = answers.filter(Boolean).length;
           k.say(ups === answers.length
-            ? `${answers.length} раза подряд «выше» — и через три шага по четыре полутона вы вернулись в исходную ноту. Ваши собственные ответы образуют кольцо: «выше» перестало быть отношением порядка.`
-            : 'ответы разошлись — так тоже бывает, окно у этого стимула узкое. Попробуйте ещё круг.');
+            ? tr('три раза подряд «выше» — и через три шага по четыре полутона вы вернулись в исходную ноту. Ваши собственные ответы образуют кольцо: «выше» перестало быть отношением порядка.')
+            : tr('ответы разошлись — так тоже бывает, окно у этого стимула узкое. Попробуйте ещё круг.'));
           if (step >= 3) { step = 0; answers.length = 0; }
-        } else k.say(`${step} из 3. Жмите дальше.`);
+        } else k.say(tr('{n} из 3. Жмите дальше.', { n: step }));
       };
       row.append(b);
     }
@@ -253,17 +255,17 @@ export const tritoneParadox: Mount = demo((k) => {
     });
     ctx.fillStyle = '#6b6b70';
     ctx.font = '11px ui-monospace, monospace';
-    ctx.fillText('красное — «вверх», синее — «вниз»', 6, 14);
+    ctx.fillText(tr('красное — «вверх», синее — «вниз»'), 6, 14);
   });
   k.button('play', () => {
     const ctx = a.open(0.3);
     const t = ctx.currentTime + 0.05;
     chromaTone(ctx, a.out!, base, t, 0.5);
     chromaTone(ctx, a.out!, (base + 6) % 12, t + 0.6, 0.5);
-    stage.innerHTML = '<p class="ill-q">пара пошла вверх или вниз?</p>';
+    stage.innerHTML = `<p class="ill-q">${tr('пара пошла вверх или вниз?')}</p>`;
     const row = document.createElement('div');
     row.className = 'ill-answers';
-    for (const [label, v] of [['вверх', 1], ['вниз', -1]] as const) {
+    for (const [label, v] of [[tr('вверх'), 1], [tr('вниз'), -1]] as const) {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'ill-btn';
@@ -275,8 +277,8 @@ export const tritoneParadox: Mount = demo((k) => {
         stage.innerHTML = '';
         const done = votes.filter(Boolean).length;
         k.say(done < 12
-          ? `${done} из 12. Круг внизу — ваш.`
-          : 'круг заполнен. У кого-то он повёрнут ровно наоборот — и это зависит от языка и говора, на которых человек вырос.');
+          ? tr('{n} из 12. Круг внизу — ваш.', { n: done })
+          : tr('круг заполнен. У кого-то он повёрнут ровно наоборот — и это зависит от языка и говора, на которых человек вырос.'));
       };
       row.append(b);
     }
@@ -310,16 +312,16 @@ export const octaveIllusion: Mount = demo((k) => {
     }
   };
   k.button('play', (el) => {
-    if (a.on) { a.close(); clearInterval(timer); el.textContent = 'играть'; return; }
+    if (a.on) { a.close(); clearInterval(timer); el.textContent = tr('играть'); return; }
     a.open(0.3);
     play();
     timer = window.setInterval(play, 4000);
-    el.textContent = 'стоп';
-    k.say('большинство слышит один тон, скачущий из уха в ухо, и высота при этом чередуется.');
+    el.textContent = tr('стоп');
+    k.say(tr('большинство слышит один тон, скачущий из уха в ухо, и высота при этом чередуется.'));
   });
   k.button('swap', () => {
     swap = !swap;
-    k.say('каналы поменяны местами. Большинство слушателей не слышит никакой разницы — и вот это самое поразительное.');
+    k.say(tr('каналы поменяны местами. Большинство слушателей не слышит никакой разницы — и вот это самое поразительное.'));
   });
   k.button('check', () => {
     const ctx = a.open(0.3);
@@ -337,7 +339,7 @@ export const octaveIllusion: Mount = demo((k) => {
       osc.stop(t + 0.62);
       t += 0.7;
     }
-    k.say('сначала низкий тон слева, потом высокий справа. Если слышно иначе — наушники надеты наоборот.');
+    k.say(tr('сначала низкий тон слева, потом высокий справа. Если слышно иначе — наушники надеты наоборот.'));
   });
 });
 
@@ -373,17 +375,17 @@ export const scaleIllusion: Mount = demo((k) => {
     }
   };
   k.button('play', (el) => {
-    if (a.on) { a.close(); clearInterval(timer); el.textContent = 'играть'; return; }
+    if (a.on) { a.close(); clearInterval(timer); el.textContent = tr('играть'); return; }
     a.open(0.3);
     play();
     timer = window.setInterval(play, 2400);
-    el.textContent = 'стоп';
+    el.textContent = tr('стоп');
   });
   k.select('ear', (v) => {
     ear = v;
     k.say(v === 'both'
-      ? 'слышно две ровные мелодии, каждая чисто из своего уха.'
-      : 'в одиночку этот канал даёт рваную скачущую последовательность — ровно ту, что там и записана. Она прямо противоречит тому, что вы только что слышали двумя ушами.');
+      ? tr('слышно две ровные мелодии, каждая чисто из своего уха.')
+      : tr('в одиночку этот канал даёт рваную скачущую последовательность — ровно ту, что там и записана. Она прямо противоречит тому, что вы только что слышали двумя ушами.'));
   });
 });
 
@@ -423,11 +425,11 @@ export const glissandoIllusion: Mount = demo((k) => {
     }
   };
   k.button('play', (el) => {
-    if (a.on) { a.close(); clearInterval(timer); el.textContent = 'играть'; return; }
+    if (a.on) { a.close(); clearInterval(timer); el.textContent = tr('играть'); return; }
     a.open(0.3);
     play();
     timer = window.setInterval(play, 4200);
-    el.textContent = 'стоп';
+    el.textContent = tr('стоп');
   });
   k.select('ear', (v) => { ear = v; });
 });
@@ -455,16 +457,16 @@ export const precedenceEffect: Mount = demo((k) => {
     }
   };
   k.button('play', (el) => {
-    if (a.on) { a.close(); clearInterval(timer); el.textContent = 'играть'; return; }
+    if (a.on) { a.close(); clearInterval(timer); el.textContent = tr('играть'); return; }
     a.open(0.4);
     burst();
     timer = window.setInterval(burst, 700);
-    el.textContent = 'стоп';
+    el.textContent = tr('стоп');
   });
   k.slider('delay', (v) => {
-    k.say(v < 2 ? 'обе копии почти одновременны — звук в середине головы.'
-      : v < 35 ? `задержка ${v} мс: звук целиком слева, откуда пришёл первым, — даже если правая копия громче.`
-      : 'за порогом эха звук распадается на два.');
+    k.say(v < 2 ? tr('обе копии почти одновременны — звук в середине головы.')
+      : v < 35 ? tr('задержка {ms} мс: звук целиком слева, откуда пришёл первым, — даже если правая копия громче.', { ms: v })
+      : tr('за порогом эха звук распадается на два.'));
   });
   k.slider('gain', () => {});
 });
@@ -487,7 +489,7 @@ export const binauralBeats: Mount = demo((k) => {
     ctx.stroke();
     ctx.fillStyle = '#6b6b70';
     ctx.font = '11px ui-monospace, monospace';
-    ctx.fillText(`${diff} биений в секунду`, 6, 14);
+    ctx.fillText(tr('биения: {n} в секунду', { n: diff }), 6, 14);
   });
   const start = () => {
     const ctx = a.open(0.2);
@@ -506,15 +508,15 @@ export const binauralBeats: Mount = demo((k) => {
     });
   };
   k.button('play', (el) => {
-    if (a.on) { for (const o of oscs) o.stop(); a.close(); el.textContent = 'играть'; return; }
+    if (a.on) { for (const o of oscs) o.stop(); a.close(); el.textContent = tr('играть'); return; }
     start();
-    el.textContent = 'стоп';
+    el.textContent = tr('стоп');
   });
   const restart = () => { if (a.on) { for (const o of oscs) o.stop(); a.close(); start(); } view.draw(); };
   k.slider('diff', restart);
   k.check('acoustic', (v) => {
     restart();
-    k.say(v ? 'обычные акустические биения: они в воздухе и слышны на динамиках.' : 'бинауральные: в каждом ухе по чистому тону, а биение возникает в голове.');
+    k.say(v ? tr('обычные акустические биения: они в воздухе и слышны на динамиках.') : tr('бинауральные: в каждом ухе по чистому тону, а биение возникает в голове.'));
   });
 });
 
@@ -536,7 +538,7 @@ export const missingFundamental: Mount = demo((k) => {
     }
     ctx.fillStyle = '#6b6b70';
     ctx.font = '11px ui-monospace, monospace';
-    ctx.fillText(`основная ${F0} Гц`, 6, 14);
+    ctx.fillText(tr('основная {f} Гц', { f: F0 }), 6, 14);
   });
   const rebuild = () => {
     if (!a.on) return;
@@ -556,11 +558,11 @@ export const missingFundamental: Mount = demo((k) => {
     }
   };
   k.button('play', (el) => {
-    if (a.on) { for (const o of oscs) o.osc.stop(); a.close(); el.textContent = 'играть'; return; }
+    if (a.on) { for (const o of oscs) o.osc.stop(); a.close(); el.textContent = tr('играть'); return; }
     a.open(0.3);
     rebuild();
-    el.textContent = 'стоп';
-    k.say('выключите основную галочкой — и высота не дрогнет.');
+    el.textContent = tr('стоп');
+    k.say(tr('выключите основную галочкой — и высота не дрогнет.'));
   });
   for (const n of ['f1', 'f2', 'f3']) k.check(n, () => { rebuild(); view.draw(); });
 });
@@ -579,14 +581,14 @@ export const tartiniTone: Mount = demo((k) => {
       osc.start();
       return osc;
     });
-    k.say(`разностный тон должен звучать на ${Math.abs(k.num('f2') - k.num('f1'))} Гц. В воздухе его нет: он появляется в нелинейности улитки.`);
+    k.say(tr('разностный тон должен звучать на {f} Гц. В воздухе его нет: он появляется в нелинейности улитки.', { f: Math.abs(k.num('f2') - k.num('f1')) }));
   };
   k.button('play', (el) => {
-    if (a.on) { for (const o of oscs) o.stop(); a.close(); el.textContent = 'играть'; return; }
+    if (a.on) { for (const o of oscs) o.stop(); a.close(); el.textContent = tr('играть'); return; }
     a.open(0.42);
     rebuild();
-    el.textContent = 'стоп';
-    k.say('нужна приличная громкость — но не переусердствуйте.');
+    el.textContent = tr('стоп');
+    k.say(tr('нужна приличная громкость — но не переусердствуйте.'));
   });
   k.slider('f1', rebuild);
   k.slider('f2', rebuild);
@@ -608,7 +610,7 @@ export const illusoryContinuityTones: Mount = demo((k) => {
     }
     ctx.fillStyle = '#6b6b70';
     ctx.font = '11px ui-monospace, monospace';
-    ctx.fillText('тон разрезан; в разрыве — то, что выбрано', 10, h - 6);
+    ctx.fillText(tr('тон разрезан; в разрыве — то, что выбрано'), 10, h - 6);
   });
   const play = () => {
     const ctx = a.ctx!;
@@ -638,15 +640,15 @@ export const illusoryContinuityTones: Mount = demo((k) => {
     }
   };
   k.button('play', (el) => {
-    if (a.on) { a.close(); clearInterval(timer); el.textContent = 'играть'; return; }
+    if (a.on) { a.close(); clearInterval(timer); el.textContent = tr('играть'); return; }
     a.open(0.35);
     play();
     timer = window.setInterval(play, 2200);
-    el.textContent = 'стоп';
+    el.textContent = tr('стоп');
   });
   k.select('fill', (v) => {
     view.draw();
-    k.say(v === 'silence' ? 'в тишине разрыв слышен отчётливо.' : v === 'noise' ? 'под громким шумом тон идёт насквозь. Его там нет.' : 'тихого шума не хватает, чтобы объяснить пропажу тона, — и разрыв снова слышен.');
+    k.say(v === 'silence' ? tr('в тишине разрыв слышен отчётливо.') : v === 'noise' ? tr('под громким шумом тон идёт насквозь. Его там нет.') : tr('тихого шума не хватает, чтобы объяснить пропажу тона, — и разрыв снова слышен.'));
   });
 });
 
@@ -666,12 +668,12 @@ export const zwickerTone: Mount = demo((k) => {
     notch.Q.value = Math.max(0.3, k.num('notch') / Math.max(k.num('width'), 10));
     src.connect(notch).connect(a.out!);
     src.start();
-    k.say('шум с вырезанной полосой, восемь секунд. Не снимайте наушники.');
+    k.say(tr('шум с вырезанной полосой, восемь секунд. Не снимайте наушники.'));
     await new Promise((r) => setTimeout(r, 8000));
     src.stop();
     a.close();
     el.disabled = false;
-    k.say(`теперь тишина. Слабый тон где-то около ${k.num('notch')} Гц — это и есть тон Цвикера: соседние каналы адаптировались, а вырезанный нет.`);
+    k.say(tr('теперь тишина. Слабый тон где-то около {f} Гц — это и есть тон Цвикера: соседние каналы адаптировались, а вырезанный нет.', { f: k.num('notch') }));
   });
   k.slider('notch', () => {});
   k.slider('width', () => {});
@@ -712,7 +714,7 @@ export const soundInducedFlash: Mount = demo((k) => {
       const at = start + i * 70;
       setTimeout(() => { flashOn = true; s.draw(); setTimeout(() => { flashOn = false; s.draw(); }, 16); }, at - performance.now());
     }
-    k.say(`гудков ${beeps}, вспышек ${flashes}. Смотрите на красную точку — на периферии эффект сильнее.`);
+    k.say(tr('гудков: {b}, вспышек: {f}. Смотрите на красную точку — на периферии эффект сильнее.', { b: beeps, f: flashes }));
     setTimeout(() => a.close(), 1500);
   });
   k.slider('beeps', () => {});
@@ -738,7 +740,7 @@ export const streamBounce: Mount = demo((k) => {
   });
   k.button('go', () => {
     t0 = performance.now();
-    if (!k.bool('click')) { k.say('прошли насквозь или отскочили? По картинке определить нельзя.'); return; }
+    if (!k.bool('click')) { k.say(tr('прошли насквозь или отскочили? По картинке определить нельзя.')); return; }
     const ctx = a.open(0.35);
     const when = ctx.currentTime + 0.8 + k.num('when') / 1000;
     const osc = ctx.createOscillator();
@@ -750,7 +752,7 @@ export const streamBounce: Mount = demo((k) => {
     osc.start(when);
     osc.stop(when + 0.04);
     setTimeout(() => a.close(), 2500);
-    k.say(Math.abs(k.num('when')) < 60 ? 'со щелчком в момент встречи они отскакивают, и однозначно.' : 'щелчок далеко от момента встречи — и он больше ничего не решает. Окно узкое.');
+    k.say(Math.abs(k.num('when')) < 60 ? tr('со щелчком в момент встречи они отскакивают, и однозначно.') : tr('щелчок далеко от момента встречи — и он больше ничего не решает. Окно узкое.'));
   });
   k.check('click', () => {});
   k.slider('when', () => {});
@@ -783,10 +785,10 @@ export const ventriloquismEffect: Mount = demo((k) => {
     if (ev.buttons !== 1) return;
     mouthX = Math.max(0.1, Math.min(0.9, ev.offsetX / canvas.clientWidth));
     s.draw();
-    k.say('панорама звука не менялась. Источник поехал за картинкой, а не за звуком.');
+    k.say(tr('панорама звука не менялась. Источник поехал за картинкой, а не за звуком.'));
   });
   k.button('play', (el) => {
-    if (a.on) { a.close(); clearInterval(timer); el.textContent = 'играть'; return; }
+    if (a.on) { a.close(); clearInterval(timer); el.textContent = tr('играть'); return; }
     const ctx = a.open(0.3);
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
@@ -803,7 +805,7 @@ export const ventriloquismEffect: Mount = demo((k) => {
       p.pan.value = k.num('pan') / 100;
       s.draw();
     }, 180);
-    el.textContent = 'стоп';
+    el.textContent = tr('стоп');
   });
   k.slider('pan', (v) => { pan = v / 100; });
 });

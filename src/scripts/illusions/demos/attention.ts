@@ -1,5 +1,6 @@
 /* Внимание и незамечание. Единственная группа, где всё пропадает, а не появляется. */
 import { demo, grey, INK, MARK, PAPER, rnd, type Mount } from '../kit';
+import { num, pageLang, tr } from '../i18n';
 
 /* Сцена рисуется процедурно, а не берётся фотографией: так изменение заведомо наше
    и его можно включать и выключать честно, без монтажа. */
@@ -46,10 +47,10 @@ export const changeBlindness: Mount = demo((k) => {
   k.button('start', (el) => {
     running = !running;
     reveal = false;
-    el.textContent = running ? 'остановить' : 'начать';
+    el.textContent = running ? tr('остановить') : tr('начать');
     if (!running) { clearInterval(timer); return; }
     t0 = performance.now();
-    k.say('что-то на картинке исчезает и появляется. Ищите.');
+    k.say(tr('что-то на картинке исчезает и появляется. Ищите.'));
     /* Пустая вставка между кадрами убирает резкий перепад, которым внимание
        обычно и притягивается к месту изменения. */
     let step = 0;
@@ -59,7 +60,7 @@ export const changeBlindness: Mount = demo((k) => {
       if (step % 2 === 1) { blank = true; }
       else { blank = false; variant = !variant; }
       s.draw();
-      k.clock(`${((performance.now() - t0) / 1000).toFixed(1)} с`);
+      k.clock(tr('{s} с', { s: num((performance.now() - t0) / 1000) }));
     }, 240);
   });
   k.button('give', () => {
@@ -69,11 +70,18 @@ export const changeBlindness: Mount = demo((k) => {
     variant = false;
     reveal = true;
     s.draw();
-    k.say(`искали ${((performance.now() - t0) / 1000).toFixed(1)} с. Предмет обведён — и он крупный, и он в середине кадра.`);
+    k.say(tr('искали {s} с. Предмет обведён — и он крупный, и он в середине кадра.', { s: num((performance.now() - t0) / 1000) }));
   });
 });
 
-const LETTERS = 'АБВГДЕЖЗИКЛМНПРСТУФХЦЧШЭЮЯ';
+/* Буквы — алфавит читателя: в чужом алфавите ищут уже не букву, а значок.
+   Похожие на цифры и друг на друга (О, Й, Щ, Ъ, Ь; по-английски O, Q, I) убраны. */
+const LETTERS =
+  pageLang === 'en' ? 'ABCDEFGHJKLMNPRSTUVWXYZ'
+  : pageLang === 'be' ? 'АБВГДЕЖЗІКЛМНПРСТУФХЦЧШЭЮЯ'
+  : 'АБВГДЕЖЗИКЛМНПРСТУФХЦЧШЭЮЯ';
+/* Первая цель, красная. */
+const T1 = pageLang === 'en' ? 'X' : 'Ц';
 
 export const attentionalBlink: Mount = demo((k) => {
   const results: Record<number, [number, number]> = {};
@@ -105,7 +113,7 @@ export const attentionalBlink: Mount = demo((k) => {
     ctx.stroke();
     ctx.fillStyle = '#6b6b70';
     ctx.font = '11px ui-monospace, monospace';
-    ctx.fillText('задержка между целями →', 20, 12);
+    ctx.fillText(tr('задержка между целями →'), 20, 12);
   });
   const stage = k.stage;
   const run = async () => {
@@ -116,7 +124,7 @@ export const attentionalBlink: Mount = demo((k) => {
         for (let i = 0; i < 18; i++) stream.push(LETTERS[Math.floor(r() * LETTERS.length)]);
         const t1 = 5;
         const t2 = t1 + lag;
-        stream[t1] = 'Ц';
+        stream[t1] = T1;
         const second = LETTERS[Math.floor(r() * LETTERS.length)];
         stream[t2] = second;
         for (let i = 0; i < stream.length; i++) {
@@ -134,7 +142,7 @@ export const attentionalBlink: Mount = demo((k) => {
       }
     }
     stage.innerHTML = '';
-    k.say('кривая внизу — ваша. На задержке в две-четыре позиции точность проваливается: это и есть мигание внимания.');
+    k.say(tr('кривая внизу — ваша. На задержке в две-четыре позиции точность проваливается: это и есть мигание внимания.'));
   };
   const ask = (correct: string) =>
     new Promise<boolean>((resolve) => {
@@ -145,7 +153,7 @@ export const attentionalBlink: Mount = demo((k) => {
         if (!opts.includes(c)) opts.push(c);
       }
       opts.sort(() => r() - 0.5);
-      stage.innerHTML = '<p class="ill-q">какая буква шла после красной?</p>';
+      stage.innerHTML = `<p class="ill-q">${tr('какая буква шла после красной?')}</p>`;
       const row = document.createElement('div');
       row.className = 'ill-answers';
       for (const o of opts) {
@@ -188,7 +196,7 @@ export const crowding: Mount = demo((k) => {
     ecc = v;
     s.draw();
     /* Закон Боумы: критическое расстояние примерно половина эксцентриситета. */
-    k.say(`по закону Боумы на этом удалении соседям нужно отойти примерно на ${Math.round(v / 2)} px, чтобы буква стала читаемой. Проверьте вторым ползунком.`);
+    k.say(tr('по закону Боумы на этом удалении соседям нужно отойти примерно на {px} px, чтобы буква стала читаемой. Проверьте вторым ползунком.', { px: Math.round(v / 2) }));
   });
   k.slider('space', (v) => { space = v; s.draw(); });
   k.button('reroll', () => { seed = (seed * 48271) % 2147483647; s.draw(); });

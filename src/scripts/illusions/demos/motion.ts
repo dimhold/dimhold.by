@@ -1,6 +1,7 @@
 /* Движение. Почти всё здесь упирается в задачу апертуры: край, видимый в окошке, своего
    направления не сообщает, и систему приходится доукомплектовывать догадками. */
-import { demo, grey, INK, MARK, PAPER, rnd, type Mount } from '../kit';
+import { demo, grey, INK, MARK, PAPER, plural, rnd, type Mount } from '../kit';
+import { num, tr } from '../i18n';
 
 export const barberpole: Mount = demo((k) => {
   let aspect = 60, angle = 45, t = 0;
@@ -31,7 +32,7 @@ export const barberpole: Mount = demo((k) => {
   k.slider('aspect', (v) => { aspect = v; s.draw(); });
   k.slider('angle', (v) => { angle = v; s.draw(); });
   k.loop((now) => { t = now; s.draw(); });
-  k.say('движение полос не меняется ни разу. Меняются только пропорции окна — и вместе с ними видимое направление.');
+  k.say(tr('движение полос не меняется ни разу. Меняются только пропорции окна — и вместе с ними видимое направление.'));
 });
 
 export const breathingSquare: Mount = demo((k) => {
@@ -74,8 +75,8 @@ export const breathingSquare: Mount = demo((k) => {
   });
   k.button('trails', (el) => {
     trails = !trails;
-    el.textContent = trails ? 'убрать траектории' : 'показать настоящие траектории';
-    k.say(trails ? 'траектории прямые и независимые, и ни один отрезок не меняет длины.' : '');
+    el.textContent = trails ? tr('убрать траектории') : tr('показать настоящие траектории');
+    k.say(trails ? tr('траектории прямые и независимые, и ни один отрезок не меняет длины.') : '');
   });
   k.loop((now) => { t = now; s.draw(); });
 });
@@ -108,7 +109,7 @@ export const enigma: Mount = demo((k) => {
   });
   k.slider('lines', (v) => { lines = v; s.draw(); });
   k.slider('ring', (v) => { ringw = v; s.draw(); });
-  k.say('в кольцах начинается быстрое течение. Скорость этого течения почти совпадает с частотой ваших микросаккад.');
+  k.say(tr('в кольцах начинается быстрое течение. Скорость этого течения почти совпадает с частотой ваших микросаккад.'));
 });
 
 export const frequencyDoubling: Mount = demo((k) => {
@@ -124,7 +125,7 @@ export const frequencyDoubling: Mount = demo((k) => {
   k.slider('freq', (v) => { freq = v; s.draw(); });
   k.slider('rate', (v) => { rate = v; s.draw(); });
   k.loop((now) => { t = now; s.draw(); });
-  k.say('пересчитайте полосы. Нарисовано их столько, сколько стоит на первом ползунке, а видно вдвое больше.');
+  k.say(tr('пересчитайте полосы. Нарисовано их столько, сколько стоит на первом ползунке, а видно вдвое больше.'));
 });
 
 export const kineticDepth: Mount = demo((k) => {
@@ -153,7 +154,7 @@ export const kineticDepth: Mount = demo((k) => {
   k.toggle('spin', (v) => {
     spin = !v;
     s.draw();
-    k.say(v ? 'остановлено — плоская россыпь, и формы в ней нет никакой.' : 'цилиндр. Направление вращения при этом само переворачивается: бонусом вторая иллюзия.');
+    k.say(v ? tr('остановлено — плоская россыпь, и формы в ней нет никакой.') : tr('цилиндр. Направление вращения при этом само переворачивается: бонусом вторая иллюзия.'));
   });
   k.slider('dots', (v) => { n = v; re(n); s.draw(); });
   k.loop((now) => { if (spin) { t = now; s.draw(); } });
@@ -191,30 +192,30 @@ export const motionAftereffect: Mount = demo((k) => {
     if (mode === 'adapt') return;
     mode = 'adapt';
     t0 = performance.now();
-    el.textContent = 'идёт адаптация';
-    k.say('смотрите строго в красную точку, не отводя взгляд.');
+    el.textContent = tr('идёт адаптация');
+    k.say(tr('смотрите строго в красную точку, не отводя взгляд.'));
   });
   k.loop((now) => {
     if (mode === 'adapt') {
       const el = performance.now() - t0;
       phase = now * 1.4;
-      k.clock(`${Math.max(0, 60 - el / 1000).toFixed(0)} с`);
+      k.clock(tr('{n} с', { n: num(Math.max(0, 60 - el / 1000), 0) }));
       if (el > 60000) {
         mode = 'test';
         t0 = performance.now();
-        k.say('теперь картинка стоит. Держите взгляд и жмите кнопку, когда последействие закончится.');
+        k.say(tr('теперь картинка стоит. Держите взгляд и жмите кнопку, когда последействие закончится.'));
         const b = k.el('[data-btn="go"]') as HTMLButtonElement;
-        b.textContent = 'последействие кончилось';
+        b.textContent = tr('последействие кончилось');
         b.onclick = () => {
-          k.say(`${((performance.now() - t0) / 1000).toFixed(1)} с последействия. Это ваше число, не из учебника.`);
+          k.say(tr('{n} с последействия. Это ваше число, не из учебника.', { n: num((performance.now() - t0) / 1000, 1) }));
           mode = 'idle';
-          b.textContent = 'адаптироваться 60 с';
+          b.textContent = tr('адаптироваться 60 с');
           b.onclick = null;
         };
       }
       s.draw();
     } else if (mode === 'test') {
-      k.clock(`${((performance.now() - t0) / 1000).toFixed(1)} с`);
+      k.clock(tr('{n} с', { n: num((performance.now() - t0) / 1000, 1) }));
     }
   });
 });
@@ -247,7 +248,7 @@ export const motionBinding: Mount = demo((k) => {
   });
   k.toggle('occl', (v) => {
     occl = v;
-    k.say(v ? 'заслонки видны — и четыре отрезка мгновенно собрались в один ромб за ними.' : 'заслонок не видно — четыре независимые линии, каждая со своим движением.');
+    k.say(v ? tr('заслонки видны — и четыре отрезка мгновенно собрались в один ромб за ними.') : tr('заслонок не видно — четыре независимые линии, каждая со своим движением.'));
   });
   k.loop((now) => { t = now; s.draw(); });
 });
@@ -301,10 +302,13 @@ export const motionInducedBlindness: Mount = demo((k) => {
       gaps.push((performance.now() - t0) / 1000);
       c.draw();
       const mean = gaps.reduce((a, b) => a + b, 0) / gaps.length;
-      k.say(`${gaps.length} исчезновений, в среднем ${mean.toFixed(1)} с. Столбики внизу — ваши, не из статьи.`);
+      k.say(tr('{count}, в среднем {m} с. Столбики внизу — ваши, не из статьи.', {
+        count: plural(gaps.length, tr('{n} исчезновение'), tr('{n} исчезновения'), tr('{n} исчезновений')),
+        m: num(mean, 1),
+      }));
     }
   });
-  k.button('reset', () => { gaps.length = 0; c.draw(); k.say('счёт сброшен.'); });
+  k.button('reset', () => { gaps.length = 0; c.draw(); k.say(tr('счёт сброшен.')); });
   k.loop((now) => { t = now; s.draw(); });
 });
 
@@ -334,7 +338,7 @@ export const ouchi: Mount = demo((k) => {
   k.slider('aspect', (v) => {
     aspect = v;
     s.draw();
-    k.say(v === 100 ? 'клетки квадратные — разводить нечего, и вставка легла на фон.' : '');
+    k.say(v === 100 ? tr('клетки квадратные — разводить нечего, и вставка легла на фон.') : '');
   });
   k.slider('inset', (v) => { inset = v; s.draw(); });
   k.loop((now) => { t = now; s.draw(); });
@@ -381,7 +385,7 @@ const driftRings = (seq: number, rings: number): Mount =>
     k.slider('seq', (v) => {
       sq = v;
       s.draw();
-      k.say(v % 2 === 1 ? 'последовательность сдвинута на нечётный шаг — симметрия восстановлена, и движение пропало.' : 'смотрите в красную точку: там, куда вы смотрите, вращение останавливается.');
+      k.say(v % 2 === 1 ? tr('последовательность сдвинута на нечётный шаг — симметрия восстановлена, и движение пропало.') : tr('смотрите в красную точку: там, куда вы смотрите, вращение останавливается.'));
     });
     k.slider('rings', (v) => { rg = v; s.draw(); });
   });
@@ -409,7 +413,7 @@ export const phiBeta: Mount = demo((k) => {
   k.slider('isi', (v) => {
     isi = v;
     t0 = performance.now();
-    k.say(v > 250 ? 'две отдельные вспышки: движения нет.' : v > 40 ? 'бета-движение: один объект переезжает с места на место. Именно это, а не фи, держит кино.' : 'чистое фи: что-то пронеслось, а объекта не было.');
+    k.say(v > 250 ? tr('две отдельные вспышки: движения нет.') : v > 40 ? tr('бета-движение: один объект переезжает с места на место. Именно это, а не фи, держит кино.') : tr('чистое фи: что-то пронеслось, а объекта не было.'));
   });
   k.loop(() => s.draw());
 });
@@ -448,7 +452,7 @@ export const pinnaBrelstaff: Mount = demo((k) => {
   });
   k.toggle('zoom', (v) => {
     zoom = !v;
-    k.say(v ? 'приближение остановлено — подвигайтесь к экрану и обратно сами.' : 'кольца крутятся навстречу друг другу. Картинка при этом только масштабируется.');
+    k.say(v ? tr('приближение остановлено — подвигайтесь к экрану и обратно сами.') : tr('кольца крутятся навстречу друг другу. Картинка при этом только масштабируется.'));
   });
   k.slider('tilt', (v) => { tilt = v; s.draw(); });
   k.loop((now) => { t = now; s.draw(); });
@@ -469,7 +473,7 @@ export const reversePhi: Mount = demo((k) => {
   });
   k.toggle('invert', (v) => {
     invert = v;
-    k.say(v ? 'узор физически едет вправо, а видно, что влево. Инвертирован только знак контраста.' : 'узор едет вправо.');
+    k.say(v ? tr('узор физически едет вправо, а видно, что влево. Инвертирован только знак контраста.') : tr('узор едет вправо.'));
   });
   k.slider('speed', (v) => { speed = v; });
   k.loop((_, dt) => {
@@ -504,7 +508,7 @@ export const rogetPalisade: Mount = demo((k) => {
   k.slider('gap', (v) => { gap = v; s.draw(); });
   k.slider('rate', (v) => { rate = v; s.draw(); });
   k.loop((now) => { t = now; s.draw(); });
-  k.say('в просветах спицы выгибаются дугой, и по разные стороны от оси — в разные стороны.');
+  k.say(tr('в просветах спицы выгибаются дугой, и по разные стороны от оси — в разные стороны.'));
 });
 
 export const rotatingCircles: Mount = demo((k) => {
@@ -540,8 +544,8 @@ export const rotatingCircles: Mount = demo((k) => {
   });
   k.button('trails', (el) => {
     trails = !trails;
-    el.textContent = trails ? 'убрать следы' : 'показать следы';
-    k.say(trails ? 'следы прямые.' : '');
+    el.textContent = trails ? tr('убрать следы') : tr('показать следы');
+    k.say(trails ? tr('следы прямые.') : '');
   });
   k.loop((now) => { t = now; s.draw(); });
 });
@@ -579,8 +583,8 @@ export const silencing: Mount = demo((k) => {
   k.select('what', (v) => { what = v; });
   k.button('freeze', (el) => {
     frozen = !frozen;
-    el.textContent = frozen ? 'снова вращать' : 'остановить вращение';
-    k.say(frozen ? 'вращение стоит — и изменения стали очевидны. Их частота не менялась ни на герц.' : '');
+    el.textContent = frozen ? tr('снова вращать') : tr('остановить вращение');
+    k.say(frozen ? tr('вращение стоит — и изменения стали очевидны. Их частота не менялась ни на герц.') : '');
   });
   k.loop((now, dt) => { t = now; phase += dt * 1.6; s.draw(); });
 });
@@ -606,7 +610,7 @@ export const steppingFeet: Mount = demo((k) => {
   k.slider('b', (v) => { b = v; });
   k.slider('stripe', (v) => {
     stripe = v;
-    k.say(v === 0 ? 'полос нет — шаг исчез, скорость не изменилась.' : '');
+    k.say(v === 0 ? tr('полос нет — шаг исчез, скорость не изменилась.') : '');
   });
   k.loop((now) => { t = now; s.draw(); });
 });
@@ -634,7 +638,7 @@ export const ternus: Mount = demo((k) => {
   k.slider('isi', (v) => {
     isi = v;
     t0 = performance.now();
-    k.say(v < 40 ? 'короткая пауза — видно, как одна крайняя точка перепрыгивает через двух других.' : 'длинная пауза — видно, как едет вся группа целиком.');
+    k.say(v < 40 ? tr('короткая пауза — видно, как одна крайняя точка перепрыгивает через двух других.') : tr('длинная пауза — видно, как едет вся группа целиком.'));
   });
   k.loop(() => s.draw());
 });
@@ -677,9 +681,9 @@ export const tusi: Mount = demo((k) => {
   k.slider('speed', (v) => { speed = v; });
   k.button('trail', (el) => {
     trail = !trail;
-    el.textContent = trail ? 'убрать след' : 'показать след';
+    el.textContent = trail ? tr('убрать след') : tr('показать след');
     s.draw();
-    k.say(trail ? 'путь точки — диаметр. Прямая до последнего знака.' : '');
+    k.say(trail ? tr('путь точки — диаметр. Прямая до последнего знака.') : '');
   });
   k.loop((now) => { t = now; s.draw(); });
 });
@@ -715,8 +719,8 @@ export const wagonWheel: Mount = demo((k) => {
     ctx.fillStyle = '#6b6b70';
     ctx.font = '12px ui-monospace, monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('по кадрам — есть наложение', w * 0.27, h * 0.96);
-    ctx.fillText('со смазом — наложения нет', w * 0.73, h * 0.96);
+    ctx.fillText(tr('по кадрам — есть наложение'), w * 0.27, h * 0.96);
+    ctx.fillText(tr('со смазом — наложения нет'), w * 0.73, h * 0.96);
   });
   k.slider('spokes', (v) => { spokes = v; s.draw(); });
   k.slider('rate', (v) => { rate = v; s.draw(); });

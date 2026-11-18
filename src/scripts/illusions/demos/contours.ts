@@ -1,6 +1,7 @@
 /* Контуры, заполнение и двойственность. Зрение кодирует границы и достраивает
    внутренность; здесь собрано то, что оно достраивает зря — и то, что не достраивает. */
 import { demo, grey, INK, MARK, PAPER, rnd, type Mount } from '../kit';
+import { num, tr } from '../i18n';
 
 export const kanizsaTriangle: Mount = demo((k) => {
   let spin = 0;
@@ -33,8 +34,8 @@ export const kanizsaTriangle: Mount = demo((k) => {
     const inside = k.probe(geom.cx, geom.cy);
     const outside = k.probe(geom.w * 0.06, geom.h * 0.1);
     k.say(inside === outside
-      ? `внутри фигуры ${inside}, снаружи ${outside}. Одно и то же число: светлее там не стало.`
-      : `внутри ${inside}, снаружи ${outside} — проба попала на край, сдвиньте ползунок и повторите.`);
+      ? tr('внутри фигуры {a}, снаружи {b}. Одно и то же число: светлее там не стало.', { a: inside, b: outside })
+      : tr('внутри {a}, снаружи {b} — проба попала на край, сдвиньте ползунок и повторите.', { a: inside, b: outside }));
   });
 });
 
@@ -70,7 +71,7 @@ export const ehrensteinIllusion: Mount = demo((k) => {
   k.toggle('neon', (v) => {
     neon = v;
     s.draw();
-    k.say(v ? 'диск налился цветом. Ничего, кроме окраски внутренних концов, не поменялось.' : 'диск ярче страницы, и у него есть край. В изображении нет ни того, ни другого.');
+    k.say(v ? tr('диск налился цветом. Ничего, кроме окраски внутренних концов, не поменялось.') : tr('диск ярче страницы, и у него есть край. В изображении нет ни того, ни другого.'));
   });
 });
 
@@ -126,7 +127,7 @@ export const illusoryContours: Mount = demo((k) => {
   });
   k.select('fig', (v) => { fig = v; s.draw(); });
   k.slider('support', (v) => { support = v; s.draw(); });
-  k.say('четыре разных фигуры и один механизм: край виден там, где яркость не меняется.');
+  k.say(tr('четыре разных фигуры и один механизм: край виден там, где яркость не меняется.'));
 });
 
 export const troxler: Mount = demo((k) => {
@@ -155,18 +156,18 @@ export const troxler: Mount = demo((k) => {
   const finish = (el: HTMLButtonElement) => {
     clearInterval(timer);
     timer = 0;
-    el.textContent = 'начать заново';
+    el.textContent = tr('начать заново');
     const sec = (performance.now() - t0) / 1000;
     k.say(soft < 25
-      ? `${sec.toFixed(1)} с — и это при резкой границе. Чаще при таком крае пятно держится, пока хватает терпения.`
-      : `${sec.toFixed(1)} с до исчезновения. Теперь уведите мягкость в ноль и попробуйте снова.`);
+      ? tr('{n} с — и это при резкой границе. Чаще при таком крае пятно держится, пока хватает терпения.', { n: num(sec, 1) })
+      : tr('{n} с до исчезновения. Теперь уведите мягкость в ноль и попробуйте снова.', { n: num(sec, 1) }));
   };
   k.button('go', (el) => {
     if (timer) { finish(el); return; }
     t0 = performance.now();
-    el.textContent = 'пропало';
-    k.say('смотрите строго на крест и не моргайте.');
-    timer = window.setInterval(() => k.clock(`${((performance.now() - t0) / 1000).toFixed(1)} с`), 100);
+    el.textContent = tr('пропало');
+    k.say(tr('смотрите строго на крест и не моргайте.'));
+    timer = window.setInterval(() => k.clock(tr('{n} с', { n: num((performance.now() - t0) / 1000, 1) })), 100);
   });
 });
 
@@ -206,9 +207,9 @@ export const blindSpotFilling: Mount = demo((k) => {
   k.select('test', (v) => {
     test = v;
     s.draw();
-    k.say(v === 'gap' ? 'закройте левый глаз, смотрите правым на крест и подберите расстояние до экрана: разрыв зарастёт.'
-      : v === 'texture' ? 'на клетчатом фоне зарастает и клетка — система дорисовывает текстурой.'
-      : 'точка просто исчезнет, а на её месте будет фон. Не чёрное пятно, а именно фон.');
+    k.say(v === 'gap' ? tr('закройте левый глаз, смотрите правым на крест и подберите расстояние до экрана: разрыв зарастёт.')
+      : v === 'texture' ? tr('на клетчатом фоне зарастает и клетка — система дорисовывает текстурой.')
+      : tr('точка просто исчезнет, а на её месте будет фон. Не чёрное пятно, а именно фон.'));
   });
 });
 
@@ -237,7 +238,7 @@ export const extinctionIllusion: Mount = demo((k) => {
         placed++;
       }
   });
-  k.slider('dots', (v) => { dots = v; s.draw(); k.say(`нарисовано ${v}. Сколько вы удерживаете разом?`); });
+  k.slider('dots', (v) => { dots = v; s.draw(); k.say(tr('нарисовано {n}. Сколько вы удерживаете разом?', { n: v })); });
   k.slider('contrast', (v) => { contrast = v; s.draw(); });
 });
 
@@ -256,7 +257,7 @@ export const visualPhantoms: Mount = demo((k) => {
   k.slider('freq', (v) => { freq = v; });
   k.slider('speed', (v) => { speed = v; });
   k.loop((now) => { t = now; s.draw(); });
-  k.say('сквозь чёрную полосу плывёт бледный призрак решётки. Фантом живёт при низкой частоте и медленном ходе.');
+  k.say(tr('сквозь чёрную полосу плывёт бледный призрак решётки. Фантом живёт при низкой частоте и медленном ходе.'));
 });
 
 export const lilacChaser: Mount = demo((k) => {
@@ -291,7 +292,7 @@ export const lilacChaser: Mount = demo((k) => {
   k.slider('speed', (v) => { speed = v; });
   k.slider('blur', (v) => { blur = v; });
   k.loop((now) => { t = now; s.draw(); });
-  k.say('шаг первый — бегущий просвет. Шаг второй — он позеленел. Шаг третий: не отводите взгляд от креста, и лиловые диски исчезнут совсем.');
+  k.say(tr('шаг первый — бегущий просвет. Шаг второй — он позеленел. Шаг третий: не отводите взгляд от креста, и лиловые диски исчезнут совсем.'));
 });
 
 export const scintillatingStarburst: Mount = demo((k) => {
@@ -322,5 +323,5 @@ export const scintillatingStarburst: Mount = demo((k) => {
   k.slider('rings', (v) => { rings = v; s.draw(); });
   k.slider('vertices', (v) => { vertices = v; s.draw(); });
   k.slider('width', (v) => { width = v; s.draw(); });
-  k.say('смотрите чуть мимо центра — лучи станут ярче. На периферии эффект сильнее.');
+  k.say(tr('смотрите чуть мимо центра — лучи станут ярче. На периферии эффект сильнее.'));
 });

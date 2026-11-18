@@ -1,6 +1,7 @@
 /* Два глаза. Свободное сведение глаз даётся не всем, поэтому у всех трёх стереоэкспонатов
    есть анаглифный режим: красно-синие очки стоят копейки и работают у каждого. */
 import { demo, grey, INK, MARK, PAPER, rnd, type Mount } from '../kit';
+import { num, tr } from '../i18n';
 
 /* Поле случайных точек со сдвинутым прямоугольником. Возвращает две карты. */
 const rdsPair = (cols: number, rows: number, shift: number, seed = 5) => {
@@ -53,9 +54,9 @@ export const randomDotStereogram: Mount = demo((k) => {
   k.toggle('anaglyph', (v) => { anaglyph = v; s.draw(); });
   k.button('outline', (el) => {
     outline = !outline;
-    el.textContent = outline ? 'убрать обводку' : 'обвести сдвинутую область';
+    el.textContent = outline ? tr('убрать обводку') : tr('обвести сдвинутую область');
     s.draw();
-    k.say(outline ? 'одним глазом в этом прямоугольнике не видно ровным счётом ничего: он отличается только сдвигом между картинками.' : '');
+    k.say(outline ? tr('одним глазом в этом прямоугольнике не видно ровным счётом ничего: он отличается только сдвигом между картинками.') : '');
   });
 });
 
@@ -105,7 +106,7 @@ export const autostereogram: Mount = demo((k) => {
   k.toggle('cross', (v) => {
     cross = v;
     s.draw();
-    k.say('сведите глаза так, чтобы две красные точки наверху слились в три. Тогда в середине проступит конус.');
+    k.say(tr('сведите глаза так, чтобы две красные точки наверху слились в три. Тогда в середине проступит конус.'));
   });
 });
 
@@ -151,7 +152,7 @@ export const binocularRivalry: Mount = demo((k) => {
       gaps.push((performance.now() - t0) / 1000);
       hist.draw();
       const mean = gaps.reduce((a, b) => a + b, 0) / gaps.length;
-      k.say(`${gaps.length} периодов, в среднем ${mean.toFixed(1)} с. Сравните с вашим же кубом Неккера — форма распределения у них одинаковая.`);
+      k.say(tr('периодов: {n}, в среднем {s} с. Сравните с вашим же кубом Неккера — форма распределения у них одинаковая.', { n: gaps.length, s: num(mean) }));
     }
   });
   k.button('reset', () => { gaps.length = 0; hist.draw(); });
@@ -167,14 +168,14 @@ export const chromostereopsis: Mount = demo((k) => {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = `rgb(${Math.round(255 * S)} 0 0)`;
-    ctx.fillText('красное', w / 2, h * 0.34);
+    ctx.fillText(tr('красное'), w / 2, h * 0.34);
     ctx.fillStyle = `rgb(0 0 ${Math.round(255 * S)})`;
-    ctx.fillText('синее', w / 2, h * 0.7);
+    ctx.fillText(tr('синее'), w / 2, h * 0.7);
   });
   k.slider('bg', (v) => {
     bg = v;
     s.draw();
-    k.say(v > 40 ? 'на светлом фоне порядок глубины часто переворачивается. У кого как — спрашивайте у соседа.' : 'на чёрном фоне красное обычно впереди.');
+    k.say(v > 40 ? tr('на светлом фоне порядок глубины часто переворачивается. У кого как — спрашивайте у соседа.') : tr('на чёрном фоне красное обычно впереди.'));
   });
   k.slider('sat', (v) => { sat = v; s.draw(); });
 });

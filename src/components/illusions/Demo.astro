@@ -54,7 +54,7 @@ const credits = (spec?.credits ?? []).map((cid) => ({ cid, a: asset(cid) })).fil
                 step={c.step ?? 1}
                 value={c.value}
                 data-slider={c.name}
-                data-fmt={c.fmt}
+                data-fmt={c.fmt && dt(lang, c.fmt)}
               />
               {/* Без формата значение не показывается: у задач на подгонку число
                   превращает измерение в арифметику. */}

@@ -1,6 +1,7 @@
 /* Размер и длина. Во всех этих демонстрациях спорные величины выводятся из одной
    переменной: равенство по построению, а не по обещанию. */
-import { demo, grey, INK, MARK, PAPER, type Mount } from '../kit';
+import { demo, grey, INK, MARK, PAPER, plural, type Mount } from '../kit';
+import { tr } from '../i18n';
 
 export const muellerLyer: Mount = demo((k) => {
   let theta = 45;
@@ -50,11 +51,11 @@ export const muellerLyer: Mount = demo((k) => {
   k.slider('angle', (v) => {
     theta = v;
     s.draw();
-    k.say(v === 0 ? 'угол 0° — наконечники легли на отрезок, и разницы больше нет. Вот это и есть проверка.' : `угол ${v}°. Оба отрезка по-прежнему одной длины.`);
+    k.say(v === 0 ? tr('угол 0° — наконечники легли на отрезок, и разницы больше нет. Вот это и есть проверка.') : tr('угол {v}°. Оба отрезка по-прежнему одной длины.', { v }));
   });
   k.button('ruler', (el) => {
     ruler = !ruler;
-    el.textContent = ruler ? 'убрать линейку' : 'приложить линейку';
+    el.textContent = ruler ? tr('убрать линейку') : tr('приложить линейку');
     s.draw();
   });
 });
@@ -90,7 +91,7 @@ export const ponzo: Mount = demo((k) => {
   k.slider('deg', (v) => {
     deg = v;
     s.draw();
-    k.say(v === 0 ? 'рельсы параллельны — перспективы нет, и отрезки наконец выглядят одинаковыми.' : `схождение ${v}°. Длина у обоих — одна и та же переменная.`);
+    k.say(v === 0 ? tr('рельсы параллельны — перспективы нет, и отрезки наконец выглядят одинаковыми.') : tr('схождение {v}°. Длина у обоих — одна и та же переменная.', { v }));
   });
 });
 
@@ -133,16 +134,16 @@ export const ebbinghaus: Mount = demo((k) => {
   k.slider('mine', (v) => { mine = v; reveal = false; s.draw(); });
   k.button('check', (el) => {
     reveal = !reveal;
-    el.textContent = reveal ? 'скрыть ответ' : 'проверить';
+    el.textContent = reveal ? tr('скрыть ответ') : tr('проверить');
     s.draw();
     if (!reveal) return;
     const err = ((mine - REF) / REF) * 100;
     const a = Math.abs(err).toFixed(0);
     k.say(Math.abs(err) < 3
-      ? `промах ${a} % — вы попали. Это бывает: иллюзия сильна не у всех одинаково.`
+      ? tr('промах {a} % — вы попали. Это бывает: иллюзия сильна не у всех одинаково.', { a })
       : err > 0
-        ? `вы сделали правый круг на ${a} % больше эталона. Соседи у него мелкие, и он казался меньше, чем есть.`
-        : `вы сделали правый круг на ${a} % меньше эталона — необычное направление.`);
+        ? tr('вы сделали правый круг на {a} % больше эталона. Соседи у него мелкие, и он казался меньше, чем есть.', { a })
+        : tr('вы сделали правый круг на {a} % меньше эталона — необычное направление.', { a }));
   });
 });
 
@@ -182,11 +183,11 @@ export const delboeuf: Mount = demo((k) => {
   k.slider('ring', (v) => {
     ringR = v;
     s.draw();
-    k.say(v < R + 8 ? 'кольцо вплотную — диск кажется крупнее.' : v > 90 ? 'кольцо далеко — диск кажется мельче. Это та же тарелка, только большая.' : '');
+    k.say(v < R + 8 ? tr('кольцо вплотную — диск кажется крупнее.') : v > 90 ? tr('кольцо далеко — диск кажется мельче. Это та же тарелка, только большая.') : '');
   });
   k.button('check', (el) => {
     show = !show;
-    el.textContent = show ? 'убрать эталон' : 'показать эталон';
+    el.textContent = show ? tr('убрать эталон') : tr('показать эталон');
     s.draw();
   });
 });
@@ -213,9 +214,9 @@ export const jastrow: Mount = demo((k) => {
   });
   k.button('stack', (el) => {
     stacked = !stacked;
-    el.textContent = stacked ? 'развести' : 'наложить друг на друга';
+    el.textContent = stacked ? tr('развести') : tr('наложить друг на друга');
     s.draw();
-    k.say(stacked ? 'совпали до пикселя. Оба сегмента рисуются одной функцией из одних и тех же чисел.' : '');
+    k.say(stacked ? tr('совпали до пикселя. Оба сегмента рисуются одной функцией из одних и тех же чисел.') : '');
   });
 });
 
@@ -262,11 +263,11 @@ export const oppelKundt: Mount = demo((k) => {
   k.slider('ticks', (v) => {
     ticks = v;
     s.draw();
-    k.say(v === 0 ? 'штрихов нет — половины равны и выглядят равными.' : `${v} штрихов. Длина половин не менялась ни разу.`);
+    k.say(v === 0 ? tr('штрихов нет — половины равны и выглядят равными.') : tr('{count}. Длина половин не менялась ни разу.', { count: plural(v, tr('{n} штрих'), tr('{n} штриха'), tr('{n} штрихов')) }));
   });
   k.button('ruler', (el) => {
     ruler = !ruler;
-    el.textContent = ruler ? 'убрать линейку' : 'приложить линейку';
+    el.textContent = ruler ? tr('убрать линейку') : tr('приложить линейку');
     s.draw();
   });
 });
@@ -319,9 +320,9 @@ export const sander: Mount = demo((k) => {
   k.slider('shear', (v) => { shear = v; s.draw(); });
   k.button('rotate', (el) => {
     rot = rot ? 0 : 100;
-    el.textContent = rot ? 'вернуть' : 'повернуть диагональ';
+    el.textContent = rot ? tr('вернуть') : tr('повернуть диагональ');
     s.draw();
-    k.say(rot ? 'обе диагонали одной длины: вторая рисуется той же переменной, просто под другим углом.' : '');
+    k.say(rot ? tr('обе диагонали одной длины: вторая рисуется той же переменной, просто под другим углом.') : '');
   });
 });
 
@@ -346,7 +347,7 @@ export const verticalHorizontal: Mount = demo((k) => {
         ctx.beginPath(); ctx.moveTo(w / 2 - L / 2, h * 0.28); ctx.lineTo(w / 2 + L / 2, h * 0.28);
         ctx.moveTo(w / 2, h * 0.28); ctx.lineTo(w / 2, h * 0.28 + L); ctx.stroke();
       }],
-      [(w * 5) / 6, 'перевёрнутое T', () => {
+      [(w * 5) / 6, tr('перевёрнутое T'), () => {
         ctx.beginPath(); ctx.moveTo((w * 5) / 6 - L / 2, h * 0.75); ctx.lineTo((w * 5) / 6 + L / 2, h * 0.75);
         ctx.moveTo((w * 5) / 6, h * 0.75); ctx.lineTo((w * 5) / 6, h * 0.75 - L); ctx.stroke();
       }],
@@ -368,13 +369,13 @@ export const verticalHorizontal: Mount = demo((k) => {
       ctx.setLineDash([]);
       ctx.fillStyle = MARK;
       ctx.textAlign = 'left';
-      ctx.fillText(`${L} px — столько же в каждом отрезке на экране`, w * 0.04, h * 0.09);
+      ctx.fillText(tr('{n} px — столько же в каждом отрезке на экране', { n: L }), w * 0.04, h * 0.09);
     }
   });
   k.slider('len', (v) => { L = v; s.draw(); });
   k.button('ruler', (el) => {
     equal = !equal;
-    el.textContent = equal ? 'убрать мерку' : 'уравнять';
+    el.textContent = equal ? tr('убрать мерку') : tr('уравнять');
     s.draw();
   });
 });
@@ -403,9 +404,9 @@ export const sineIllusion: Mount = demo((k) => {
   k.slider('amp', (v) => { amp = v; s.draw(); });
   k.button('flat', (el) => {
     flat = !flat;
-    el.textContent = flat ? 'вернуть кривую' : 'распрямить';
+    el.textContent = flat ? tr('вернуть кривую') : tr('распрямить');
     s.draw();
-    k.say(flat ? 'все столбики одной длины — и всегда были: длина в коде одна переменная.' : '');
+    k.say(flat ? tr('все столбики одной длины — и всегда были: длина в коде одна переменная.') : '');
   });
 });
 
@@ -451,7 +452,7 @@ export const shepardTables: Mount = demo((k) => {
   });
   k.button('fly', (el) => {
     const to = t > 0.5 ? 0 : 1;
-    el.textContent = to ? 'развести' : 'наложить столешницы';
+    el.textContent = to ? tr('развести') : tr('наложить столешницы');
     const from = t;
     const t0 = performance.now();
     cancelAnimationFrame(anim);
@@ -461,7 +462,7 @@ export const shepardTables: Mount = demo((k) => {
       t = from + (to - from) * e;
       s.draw();
       if (p < 1) anim = requestAnimationFrame(step);
-      else k.say(to ? 'совпали до пикселя: это один параллелограмм, повёрнутый на прямой угол.' : '');
+      else k.say(to ? tr('совпали до пикселя: это один параллелограмм, повёрнутый на прямой угол.') : '');
     };
     anim = requestAnimationFrame(step);
   });
@@ -515,6 +516,6 @@ export const leaningTower: Mount = demo((k) => {
   k.toggle('mirror', (v) => {
     mirror = v;
     s.draw();
-    k.say(v ? 'зеркальная копия сходится к общей точке схода — и наклоны сравнялись.' : 'две одинаковые панели: их рисует одна функция с одним аргументом.');
+    k.say(v ? tr('зеркальная копия сходится к общей точке схода — и наклоны сравнялись.') : tr('две одинаковые панели: их рисует одна функция с одним аргументом.'));
   });
 });

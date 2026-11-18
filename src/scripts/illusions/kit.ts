@@ -6,6 +6,19 @@
  * останавливается вне экрана, и доступ к ручкам.
  */
 
+import { pageLang, tr } from './i18n';
+
+/** Число со словом в нужной форме. Формы передаются уже через tr() — «1», «2–4», «5 и больше»
+    по-русски — и содержат {n}. По-русски и по-беларуски правило одно и то же, по-английски
+    форм две: для единицы первая, для остального третья. */
+export function plural(n: number, one: string, few: string, many: string): string {
+  const i = Math.abs(Math.trunc(n)), d = i % 10, dd = i % 100;
+  const form = pageLang === 'en'
+    ? (i === 1 ? one : many)
+    : d === 1 && dd !== 11 ? one : d >= 2 && d <= 4 && (dd < 12 || dd > 14) ? few : many;
+  return tr(form, { n });
+}
+
 export interface Surface {
   ctx: CanvasRenderingContext2D;
   /** Логические (CSS) пиксели — в них и считаем. */
@@ -127,10 +140,12 @@ export class Kit {
     return this.root.querySelector<HTMLSelectElement>(`[data-select="${name}"]`)?.value ?? '';
   }
 
-  /** Строка вывода под демонстрацией. */
+  /** Строка вывода под демонстрацией. Строки в словаре начинаются со строчной, как
+      по-русски; по-английски первая буква строки вывода прописная (и после открывающей
+      кавычки: «‘Higher’ three times…»). */
   say(text: string) {
     const el = this.root.querySelector<HTMLElement>('[data-readout]');
-    if (el) el.textContent = text;
+    if (el) el.textContent = pageLang === 'en' ? text.replace(/^([^\p{L}\p{N}]*)(\p{L})/u, (_, p: string, ch: string) => p + ch.toUpperCase()) : text;
   }
 
   clock(text: string) {
