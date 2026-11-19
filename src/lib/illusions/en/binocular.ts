@@ -34,7 +34,7 @@ export const BINOCULAR: Group = {
       'That is where all its research value lies. Both images sit on the retinas the whole time, yet you are aware of them in turns. Nobody has yet found a better way to separate “what reached the eye” from “what was seen”.',
     ],
     demo: 'binocular-rivalry',
-    demoNote: 'You need either free fusion or an anaglyph, and a browser can do both: two striped fields side by side, or one overlaid in red and cyan for red-blue glasses. Hold the space bar for as long as only one picture is visible. Each hold goes into a histogram, and its shape is worth comparing with your own Necker cube.',
+    demoNote: 'You need either free fusion or an anaglyph, and a browser can do both: two striped fields side by side, or one overlaid in red and cyan for red-blue glasses. Hold the space bar for as long as only one picture is visible. Each hold adds a bar to the chart below, in the order they came, and the spread is worth comparing with your own Necker cube.',
     twist: 'First described by Giambattista della Porta in 1593. The catalogue first filed it under ambiguous figures and later moved it here. Rivalry is still a kind of ambiguity, but its cause is different, and one heading cannot say both.',
   },
 

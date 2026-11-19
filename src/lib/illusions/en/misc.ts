@@ -25,7 +25,7 @@ export const MISC: Group = {
       'The modern reading treats it as Hering and Wundt generalised: the same orientation contrast, applied to the whole figure at once.',
     ],
     demo: 'orbison',
-    demoNote: 'Pick a background (fan, rings, grid) and a figure (square, circle, hexagon). Set the fan rotating slowly and the effect gets noticeably stronger.',
+    demoNote: 'Pick a background (fan, rings or hyperbolas) and a figure (square, circle or hexagon). The background can also be set turning slowly while the figure stays put.',
   },
 
   'ehrenstein-square': {
@@ -46,17 +46,17 @@ export const MISC: Group = {
       'Border capture and orientation contrast: the same mechanism as the café wall, only accumulated across the whole field at once instead of along a row.',
     ],
     demo: 'checker-bulge',
-    demoNote: 'You can change the size of the corner elements, and lay a straight line across the board.',
+    demoNote: 'You can change the size and the contrast of the corner elements, and lay straight lines across the board.',
   },
 
   'curvature-blindness': {
-    lede: 'The same sine wave: a gentle wave on one background, a sharp zigzag on another.',
+    lede: 'The same sine wave reads as a gentle curve or as a sharp zigzag, depending on where its colour changes.',
     what: 'The line doesn’t change. All that changes is where along it the contrast switches.',
     how: [
       'A switch in contrast polarity at a turning point reads as a corner. And when both readings are available, corner and curve, the corner wins.',
     ],
     demo: 'curvature-blindness',
-    demoNote: 'The same wave runs over a light half and a dark half of the background, and sliders set its amplitude and the switch point. Move the switch point off the crest of the wave and the illusion vanishes instantly.',
+    demoNote: 'The same wave is drawn twice: over the top half, whose brightness has its own slider, and over a mid-grey bottom half, where the effect is strongest. The other two sliders set the amplitude and the point where the contrast switches: at 0 it switches at the peaks and troughs, at 100 halfway between them. Move the switch point away from the peaks and the zigzag smooths out gradually; by 100 it is gone.',
     twist: 'One of the few genuinely new geometric illusions of the last decade: Kohske Takahashi, 2017, in an open-access paper with every parameter spelled out.',
   },
 
@@ -69,7 +69,7 @@ export const MISC: Group = {
       'Illusory contours are completed through the vertices of the polygons. The effect is stronger in the periphery and depends on contrast and the number of vertices.',
     ],
     demo: 'scintillating-starburst',
-    demoNote: 'Pure geometry, fully specified in an open paper: the number of rings, the number of points and the line thickness can all be changed. What you see is the study itself, reproduced.',
+    demoNote: 'Nested star polygons in the spirit of Karlovich and Wallisch’s figure, not their exact stimulus. Sliders set the number of rings, the number of points, the line thickness and the line contrast. Look slightly to one side of the centre and the rays get brighter.',
   },
 
   'op-art': {
@@ -89,7 +89,7 @@ export const MISC: Group = {
       'The difference in area is exactly one square.',
     ],
     demo: 'missing-square-puzzle',
-    demoNote: 'The two triangles on a grid, a button that swaps them round, a ruler along the hypotenuse and a slider that stretches the vertical. The stretched view is what turns the trick into an explanation.',
+    demoNote: 'Four pieces on a grid and a button that rearranges them, after which one square is left empty. A ruler lays a straight line from corner to corner, and a slider stretches the vertical distance from that line, so the slight bend in the “hypotenuse” grows until you can’t miss it. The stretched view is what turns the trick into an explanation.',
     twist: 'This illusion is mathematical, not perceptual, and that is worth saying plainly: the eye isn’t making a mistake, it is simply being asked to spot a difference in slope of about one degree. Invented by the amateur magician Paul Curry in 1953, published by Martin Gardner.',
   },
 
@@ -115,7 +115,7 @@ export const MISC: Group = {
       'Orientation-tuned cells adapt, and the response of the whole population shifts away from the adapted angle.',
     ],
     demo: 'tilt-aftereffect',
-    demoNote: 'Adaptation on a timer, then a nulling task: turn the test grating to vertical, and the page tells you your error in degrees.',
+    demoNote: 'Forty-five seconds of adaptation to a grating tilted 15° to the right, then a nulling task. The test grating starts at a random tilt; you turn it until it looks vertical, and the page tells you how far off you set it and which way. Expect your setting to lean the same way as the adapter: after adaptation, true vertical looks tilted away from it, and you correct for that.',
     twist: 'The temporal twin of the tilt illusion. Both come from the same pair of 1937 papers, the first by Gibson and Radner, the second by Gibson alone.',
   },
 
@@ -184,7 +184,7 @@ export const MISC: Group = {
       'Nothing has gone wrong in the processing. The ambiguity is physical: the information that would tell the two apart is not in the signal.',
     ],
     demo: 'somatogravic',
-    demoNote: 'A vector diagram with a slider for the acceleration: gravity plus acceleration, with the resultant labelled, which is what the otoliths report. One move of the slider and the ambiguity is obvious.',
+    demoNote: 'A vector diagram with a slider for the acceleration. Gravity points down, the inertial force of the acceleration points backwards, and their resultant, which is all the otoliths can measure, is drawn with the angle by which it tilts away from true vertical. One move of the slider and the ambiguity is obvious.',
     twist: 'The catalogue’s best example of an illusion that is no defect at all: the sensor reports exactly what it measures. In aviation it is a recognised cause of crashes, and that is why these illusions were studied in the first place.',
   },
 
@@ -224,7 +224,7 @@ export const MISC: Group = {
       'The assumption of constant speed is at work: if the path was longer, more time must have passed.',
     ],
     demo: 'kappa-effect',
-    demoNote: 'Three flashes 0.4 s apart, with a slider that moves the middle one; you judge whether the intervals were equal. The tau effect, the same assumption seen from the other side, has an entry of its own.',
+    demoNote: 'Three flashes 0.4 s apart, with a slider that moves only the middle one in space. After each run the page asks which interval seemed longer, the first or the second, or whether they were the same. The tau effect, the same assumption seen from the other side, has an entry of its own.',
   },
 
   'oddball-effect': {
@@ -235,7 +235,7 @@ export const MISC: Group = {
     ],
     demo: 'oddball-effect',
     demoNote: 'Seven shapes, 400 ms each: blue circles with one red square among them. Then the page asks whether the square lasted longer than the circles, just as long or shorter, and reminds you that every frame, the square included, was given the same 400 ms.',
-    twist: 'Probably the source of the everyday report that time slowed down during an accident, though that report is most likely about memory rather than the moment itself.',
+    twist: 'It is often linked with the feeling that time slowed down during an accident, but that is a separate finding. Stetson and Eagleman put volunteers through a free fall and found that the slowing is laid down in memory afterwards; in the moment itself, time runs no slower.',
   },
 
   'representational-momentum': {
@@ -308,7 +308,7 @@ export const MISC: Group = {
       'Emotion and effort are partly inferred from the state of the body. Swap the signal and the inference follows the swap, not the body.',
     ],
     demo: 'false-heart-rate-feedback',
-    demoNote: 'The browser version plays a heartbeat for nine seconds, at 62 or 105 beats a minute picked at random, while you look at a pattern, and then asks you to rate the pattern from 0 to 10. It ends with an immediate, plain debrief: the sound was never your pulse.',
+    demoNote: 'The browser version plays a heartbeat for nine seconds and tells you it is yours. In fact it runs at 62 or 105 beats a minute, picked at random, while you look at a pattern; then you rate the pattern from 0 to 10. Straight after the rating comes a plain debrief: the sound was never your pulse.',
   },
 
   'cardio-visual-full-body': {

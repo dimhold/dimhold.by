@@ -2,19 +2,46 @@
 import { demo, grey, INK, MARK, PAPER, rnd, type Mount } from '../kit';
 import { num, tr } from '../i18n';
 
+/* Четырёхлучевая звезда: лучи по углам rot, rot+90°… Две такие звезды, повёрнутые на 45°,
+   вместе дают восьмилучевую. */
+const star = (ctx: CanvasRenderingContext2D, cx: number, cy: number, R: number, rot: number) => {
+  ctx.beginPath();
+  for (let i = 0; i < 8; i++) {
+    const a = rot + (i * Math.PI) / 4;
+    const r = i % 2 ? R * 0.3 : R;
+    i ? ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a)) : ctx.moveTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
+  }
+  ctx.closePath();
+};
+
 export const negativeAfterimage: Mount = demo((k) => {
   let phase: 'idle' | 'adapt' | 'test' = 'idle';
-  let t0 = 0, shape = 'none', timer = 0;
+  let t0 = 0, shape = 'none', timer = 0, adaptor: 'disc' | 'star' = 'disc';
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = phase === 'test' ? '#fff' : PAPER;
     ctx.fillRect(0, 0, w, h);
     const cx = w / 2, cy = h / 2;
     const R = Math.min(w, h) * 0.3;
-    if (phase === 'adapt') {
+    if (phase === 'adapt' && adaptor === 'disc') {
       ctx.fillStyle = '#e03a3a';
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
       ctx.fill();
+    } else if (phase === 'adapt') {
+      /* Вариант ван Лира: окрашены только кончики лучей, прямые лучи в один цвет,
+         косые — в другой. Середина звезды остаётся пустой. */
+      const R2 = R * 1.4;
+      for (const [rot, col] of [[-Math.PI / 2, '#f08a24'], [-Math.PI / 4, '#1fa3c8']] as const) {
+        ctx.save();
+        star(ctx, cx, cy, R2, rot);
+        ctx.clip();
+        ctx.fillStyle = col;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R2, 0, Math.PI * 2);
+        ctx.arc(cx, cy, R2 * 0.42, 0, Math.PI * 2, true);
+        ctx.fill();
+        ctx.restore();
+      }
     } else if (phase === 'test' && shape !== 'none') {
       /* Контур подаётся после адаптации и всё равно распоряжается цветом образа —
          сетчатка про будущие контуры знать не может. */
@@ -22,7 +49,8 @@ export const negativeAfterimage: Mount = demo((k) => {
       ctx.lineWidth = 3;
       ctx.beginPath();
       if (shape === 'circle') ctx.arc(cx, cy, R * 0.7, 0, Math.PI * 2);
-      else ctx.rect(cx - R * 0.6, cy - R * 0.6, R * 1.2, R * 1.2);
+      else if (shape === 'square') ctx.rect(cx - R * 0.6, cy - R * 0.6, R * 1.2, R * 1.2);
+      else star(ctx, cx, cy, R * 1.4, shape === 'star-a' ? -Math.PI / 2 : -Math.PI / 4);
       ctx.stroke();
     }
     ctx.fillStyle = INK;
@@ -30,9 +58,19 @@ export const negativeAfterimage: Mount = demo((k) => {
     ctx.arc(cx, cy, 3, 0, Math.PI * 2);
     ctx.fill();
   });
-  k.select('shape', (v) => { shape = v; s.draw(); });
+  const testNote = () => adaptor === 'disc'
+    ? tr('зелёное пятно там, где было красное. Никакого зелёного на экране нет.')
+    : shape === 'star-a' || shape === 'star-b'
+      ? tr('звезду заливает цвет, дополнительный к лучам, которые обвёл контур. Переключите контур на другую звезду: адаптация была одна, а цвет сменится. На экране сейчас только белое и чёрная линия.')
+      : tr('выберите контур-звезду: какую обвести, ту и зальёт последовательный образ.');
+  k.select('shape', (v) => {
+    shape = v;
+    s.draw();
+    if (phase === 'test') k.say(testNote());
+  });
   k.button('go', (el) => {
     phase = 'adapt';
+    adaptor = shape === 'star-a' || shape === 'star-b' ? 'star' : 'disc';
     t0 = performance.now();
     el.disabled = true;
     k.say(tr('смотрите строго в точку в центре.'));
@@ -46,14 +84,15 @@ export const negativeAfterimage: Mount = demo((k) => {
         phase = 'test';
         el.disabled = false;
         s.draw();
-        k.say(tr('зелёное пятно там, где было красное. Никакого зелёного на экране нет.'));
+        k.say(testNote());
       }
     }, 100);
   });
 });
 
 export const benhamTop: Mount = demo((k) => {
-  let speed = 7, dir = 1, a = 0;
+  /* speed — обороты в секунду. */
+  let speed = 5, dir = 1, a = 0, note = '', hz = 0, n = 0, acc = 0;
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = PAPER;
     ctx.fillRect(0, 0, w, h);
@@ -73,24 +112,37 @@ export const benhamTop: Mount = demo((k) => {
     ctx.arc(0, 0, R, 0, Math.PI);
     ctx.closePath();
     ctx.fill();
+    /* Рисунок Бенхэма: белая половина поделена на четыре сектора по 45°, в каждом по три
+       дуги, и от сектора к сектору дуги спускаются ближе к центру. */
     ctx.strokeStyle = '#000';
-    ctx.lineWidth = R * 0.07;
-    for (let arc = 0; arc < 4; arc++) {
-      const r = R * (0.92 - arc * 0.19);
-      const start = Math.PI + arc * 0.28;
-      ctx.beginPath();
-      ctx.arc(0, 0, r, start, start + 0.55);
-      ctx.stroke();
-    }
+    ctx.lineWidth = R * 0.028;
+    for (let sec = 0; sec < 4; sec++)
+      for (let m = 0; m < 3; m++) {
+        const r = R * (0.88 - sec * 0.19 - m * 0.055);
+        ctx.beginPath();
+        ctx.arc(0, 0, r, Math.PI + (sec * Math.PI) / 4, Math.PI + ((sec + 1) * Math.PI) / 4);
+        ctx.stroke();
+      }
     ctx.restore();
   });
-  k.slider('speed', (v) => { speed = v; });
+  const tell = () => {
+    if (!hz) return;
+    k.say(tr('экран обновляется {hz} раз в секунду, диск делает {rps} об/с — {deg}° за кадр. Поворот считается по настоящим меткам времени кадров, поэтому частота экрана влияет на результат.',
+      { hz: Math.round(hz), rps: speed, deg: Math.round((speed * 360) / hz) }) + note);
+  };
+  k.slider('speed', (v) => { speed = v; tell(); });
   k.toggle('dir', (v) => {
+    /* Переключатель вызывается и при запуске — тогда направление не меняется и сказать нечего. */
+    if (dir !== (v ? -1 : 1)) note = tr(' Цвета поменялись местами; какие они, у каждого своё.');
     dir = v ? -1 : 1;
-    k.say(tr('цвета поменялись местами. У разных людей они разные — это одна из самых наглядных иллюзий, которая у каждого своя.'));
+    tell();
   });
-  k.loop((_, dt) => { a += dir * dt * speed; s.draw(); });
-  k.say(tr('частота обновления вашего экрана здесь влияет на результат: вращение считается по настоящим меткам времени кадров.'));
+  k.loop((_, dt) => {
+    a += dir * dt * speed * Math.PI * 2;
+    s.draw();
+    if (dt > 0) { n++; acc += dt; }
+    if (n === 60) { hz = n / acc; n = 0; acc = 0; tell(); }
+  });
 });
 
 export const munkerWhite: Mount = demo((k) => {
@@ -129,25 +181,41 @@ export const neonColourSpreading: Mount = demo((k) => {
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, w, h);
     const pitch = Math.min(w, h) / 12;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2.5;
     const cx = w / 2, cy = h / 2;
-    const R = pitch * 2.2;
-    for (let x = pitch; x < w; x += pitch)
-      for (const [x1, y1, x2, y2] of [[x, 0, x, h]] as const) {
-        const inside = Math.abs(x - cx) < R;
-        ctx.strokeStyle = inside ? `rgb(${Math.round(60 + lum)} ${Math.round(80 + lum)} 230)` : '#111';
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-      }
-    for (let y = pitch; y < h; y += pitch) {
-      const inside = Math.abs(y - cy) < R;
-      ctx.strokeStyle = inside ? `rgb(${Math.round(60 + lum)} ${Math.round(80 + lum)} 230)` : '#111';
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-    }
+    const R = pitch * 2.6;
+    /* Решётка с узлом в центре диска, иначе диск садится между линиями криво. */
+    const x0 = cx - Math.ceil(cx / pitch) * pitch, y0 = cy - Math.ceil(cy / pitch) * pitch;
+    const grid = () => {
+      ctx.beginPath();
+      for (let x = x0; x < w; x += pitch) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
+      for (let y = y0; y < h; y += pitch) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
+      ctx.stroke();
+    };
+    ctx.strokeStyle = '#111';
+    grid();
+    /* Те же линии внутри круга — цветные. Сам круг не нарисован: его край существует только
+       как места, где чёрный отрезок сменяется цветным. Яркость ведём от почти чёрного
+       синего через насыщенный синий к почти белому. */
+    const t = lum / 100;
+    const mix = (a: number[], b: number[], u: number) => a.map((v, i) => Math.round(v + (b[i] - v) * u));
+    const c = t < 0.5 ? mix([18, 22, 60], [40, 90, 255], t * 2) : mix([40, 90, 255], [232, 238, 255], (t - 0.5) * 2);
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = `rgb(${c[0]} ${c[1]} ${c[2]})`;
+    grid();
+    ctx.restore();
   });
   k.slider('lum', (v) => {
     lum = v;
     s.draw();
-    k.say(v < 20 || v > 85 ? tr('окно по контрасту узкое, и здесь эффект схлопнулся.') : tr('цвет растекается по прозрачному диску, которого не нарисовано.'));
+    k.say(v < 20 ? tr('цветные отрезки почти так же темны, как чёрные, и свечение гаснет: окно по контрасту узкое.')
+      : v > 85 ? tr('цветные отрезки почти сливаются с белым фоном, и растекаться почти нечему: окно по контрасту узкое.')
+      : tr('цвет растекается по прозрачному диску, которого не нарисовано.'));
   });
 });
 
@@ -158,58 +226,75 @@ export const watercolour: Mount = demo((k) => {
     ctx.fillRect(0, 0, w, h);
     const cx = w / 2, cy = h / 2;
     const R = Math.min(w, h) * 0.38;
-    const path = () => {
+    const lw = Math.max(3, Math.min(w, h) * 0.012);
+    /* off — смещение по радиусу: две линии идут вплотную, одна снаружи, другая внутри. */
+    const path = (off: number) => {
       ctx.beginPath();
-      for (let i = 0; i <= 200; i++) {
-        const a = (i / 200) * Math.PI * 2;
-        const r = R + wave * Math.sin(a * 9);
+      for (let i = 0; i <= 360; i++) {
+        const a = (i / 360) * Math.PI * 2;
+        const r = R + off + wave * Math.sin(a * 9);
         const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
         i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
       }
       ctx.closePath();
     };
-    /* Решает пара границ, а не сама область: внутренняя линия задаёт, что окрасится. */
-    ctx.lineWidth = 10;
-    ctx.strokeStyle = swap ? '#e8b23a' : '#7a4fd0';
-    path();
+    /* Решает пара границ, а не сама область: тёмная фиолетовая с одной стороны, светлая
+       оранжевая с другой, и окрашивается сторона оранжевой. */
+    ctx.lineWidth = lw;
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = swap ? '#f0a020' : '#6a2fb8';
+    path(lw / 2);
     ctx.stroke();
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = swap ? '#7a4fd0' : '#e8b23a';
-    path();
+    ctx.strokeStyle = swap ? '#6a2fb8' : '#f0a020';
+    path(-lw / 2);
     ctx.stroke();
   });
   k.toggle('swap', (v) => {
     swap = v;
     s.draw();
-    k.say(v ? tr('окрасилось то, что было снаружи. Область не менялась — поменялись местами линии.') : '');
+    k.say(v ? tr('окрасилось то, что было снаружи. Область не менялась — поменялись местами линии.')
+      : tr('внутри контура такой же белый, как снаружи, а выглядит чуть оранжевым: это и есть растекание.'));
   });
   k.slider('wave', (v) => { wave = v; s.draw(); });
 });
 
 export const colourPhi: Mount = demo((k) => {
-  let isi = 50, t0 = performance.now(), measured = 0, frames = 0, last = 0;
+  /* Всё по меткам времени кадров: что показано и когда — то и меряем. */
+  let isi = 50, t0 = 0, now = 0, state = '', offAt = 0, frames = 0, measured = 0, last = 0;
+  const got: number[] = [];
+  const which = () => {
+    const on = 50;
+    const p = (now - t0) % ((on + isi) * 2);
+    if (p < on) return 'red';
+    if (p >= on + isi && p < on * 2 + isi) return 'green';
+    return '';
+  };
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = PAPER;
     ctx.fillRect(0, 0, w, h);
-    const on = 50;
-    const cycle = (on + isi) * 2;
-    const p = (performance.now() - t0) % cycle;
-    const second = p > on + isi;
-    const showing = second ? p - on - isi < on : p < on;
-    if (!showing) return;
-    ctx.fillStyle = second ? '#2ea84f' : '#e03a3a';
+    const st = which();
+    if (!st) return;
+    ctx.fillStyle = st === 'green' ? '#2ea84f' : '#e03a3a';
     ctx.beginPath();
-    ctx.arc(second ? w * 0.66 : w * 0.34, h / 2, Math.min(w, h) * 0.12, 0, Math.PI * 2);
+    ctx.arc(st === 'green' ? w * 0.66 : w * 0.34, h / 2, Math.min(w, h) * 0.12, 0, Math.PI * 2);
     ctx.fill();
   });
-  k.slider('isi', (v) => { isi = v; t0 = performance.now(); });
-  k.loop((now) => {
+  k.slider('isi', (v) => { isi = v; t0 = now; got.length = 0; });
+  k.loop((t) => {
+    now = t * 1000;
+    if (!t0) t0 = now;
     s.draw();
-    if (last) { frames++; measured += now - last; }
+    /* Настоящий интервал: от первого кадра без красного до первого кадра с зелёным. */
+    const st = which();
+    if (state === 'red' && st !== 'red') offAt = now;
+    if (st === 'green' && state !== 'green' && offAt) { got.push(now - offAt); offAt = 0; }
+    state = st;
+    if (last && now - last < 200) { frames++; measured += now - last; }
     last = now;
-    if (frames === 60) {
-      k.say(tr('кадр здесь идёт {ms} мс, значит интервал выставляется с такой же точностью, не лучше.', { ms: num((measured / frames) * 1000) }));
-      frames = 0; measured = 0;
+    if (frames >= 60 && got.length) {
+      const mean = got.reduce((a, b) => a + b, 0) / got.length;
+      k.say(tr('задано {set} мс, на экране вышло {got} мс. Кадр здесь идёт {ms} мс, точнее интервал не выставить.', { set: isi, got: Math.round(mean), ms: num(measured / frames) }));
+      frames = 0; measured = 0; got.length = 0;
     }
   });
 });
@@ -228,11 +313,16 @@ export const theDress: Mount = demo((k) => {
   let illum = 50;
   const s = k.surface(({ ctx, w, h }) => {
     const p = illum / 100;
-    /* От лампы накаливания (тёплый) к пасмурному небу (холодный). */
-    const light: [number, number, number] = [1.15 - p * 0.35, 1.0, 0.72 + p * 0.5];
-    ctx.fillStyle = `rgb(${Math.round(120 * light[0])} ${Math.round(120 * light[1])} ${Math.round(120 * light[2])})`;
+    /* От лампы накаливания (тёплый) к пасмурному небу (холодный). Свет меняет только
+       обстановку вокруг; ткань нарисована одними и теми же числами при любом положении
+       ползунка — как на той фотографии, где пиксели одни, а вывод о свете у людей разный. */
+    const light: [number, number, number] = [1.3 - p * 0.55, 1.05 - p * 0.05, 0.6 + p * 0.65];
+    const room = (v: number) => `rgb(${Math.round(v * light[0])} ${Math.round(v * light[1])} ${Math.round(v * light[2])})`;
+    ctx.fillStyle = room(150);
     ctx.fillRect(0, 0, w, h);
-    fabric(ctx, w * 0.25, h * 0.1, w * 0.5, h * 0.8, [[110, 120, 165], [92, 78, 52]], light);
+    ctx.fillStyle = room(105);
+    ctx.fillRect(0, h * 0.78, w, h * 0.22);
+    fabric(ctx, w * 0.3, h * 0.08, w * 0.4, h * 0.84, [[131, 137, 186], [104, 86, 50]], [1, 1, 1]);
   });
   k.slider('illum', (v) => {
     illum = v;
@@ -243,29 +333,49 @@ export const theDress: Mount = demo((k) => {
 
 export const colourConstancy: Mount = demo((k) => {
   let illum = 50;
-  const s = k.surface(({ ctx, w, h }) => {
+  /* «Краска» — отражательная способность плашки, от 0 до 255 по каналам. */
+  const patches: [string, [number, number, number]][] = [
+    ['красный', [190, 60, 55]],
+    ['зелёный', [70, 150, 80]],
+    ['синий', [60, 85, 175]],
+    ['белый', [225, 225, 225]],
+    ['серый', [128, 128, 128]],
+  ];
+  const light = (): [number, number, number] => {
     const p = illum / 100;
-    const light: [number, number, number] = [1.25 - p * 0.5, 1.0, 0.65 + p * 0.6];
-    const patches: [string, [number, number, number]][] = [
-      ['красный', [190, 60, 55]],
-      ['зелёный', [70, 150, 80]],
-      ['синий', [60, 85, 175]],
-      ['белый', [225, 225, 225]],
-      ['серый', [128, 128, 128]],
-    ];
-    ctx.fillStyle = `rgb(${Math.round(90 * light[0])} ${Math.round(90 * light[1])} ${Math.round(90 * light[2])})`;
+    return [1.25 - p * 0.5, 1.0, 0.65 + p * 0.6];
+  };
+  const rgb = (c: number[]) => `rgb(${c[0]} ${c[1]} ${c[2]})`;
+  const lit = (c: number[]) => { const L = light(); return c.map((v, i) => Math.min(255, Math.round(v * L[i]))); };
+  const s = k.surface(({ ctx, w, h }) => {
+    ctx.fillStyle = rgb(lit([90, 90, 90]));
     ctx.fillRect(0, 0, w, h);
     const pw = w / patches.length;
     patches.forEach(([, c], i) => {
-      ctx.fillStyle = `rgb(${Math.round(c[0] * light[0])} ${Math.round(c[1] * light[1])} ${Math.round(c[2] * light[2])})`;
+      ctx.fillStyle = rgb(lit(c));
       ctx.fillRect(i * pw + 8, h * 0.2, pw - 16, h * 0.6);
     });
   });
+  const general = () => tr('краска у каждой плашки одна и та же во всём диапазоне. Меняется только множитель освещения — а цвета вы всё равно называете правильно.');
   k.slider('illum', (v) => {
     illum = v;
     s.draw();
-    k.say(tr('краска у каждой плашки одна и та же во всём диапазоне. Меняется только множитель освещения — а цвета вы всё равно называете правильно.'));
+    k.say(general());
   });
+  /* Пипетка: пиксель — то, что пришло в глаз, краска — то, что о поверхности докладывает зрение. */
+  const canvas = k.el('[data-canvas]') as HTMLCanvasElement;
+  canvas?.addEventListener('mousemove', (ev) => {
+    const r = canvas.getBoundingClientRect();
+    const x = ev.clientX - r.left, y = ev.clientY - r.top;
+    const pw = r.width / patches.length, i = Math.floor(x / pw);
+    const inside = i >= 0 && i < patches.length && x - i * pw >= 8 && x - i * pw <= pw - 8 && y >= r.height * 0.2 && y <= r.height * 0.8;
+    const d = canvas.getContext('2d')!.getImageData(Math.round(x * (canvas.width / r.width)), Math.round(y * (canvas.height / r.height)), 1, 1).data;
+    const px = rgb([d[0], d[1], d[2]]);
+    k.say(inside
+      ? tr('плашка «{name}»: пиксель {px}, краска {paint}. Двигайте освещение: пиксель меняется, краска нет.', { name: tr(patches[i][0]), px, paint: rgb(patches[i][1]) })
+      : tr('фон: пиксель {px}. Наведите на плашку — покажет и пиксель, и краску.', { px }));
+  });
+  canvas?.addEventListener('mouseleave', () => k.say(general()));
 });
 
 export const tiltAftereffect: Mount = demo((k) => {
@@ -277,11 +387,12 @@ export const tiltAftereffect: Mount = demo((k) => {
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.clip();
     ctx.translate(cx, cy);
+    /* При 0° полосы вертикальны; положительный угол — верх полос уходит вправо. */
     ctx.rotate((deg * Math.PI) / 180);
-    for (let y = -r * 1.5; y < r * 1.5; y += 14) {
-      ctx.fillStyle = ((y / 14) | 0) % 2 ? '#1b1b1b' : '#efefef';
-      ctx.fillRect(-r * 1.5, y, r * 3, 7);
-    }
+    ctx.fillStyle = '#efefef';
+    ctx.fillRect(-r * 1.5, -r * 1.5, r * 3, r * 3);
+    ctx.fillStyle = '#1b1b1b';
+    for (let x = -r * 1.5; x < r * 1.5; x += 14) ctx.fillRect(x, -r * 1.5, 7, r * 3);
     ctx.restore();
   };
   const s = k.surface(({ ctx, w, h }) => {
@@ -294,6 +405,7 @@ export const tiltAftereffect: Mount = demo((k) => {
     ctx.arc(cx, cy, 4, 0, Math.PI * 2);
     ctx.fill();
   });
+  const slider = k.el('[data-slider="guess"]') as HTMLInputElement | null;
   k.slider('guess', (v) => { guess = v; s.draw(); });
   k.button('go', (el) => {
     phase = 'adapt';
@@ -309,15 +421,21 @@ export const tiltAftereffect: Mount = demo((k) => {
         clearInterval(timer);
         phase = 'test';
         el.disabled = false;
+        /* Пробная решётка начинает с заметного наклона в случайную сторону: если оставить
+           ноль, задачу можно «решить», ничего не трогая. */
+        guess = (Math.random() < 0.5 ? -1 : 1) * (8 + Math.round(Math.random() * 5));
+        if (slider) slider.value = String(guess);
         s.draw();
         k.say(tr('теперь выставьте решётку в вертикаль и нажмите «проверить».'));
       }
     }, 100);
   });
+  /* Решётка после адаптации к +15° кажется отклонённой влево, поэтому, выставляя
+     «вертикаль», человек доворачивает её вправо: ожидаемая ошибка — с тем же знаком. */
   k.button('check', () => {
     k.say(guess === 0 ? tr('ровно ноль — последействия у вас не осталось или оно уже прошло.')
-      : guess > 0 ? tr('ваша ошибка {d}° вправо. Адаптация шла на +15°, и отклонение должно быть в противоположную сторону.', { d: Math.abs(guess) })
-      : tr('ваша ошибка {d}° влево. Адаптация шла на +15°, и отклонение должно быть в противоположную сторону.', { d: Math.abs(guess) }));
+      : guess > 0 ? tr('вы поставили решётку на {d}° вправо — в ту же сторону, куда была наклонена адаптирующая (+15°). Так и должно быть: настоящая вертикаль после адаптации кажется заваленной влево, и вы это компенсировали.', { d: Math.abs(guess) })
+      : tr('вы поставили решётку на {d}° влево. После адаптации к +15° ожидается обратное — сдвиг вправо: если эффект был, он уже прошёл или перекрыт разбросом установки.', { d: Math.abs(guess) }));
   });
 });
 
@@ -360,35 +478,101 @@ export const emmertLaw: Mount = demo((k) => {
 
 export const rubinVase: Mount = demo((k) => {
   let cue = 50;
+  /* Профиль лица: полуширина вазы (в долях ширины холста) по высоте сверху вниз. Где
+     у лица выступ — лоб, нос, губы, подбородок, — там ваза сужается. Ваза — тело
+     вращения этого профиля: связь между двумя прочтениями заложена в само построение. */
+  const knots: [number, number][] = [
+    [0, 0.3], [0.07, 0.3], [0.12, 0.21], [0.22, 0.165], [0.3, 0.16], [0.36, 0.19], [0.44, 0.15],
+    [0.52, 0.085], [0.57, 0.15], [0.62, 0.125], [0.655, 0.155], [0.69, 0.13], [0.74, 0.175],
+    [0.8, 0.13], [0.88, 0.22], [0.94, 0.26], [1, 0.26],
+  ];
+  const profile = (t: number) => {
+    let i = 0;
+    while (i < knots.length - 2 && t > knots[i + 1][0]) i++;
+    const [t0, a] = knots[i], [t1, b] = knots[i + 1];
+    const u = (t - t0) / (t1 - t0);
+    return a + (b - a) * (1 - Math.cos(Math.PI * u)) / 2;
+  };
   const s = k.surface(({ ctx, w, h }) => {
     const p = cue / 100;
-    /* Ваза строится как тело вращения из профиля лица: связь между двумя прочтениями
-       заложена в само построение, а не нарисована отдельно. */
-    const profile = (t: number) => {
-      const y = t;
-      return 0.16 + 0.1 * Math.sin(y * 9) + 0.07 * Math.sin(y * 3.2 + 1) + 0.05 * y;
+    const vaseW = Math.min(w, h * 1.3);
+    const cx = w / 2, top = h * 0.06, bot = h * 0.94;
+    const vase = (fresh = true) => {
+      if (fresh) ctx.beginPath();
+      ctx.moveTo(cx + profile(0) * vaseW, top);
+      for (let i = 1; i <= 200; i++) { const t = i / 200; ctx.lineTo(cx + profile(t) * vaseW, top + (bot - top) * t); }
+      for (let i = 200; i >= 0; i--) { const t = i / 200; ctx.lineTo(cx - profile(t) * vaseW, top + (bot - top) * t); }
+      ctx.closePath();
     };
-    ctx.fillStyle = `rgb(${Math.round(20 + p * 215)} ${Math.round(20 + p * 215)} ${Math.round(24 + p * 210)})`;
+    /* Без признаков (50) — плоская двухцветная картинка: чёрные профили, белая ваза. */
+    ctx.fillStyle = '#1d1d22';
     ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = `rgb(${Math.round(235 - p * 215)} ${Math.round(235 - p * 215)} ${Math.round(230 - p * 206)})`;
-    const cx = w / 2, top = h * 0.08, bot = h * 0.92;
-    ctx.beginPath();
-    ctx.moveTo(cx, top);
-    for (let i = 0; i <= 100; i++) {
-      const t = i / 100;
-      ctx.lineTo(cx + profile(t) * w, top + (bot - top) * t);
-    }
-    for (let i = 100; i >= 0; i--) {
-      const t = i / 100;
-      ctx.lineTo(cx - profile(t) * w, top + (bot - top) * t);
-    }
-    ctx.closePath();
+    ctx.fillStyle = '#f2f0ea';
+    vase();
     ctx.fill();
+    const vaseCue = Math.max(0, (50 - cue) / 50), faceCue = Math.max(0, (cue - 50) / 50);
+    if (vaseCue) {
+      /* Объём и поясок — признаки предмета, и достаются они вазе. */
+      ctx.save();
+      vase();
+      ctx.clip();
+      const R = 0.3 * vaseW;
+      const g = ctx.createLinearGradient(cx - R, 0, cx + R, 0);
+      g.addColorStop(0, `rgba(60,60,70,${0.75 * vaseCue})`);
+      g.addColorStop(0.35, 'rgba(255,255,255,0)');
+      g.addColorStop(0.45, `rgba(255,255,255,${0.6 * vaseCue})`);
+      g.addColorStop(1, `rgba(60,60,70,${0.85 * vaseCue})`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = `rgba(150,110,60,${vaseCue})`;
+      ctx.lineWidth = Math.max(2, h * 0.012);
+      for (const t of [0.1, 0.9]) {
+        const y = top + (bot - top) * t, r = profile(t) * vaseW;
+        ctx.beginPath();
+        ctx.ellipse(cx, y, r, r * 0.12, 0, 0, Math.PI);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+    if (faceCue) {
+      /* Глаз, бровь и тень — признаки лица, и достаются они профилям. */
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, w, h);
+      vase(false);
+      ctx.clip('evenodd');
+      for (const sgn of [-1, 1]) {
+        const ex = cx + sgn * (profile(0.36) * vaseW + Math.min(w, h) * 0.08), ey = top + (bot - top) * 0.36;
+        const g = ctx.createLinearGradient(cx, 0, cx + sgn * w * 0.5, 0);
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(1, `rgba(120,90,80,${0.55 * faceCue})`);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, w, h);
+        const er = Math.min(w, h) * 0.035;
+        ctx.fillStyle = `rgba(242,240,234,${faceCue})`;
+        ctx.beginPath();
+        ctx.ellipse(ex, ey, er, er * 0.45, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(29,29,34,${faceCue})`;
+        ctx.beginPath();
+        ctx.arc(ex - sgn * er * 0.35, ey, er * 0.35, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = `rgba(242,240,234,${0.8 * faceCue})`;
+        ctx.lineWidth = Math.max(2, er * 0.3);
+        ctx.beginPath();
+        ctx.moveTo(ex - er * 1.2, ey - er * 1.3);
+        ctx.quadraticCurveTo(ex, ey - er * 1.9, ex + er * 1.2, ey - er * 1.3);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
   });
   k.slider('cue', (v) => {
     cue = v;
     s.draw();
-    k.say(v < 30 ? tr('контур отдан вазе — лиц больше нет.') : v > 70 ? tr('контур отдан профилям — вазы больше нет.') : tr('контур никому не отдан, и прочтения меняются сами.'));
+    k.say(v < 30 ? tr('объём и поясок достались вазе: она стала предметом, а профили — тёмным фоном за ней.')
+      : v > 70 ? tr('глаза и тень достались профилям: теперь лица — предметы, а ваза — просвет между ними.')
+      : tr('контур никому не отдан, и прочтения меняются сами.'));
   });
 });
 
@@ -397,32 +581,39 @@ export const figureGround: Mount = demo((k) => {
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = '#fff';
     ctx.fillRect(0, 0, w, h);
-    const n = 6;
-    const bw = w / n;
-    /* Выпуклость, площадь и симметрия — три независимых признака владения контуром. */
+    /* Семь полос: чёрные на местах 1, 3, 5, белые на 0, 2, 4, 6. Выпуклость, площадь и
+       симметрия — три независимых признака владения контуром, и каждый ползунок
+       при 50 % никому не помогает. */
+    const n = 7, bw = w / n;
+    /* Выпуклость: три бугра по высоте; c > 0 — края чёрных выгнуты наружу (чёрные
+       выпуклые), c < 0 — внутрь, и тогда выпуклые белые. */
+    const b = (t: number) => Math.abs(Math.sin(3 * Math.PI * t));
+    const c = ((convex - 50) / 50) * bw * 0.25;
+    /* Волна края — своя у каждой чёрной полосы, от неё зависит симметрия. */
+    const e = (j: number, t: number) => Math.sin(Math.PI * (3 + j) * t + j * 1.7);
+    const A = bw * 0.1;
+    const wid = bw * (0.6 + (area / 100) * 0.8);
+    /* Симметрия 100 — у каждой чёрной полосы правый край зеркален левому (белые при этом
+       несимметричны); 0 — правый край повторяет левый край следующей чёрной полосы, и тогда
+       симметричны белые. */
+    const q = sym / 100;
     ctx.fillStyle = '#20222c';
-    for (let i = 0; i < n; i += 2) {
-      const bulge = ((convex - 50) / 50) * bw * 0.35;
-      const wid = bw * (0.6 + (area / 100) * 0.8);
+    for (let j = 0; j < 3; j++) {
+      const mid = (2 * j + 1.5) * bw, L = mid - wid / 2, R = mid + wid / 2;
       ctx.beginPath();
-      ctx.moveTo(i * bw, 0);
-      for (let t = 0; t <= 1; t += 0.02) {
-        const y = t * h;
-        const s1 = Math.sin(t * Math.PI * 3);
-        const s2 = sym > 50 ? s1 : Math.sin(t * Math.PI * 3 + t * 2);
-        ctx.lineTo(i * bw + bulge * s2, y);
-      }
-      for (let t = 1; t >= 0; t -= 0.02) {
-        const y = t * h;
-        const s1 = Math.sin(t * Math.PI * 3);
-        const s2 = sym > 50 ? s1 : Math.sin(t * Math.PI * 3 + t * 2);
-        ctx.lineTo(i * bw + wid - bulge * s2, y);
-      }
+      for (let i = 0; i <= 120; i++) { const t = i / 120; ctx.lineTo(L - c * b(t) - A * e(j, t), t * h); }
+      for (let i = 120; i >= 0; i--) { const t = i / 120; ctx.lineTo(R + c * b(t) + A * (q * e(j, t) + (1 - q) * e(j + 1, t)), t * h); }
       ctx.closePath();
       ctx.fill();
     }
   });
-  const upd = () => { s.draw(); k.say(tr('каждый ползунок тянет контур на свою сторону. Побеждает сумма, а не один признак.')); };
+  /* Фигурой охотнее становится выпуклое, симметричное и меньшее по площади. */
+  const side = (v: number, blackWhenHigh: boolean) => v === 50 ? tr('ни за кого') : (v > 50) === blackWhenHigh ? tr('за чёрные') : tr('за белые');
+  const upd = () => {
+    s.draw();
+    k.say(tr('выпуклость {c}, площадь {a}, симметрия {s}. Каждый признак тянет контур на свою сторону, побеждает сумма.',
+      { c: side(convex, true), a: side(area, false), s: side(sym, true) }));
+  };
   k.slider('convex', (v) => { convex = v; upd(); });
   k.slider('area', (v) => { area = v; upd(); });
   k.slider('sym', (v) => { sym = v; upd(); });
@@ -430,40 +621,60 @@ export const figureGround: Mount = demo((k) => {
 
 export const cofferIllusion: Mount = demo((k) => {
   let len = 60, circles = false;
+  /* Шестнадцать кругов, 4 × 4. Нарисованы они не обводкой, а тем же узором из панелей,
+     сдвинутым внутри круга на полпанели: край круга есть только как шов узора. */
+  const spots = (w: number, h: number) => {
+    const out: [number, number][] = [];
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) out.push([((c + 0.5) * w) / 4, ((r + 0.5) * h) / 4]);
+    return { out, R: Math.min(w, h) / 4 * 0.42 };
+  };
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = grey(0.62);
     ctx.fillRect(0, 0, w, h);
-    const cols = 6, rows = 4;
-    const cw = w / cols, ch = h / rows;
-    const inset = (cw * (100 - len)) / 400;
-    for (let r = 0; r < rows; r++)
-      for (let c = 0; c < cols; c++) {
-        const x = c * cw, y = r * ch;
-        for (const [dy, light] of [[0, true], [ch, false]] as const) {
-          ctx.strokeStyle = light ? '#f0f0f0' : '#222';
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.moveTo(x + inset, y + dy);
-          ctx.lineTo(x + cw - inset, y + dy);
-          ctx.stroke();
+    const { out, R } = spots(w, h);
+    /* Панель — выпуклый прямоугольник: светлые верх и левый край, тёмные низ и правый.
+       len — какая доля каждой стороны прорисована. */
+    const cw = R * 0.9, ch = R * 0.62;
+    const part = len / 100;
+    const panels = (ox: number, oy: number) => {
+      ctx.lineWidth = Math.max(2, R * 0.06);
+      for (let y = oy - ch; y < h + ch; y += ch)
+        for (let x = ox - cw; x < w + cw; x += cw) {
+          const p = cw * 0.1;
+          const gx = ((cw - 2 * p) * (1 - part)) / 2, gy = ((ch - 2 * p) * (1 - part)) / 2;
+          for (const [x1, y1, x2, y2, light] of [
+            [x + p + gx, y + p, x + cw - p - gx, y + p, true],
+            [x + p, y + p + gy, x + p, y + ch - p - gy, true],
+            [x + p + gx, y + ch - p, x + cw - p - gx, y + ch - p, false],
+            [x + cw - p, y + p + gy, x + cw - p, y + ch - p - gy, false],
+          ] as const) {
+            ctx.strokeStyle = light ? '#f2f2f2' : '#262626';
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+          }
         }
-        for (const [dx, light] of [[0, false], [cw, true]] as const) {
-          ctx.strokeStyle = light ? '#f0f0f0' : '#222';
-          ctx.beginPath();
-          ctx.moveTo(x + dx, y + inset);
-          ctx.lineTo(x + dx, y + ch - inset);
-          ctx.stroke();
-        }
-      }
+    };
+    panels(0, 0);
+    for (const [x, y] of out) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, R, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.fillStyle = grey(0.62);
+      ctx.fillRect(x - R, y - R, R * 2, R * 2);
+      panels(cw / 2, ch / 2);
+      ctx.restore();
+    }
     if (circles) {
       ctx.strokeStyle = MARK;
       ctx.lineWidth = 2;
-      for (let r = 1; r < rows; r++)
-        for (let c = 1; c < cols; c++) {
-          ctx.beginPath();
-          ctx.arc(c * cw, r * ch, Math.min(cw, ch) * 0.42, 0, Math.PI * 2);
-          ctx.stroke();
-        }
+      for (const [x, y] of out) {
+        ctx.beginPath();
+        ctx.arc(x, y, R, 0, Math.PI * 2);
+        ctx.stroke();
+      }
     }
   });
   k.slider('len', (v) => { len = v; s.draw(); });
@@ -471,7 +682,7 @@ export const cofferIllusion: Mount = demo((k) => {
     circles = !circles;
     el.textContent = circles ? tr('убрать обводку') : tr('обвести круги');
     s.draw();
-    k.say(circles ? tr('круги были нарисованы теми же отрезками всё это время. Они просто проиграли конкуренцию за владение контуром.') : '');
+    k.say(circles ? tr('кругов шестнадцать, и край ни одного не нарисован: внутри круга тот же узор из панелей, только сдвинутый на полпанели. Круги были здесь всё время и просто проиграли прямоугольникам конкуренцию за контур.') : '');
   });
 });
 
@@ -562,28 +773,36 @@ export const multistablePerception: Mount = demo((k) => {
       for (let i = 0; i < 4; i++) { ctx.moveTo(f[i][0], f[i][1]); ctx.lineTo(b[i][0], b[i][1]); }
       ctx.stroke();
     } else if (fig === 'schroder') {
-      const n = 6;
-      const step = (R * 2) / n;
+      /* Лестница Шрёдера: ступенчатый профиль, его копия, сдвинутая по косой «вглубь»,
+         рёбра между ними и стенка под лестницей. Сверху на ступени или снизу на их изнанку —
+         рисунок одинаково годится для обоих. */
+      const n = 5, st = (R * 1.5) / n;
+      const D: [number, number] = [R * 0.55, -R * 0.4];
+      const x0 = cx - R * 0.95, y0 = cy + R * 0.85;
+      const prof: [number, number][] = [[x0, y0]];
+      for (let i = 0; i < n; i++) {
+        prof.push([x0 + i * st, y0 - (i + 1) * st]);
+        prof.push([x0 + (i + 1) * st, y0 - (i + 1) * st]);
+      }
+      const end: [number, number] = [x0 + n * st, y0];
+      const line = (pts: [number, number][], dx = 0, dy = 0) => {
+        ctx.beginPath();
+        pts.forEach(([x, y], i) => (i ? ctx.lineTo(x + dx, y + dy) : ctx.moveTo(x + dx, y + dy)));
+        ctx.stroke();
+      };
+      line([...prof, end, [x0, y0]]);
+      line([...prof, end], D[0], D[1]);
       ctx.beginPath();
-      for (let i = 0; i <= n; i++) {
-        ctx.moveTo(cx - R + i * step, cy - R + i * step * 0.6);
-        ctx.lineTo(cx - R + i * step, cy + R - (n - i) * step * 0.2);
-      }
-      for (let i = 0; i <= n; i++) {
-        ctx.moveTo(cx - R, cy - R + i * step * 0.6);
-        ctx.lineTo(cx + R, cy - R + i * step * 0.6 + R * 0.2);
-      }
+      for (const [x, y] of [...prof, end]) { ctx.moveTo(x, y); ctx.lineTo(x + D[0], y + D[1]); }
       ctx.stroke();
     } else {
-      for (let i = 1; i <= 6; i++) {
+      /* Кольца со смещёнными центрами: то башня, увиденная сверху, то тоннель. */
+      for (let i = 0; i < 7; i++) {
+        const r = R * (1 - i * 0.13);
         ctx.beginPath();
-        ctx.arc(cx, cy, (R * i) / 6, 0, Math.PI * 2);
+        ctx.arc(cx + R * 0.05 * i, cy - R * 0.04 * i, r, 0, Math.PI * 2);
         ctx.stroke();
       }
-      ctx.beginPath();
-      ctx.moveTo(cx - R, cy);
-      ctx.lineTo(cx + R, cy);
-      ctx.stroke();
     }
   });
   const hist = k.chart(({ ctx, w, h }) => {
@@ -596,9 +815,12 @@ export const multistablePerception: Mount = demo((k) => {
       const g = gaps[key];
       const mean = g.length ? g.reduce((a, b) => a + b, 0) / g.length : 0;
       ctx.fillStyle = key === fig ? MARK : '#c9ccd4';
-      ctx.fillRect(i * bw + 10, h - 14 - Math.min(mean / 8, 1) * (h - 26), bw - 20, Math.min(mean / 8, 1) * (h - 26));
+      ctx.fillRect(i * bw + 10, h - 28 - Math.min(mean / 8, 1) * (h - 40), bw - 20, Math.min(mean / 8, 1) * (h - 40));
       ctx.fillStyle = '#6b6b70';
-      ctx.fillText(mean ? tr('{s} с', { s: num(mean) }) : '—', i * bw + 12, h - 3);
+      /* Подпись в две строки и не шире столбика: на узком экране три подписи иначе налезают. */
+      const name = { necker: tr('куб Неккера'), schroder: tr('лестница Шрёдера'), rings: tr('кольца') }[key] ?? key;
+      ctx.fillText(name, i * bw + 12, h - 16, bw - 16);
+      ctx.fillText(mean ? tr('{s} с', { s: num(mean) }) : '—', i * bw + 12, h - 3, bw - 16);
     });
   });
   k.select('fig', (v) => { fig = v; last = 0; s.draw(); });
@@ -611,6 +833,7 @@ export const multistablePerception: Mount = demo((k) => {
   };
   k.button('tap', tap);
   k.button('reset', () => { for (const key of Object.keys(gaps)) gaps[key].length = 0; last = 0; hist.draw(); });
+  k.space((down) => { if (down) tap(); });
 });
 
 export const pareidolia: Mount = demo((k) => {
@@ -645,18 +868,24 @@ export const pareidolia: Mount = demo((k) => {
         ctx.fillRect(c * cell, rr * cell, cell + 1, cell + 1);
       }
   });
-  k.select('what', (v) => { what = v; s.draw(); });
+  const sel = k.el('[data-select="what"]') as HTMLSelectElement | null;
+  const marsNote = () => k.say(hires
+    ? tr('та же гора на снимке 2001 года: камера Mars Global Surveyor различает детали примерно в 30 раз мельче. Лица нет и не было.')
+    : tr('снимок 1976 года, 43 метра на пиксель. Лицо тут видят все.'));
+  k.select('what', (v) => { what = v; s.draw(); if (v === 'mars') marsNote(); });
   k.slider('scale', (v) => { scale = v; s.draw(); });
+  let first = true;
   k.toggle('hires', (v) => {
     hires = v;
+    /* Переключатель снимков имеет смысл только для Марса — на него он и переводит. */
+    if (!first) { what = 'mars'; if (sel) sel.value = 'mars'; marsNote(); }
+    first = false;
     s.draw();
-    if (what === 'mars') k.say(v ? tr('та же гора при вчетверо большем разрешении: лица нет и не было.') : tr('снимок 1976 года, 43 метра на пиксель. Лицо тут видят все.'));
   });
   k.button('roll', () => {
     seed = (seed * 1103515245 + 12345) >>> 0;
     rolls++;
     what = 'noise';
-    const sel = k.el('[data-select="what"]') as HTMLSelectElement | null;
     if (sel) sel.value = 'noise';
     s.draw();
     k.say(tr('бросок {n}. Система опознания лиц настроена так, чтобы не пропустить ни одного, — а значит, обязана иногда срабатывать впустую.', { n: rolls }));

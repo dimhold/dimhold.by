@@ -22,7 +22,7 @@ export const DIRECTION: Group = {
       'The same border locking, only weaker. With no mortar of intermediate luminance there is nothing to lock, and the tilt comes from the tiles alone.',
     ],
     demo: 'cafe-wall',
-    demoNote: 'This is the café wall with the mortar width set to zero. Pull the slider down to nothing and you have Münsterberg’s figure.',
+    demoNote: 'This is the café wall with the mortar width set to zero. Pull the slider down to nothing and you have Münsterberg’s figure. The tilt, if you still see it, is much weaker.',
     twist: 'The catalogue keeps it as a separate entry, and not out of pedantry: the question of priority only makes sense if the earlier figure has a name of its own. In 1898 Pierce called it the “kindergarten illusion”.',
   },
 
@@ -90,6 +90,6 @@ export const DIRECTION: Group = {
       'So the relationship is not monotonic: the effect first grows with the angle, then falls and changes sign.',
     ],
     demo: 'tilt-illusion',
-    demoNote: 'You control the surround angle, then line up the centre in an adjustment task, and the page tells you your error. Note it down for a range of surround angles and you reproduce the classic curve, repulsion and attraction both.',
+    demoNote: 'You set the surround angle, up to 85° either way, then turn the centre until it looks vertical and press “check”. The page tells you your error, and each check adds a point to a small plot of error against surround angle. Fill in a range of angles and the classic curve takes shape: repulsion at small angles, attraction at large ones.',
   },
 };

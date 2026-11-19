@@ -39,7 +39,7 @@ export const IMPOSSIBLE: Group = {
       'The depth relations at each step are consistent. What is not consistent is the height gained over the full circuit, and the visual system never adds that up.',
     ],
     demo: 'penrose-stairs',
-    demoNote: 'Open geometry: three flights of steps laid along the same loop as the tribar, closed only in projection. Turn the camera and the gap shows.',
+    demoNote: 'Open geometry: four flights of steps laid out in a loop that closes only in projection. In space the last step stands well above the first; turn the camera and the gap shows.',
     twist: 'Escher’s Ascending and Descending, March 1960, grew straight out of the Penroses’ paper. The staircase itself appears in Reutersvärd’s work as early as 1937.',
   },
 
@@ -50,7 +50,7 @@ export const IMPOSSIBLE: Group = {
       'Each overlap is accepted separately and is locally flawless. Together they are incompatible.',
     ],
     demo: 'impossible-cube',
-    demoNote: 'Twelve bars of an ordinary cube, two of them drawn out of turn, so their overlaps contradict the other ten while each one on its own looks fine. Turning the camera is the exhibit.',
+    demoNote: 'Twelve bars of an ordinary cube, two of which are really cut through. From the starting view a far edge shows through each gap, as if it passed in front of a near one. Each crossing looks fine on its own; together they contradict each other. Turn the camera and the cuts come into view.',
     twist: 'In Escher’s Belvedere, the boy sitting in the foreground holds exactly this kind of cube, in front of a building that makes the same mistake on an architectural scale.',
   },
 
@@ -73,7 +73,7 @@ export const IMPOSSIBLE: Group = {
       'Figure–ground ambiguity, applied locally: the gaps have been given feet, and there is nothing left to decide which regions own the contours.',
     ],
     demo: 'shepard-elephant',
-    demoNote: 'We draw our own animal rather than copying Shepard’s. A slider moves the feet onto the right verticals and resolves everything, which explains it better than any caption.',
+    demoNote: 'We draw our own animal rather than copying Shepard’s. A slider moves the feet from under the gaps back under the legs and resolves everything, which explains it better than any caption.',
     twist: 'The same Shepard as the Shepard tables and the Shepard tone. Three entries in this catalogue from one person, in three different modalities.',
   },
 

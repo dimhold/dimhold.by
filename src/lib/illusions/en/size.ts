@@ -13,7 +13,7 @@ export const SIZE: Group = {
       'A third version is simpler still: blur the picture and the difference in length shows up in the image itself. No inference about the world is needed, just filtering.',
     ],
     demo: 'mueller-lyer',
-    demoNote: 'Open the fins from zero to 75° with the slider. Both lines are drawn from a single number, so they are equal by construction, not by promise. At zero the fins lie along the line, and the difference goes with them. A button brings up a ruler.',
+    demoNote: 'Open the fins from zero to 75° with the slider. Both lines are drawn from a single number, so they are equal by construction, not by promise. At zero the fins stand straight across the ends, like |—|, the two figures are identical, and the difference goes. A button brings up a ruler.',
     twist: 'In 1966 Segall, Campbell and Herskovits reported that how strongly people fall for the illusion depends on how rectangular the world they grew up in is. The finding spread through the textbooks and was later challenged many times over its samples and statistics. Treat it as a contested classic, not an established fact.',
   },
 
@@ -59,7 +59,7 @@ export const SIZE: Group = {
       'It is the contour-proximity mechanism from the Ebbinghaus illusion, with one neighbour instead of a scatter of them.',
     ],
     demo: 'delboeuf',
-    demoNote: 'Set the radius of the ring with the slider. A tight ring makes the disc look bigger; a wide one makes it look smaller, which is the dinner-plate version. A button outlines the true size on both discs.',
+    demoNote: 'The slider sets the radius of the ring round the right-hand disc; the left-hand one has no ring and serves as the reference. A tight ring makes the disc look bigger; a wide one makes it look smaller, which is the dinner-plate version. A button outlines the true size of both discs and draws two lines touching them top and bottom.',
     twist: 'The size illusion most often cited in practical advice: a portion on a large plate is consistently underestimated. Hence the advice to eat off smaller plates, though the evidence that it changes how much people eat is shaky.',
   },
 
@@ -88,13 +88,13 @@ export const SIZE: Group = {
       'What gets compared is the pair of edges that sit next to each other: the short arc of the upper piece ends up right beside the long arc of the lower one.',
     ],
     demo: 'jastrow',
-    demoNote: 'A button lays one piece on top of the other, and they match to the pixel. That is the whole demonstration.',
+    demoNote: 'You can drag the pieces about, and they snap together when they get close; a button lays one on top of the other for you. Either way they match to the pixel. That is the whole demonstration.',
     twist: 'It was sold as a toy for a hundred years: two identical pieces of toy railway track that never look identical.',
   },
 
   'leaning-tower': {
-    lede: 'Two identical photos of a tower, side by side. They lean differently.',
-    what: 'The same shot of a tower rising away from the camera, shown twice. The right-hand tower seems to be leaning more.',
+    lede: 'Two identical pictures of a tower, side by side. They lean differently.',
+    what: 'The same view of a tower rising away from the viewer, shown twice. The right-hand tower seems to be leaning more.',
     how: [
       'The pair reads as a single scene. In a single scene, two sets of parallel edges should converge on a shared vanishing point. These don’t, and the difference is put down to the towers leaning differently.',
     ],

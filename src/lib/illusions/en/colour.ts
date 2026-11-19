@@ -12,7 +12,7 @@ export const COLOUR: Group = {
       'The consequence is that the system reports on the surface, whatever light happened to reach the eye. Colour is inferred, never measured.',
     ],
     demo: 'colour-constancy',
-    demoNote: 'Five painted patches and a physically meaningful illumination slider. The paint stays the same across the whole range and only the light changes, yet you go on naming the colours correctly. The gap between the pixels and what you name is the system at work.',
+    demoNote: 'Five painted patches and a physically meaningful illumination slider. The paint stays the same across the whole range and only the light changes, yet you go on naming the colours correctly. Hover over a patch to see its pixel and its paint side by side: the gap between the two is the system at work.',
   },
 
   'the-dress': {
@@ -23,7 +23,7 @@ export const COLOUR: Group = {
       'This is the same colour constancy that works flawlessly every day. Here it has no data to choose with, so it falls back on the viewer’s habits.',
     ],
     demo: 'the-dress',
-    demoNote: 'We cannot reproduce the photograph; it is under copyright. So this shows the mechanism instead of the snapshot: our own fabric under a slider that moves the lighting from a tungsten bulb to an overcast sky, while the colours of the fabric itself stay fixed and only the light falling on it changes. The photograph shows the effect. The demo explains it.',
+    demoNote: 'We cannot reproduce the photograph; it is under copyright. So this shows the mechanism instead of the snapshot: our own fabric in a room whose lighting a slider moves from a tungsten bulb to an overcast sky. The fabric’s pixels never change. Only the room around it does, and with it the light you assume is falling on the fabric. The photograph shows the effect. The demo explains it.',
     twist: 'The split correlates with chronotype: larks, who have seen more daylight, say white and gold more often. The dress did more for public understanding of individual differences in perception than all the literature before it.',
   },
 
@@ -46,7 +46,7 @@ export const COLOUR: Group = {
       'But it is not only the retina. The colour of the afterimage depends on contours shown after the adaptation, and the retina cannot know about contours that have not appeared yet.',
     ],
     demo: 'negative-afterimage',
-    demoNote: 'A fixation dot, a twenty-second timer, a red disc, then white. A menu adds a contour, a circle or a square, that appears only after the adaptation: the idea behind van Lier’s version, though with a single red disc the page cannot show a contour choosing between colours.',
+    demoNote: 'A fixation dot, a twenty-second timer, then white. Pick a contour from the menu before you start. With no contour, a circle or a square, you adapt to a red disc, and the contour appears only afterwards. With either of the two stars you adapt to van Lier’s figure instead: star tips in two colours, the upright rays orange and the diagonal ones cyan. The star outline shown afterwards decides which colour fills the afterimage, and if you switch to the other star the colour switches too.',
   },
 
   'colour-dove': {
@@ -56,7 +56,7 @@ export const COLOUR: Group = {
       'Afterimage colour is assigned to surfaces bounded by contours. If the contour arrives later, the colour gets distributed later too.',
     ],
     demo: 'negative-afterimage',
-    demoNote: 'This entry borrows the ordinary afterimage demo, where a contour picked from a menu appears after the adaptation. The adapting image there is a single red disc rather than a multicoloured one, so it shows the principle, not the dove itself.',
+    demoNote: 'This entry shares the afterimage demo. Pick one of the two stars from the menu before you start, and you adapt to van Lier’s two-colour star. The outline that appears afterwards decides the colour of the afterimage, and switching to the other star changes it, though nothing on the screen is coloured any more. The dove itself is not reproduced; the star works the same way.',
     twist: 'A strong argument against thinking of an afterimage as simple residue left on the retina.',
   },
 
@@ -78,7 +78,7 @@ export const COLOUR: Group = {
       'The three cone pathways respond to flicker at different speeds. A black and white pattern with the right rhythm knocks them out of balance, and the result is read as hue.',
     ],
     demo: 'benham-top',
-    demoNote: 'Drag the slider to set the speed. The rotation follows the real frame timestamps rather than a fixed step, otherwise every screen would give a different result. Your screen’s refresh rate does affect what you see here, and the page says so. A button reverses the spin.',
+    demoNote: 'The slider sets the speed, from one to ten revolutions a second. The rotation follows the real frame timestamps, and the page measures your screen’s refresh rate and tells you how many degrees the disc turns in each frame, because that does affect the colours you see. A button reverses the spin.',
     twist: 'The colours differ between people and swap places when the spin is reversed. It is one of the clearest cases of an illusion that is different for everyone. Priority is disputed: Prévost’s observation in 1826, Fechner’s analysis in 1838, Benham’s top in 1894.',
   },
 
@@ -125,7 +125,7 @@ export const COLOUR: Group = {
       'Dennett used exactly this case to argue that there is no single moment at which perception “happens”.',
     ],
     demo: 'colour-phi',
-    demoNote: 'You set the gap between the flashes. The window is narrow, so the page measures how long a frame lasts on your screen and shows it in milliseconds: the interval can be no more precise than that.',
+    demoNote: 'You set the gap between the flashes. The window is narrow, so the page measures the interval that actually reached your screen and shows it next to the length of one frame: the interval can be no more precise than that.',
     twist: 'The most philosophically loaded entry in the catalogue. It is hard to describe without saying the brain reported the future.',
   },
 

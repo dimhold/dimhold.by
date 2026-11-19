@@ -24,7 +24,7 @@ export const COGNITIVE: Group = {
       'Movement alone is enough to start up the machinery for reading intentions: changes of speed, coordinated motion, signs that something moves under its own steam. No bodies or faces required.',
     ],
     demo: 'heider-simmel-animacy',
-    demoNote: 'Watch our own shapes on their own paths and describe what you saw in your own words. The box is for you alone: nothing is saved or sent, and there are no other people’s answers to read. Almost nobody manages to keep to geometric words.',
+    demoNote: 'Our own short version: an eighteen-second story with a house and a door, a big triangle, a small one and a circle, and a chase. Watch it and describe what happened in your own words. The box is for you alone: nothing is saved or sent, and there are no other people’s answers to read. Almost nobody manages to keep to geometric words.',
     twist: 'It pairs with biological motion: there, animacy is read from a human skeleton; here, from three shapes with no bodies at all.',
   },
 
@@ -35,7 +35,7 @@ export const COGNITIVE: Group = {
       'Reading is more automatic than naming a colour. So the irrelevant dimension gets in first, and holding it back takes time.',
     ],
     demo: 'stroop',
-    demoNote: 'Twenty words, congruent and incongruent in turn: click the button for the colour of the ink, not the word. Each answer is timed, and you get your own interference cost in milliseconds. The words are in the language of the page, so a Russian–Belarusian bilingual can run it on both versions and compare.',
+    demoNote: 'Twenty words, congruent and incongruent in turn: answer with the colour of the ink, not the word, by clicking a button or pressing 1 to 4. Each answer is timed, and you get your own interference cost in milliseconds. The words are in the language of the page, so a Russian–Belarusian bilingual can run it on both versions and compare.',
     twist: 'Stroop published it in 1935, but Jaensch had already printed it in German in 1929.',
   },
 
@@ -47,7 +47,7 @@ export const COGNITIVE: Group = {
       'Intuition treats the two remaining doors as equal, and they aren’t. Your door got its one-in-three chance before the new information turned up, and it keeps that chance.',
     ],
     demo: 'monty-hall',
-    demoNote: 'Play the doors yourself first; then run the simulator through ten thousand games and watch both strategies converge on a graph. Playing badly and then seeing the numbers is more convincing than a proof. If it still doesn’t click, picture a hundred doors with the host opening ninety-eight of them: that version convinces almost everyone straight away.',
+    demoNote: 'Play the doors yourself first; then run the simulator through ten thousand games and watch both strategies settle on a graph, against guide lines at one third and two thirds. Playing badly and then seeing the numbers is more convincing than a proof. If it still doesn’t click, picture a hundred doors with the host opening ninety-eight of them: that version convinces almost everyone straight away.',
     twist: 'This one isn’t a perceptual illusion at all but a cognitive one, and the catalogue says so out loud. Selvin was the first to print the problem, in a letter in 1975, long before the famous row over a magazine column.',
   },
 
@@ -58,7 +58,7 @@ export const COGNITIVE: Group = {
       'An estimate starts from whatever value is to hand and is adjusted away from it too little.',
     ],
     demo: 'anchoring',
-    demoNote: 'You are given a high or a low anchor at random and asked for an estimate, and the page marks your answer on a scale. Nothing is collected, so you see only your own answer; the comparison between groups is in the published studies. The explanation comes straight after your answer; without it, this would be a trick rather than a demonstration.',
+    demoNote: 'You are given a high or a low anchor at random and asked for an estimate. The page then draws a scale from 0 to 3,000 km with three marks: your anchor, your answer and the real length of the Dnieper, 2,201 km. Nothing is collected, so you see only your own answer; the comparison between groups is in the published studies. The explanation comes straight after your answer; without it, this would be a trick rather than a demonstration.',
     twist: 'One of the sturdier findings in the field, although replications find a smaller effect than the original studies did.',
   },
 
@@ -70,7 +70,7 @@ export const COGNITIVE: Group = {
       'There is an objection. Part of the effect may be ordinary conversational inference rather than a failure of logic: hearing “bank teller”, people take it to mean “bank teller and nothing else”, and then the answer stops being a mistake.',
     ],
     demo: 'linda-problem',
-    demoNote: 'Answer the question before any explanation. Only once you have answered does the page explain that “bank teller and feminist” lies wholly inside “bank teller”. Asking first is the whole design.',
+    demoNote: 'Answer the question before any explanation. Only once you have answered does the page explain, with a diagram, that “bank teller and feminist” lies wholly inside “bank teller”. Asking first is the whole design.',
   },
 
   'illusion-of-control': {
@@ -90,7 +90,7 @@ export const COGNITIVE: Group = {
       'An account of your own choice isn’t read off a record of the decision. There is no such record. The account is put together after the fact from whatever is to hand, and what’s to hand is the swapped card.',
     ],
     demo: 'choice-blindness',
-    demoNote: 'In the browser this runs on generated pictures of coloured circles rather than faces: pick the one you prefer, then say why you chose it. It works once per person, like the gorilla video, and the lines above have already given it away, so it is best tried on someone who hasn’t read them. The explanation comes as soon as you’ve answered.',
+    demoNote: 'In the browser this runs on generated cards of coloured circles, all in one palette, rather than faces: pick the one you prefer, then say why you chose it. If you spot the swap, there is a button to say so. It works once per person, like the gorilla video, and the lines above have already given it away, so it is best tried on someone who hasn’t read them. The explanation comes as soon as you’ve answered.',
     twist: 'Memory and authorship behave here the way vision does in change blindness: the same logic and almost the same name.',
   },
 
@@ -101,7 +101,7 @@ export const COGNITIVE: Group = {
       'The sense of authorship bends felt time. So the size of the shift can be measured and used as a sign of whether the action felt like your own.',
     ],
     demo: 'intentional-binding',
-    demoNote: 'A Libet clock: press the space bar whenever you like, a tone follows a quarter of a second later, and then you set where the hand was when you pressed. The page gives your error for that press in milliseconds. It doesn’t ask about the tone and has no baseline to compare with, so it shows the method rather than measuring your binding, and the quarter-second delay comes from an ordinary browser timer, not a measured one.',
+    demoNote: 'A Libet clock. Press the space bar or click the clock whenever you like, then set where the hand was when you pressed. Trials alternate: in one a beep follows your press a quarter of a second later, scheduled on the audio clock, and in the next there is no beep. The page keeps your average error for each kind of trial and the difference between them, which is your action binding. Only the press is judged, never the tone, and over a handful of trials an effect of ten milliseconds or so is easily lost in the scatter.',
   },
 
   'illusion-of-conscious-will': {
@@ -121,7 +121,7 @@ export const COGNITIVE: Group = {
       'Recall rebuilds the meaning rather than replaying a recording. The lure that was never shown fits the overall meaning better than some of the words that were on the list.',
     ],
     demo: 'drm-false-memory',
-    demoNote: 'Read a timed list, count backwards for a few seconds, then say yes or no to four words, one of them the lure. People aren’t just wrong about the lure, they’re sure, though the page doesn’t ask you how sure. The English list comes from Roediger and McDermott’s own “sleep” list; the Russian and Belarusian lists are built for those languages rather than translated, since the web of associations doesn’t survive translation.',
+    demoNote: 'Read a timed list, count backwards for a few seconds, then go through four words, one of them the lure, answering “definitely”, “I think so” or “no”. People aren’t just wrong about the lure, they’re sure. The English list comes from Roediger and McDermott’s own “sleep” list; the Russian and Belarusian lists are built for those languages rather than translated, since the web of associations doesn’t survive translation.',
     twist: 'The memory counterpart of the whole perceptual side of the catalogue: what you get is assembled, not recorded.',
   },
 

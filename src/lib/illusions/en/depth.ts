@@ -5,7 +5,7 @@ import type { Group } from '../ru/types';
 
 export const DEPTH: Group = {
   'size-constancy': {
-    lede: 'A person walking away does not shrink, although their image on the retina shrinks in exact proportion as they recede.',
+    lede: 'A person walking away does not shrink, although their image on the retina shrinks in inverse proportion to their distance.',
     what: 'This is an ability, not an illusion. But take away the depth cues and it falls apart, and the rest of our size machinery goes with it.',
     how: [
       'Perceived size is retinal size multiplied by perceived distance. The formula is simple, and the whole story is in it.',
@@ -24,7 +24,7 @@ export const DEPTH: Group = {
       'The assumption that rooms are rectangular turns out to be stronger than the evidence about the people. Something has to give, the people give, and they are rescaled.',
     ],
     demo: 'ames-room',
-    demoNote: 'At first you look from the peephole. Slide the viewpoint away from it, and the room reveals itself as a wedge. A photograph cannot give you that moment, and it is the reason to build the whole scene.',
+    demoNote: 'At first you look from the peephole, and of two people of the same height one looks more than half as tall again as the other. Slide the viewpoint away from it, and the room, chequered floor and all, reveals itself as a wedge. A photograph cannot give you that moment, and it is the reason to build the whole scene.',
     twist: 'There is the “Honi phenomenon”: observers see less distortion when the person in the room is their own spouse. Replications are patchy, so treat it as a story rather than an established fact.',
   },
 
@@ -36,7 +36,7 @@ export const DEPTH: Group = {
       'But as it rotates, the long edge becomes the far one for half of every turn. To keep the assumption, perception reverses the motion, and that is the swing.',
     ],
     demo: 'ames-window',
-    demoNote: 'A slider morphs the trapezoid smoothly into a rectangle. With a rectangle the illusion dies, and that sweep is the argument.',
+    demoNote: 'A slider morphs the trapezoid smoothly into a rectangle. With a rectangle the illusion dies, and that sweep is the argument. A checkbox pushes a rod through the window, so you can watch it seem to pass through the frame.',
     twist: 'In 1957 Allport and Pettigrew claimed that people raised among round buildings are less susceptible to it. The evidence is thin, and it is better to say so than to repeat the claim.',
   },
 
@@ -90,7 +90,7 @@ export const DEPTH: Group = {
       'Your distance from the screen decides which band of frequencies you can still resolve. Stepping back cuts off the high ones, and the second picture is what remains.',
     ],
     demo: 'hybrid-image',
-    demoNote: 'A schematic version: a soft blob carries the low frequencies and a fine grating the high ones, with a slider for the cut-off and another for stepping back. There are no photographs and no real filtering here; the two bands are drawn directly, so you can see which one survives the distance.',
+    demoNote: 'A real hybrid, built in the browser the way Schyns and Oliva built theirs: Chekhov’s portrait, blurred with a Gaussian filter, supplies the low spatial frequencies, and Marie Curie’s the high ones, the two aligned by the pupils. One slider sets the cut-off, the other shrinks the picture as if you were stepping back. Close up you see Curie; small, or from across the room, you see Chekhov.',
   },
 
   'peppers-ghost': {
@@ -101,7 +101,7 @@ export const DEPTH: Group = {
       'How solid the ghost looks is a ratio of light levels. Turn down the light on the hidden actor and the ghost melts away.',
     ],
     demo: 'peppers-ghost',
-    demoNote: 'A stage with a sheet of glass you can tilt, a slider for the light on the hidden actor and a plan view from above. The plan is what makes it all click.',
+    demoNote: 'A stage with a sheet of glass you can tilt, a slider for the light on the hidden actor, and a plan view from above that shows the hidden actor, the glass, the ghost and the viewer. The plan is what makes it all click.',
     twist: 'Dircks described it in 1858; Pepper staged the working version on 24 December 1862. The trick is alive and well: modern concert “holograms” are exactly this, with projection foil in place of the glass.',
   },
 

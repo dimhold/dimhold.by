@@ -3,16 +3,16 @@ export const EN_B: Record<string, string> = {
   /* motion.ts */
   'движение полос не меняется ни разу. Меняются только пропорции окна — и вместе с ними видимое направление.':
     'the stripes’ motion never changes at all. Only the aperture’s shape changes, and the direction you see changes with it.',
-  'убрать траектории':
-    'hide the paths',
-  'показать настоящие траектории':
-    'show the real paths',
-  'траектории прямые и независимые, и ни один отрезок не меняет длины.':
-    'the paths are straight and independent, and no segment ever changes length.',
+  'спрятать квадрат':
+    'hide the square',
+  'показать квадрат целиком':
+    'show the whole square',
+  'квадрат жёсткий и просто вращается с постоянной скоростью. Размер у него не меняется ни на пиксель.':
+    'the square is rigid and simply turns at a steady speed. Its size never changes by a single pixel.',
   'в кольцах начинается быстрое течение. Скорость этого течения почти совпадает с частотой ваших микросаккад.':
     'a fast flow starts up in the rings. Its speed is close to the rate of your microsaccades.',
-  'пересчитайте полосы. Нарисовано их столько, сколько стоит на первом ползунке, а видно вдвое больше.':
-    'count the stripes. The first slider says how many are drawn; you see twice that.',
+  'пересчитайте тёмные полосы. Нарисовано их столько, сколько стоит на первом ползунке, а видно вдвое больше.':
+    'count the dark stripes. The first slider says how many are drawn; you see twice that.',
   'остановлено — плоская россыпь, и формы в ней нет никакой.':
     'stopped: a flat scatter of dots with no shape in it at all.',
   'цилиндр. Направление вращения при этом само переворачивается: бонусом вторая иллюзия.':
@@ -47,16 +47,18 @@ export const EN_B: Record<string, string> = {
     'count reset.',
   'клетки квадратные — разводить нечего, и вставка легла на фон.':
     'the cells are square, so there’s nothing to pull apart and the inset sinks into the background.',
-  'последовательность сдвинута на нечётный шаг — симметрия восстановлена, и движение пропало.':
-    'the sequence is shifted by an odd step: symmetry is restored and the motion is gone.',
-  'смотрите в красную точку: там, куда вы смотрите, вращение останавливается.':
-    'look at the red dot: wherever you look, the rotation stops.',
-  'две отдельные вспышки: движения нет.':
-    'two separate flashes: no motion.',
-  'бета-движение: один объект переезжает с места на место. Именно это, а не фи, держит кино.':
-    'beta movement: a single object travels from one place to the other. This, not phi, is what makes cinema work.',
-  'чистое фи: что-то пронеслось, а объекта не было.':
-    'pure phi: something swept past, but there was no object.',
+  'порядок симметричный: чёрный — синий — белый — синий. Направлению взяться неоткуда, и дрейф пропал.':
+    'a symmetrical order: black, blue, white, blue. There is nowhere for a direction to come from, and the drift is gone.',
+  'смотрите в красную точку: боковым зрением кольца ползут от чёрного к синему и от белого к жёлтому, а там, куда вы смотрите, движение останавливается.':
+    'look at the red dot: out of the corner of your eye the rings creep from black to blue and from white to yellow, but wherever you look, the motion stops.',
+  'порядок обращён — и дрейф пошёл в обратную сторону. Смотрите в красную точку: там, куда вы смотрите, движение останавливается.':
+    'the order is reversed, and the drift goes the other way. Look at the red dot: wherever you look, the motion stops.',
+  'совсем медленно: точки просто гаснут и загораются по очереди, движение слабеет и распадается.':
+    'very slow: the dots just go out and light up again in turn; the motion weakens and falls apart.',
+  'бета-движение: видно, как точка перепрыгивает в пустое место. Именно это, а не фи, держит кино.':
+    'beta movement: you see a dot jump into the empty place. This, not phi, is what makes cinema work.',
+  'чистое фи: по кругу бежит что-то вроде тени, а ни одна точка не движется.':
+    'pure phi: something like a shadow runs round the ring, yet not a single dot moves.',
   'приближение остановлено — подвигайтесь к экрану и обратно сами.':
     'zoom stopped: move your head towards the screen and back.',
   'кольца крутятся навстречу друг другу. Картинка при этом только масштабируется.':
@@ -65,8 +67,14 @@ export const EN_B: Record<string, string> = {
     'the pattern physically moves right, but you see it go left. Only the sign of the contrast is inverted.',
   'узор едет вправо.':
     'the pattern moves right.',
+  'всего два кадра и пустая пауза перед возвратом — а узор безостановочно едет вправо. Это двухтактное движение.':
+    'just two frames and a blank pause before the return, yet the pattern keeps moving right without a break. This is two-stroke motion.',
+  'всего два положения, и контраст обращается на каждом обратном ходе — узор при этом безостановочно едет вправо.':
+    'just two positions, with the contrast reversed on every return stroke, and the pattern keeps moving right without a break.',
   'в просветах спицы выгибаются дугой, и по разные стороны от оси — в разные стороны.':
     'in the gaps the spokes bend into arcs, and on either side of the axis they bend opposite ways.',
+  'планок нет — спицы прямые.':
+    'no slats: the spokes are straight.',
   'убрать следы':
     'hide the trails',
   'показать следы':
@@ -89,10 +97,12 @@ export const EN_B: Record<string, string> = {
     'hide the trail',
   'показать след':
     'show the trail',
-  'путь точки — диаметр. Прямая до последнего знака.':
-    'each dot travels along a diameter. Straight to the last decimal place.',
+  'путь каждой точки — свой диаметр. Прямая до последнего знака.':
+    'each dot travels along its own diameter. Straight to the last decimal place.',
   'по кадрам — есть наложение':
     'frame by frame: aliasing',
+  'по кадрам — наложения пока нет':
+    'frame by frame: no aliasing yet',
   'со смазом — наложения нет':
     'with motion blur: no aliasing',
 
@@ -111,6 +121,8 @@ export const EN_B: Record<string, string> = {
     'one mechanism in three costumes: the visual system checks the junctions one at a time and never whether they fit together.',
   'под заслонкой каждый конец совершенно связен. Противоречие существует, только пока видно оба.':
     'with the cover on, each end is perfectly coherent. The contradiction exists only while you can see both.',
+  'заслонка убрана: слева три круглых зубца, справа два прямоугольных, а посередине они не сходятся.':
+    'the cover is off: three round prongs on the left, two square ones on the right, and in the middle they don’t meet.',
   'ступни встали на свои вертикали, и ноги наконец пересчитываются.':
     'the feet are back under their own legs, and the legs can finally be counted.',
   'пересчитайте ноги. Просветы между ними тоже со ступнями.':
@@ -135,22 +147,28 @@ export const EN_B: Record<string, string> = {
     'ILLUSION',
   'из этой точки надпись собралась. Отовсюду ещё она бесформенна.':
     'from this point the word comes together. From anywhere else it is shapeless.',
-  'спрятанный актёр внизу, стекло под углом, зритель слева':
-    'hidden actor below, glass at an angle, audience on the left',
+  'спрятанный актёр': 'hidden actor',
+  'призрак': 'ghost',
+  'зритель': 'audience',
+  'стекло': 'glass',
+  'стекло не под 45°: отражение поворачивается на удвоенный угол, и призрак завалился на {d}°.':
+    'the glass is off 45°: a reflection turns through twice the angle, so the ghost now leans by {d}°.',
   'свет на спрятанном актёре убран — призрак растаял мгновенно, без люков и дыма.':
     'the light on the hidden actor is off, and the ghost melts away instantly, no trapdoors or smoke.',
   'горизонт открыт — и стало видно, что дорога идёт под уклон. Настоящий уклон не менялся.':
     'the horizon is showing, and you can see the road actually runs downhill. The real slope never changed.',
   'горизонта не видно, и уклон оценивается по наклонённым деревьям. Спуск читается подъёмом.':
     'with the horizon hidden, the slope is judged from the leaning trees. The descent reads as a climb.',
-  'высокие частоты уже не различимы — осталась только низкочастотная картинка.':
-    'the high frequencies can no longer be made out; only the low-frequency picture is left.',
-  'вблизи видна решётка, она же высокие частоты.':
-    'up close you see the grating, which is to say the high frequencies.',
+  'горизонт открыт: дорога и правда идёт в гору.': 'the horizon is showing: the road really does go uphill.',
+  'горизонт открыт: дорога ровная.': 'the horizon is showing: the road is level.',
+  'мелкий рисунок уже не различим — остались только низкие частоты, а в них Чехов.':
+    'the fine detail can no longer be made out; only the low frequencies are left, and in them, Chekhov.',
+  'вблизи главное — мелкий рисунок, высокие частоты: это Кюри. Уменьшите картинку или отойдите от экрана.':
+    'up close the fine detail dominates, the high frequencies: that’s Curie. Shrink the picture or step back from the screen.',
 
   /* geometry.ts */
-  'угол 0° — наконечники легли на отрезок, и разницы больше нет. Вот это и есть проверка.':
-    'angle 0°: the arrowheads fold flat along the line and the difference is gone. That is the real test.',
+  'угол 0° — наконечники встали поперёк, фигуры одинаковые, и разницы больше нет. Вот это и есть проверка.':
+    'angle 0°: the fins stand straight across, the two figures are identical and the difference is gone. That is the real test.',
   'угол {v}°. Оба отрезка по-прежнему одной длины.':
     'angle {v}°. Both lines are still the same length.',
   'убрать линейку':
@@ -167,10 +185,10 @@ export const EN_B: Record<string, string> = {
     'check',
   'промах {a} % — вы попали. Это бывает: иллюзия сильна не у всех одинаково.':
     'off by {a}%: that counts as a hit. It happens; the illusion isn’t equally strong for everyone.',
-  'вы сделали правый круг на {a} % больше эталона. Соседи у него мелкие, и он казался меньше, чем есть.':
-    'you made the right circle {a}% larger than the reference. Its neighbours are small, so it looked smaller than it is.',
-  'вы сделали правый круг на {a} % меньше эталона — необычное направление.':
-    'you made the right circle {a}% smaller than the reference: an unusual direction.',
+  'вы сделали правый круг на {a} % меньше эталона. Соседи у него мелкие, и он казался больше, чем есть.':
+    'you made the right circle {a}% smaller than the reference. Its neighbours are small, so it looked bigger than it is.',
+  'вы сделали правый круг на {a} % больше эталона — необычное направление.':
+    'you made the right circle {a}% larger than the reference: an unusual direction.',
   'кольцо вплотную — диск кажется крупнее.':
     'ring close in: the disc looks bigger.',
   'кольцо далеко — диск кажется мельче. Это та же тарелка, только большая.':
@@ -225,8 +243,8 @@ export const EN_B: Record<string, string> = {
     'two identical panels, drawn by one function with one argument.',
 
   /* lightness.ts */
-  'кляксы исчезли, а белого на экране столько же. Вместе с ними исчезло и учебниковое объяснение.':
-    'the spots are gone, yet there’s just as much white on screen. The textbook explanation has gone with them.',
+  'кляксы исчезли, хотя перекрёстки на месте: те же четыре улицы той же ширины сходятся в каждом. Вместе с кляксами исчезло и учебниковое объяснение.':
+    'the spots are gone, yet the crossings are still there: the same four streets of the same width meet at each one. The textbook explanation has gone with the spots.',
   'смотрите мимо перекрёстка — серые пятна появляются там, куда вы не смотрите.':
     'look away from the intersections: grey spots appear wherever you’re not looking.',
   'пока полоса их соединяет, спорить не с чем. Уберите её — и поверить снова станет невозможно.':
@@ -235,12 +253,10 @@ export const EN_B: Record<string, string> = {
     'A = {a}, B = {b}. Exactly the same number. Your vision sees a difference where the screen has none, not even one unit.',
   'A = {a}, B = {b} — разница {d} из 255: край полутени задел клетку.':
     'A = {a}, B = {b}: a difference of {d} out of 255. The edge of the shadow’s penumbra caught the cell.',
-  'убрать третий':
-    'hide the third square',
-  'перенести квадрат':
-    'move the square',
-  'третий квадрат на границе — из того же серого. Он принадлежит обоим фонам сразу и потому не знает, каким быть.':
-    'the third square sits on the border, in the same grey. It belongs to both backgrounds at once, so it can’t decide what to be.',
+  'квадрат переехал на другой фон. Краска та же — {v} из 255, — а светлота сменилась по дороге.':
+    'the square has moved onto the other background. Same paint, {v} out of 255, but its lightness changed on the way.',
+  'смотрите на верхний квадрат, пока он едет. Его можно и тащить мышью или пальцем.':
+    'watch the top square as it travels. You can also drag it with the mouse or a finger.',
   'там, где глаз настаивает на светлой и тёмной полосе, профиль внизу совершенно прямой.':
     'where your eye insists on a light band and a dark band, the profile below is perfectly straight.',
   'под маской полоса ровная от края до края. Рифление было в соседях.':
@@ -261,12 +277,12 @@ export const EN_B: Record<string, string> = {
     'in the black stripe {a}, in the white {b}.',
   'на ровном поле они одинаковы. Локальное окружение у них было одинаковым и раньше — менялась только принадлежность.':
     'on a plain field they match. Their local surround was identical before too; only what they belonged to has changed.',
-  'в полосе видна решётка в противофазе. Профиль под картинкой снят с той же полосы и совершенно прям.':
-    'the strip shows a grating in antiphase. The profile under the picture is taken from that same strip and is perfectly flat.',
+  'в полосе видна решётка в противофазе. Красный профиль под картинкой снят с середины полосы и совершенно прям; серый — с решётки над ней.':
+    'the strip shows a grating in antiphase. The red profile under the picture is read from the middle of the strip and is perfectly flat; the grey one is read from the grating above it.',
   'градиент развёрнут — свечение пропало. Значит, работает направление, а не пестрота.':
     'the gradient is reversed and the glow is gone. So it’s the direction that matters, not the busyness.',
-  'середина выглядит ярче белого, которое экран вообще способен выдать.':
-    'the centre looks brighter than any white the screen can produce.',
+  'середина выглядит ярче белого, которое экран вообще способен выдать. А она и фон вокруг цветка — одно и то же число, 255.':
+    'the centre looks brighter than any white the screen can produce. Yet it and the background around the flower are the same number: 255.',
   'смотрите на красный крест: под ним не мигает никогда, а вокруг — постоянно.':
     'look at the red cross: right under it nothing ever flickers, but all around it does, constantly.',
   'линии тонкие: краска тянется к ним — это ассимиляция.':
@@ -279,6 +295,12 @@ export const EN_B: Record<string, string> = {
     'with a straight contour the gradient can’t be put down to lighting, so it gets put down to paint.',
   'в середине левой {a}, правой {b}. Заливка у них одна функция.':
     'centre of the left one {a}, of the right {b}. Both are filled by the same function.',
+  'эталон слева имеет контраст 50. Вы выставили {g} — почти точно.':
+    'the reference on the left has a contrast of 50. You set {g}: almost exact.',
+  'эталон слева имеет контраст 50. Вы выставили {g}, промах {miss}. Окружение сейчас почти ровное — поднимите его контраст и сравните снова.':
+    'the reference on the left has a contrast of 50. You set {g}, off by {miss}. The surround is nearly flat at the moment: raise its contrast and compare again.',
+  'эталон слева имеет контраст 50. Вы выставили {g}, больше эталона. Пёстрое окружение обычно действует наоборот: пятно в нём кажется бледнее.':
+    'the reference on the left has a contrast of 50. You set {g}, above the reference. A busy surround usually works the other way: the patch inside it looks paler.',
   'эталон слева имеет контраст 50. Вы выставили {g} — промах {miss}, и это цена пёстрого окружения.':
     'the reference on the left has a contrast of 50. You set {g}, off by {miss}: that’s the price of a busy surround.',
   '{n} единица':
@@ -287,8 +309,8 @@ export const EN_B: Record<string, string> = {
     '{n} units',
   '{n} единиц':
     '{n} units',
-  'подсказки об освещении нет, а разница почти вся осталась. Это довод против объяснений, которые к ней сводятся.':
-    'the lighting cue is gone, yet almost all the difference remains. That argues against explanations that rest on it.',
+  'у каждого ромба тот же ближайший фон, что и в «змейке», а разница почти исчезла. Значит, одним местным контрастом её не объяснить: в «змейке» её усиливают полосы, которые зрение читает как дымку.':
+    'each diamond keeps the same immediate surround as in the snake, yet the difference has almost gone. So local contrast alone can’t explain it: in the snake, the bands that the eye reads as haze are what amplify it.',
   'верхний ромб {a}, нижний {b}. Одно число.':
     'top diamond {a}, bottom {b}. The same number.',
   'верхний ромб {a}, нижний {b}.':
@@ -297,8 +319,8 @@ export const EN_B: Record<string, string> = {
   /* lines.ts */
   'яркость шва вышла за пределы плиток — ряды должны выпрямиться. Если выпрямились, объяснение Грегори только что подтвердилось у вас на экране.':
     'the mortar’s brightness is now outside the range of the tiles, so the rows should straighten. If they did, Gregory’s explanation has just been confirmed on your screen.',
-  'шва нет вовсе — и наклона тоже нет.':
-    'no mortar at all, and no tilt either.',
+  'шва нет — это фигура Мюнстерберга: наклон, если и виден, заметно слабее.':
+    'no mortar: this is Münsterberg’s figure. Any tilt you still see is much weaker.',
   'шов {m} % между плитками {d} и {l} — в рабочем диапазоне.':
     'mortar at {m}% between tiles at {d} and {l}: within the working range.',
   'на нуле и на девяноста эффекта нет: разгибать нечего.':
@@ -313,8 +335,8 @@ export const EN_B: Record<string, string> = {
     'off by {n} px: a hit.',
   'промах {n} px вниз. Обычно промахиваются в ту же сторону.':
     'off by {n} px, downwards. People usually miss in the same direction.',
-  'промах {n} px вверх. Обычно промахиваются в ту же сторону.':
-    'off by {n} px, upwards. People usually miss in the same direction.',
+  'промах {n} px вверх — необычное направление: обычно продолжение ставят ниже настоящего.':
+    'off by {n} px, upwards: an unusual direction. Most people set the continuation below the real one.',
   'та же геометрия наизнанку: прямые вгибаются внутрь. Это иллюзия Вундта.':
     'the same geometry turned inside out: the straight lines bow inwards. This is the Wundt illusion.',
   'прямые выгибаются наружу. Обе по-прежнему прямые.':
@@ -323,6 +345,18 @@ export const EN_B: Record<string, string> = {
     'hide the straight edge',
   'приложить прямую':
     'show the straight edge',
+  'окружение тоже вертикально — отталкивать центр нечему, он стоит ровно.':
+    'the surround is vertical too, so nothing pushes the centre away: it stands straight.',
+  'окружение вертикально, отталкивать центр нечему: поправка в {n}° — это разброс, а не иллюзия.':
+    'the surround is vertical, so nothing is pushing the centre: a {n}° correction is scatter, not the illusion.',
+  'вы отклонили центр на {n}° против наклона окружения — это притяжение, а не отталкивание; при окружении в {s}° чаще бывает наоборот.':
+    'you tilted the centre {n}° against the surround’s tilt. That’s attraction, not repulsion; with a {s}° surround it’s usually the other way round.',
+  'окружение →':
+    'surround →',
+  '↑ поправка':
+    '↑ correction',
+  'вы отклонили центр на {n}° против наклона окружения — это притяжение: при окружении круче 50° его и ждут.':
+    'you tilted the centre {n}° against the surround’s tilt. That’s attraction, which is just what to expect with a surround steeper than 50°.',
   'центр стоит ровно в вертикали — и всё равно выглядит наклонённым.':
     'the centre is exactly vertical, and still looks tilted.',
   'вы отклонили центр на {n}° вправо, чтобы он выглядел вертикальным. Это ваша ошибка отталкивания при окружении в {s}°.':
@@ -351,8 +385,8 @@ export const EN_B: Record<string, string> = {
     'the disc fills with colour. Nothing has changed except the colour of the inner ends.',
   'диск ярче страницы, и у него есть край. В изображении нет ни того, ни другого.':
     'the disc is brighter than the page and has an edge. The image contains neither.',
-  'четыре разных фигуры и один механизм: край виден там, где яркость не меняется.':
-    'four different figures, one mechanism: an edge is seen where the brightness doesn’t change.',
+  'пять разных фигур и один механизм: край виден там, где яркость не меняется.':
+    'five different figures, one mechanism: an edge is seen where the brightness doesn’t change.',
   'начать заново':
     'start again',
   '{n} с — и это при резкой границе. Чаще при таком крае пятно держится, пока хватает терпения.':
@@ -365,10 +399,10 @@ export const EN_B: Record<string, string> = {
     'keep your eyes on the cross and don’t blink.',
   'закройте левый глаз, смотрите правым на крест и подберите расстояние до экрана: разрыв зарастёт.':
     'close your left eye, look at the cross with your right and adjust your distance from the screen: the gap will fill in.',
-  'на клетчатом фоне зарастает и клетка — система дорисовывает текстурой.':
-    'on a chequered background the pattern fills in too: the system paints in the texture.',
-  'точка просто исчезнет, а на её месте будет фон. Не чёрное пятно, а именно фон.':
-    'the dot will simply vanish and the background will take its place. Not a black spot, but the background itself.',
+  'закройте левый глаз и смотрите на крест: когда дыра попадёт в слепое пятно, клетка зарастёт поверх неё — система дорисовывает текстурой.':
+    'close your left eye and look at the cross: once the hole lands in the blind spot, the chequer grows over it. The system paints in the texture.',
+  'закройте левый глаз, смотрите правым на крест и медленно меняйте расстояние до экрана. Точка исчезнет, а на её месте будет фон. Не чёрное пятно, а именно фон.':
+    'close your left eye, look at the cross with your right and slowly change your distance from the screen. The dot will vanish and the background will take its place. Not a black spot, but the background itself.',
   'нарисовано {n}. Сколько вы удерживаете разом?':
     '{n} drawn. How many can you hold at once?',
   'сквозь чёрную полосу плывёт бледный призрак решётки. Фантом живёт при низкой частоте и медленном ходе.':

@@ -35,7 +35,7 @@ export const MOTION: Group = {
       'This, and not “persistence of vision”, is what makes cinema work. The difference is worth keeping in mind. Persistence would explain why the frames don’t flicker, but it says nothing about why there is motion in them.',
     ],
     demo: 'phi-beta',
-    demoNote: 'Shared with the phi phenomenon: a single interval slider takes you through all three regimes.',
+    demoNote: 'Shared with the phi phenomenon: a ring of dots with one missing, and a single slider for how long each frame lasts. In the middle of its range you see a dot jump into the gap, and that jump is beta movement.',
     twist: 'Joseph and Barbara Anderson took the persistence-of-vision story apart in 1978 and again in 1993. It is still in most textbooks.',
   },
 
@@ -51,13 +51,13 @@ export const MOTION: Group = {
 
   'breathing-square': {
     lede: 'A square turns behind four blocks without changing size. You see it breathe.',
-    what: 'A square rotates rigidly behind four occluders at its corners, so all you see of it are pieces of its sides sliding back and forth along straight lines. Together they make a square that swells and shrinks.',
+    what: 'A square turns at a constant speed behind four occluders that keep hiding its corners. Between them you see only pieces of its sides, and together they make a square that swells and shrinks.',
     how: [
       'The aperture problem again: the ends of the visible pieces give local signals, and the system assembles them into a single change of shape. There is no such change.',
     ],
     demo: 'breathing-square',
-    demoNote: 'A stripped-down version: no occluders and no rotating square, only four bars of fixed length sliding in and out, each at right angles to itself. The button draws their paths. They are straight and independent, and no bar changes length.',
-    twist: 'The usual career of a modern illusion: third prize in the Best Illusion of the Year Contest, then a paper in Spatial Vision a year later.',
+    demoNote: 'The button makes the occluders see-through and outlines the whole square. It is rigid, turns at a steady speed and never changes size by a single pixel.',
+    twist: 'It has no single famous author. Nicola Bruno wrote about “breathing illusions” of this kind in 2001, and the rotating square is the best known of them.',
   },
 
   'curveball-break': {
@@ -105,13 +105,13 @@ export const MOTION: Group = {
 
   'fraser-wilcox': {
     lede: 'Repeating gradients from dark to light move like an escalator.',
-    what: 'A still picture. Rings or rows of smooth brightness ramps creep steadily in one direction.',
+    what: 'A still picture. Rings of repeating brightness steps creep steadily in one direction.',
     how: [
       'The asymmetric luminance gradient does it: dark and light are processed with different delays, and where they meet a false motion signal appears.',
       'Akiyoshi Kitaoka has since sorted the optimised luminance profiles into types, up to Type V.',
     ],
     demo: 'peripheral-drift',
-    demoNote: 'One renderer serves three entries: this one, the peripheral drift illusion and Rotating Snakes. Sliders set the number of rings and shift the four-step luminance sequence along one step at a time.',
+    demoNote: 'One renderer serves three entries: this one, the peripheral drift illusion and Rotating Snakes. Each ring repeats four steps of brightness. One slider sets the number of rings; the other, the brightness order, has three positions. Kitaoka’s order drifts, a symmetric order doesn’t move at all, and the reversed order drifts the other way.',
     twist: 'It gets its own entry for a reason: this is the priority claim that Rotating Snakes rests on.',
   },
 
@@ -159,11 +159,11 @@ export const MOTION: Group = {
   },
 
   'motion-binding': {
-    lede: 'Four segments in little windows, or one diamond behind a fence. It depends on whether you can see the fence.',
-    what: 'Moving line segments show through separate slits. While the slits are invisible, you see four independent lines. Make the edges of the slits visible and it is at once a single diamond moving behind them.',
+    lede: 'Four separate lines, or one diamond behind four blocks. It depends on whether you can see the blocks.',
+    what: 'A diamond moves round a small circle with its corners hidden behind four occluders, so only the middles of its sides show. While the occluders are the same colour as the background, you see four lines, each going its own way. Make the occluders visible and the lines become a single diamond moving behind them.',
     how: [
-      'Where the segments end at the edges of the slits, they carry a false motion signal, the same line-end signal that drives the barber pole.',
-      'A visible slit edge explains where those ends come from: they mark where the object goes out of sight, not where it ends. The system discards them and binds the contours into one object.',
+      'Where the lines end at the edges of the occluders, their ends carry a false motion signal, the same line-end signal that drives the barber pole.',
+      'A visible occluder explains where those ends come from: they mark where the object goes out of sight, not where it ends. The system discards them and binds the contours into one object.',
     ],
     demo: 'motion-binding',
     demoNote: 'A toggle shows or hides the occluders. The motion itself doesn’t change. What changes is the explanation vision can afford to accept.',
@@ -177,7 +177,7 @@ export const MOTION: Group = {
       'Nothing dims or fades. The dot goes completely and instantly, and comes back just as instantly.',
     ],
     demo: 'motion-induced-blindness',
-    demoNote: 'Hold the space bar down while a dot is missing. The page plots your disappearance intervals, which amounts to a psychophysical curve collected in a minute.',
+    demoNote: 'Hold the space bar down while a dot is missing. Each disappearance adds a bar to the chart below, its height showing how long the dot was gone, and the page keeps the average.',
     twist: 'It is unpleasant to experience, and that is the point. A bright, high-contrast, clearly visible object drops out of healthy vision, and there is nothing you can do about it.',
   },
 
@@ -189,7 +189,7 @@ export const MOTION: Group = {
       'They can’t be reconciled into one surface, so the system puts them on two.',
     ],
     demo: 'ouchi',
-    demoNote: 'Sliders set the check proportions and the size of the inset, and a gentle wobble saves you shaking the screen. Make the checks square and the effect disappears: there is nothing left to separate.',
+    demoNote: 'Sliders set the check proportions and the size of the inset. The whole picture wobbles gently, background and inset together, so you don’t have to shake the screen, and the inset still seems to slide about on its own. Make the checks square and the effect disappears: there is nothing left to separate.',
     twist: 'Hajime Ōuchi printed it in 1977 in a book of optical art. Lothar Spillmann pulled it into science, and you can point to the exact moment it crossed over from design into research.',
   },
 
@@ -201,7 +201,7 @@ export const MOTION: Group = {
       'At the centre of gaze, resolution is higher and processing times are more even, which is why the effect dies there.',
     ],
     demo: 'peripheral-drift',
-    demoNote: 'The same renderer as Fraser–Wilcox and the Snakes. Keep your eyes on the fixation point: there is motion everywhere except where you are looking.',
+    demoNote: 'The same renderer as Fraser–Wilcox and the Snakes, with the same three-position slider for the brightness order: Kitaoka’s order drifts, a symmetric one stays put, a reversed one drifts backwards. Keep your eyes on the red dot: there is motion everywhere except where you are looking.',
   },
 
   'phi-phenomenon': {
@@ -211,7 +211,7 @@ export const MOTION: Group = {
       'Motion is computed separately from whatever is moving. Phi is the motion system filing its report at a moment when the recognition system has nothing to show.',
     ],
     demo: 'phi-beta',
-    demoNote: 'One interval slider, three regimes. Long: two separate flashes. Medium: beta movement, an object travels across. Short: pure phi. The boundaries are labelled as you go.',
+    demoNote: 'A ring of eight dots, one of them missing, with the gap moving round from frame to frame: Steinman’s magni-phi. The slider sets how long each frame lasts. With long frames the dots just go out and come back one after another. In the middle you get beta movement, a dot jumping into the gap. With short frames you get pure phi: a kind of shadow runs round the ring while no dot moves. The page tells you which regime you are in.',
     twist: 'Popular accounts keep confusing phi with beta movement, to the point of claiming that cinema runs on phi. Cinema runs on beta.',
   },
 
@@ -245,18 +245,18 @@ export const MOTION: Group = {
       'The sequence of these fragments is put together into one curved spoke.',
     ],
     demo: 'roget-palisade',
-    demoNote: 'You can change the slat width, the spacing and the speed of rotation. Behind the slats the spokes are plain straight lines; the curve exists only in the gaps.',
+    demoNote: 'Sliders set the slat width, the gap between the slats and the speed of rotation. Take the slat width down to zero and the fence disappears: the spokes are plain straight lines, and the curve exists only in the gaps.',
     twist: 'Peter Mark Roget, as in the thesaurus. His 1825 paper in the Philosophical Transactions turned up late in the making of this catalogue, in sources already collected but never properly read. It is the ancestor of the whole stroboscopic family, cinema included.',
   },
 
   'rotating-circles': {
     lede: 'The circles move in straight lines and at the same time circle round one another.',
-    what: 'Several circles each travel along their own straight line. You see them dancing in a ring.',
+    what: 'Eight circles, each swinging back and forth along its own straight line through the centre. You see them dancing in a ring.',
     how: [
       'Global pooling of motion overrides the correct local paths: the system prefers one coherent rotation to several unrelated straight lines.',
     ],
     demo: 'rotating-circles',
-    demoNote: 'The button turns on trails. The trails are straight.',
+    demoNote: 'The button draws the trails: eight straight lines through the centre.',
   },
 
   'rotating-snakes': {
@@ -267,7 +267,7 @@ export const MOTION: Group = {
       'The pushes come from microsaccades and blinks: between them the picture holds still, and with each one it jumps.',
     ],
     demo: 'rotating-snakes',
-    demoNote: 'The rings are built from the published luminance rule, not traced from Kitaoka’s image, which is under his copyright. That turns the rule into a control: a slider shifts the four-step sequence along one step at a time, and another sets the number of rings. Keep your eyes fixed on a single point and the rotation will stop.',
+    demoNote: 'The rings are built from the published luminance rule, not traced from Kitaoka’s image, which is under his copyright. That turns the rule into a control. The brightness-order slider has three positions: Kitaoka’s black, blue, white, yellow drifts; a symmetric order (black, blue, white, blue) doesn’t move at all; the reversed order drifts the other way. Another slider sets the number of rings. Wherever you look straight at the picture, the rotation stops.',
   },
 
   silencing: {
@@ -283,10 +283,10 @@ export const MOTION: Group = {
 
   'stepping-feet': {
     lede: 'Two rectangles move at the same constant speed, and yet they step.',
-    what: 'A yellow and a blue rectangle glide across a striped background. They seem to take turns stopping and stepping forward, like feet.',
+    what: 'A light grey and a dark grey rectangle glide across black and white stripes. They seem to take turns stopping and stepping forward, like feet.',
     how: [
       'Perceived speed depends on contrast. When the edge of a rectangle matches the brightness of the stripe it is crossing, contrast drops and the rectangle seems to slow down.',
-      'The yellow one loses contrast on the white stripes, the blue one on the black. Hence the alternation.',
+      'The light one loses contrast on the white stripes, the dark one on the black. Hence the alternation.',
     ],
     demo: 'stepping-feet',
     demoNote: 'Sliders control the brightness of each rectangle and the contrast of the stripes. Make both rectangles mid-grey: the stepping goes, the speed stays the same.',
@@ -336,12 +336,12 @@ export const MOTION: Group = {
 
   'two-stroke-motion': {
     lede: 'Two frames on a loop, and motion in one direction that never ends.',
-    what: 'Only two images alternate, with a brief blank inserted before one of the two switches. The motion runs on continuously and never steps back.',
+    what: 'Only two images alternate, with a brief blank inserted before the return to the first. The motion runs on continuously and never steps back.',
     how: [
       'Ordinary apparent motion supplies the forward stroke. The blank interval reverses the return stroke, turning it into more of the same forward motion, so there is nothing left to go back.',
     ],
     demo: 'reverse-phi',
-    demoNote: 'There is no two-stroke display here. This entry borrows the reverse-phi demo: a grating that keeps stepping one way, with a toggle that inverts every other frame and turns the motion round. That contrast reversal is the trick behind the four-stroke motion of Anstis and Rogers; George Mather’s two-stroke original used a blank interval instead, and the page does not show it.',
+    demoNote: 'This entry shares the reverse-phi demo, which has a switch of its own for it. “Just two frames” shows the grating in two positions with a brief grey blank before each return, and it keeps travelling the same way: that is George Mather’s two-stroke motion. Turn on the inversion as well and you get the four-stroke motion of Anstis and Rogers, where the contrast flips on every return instead.',
   },
 
   'wagon-wheel': {
@@ -352,7 +352,7 @@ export const MOTION: Group = {
       'The hard part is continuous light, where there is no sampling. One proposal is that the visual system does the sampling itself, and that is still disputed.',
     ],
     demo: 'wagon-wheel',
-    demoNote: 'Two panels: one at the screen’s refresh rate, where aliasing happens, and one with motion blur, where it doesn’t. Side by side, they make sense of the argument about continuous light.',
+    demoNote: 'Two wheels side by side. The left one is drawn frame by frame at your screen’s refresh rate. At low speeds it turns as it should; once a spoke travels more than half the gap between spokes in a single frame, aliasing sets in, and the label underneath says when. The right one is smeared over a fifteenth of a second and doesn’t alias at any speed. Together they make sense of the argument about continuous light.',
     twist: 'Here the interesting question is not “why does this happen” but “does it happen at all”, at least under some conditions.',
   },
 

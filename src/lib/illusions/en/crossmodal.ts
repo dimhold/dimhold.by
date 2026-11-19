@@ -18,18 +18,18 @@ export const CROSSMODAL: Group = {
 
   'ventriloquism-effect': {
     lede: 'A sound seems to come from wherever you see a likely source, even when it comes from somewhere else.',
-    what: 'The voice comes from the puppet’s mouth, not the performer’s throat. A line of dialogue comes from the middle of the screen, not from the speakers at the sides.',
+    what: 'The voice comes from the puppet’s mouth, not the performer’s throat. On television, a line of dialogue comes from the actor on the screen, not from the speakers at the sides.',
     how: [
       'Vision is more precise than hearing about space, so its estimate gets more weight and the auditory estimate is pulled towards it.',
     ],
     demo: 'ventriloquism-effect',
-    demoNote: 'Use headphones. A slider sets the pan of the sound, and you can drag the mouth around the screen independently of it. The voice you hear follows the picture, not the pan.',
+    demoNote: 'A slider sets the pan of the sound, and you can drag the mouth around the screen independently of it. The voice you hear follows the picture, not the pan.',
     twist: 'This is the reason film and television work at all: the dialogue comes out of loudspeakers and is heard from the actor’s mouth.',
   },
 
   'stream-bounce': {
     lede: 'Two discs pass through each other. Add a click at the moment they meet and they bounce.',
-    what: 'Two identical discs move together and apart. From the picture alone you cannot tell whether they passed through each other or collided. A short click settles the question.',
+    what: 'Two identical discs move together and apart. From the picture alone you cannot tell whether they passed through each other or collided. With a short click at the moment of contact, most people see a bounce.',
     how: [
       'A sound is evidence of a collision. Ambiguous visual motion is resolved in favour of the reading that a collision implies.',
     ],
@@ -45,7 +45,7 @@ export const CROSSMODAL: Group = {
       'The sense that is more reliable on the question wins. In time, hearing resolves an order of magnitude better than vision, so hearing keeps the count.',
     ],
     demo: 'sound-induced-flash',
-    demoNote: 'Sliders set the number of beeps and flashes, and a button plays them. The beeps are scheduled on the audio engine’s clock and the flashes on an ordinary browser timer; nothing measures how closely the two line up on your machine. The effect is stronger in the periphery, so keep your eyes on the red dot above the flash.',
+    demoNote: 'Sliders set the number of beeps and flashes, and a button plays them. Each flash lasts exactly one frame and is timed against the audio clock, and afterwards the page tells you how far the flashes strayed from the beeps on your machine. The effect is stronger in the periphery, so keep your eyes on the red dot above the flash.',
     twist: 'It runs in the unusual direction. In almost every other crossmodal illusion vision overrides hearing; here it is the other way round.',
   },
 

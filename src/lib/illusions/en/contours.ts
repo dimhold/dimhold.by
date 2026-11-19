@@ -19,13 +19,13 @@ export const CONTOURS: Group = {
 
   'illusory-contours': {
     lede: 'The umbrella entry: an edge where neither brightness nor colour changes at all.',
-    what: 'The whole class: the Kanizsa triangle, the Ehrenstein figure, Schumann’s figure, abutting gratings. They all work the same way.',
+    what: 'The whole class: the Kanizsa triangle, the Ehrenstein figure, Schumann’s figure, Varin’s figure, abutting gratings. They all work the same way.',
     how: [
       'Early visual cortex completes the boundary, prompted by aligned line ends and by cues that something lies in front.',
       'Cells in V1 and V2 respond to such a contour as they do to a real one, so the contour is put together very early, before any object has been recognised.',
     ],
     demo: 'illusory-contours',
-    demoNote: 'A showcase rather than a single demo: Schumann’s figure, the Kanizsa triangle, the Ehrenstein figure and abutting gratings, picked from a menu one at a time. For Kanizsa and Ehrenstein a slider sets how much of the edge is actually drawn. You can see they are one family.',
+    demoNote: 'A showcase rather than a single demo: the Kanizsa triangle, the Ehrenstein figure, Schumann’s figure, Varin’s figure and abutting gratings, picked from a menu one at a time. One slider works on all five. For Kanizsa and Ehrenstein it sets how much of each edge is actually drawn; for Schumann, the thickness of the strokes; for Varin, the size of the four bullseyes; for the gratings, how dense the lines are. You can see they are one family.',
   },
 
   'ehrenstein-illusion': {
@@ -61,7 +61,7 @@ export const CONTOURS: Group = {
       'This is easy to check. Put your blind spot over a gap in a line and the line joins up. Put it over a chequered background and the pattern carries on.',
     ],
     demo: 'blind-spot-filling',
-    demoNote: 'A cross, and to its right a gap in a line, a chequered background or a single dot. Close your left eye, look at the cross with your right, and move towards or away from the screen until the target falls into the blind spot. There is no ruler and no set viewing distance: a slider moves the two marks apart or together to suit your screen and how far you sit from it.',
+    demoNote: 'A cross, and to its right a single dot, a gap in a line, or a hole in a chequered background. Close your left eye, look at the cross with your right, and move towards or away from the screen until the target falls into the blind spot. There is no ruler and no set viewing distance: a slider moves the two marks apart or together to suit your screen and how far you sit from it.',
     twist: 'Mariotte described it in 1668. It is the oldest reference in the catalogue that anyone can turn into a working demonstration in thirty seconds.',
   },
 

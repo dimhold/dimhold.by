@@ -5,14 +5,14 @@ import type { Group } from '../ru/types';
 
 export const ATTENTION: Group = {
   'change-blindness': {
-    lede: 'A large object in the photo vanishes, and you can search for a minute without finding it.',
-    what: 'Two versions of a photograph alternate with a brief blank between them. Something big changes, appears or disappears.',
+    lede: 'A large object in the picture vanishes, and you can search for a minute without finding it.',
+    what: 'Two versions of a picture alternate with a brief blank between them. Something big changes, appears or disappears.',
     how: [
       'Without attention, your picture of a scene is far sparser than it feels. The sense of a complete picture is an impression, not a fact.',
       'The blank is there to swamp the local jolt a change would otherwise produce. Normally that transient is exactly what pulls attention in. Take it away and you have to search the scene bit by bit.',
     ],
     demo: 'change-blindness',
-    demoNote: 'Not a photo: the scene is drawn by code, so the change is exactly one shape that comes and goes. A quarter of a second of scene, a quarter of a second of blank, a stopwatch, and an “I give up” button that circles what was changing.',
+    demoNote: 'Not a photo: the scene is drawn by code, so the change is exactly one shape that comes and goes. The scene stays up for about a quarter of a second, followed by an 80 ms blank, as in Rensink’s experiments. There is a stopwatch, and an “I give up” button that circles what was changing.',
   },
 
   'inattentional-blindness': {
@@ -32,7 +32,7 @@ export const ATTENTION: Group = {
       'That is why the accuracy curve is U-shaped. At a very short gap the second target slips through along with the first; at a medium gap it drops out; at a long gap it recovers.',
     ],
     demo: 'attentional-blink',
-    demoNote: 'Ten letters a second, the first target in red, the second one to seven places after it. Fifteen runs, three at each lag, each ending in a choice of four letters, and your accuracy plotted against lag should trace the textbook dip. The frames are timed by an ordinary browser timer, not measured, so on a busy machine they can run slightly long.',
+    demoNote: 'Ten items a second: a stream of letters with the first target in red and the second target, a digit, one to seven places after it. Fifteen runs, three at each of five lags. After each run you name the red letter, then the digit, each from a choice of four. Your accuracy on the digit, counted only when you got the letter right, is plotted against lag and should trace the textbook dip. The frames change with the screen’s refresh, and the page tells you how long a frame actually lasted on average.',
   },
 
   crowding: {

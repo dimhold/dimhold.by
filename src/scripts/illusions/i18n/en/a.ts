@@ -13,9 +13,10 @@ export const EN_A: Record<string, string> = {
   'искали {s} с. Предмет обведён — и он крупный, и он в середине кадра.':
     'you searched for {s} s. The object is now outlined: it’s large, and right in the middle of the frame.',
   'задержка между целями →': 'lag between targets →',
-  'кривая внизу — ваша. На задержке в две-четыре позиции точность проваливается: это и есть мигание внимания.':
-    'the curve below is yours. At a lag of two to four positions accuracy drops away: that is the attentional blink.',
-  'какая буква шла после красной?': 'which letter came after the red one?',
+  'кривая внизу — ваша: доля верно названных цифр при верно названной красной букве. На задержке в две-четыре позиции точность обычно проваливается: это и есть мигание внимания. Кадр в среднем длился {ms} мс.':
+    'the curve below is yours: how often you named the digit, counting only runs where you got the red letter right. At a lag of two to four positions accuracy usually drops away: that is the attentional blink. Each frame lasted {ms} ms on average.',
+  'какая буква была красной?': 'which letter was red?',
+  'а какая цифра мелькнула после неё?': 'and which digit flashed up after it?',
   'по закону Боумы на этом удалении соседям нужно отойти примерно на {px} px, чтобы буква стала читаемой. Проверьте вторым ползунком.':
     'by Bouma’s law, at this distance the neighbours have to move about {px} px away before the letter becomes readable. Check it with the second slider.',
 
@@ -26,8 +27,12 @@ export const EN_A: Record<string, string> = {
   'стоп': 'stop',
   'следите за спектром: верхняя полоска гаснет ровно там, где снизу вступает новая.':
     'watch the spectrum: the top bar fades out exactly where a new one comes in at the bottom.',
-  'доля разгоняется без конца. Расписание считается наперёд по часам звукового движка, иначе на загруженной странице всё рассыпается.':
-    'the beat keeps speeding up without end. The schedule is worked out ahead of time on the audio engine’s clock; otherwise, on a busy page, it all falls apart.',
+  'доля разгоняется без конца. Расписание считается наперёд по часам звукового движка; направление и скорость меняются со следующего круга.':
+    'the beat keeps speeding up without end. The schedule is worked out ahead of time on the audio engine’s clock; direction and speed change from the next cycle.',
+  'доля замедляется без конца. Расписание считается наперёд по часам звукового движка; направление и скорость меняются со следующего круга.':
+    'the beat keeps slowing down without end. The schedule is worked out ahead of time on the audio engine’s clock; direction and speed change from the next cycle.',
+  'медленно': 'slow',
+  'быстро': 'fast',
   'второй тон выше или ниже первого?': 'is the second tone higher or lower than the first?',
   'выше': 'higher',
   'ниже': 'lower',
@@ -56,6 +61,8 @@ export const EN_A: Record<string, string> = {
   'задержка {ms} мс: звук целиком слева, откуда пришёл первым, — даже если правая копия громче.':
     'delay {ms} ms: the sound sits entirely on the left, where it arrived first, even if the right-hand copy is louder.',
   'за порогом эха звук распадается на два.': 'past the echo threshold the sound splits in two.',
+  'задержка {ms} мс: у щелчков здесь проходит порог эха. Многие уже слышат вторую копию справа отдельно.':
+    'delay {ms} ms: for clicks, this is about where the echo threshold lies. Many people already hear the second copy separately, on the right.',
   'биения: {n} в секунду': 'beats: {n} per second',
   'обычные акустические биения: они в воздухе и слышны на динамиках.':
     'ordinary acoustic beats: they happen in the air, and you can hear them over speakers.',
@@ -65,6 +72,8 @@ export const EN_A: Record<string, string> = {
   'выключите основную галочкой — и высота не дрогнет.': 'tick the box to remove the fundamental: the pitch won’t budge.',
   'разностный тон должен звучать на {f} Гц. В воздухе его нет: он появляется в нелинейности улитки.':
     'the difference tone should sound at {f} Hz. It isn’t in the air: it arises from the nonlinearity of the cochlea.',
+  'разностный тон f2−f1 — {f} Гц, кубический 2f1−f2 — {c} Гц. В воздухе их нет: они появляются в нелинейности улитки. На умеренной громкости легче услышать второй.':
+    'the difference tone f2−f1 is at {f} Hz, the cubic one, 2f1−f2, at {c} Hz. Neither is in the air: both arise from the nonlinearity of the cochlea. At moderate volume the second is the easier one to hear.',
   'нужна приличная громкость — но не переусердствуйте.': 'you need a fair bit of volume, but don’t overdo it.',
   'тон разрезан; в разрыве — то, что выбрано': 'the tone is cut; the gap holds whatever you chose',
   'в тишине разрыв слышен отчётливо.': 'in silence the gap is clearly audible.',
@@ -74,12 +83,12 @@ export const EN_A: Record<string, string> = {
   'шум с вырезанной полосой, восемь секунд. Не снимайте наушники.': 'noise with a band cut out, eight seconds. Keep your headphones on.',
   'теперь тишина. Слабый тон где-то около {f} Гц — это и есть тон Цвикера: соседние каналы адаптировались, а вырезанный нет.':
     'now silence. A faint tone somewhere around {f} Hz is the Zwicker tone: the neighbouring channels have adapted, and the cut-out one hasn’t.',
-  'гудков: {b}, вспышек: {f}. Смотрите на красную точку — на периферии эффект сильнее.':
-    'beeps: {b}, flashes: {f}. Look at the red dot: the effect is stronger in peripheral vision.',
+  'гудков: {b}, вспышек: {f}. Вспышка — один кадр, около {d} мс; от расписания гудков вспышки разошлись не больше чем на {e} мс. Смотрите на красную точку — на периферии эффект сильнее.':
+    'beeps: {b}, flashes: {f}. Each flash lasts one frame, about {d} ms; the flashes were at most {e} ms off the beep schedule. Look at the red dot: the effect is stronger in peripheral vision.',
   'прошли насквозь или отскочили? По картинке определить нельзя.': 'did they pass through each other or bounce off? The picture alone can’t tell you.',
-  'со щелчком в момент встречи они отскакивают, и однозначно.': 'with a click at the moment they meet, they unmistakably bounce.',
-  'щелчок далеко от момента встречи — и он больше ничего не решает. Окно узкое.':
-    'the click is far from the moment they meet, and it no longer decides anything. The window is narrow.',
+  'со щелчком в момент встречи большинство видит отскок.': 'with a click at the moment they meet, most people see a bounce.',
+  'щелчок далеко от момента встречи, и отскок видят реже. Чем дальше, тем слабее эффект.':
+    'the click is well away from the moment they meet, and the bounce is seen less often. The further away, the weaker the effect.',
   'панорама звука не менялась. Источник поехал за картинкой, а не за звуком.':
     'the sound’s panning hasn’t changed. The source moved with the picture, not with the sound.',
 
@@ -94,9 +103,6 @@ export const EN_A: Record<string, string> = {
   'синий': 'blue',
   'зелёный': 'green',
   'жёлтый': 'yellow',
-  'согласованные {c} мс, рассогласованные {i} мс. Ваша цена помехи — {d} мс.':
-    'congruent {c} ms, incongruent {i} ms. Your interference cost is {d} ms.',
-  'называйте цвет чернил, а не слово. Двадцать проб.': 'name the colour of the ink, not the word. Twenty trials.',
   'красная — менять, синяя — оставлять': 'red: switch, blue: stick',
   'три двери, за одной машина. Выбирайте.': 'three doors, a car behind one of them. Pick one.',
   'дверь {n}': 'door {n}',
@@ -104,7 +110,6 @@ export const EN_A: Record<string, string> = {
   'оставить': 'stick',
   'поменять': 'switch',
   'машина. Ваш счёт: оставляли {sw}/{sn}, меняли {cw}/{cn}.': 'a car. Wins so far: sticking {sw}/{sn}, switching {cw}/{cn}.',
-  'коза. Ваш счёт: оставляли {sw}/{sn}, меняли {cw}/{cn}.': 'a goat. Wins so far: sticking {sw}/{sn}, switching {cw}/{cn}.',
   'на десяти тысячах партий: оставлять — {st} %, менять — {sw} %.': 'over 10,000 games: sticking wins {st}%, switching {sw}%.',
   '{n} км': '{n} km',
   'Длина Днепра больше или меньше {n} км?': 'Is the Dnieper longer or shorter than {n} km?',
@@ -115,10 +120,10 @@ export const EN_A: Record<string, string> = {
   'ответить': 'answer',
   'вы ответили {g} км. Число {a}, которое вы видели до вопроса, выпало вам случайно и к Днепру отношения не имеет — а оценки тех, кому выпало другое, систематически другие. Настоящая длина — 2201 км.':
     'you answered {g} km. The number {a} you saw before the question was drawn at random and has nothing to do with the Dnieper, yet people who drew a different number give systematically different estimates. The real length is 2,201 km.',
-  'Лине 31 год, она не замужем, говорит прямо и очень неглупа. В университете изучала философию, занималась вопросами справедливости и ходила на демонстрации. Что вероятнее?':
+  'Линде 31 год, она не замужем, говорит прямо и очень неглупа. В университете изучала философию, занималась вопросами справедливости и ходила на демонстрации. Что вероятнее?':
     'Linda is 31, single, outspoken and very bright. At university she studied philosophy, cared deeply about social justice and went on demonstrations. Which is more probable?',
-  'Лина — кассир в банке': 'Linda is a bank teller',
-  'Лина — кассир в банке и участвует в феминистском движении': 'Linda is a bank teller and is active in the feminist movement',
+  'Линда — кассир в банке': 'Linda is a bank teller',
+  'Линда — кассир в банке и участвует в феминистском движении': 'Linda is a bank teller and is active in the feminist movement',
   'Множество «кассир и феминистка» целиком лежит внутри множества «кассир». Второе не может быть вероятнее первого ни при каком описании.':
     'The set ‘bank teller and feminist’ lies entirely inside the set ‘bank teller’. The second cannot be more probable than the first, whatever the description.',
   'вы выбрали то, что не может быть менее вероятным. Большинство выбирает второе.':
@@ -128,15 +133,9 @@ export const EN_A: Record<string, string> = {
   'Насколько вы управляли лампой? От 0 до 10.': 'How much control did you have over the lamp? From 0 to 10.',
   'вы оценили своё влияние в {v} из 10. Кнопка не была подключена ни к чему: лампа всё это время зажигалась сама. Совпадений: {h} из {n}.':
     'you rated your influence at {v} out of 10. The button wasn’t connected to anything: the lamp was lighting up on its own the whole time. Presses: {n}; lit on: {h}.',
-  'нажмите пробел в любой момент — через четверть секунды прозвучит сигнал.':
-    'press the space bar whenever you like: a beep will sound a quarter of a second later.',
   'часы Либета: стрелка делает оборот за {s} с.': 'Libet’s clock: the hand goes round once every {s} s.',
-  'где стояла стрелка, когда вы нажали?': 'where was the hand when you pressed?',
-  'ваша оценка разошлась с настоящим моментом на {ms} мс. При произвольном действии оценка обычно сдвигается позже, а оценка звука — раньше: они сближаются.':
-    'your estimate was {ms} ms off the real moment. For a voluntary action the estimate usually shifts later, and the estimate of the beep shifts earlier: the two draw together.',
   'теперь посчитайте вслух от 30 до 1. Не торопитесь.': 'now count aloud from 30 down to 1. Take your time.',
   'слово «{w}» было в списке?': 'was ‘{w}’ on the list?',
-  'было': 'yes',
   'не было': 'no',
   'слова «{w}» в списке не было ни разу. Вы его помните, потому что извлечение восстанавливает смысл, а не проигрывает запись.':
     '‘{w}’ was never on the list. You remember it because recall rebuilds the meaning rather than replaying a recording.',
@@ -144,8 +143,8 @@ export const EN_A: Record<string, string> = {
     'you weren’t fooled: ‘{w}’ really wasn’t there. Most people recall it, and confidently.',
   'какая картинка вам нравится больше?': 'which picture do you like more?',
   'вы выбрали эту. Почему?': 'you chose this one. Why?',
-  'вам вернули ту картинку, которую вы отвергли. Подмену замечает примерно один человек из восьми; остальные объясняют выбор подробно и убедительно. Отчёт о собственном решении собирается задним числом — записи решения просто нет.':
-    'you were handed back the picture you rejected. Only about one person in eight notices the swap; the rest explain their choice in detail and convincingly. The account of your own decision is put together after the fact. There is simply no record of the decision itself.',
+  'вам вернули ту картинку, которую вы отвергли. В исходном опыте подмену сразу замечали примерно в одном случае из восьми; в остальных люди подробно и убедительно объясняли выбор. Отчёт о собственном решении собирается задним числом — записи решения просто нет.':
+    'you were handed back the picture you rejected. In the original study the swap was caught on the spot in only about one trial in eight; in the rest, people explained their choice in detail and convincingly. The account of your own decision is put together after the fact. There is simply no record of the decision itself.',
   'какая из них «буба», а какая «кики»?': 'which one is ‘bouba’ and which is ‘kiki’?',
   'слева буба, справа кики': 'bouba on the left, kiki on the right',
   'слева кики, справа буба': 'kiki on the left, bouba on the right',
@@ -153,8 +152,6 @@ export const EN_A: Record<string, string> = {
     'nine people out of ten answer this way, across most languages and writing systems. Rounded lips go with a rounded contour, a sharp burst with a corner.',
   'необычный ответ: так отвечает примерно один из десяти. Межкультурная работа 2022 года нашла языки, в которых эффект слабее, — и это честная версия утверждения.':
     'an unusual answer: only about one person in ten gives it. A 2022 cross-cultural study found languages in which the effect is weaker, and that is the honest version of the claim.',
-  'интервалы по времени равны — по 0,4 с. Если средняя вспышка стоит не посередине, они перестают быть равными на слух и на глаз.':
-    'the time intervals are equal: 0.4 s each. If the middle flash isn’t halfway along, they stop looking equal.',
   'сколько длился красный квадрат по сравнению с кругами?': 'how long did the red square last compared with the circles?',
   'дольше': 'longer',
   'столько же': 'the same',
@@ -166,8 +163,6 @@ export const EN_A: Record<string, string> = {
   'попыток: {n}, средний промах {d} px по ходу движения. Систематический сдвиг вперёд — это и есть инерция представления.':
     'attempts: {n}, average miss {d} px in the direction of motion. A systematic forward shift is representational momentum.',
   'запомните, где он остановился, и щёлкните там.': 'remember where it stopped and click there.',
-  'смотрите на красную точку слева, потом резко переведите взгляд на счётчик справа. Первая цифра простоит дольше секунды.':
-    'look at the red dot on the left, then shift your gaze quickly to the counter on the right. The first digit will stay up for longer than a second.',
   'настоящие стрелочные часы работают лучше и стоят дешевле — это тот случай, когда экран проигрывает предмету.':
     'a real clock with a second hand works better and costs less: one of those cases where the screen loses to the real thing.',
   'мышь при этом не умеет ничего. Ощущение целиком собрано из расхождения между командой и результатом.':
@@ -175,35 +170,76 @@ export const EN_A: Record<string, string> = {
   'если станет мутить — жмите «остановить» немедленно. Векция без согласованного вестибулярного сигнала — это ровно тот конфликт, от которого укачивает.':
     'if you start to feel queasy, press ‘stop’ at once. Vection without a matching vestibular signal is exactly the conflict that causes motion sickness.',
   'тяжесть': 'gravity',
-  'ускорение': 'acceleration',
   'то, что меряют отолиты': 'what the otoliths measure',
-  'отолиты меряют сумму и разложить её на слагаемые не могут. Это не сбой обработки: сведений, чтобы различить разгон и задирание носа, в сигнале физически нет.':
-    'the otoliths measure the sum and cannot split it into its parts. This isn’t a processing glitch: the signal physically lacks the information to tell acceleration from the nose pitching up.',
-  'послушайте несколько секунд и посмотрите на узор.': 'listen for a few seconds and look at the pattern.',
   'насколько узор вам понравился? От 0 до 10.': 'how much did you like the pattern? From 0 to 10.',
   'оценка {v} из 10. Скажем прямо: этот звук никогда не был вашим пульсом. Он шёл с частотой {bpm} в минуту, выпавшей случайно, и в опыте Валинса именно такая подмена сдвигала оценки.':
     'you gave it {v} out of 10. To be clear: that sound was never your heartbeat. It ran at {bpm} beats a minute, a rate picked at random, and in Valins’s experiment it was exactly this kind of swap that shifted the ratings.',
-  'при растянутой вертикали видно: гипотенуза изгибается в одну сторону и в другую. Разница площадей ровно одна клетка.':
-    'with the vertical stretched you can see it: the hypotenuse bends one way and then the other. The difference in area is exactly one cell.',
   'наклоны 3/8 и 2/5 отличаются примерно на градус. Глаз тут не ошибается — его просто просят различить градус.':
     'slopes of 3/8 and 2/5 differ by about a degree. The eye isn’t wrong here: it’s simply being asked to spot a single degree.',
   'узор физически есть в изображении: обманываться здесь нечему, и камера снимет его так же.':
     'the pattern is physically there in the image: there is nothing to be fooled by, and a camera would capture it just the same.',
+  'согласованные {c} мс, рассогласованные {i} мс. Ваша цена помехи — {d} мс. Ошибок: {e}.':
+    'congruent {c} ms, incongruent {i} ms. Your interference cost is {d} ms. Mistakes: {e}.',
+  'называйте цвет чернил, а не слово: кнопкой или клавишей 1–4. Двадцать проб вперемешку.':
+    'name the colour of the ink, not the word, with a button or the keys 1–4. Twenty trials, mixed.',
+  'коза, машина была за дверью {c}. Ваш счёт: оставляли {sw}/{sn}, меняли {cw}/{cn}.':
+    'a goat; the car was behind door {c}. Wins so far: sticking {sw}/{sn}, switching {cw}/{cn}.',
+  'якорь {n}': 'anchor {n}',
+  'Днепр {n}': 'Dnieper {n}',
+  'вы {n}': 'you {n}',
+  'кассир': 'bank teller',
+  'кассир и феминистка': 'bank teller and feminist',
+  'попробуйте зажигать лампу кнопкой. Пятнадцать нажатий.': 'try to switch the lamp on with the button. Fifteen presses.',
+  'нажатий: {n} из 15.': 'presses: {n} of 15.',
+  'где стояла стрелка, когда вы нажали? Двигайте ползунок — синяя стрелка покажет ваш ответ.':
+    'where was the hand when you pressed? Move the slider: the blue hand shows your answer.',
+  'ошибка этой пробы {ms} мс (плюс — вы назвали момент позже настоящего). В среднем со звуком: {a}; без звука: {b}.':
+    'this trial was off by {ms} ms (plus means you placed the press later than it happened). Average with the beep: {a}; without it: {b}.',
+  '{n} мс': '{n} ms',
+  'проб пока нет': 'no trials yet',
+  'Разница {d} мс — ваше сближение нажатия со звуком. В опытах оно положительное, но небольшое, порядка десятка миллисекунд, и на нескольких пробах его легко заглушает разброс. Кадр вашего экрана — {f} мс: точнее этого стрелку не увидеть.':
+    'The difference, {d} ms, is how far the beep pulled your press towards itself. In experiments it comes out positive but small, around ten milliseconds, and over a few trials the scatter easily drowns it. One frame on your screen lasts {f} ms: you can’t see the hand more precisely than that.',
+  'проба со звуком: дайте стрелке сделать оборот и нажмите пробел (или щёлкните по часам), когда захотите. Через четверть секунды прозвучит сигнал.':
+    'trial with a beep: let the hand go round once, then press the space bar (or click the clock) whenever you like. A beep will sound a quarter of a second later.',
+  'проба без звука: дайте стрелке сделать оборот и нажмите пробел (или щёлкните по часам), когда захотите.':
+    'trial without a beep: let the hand go round once, then press the space bar (or click the clock) whenever you like.',
+  'точно было': 'definitely',
+  'кажется, было': 'I think so',
+  'слова «{w}» в списке не было ни разу, а вы уверены, что было. Извлечение восстанавливает смысл, а не проигрывает запись, и уверенность восстанавливается вместе с ним.':
+    '‘{w}’ was never on the list, yet you’re sure it was. Recall rebuilds the meaning rather than replaying a recording, and the confidence gets rebuilt along with it.',
+  'это не та картинка': 'that’s not the one I picked',
+  'верно: вам вернули ту картинку, которую вы отвергли, и вы это заметили. В исходном опыте так сразу получалось примерно в одном случае из восьми; в остальных люди подробно и убедительно объясняли выбор.':
+    'right: you were handed back the picture you rejected, and you noticed. In the original study that happened on the spot in only about one trial in eight; in the rest, people explained their choice in detail and convincingly.',
+  'какой промежуток показался длиннее?': 'which interval seemed longer?',
+  'первый': 'the first',
+  'одинаковые': 'the same',
+  'второй': 'the second',
+  'оба промежутка шли ровно по 0,4 с. По расстоянию длиннее первый — каппа-эффект предсказывает, что дольше покажется именно он.':
+    'both intervals lasted exactly 0.4 s. The first covers more distance, and the kappa effect predicts that it is the one that will seem longer.',
+  'оба промежутка шли ровно по 0,4 с. По расстоянию длиннее второй — каппа-эффект предсказывает, что дольше покажется именно он.':
+    'both intervals lasted exactly 0.4 s. The second covers more distance, and the kappa effect predicts that it is the one that will seem longer.',
+  'оба промежутка шли ровно по 0,4 с, и по расстоянию они равны. Сдвиньте среднюю вспышку к краю и посмотрите ещё раз.':
+    'both intervals lasted exactly 0.4 s, and they cover the same distance. Move the middle flash towards one end and watch again.',
+  'смотрите на красную точку слева, потом резко переведите взгляд на счётчик справа. Цифра, на которую попадёт взгляд, покажется дольше остальных, хотя каждая стоит ровно секунду.':
+    'look at the red dot on the left, then shift your gaze quickly to the counter on the right. The digit your eyes land on will seem to stay longer than the rest, though each one lasts exactly a second.',
+  'направление полёта →': 'direction of flight →',
+  'сила инерции': 'inertial force',
+  'разгон {a} g для отолитов неотличим от наклона назад на {d}°: они меряют сумму и разложить её на слагаемые не могут. Это не сбой обработки — сведений, чтобы различить разгон и задирание носа, в сигнале физически нет.':
+    'to the otoliths, accelerating at {a} g is indistinguishable from tilting back by {d}°: they measure the sum and cannot split it into its parts. This isn’t a processing glitch: the signal physically lacks the information to tell acceleration from the nose pitching up.',
+  'это ваш пульс. Послушайте его несколько секунд и посмотрите на узор.':
+    'this is your heartbeat. Listen to it for a few seconds and look at the pattern.',
+  'расстояния по вертикали от прямой, соединяющей углы, растянуты ×{e}. Видно: в одной раскладке «гипотенуза» прогибается внутрь, в другой выгибается наружу. Разница площадей ровно одна клетка.':
+    'vertical distances from the straight line joining the corners are stretched ×{e}. Now you can see it: in one arrangement the ‘hypotenuse’ sags inwards, in the other it bulges outwards. The difference in area is exactly one cell.',
+  'те же четыре части, а одна клетка пустая. Приложите линейку и растяните вертикаль: гипотенуза не прямая.':
+    'the same four pieces, yet one cell is empty. Put the ruler on and stretch the vertical: the hypotenuse isn’t straight.',
 
   /* colourfx */
   'смотрите строго в точку в центре.': 'keep your eyes fixed on the dot in the centre.',
   'зелёное пятно там, где было красное. Никакого зелёного на экране нет.': 'a green patch where the red one was. There is no green on the screen at all.',
-  'цвета поменялись местами. У разных людей они разные — это одна из самых наглядных иллюзий, которая у каждого своя.':
-    'the colours have swapped places. They differ from person to person: this is one of the clearest illusions that everyone sees differently.',
-  'частота обновления вашего экрана здесь влияет на результат: вращение считается по настоящим меткам времени кадров.':
-    'your screen’s refresh rate affects the result here: the rotation is computed from the real frame timestamps.',
   'под курсором {rgb}. Проведите по обоим шарам: краска у них одна.': 'under the cursor: {rgb}. Run it over both balls: they share the same paint.',
-  'окно по контрасту узкое, и здесь эффект схлопнулся.': 'the contrast window is narrow, and here the effect has collapsed.',
   'цвет растекается по прозрачному диску, которого не нарисовано.': 'the colour spreads across a transparent disc that isn’t drawn anywhere.',
   'окрасилось то, что было снаружи. Область не менялась — поменялись местами линии.':
     'now the outside is tinted. The region didn’t change; the lines swapped places.',
-  'кадр здесь идёт {ms} мс, значит интервал выставляется с такой же точностью, не лучше.':
-    'a frame here lasts {ms} ms, so the interval can only be set that precisely, no better.',
   'если считать свет тёплым, вычесть надо желтизну — и ткань выйдет синей с чёрным.':
     'if the light is taken to be warm, yellow has to be subtracted, and the fabric comes out blue and black.',
   'если считать свет холодным дневным, вычитается синева — и та же ткань выходит белой с золотым.':
@@ -214,36 +250,71 @@ export const EN_A: Record<string, string> = {
   'смотрите в красную точку, не отводя взгляд.': 'look at the red dot and don’t look away.',
   'теперь выставьте решётку в вертикаль и нажмите «проверить».': 'now set the grating to vertical and press ‘check’.',
   'ровно ноль — последействия у вас не осталось или оно уже прошло.': 'exactly zero: either you have no aftereffect left or it has already worn off.',
-  'ваша ошибка {d}° вправо. Адаптация шла на +15°, и отклонение должно быть в противоположную сторону.':
-    'your error: {d}° to the right. You adapted to +15°, so the error should go the opposite way.',
-  'ваша ошибка {d}° влево. Адаптация шла на +15°, и отклонение должно быть в противоположную сторону.':
-    'your error: {d}° to the left. You adapted to +15°, so the error should go the opposite way.',
   'смотрите в точку в центре пятна.': 'look at the dot in the centre of the patch.',
   'теперь отведите взгляд от экрана: посмотрите на ладонь, потом на стол, потом на дальнюю стену. Образ на сетчатке один и тот же, а размер каждый раз новый.':
     'now look away from the screen: at your palm, then the table, then the far wall. The image on the retina is the same, but its apparent size changes each time.',
-  'контур отдан вазе — лиц больше нет.': 'the contour goes to the vase: the faces are gone.',
-  'контур отдан профилям — вазы больше нет.': 'the contour goes to the profiles: the vase is gone.',
   'контур никому не отдан, и прочтения меняются сами.': 'the contour belongs to neither, and the readings flip on their own.',
-  'каждый ползунок тянет контур на свою сторону. Побеждает сумма, а не один признак.':
-    'each slider pulls the contour towards its own side. The sum wins, not any single cue.',
   'обвести круги': 'outline the circles',
-  'круги были нарисованы теми же отрезками всё это время. Они просто проиграли конкуренцию за владение контуром.':
-    'the circles were drawn by those same segments all along. They simply lost the contest for ownership of the contour.',
   'засекли. Жмите на каждом следующем перевороте.': 'timer started. Press at every flip from now on.',
   'интервалов: {n}, в среднем {s} с. У большинства выходит от полутора до пяти.':
     'intervals: {n}, averaging {s} s. Most people get between 1.5 and 5 s.',
   'счёт сброшен.': 'count reset.',
   'столбики внизу — ваши средние по трём стимулам. Сравнение между ними и есть самое интересное.':
     'the bars below are your averages for the three stimuli. Comparing them is the most interesting part.',
-  'та же гора при вчетверо большем разрешении: лица нет и не было.': 'the same hill at four times the resolution: there is no face, and there never was.',
   'снимок 1976 года, 43 метра на пиксель. Лицо тут видят все.': 'the 1976 image, 43 metres per pixel. Everyone sees a face here.',
   'бросок {n}. Система опознания лиц настроена так, чтобы не пропустить ни одного, — а значит, обязана иногда срабатывать впустую.':
     'pattern {n}. The face-detection system is tuned never to miss a face, which means it is bound to fire for nothing now and then.',
+  'звезду заливает цвет, дополнительный к лучам, которые обвёл контур. Переключите контур на другую звезду: адаптация была одна, а цвет сменится. На экране сейчас только белое и чёрная линия.':
+    'the star fills with the colour complementary to the rays the outline encloses. Switch the outline to the other star: there was only one adaptation, yet the colour changes. Right now the screen shows nothing but white and a black line.',
+  'выберите контур-звезду: какую обвести, ту и зальёт последовательный образ.':
+    'pick one of the star outlines: whichever one is drawn, the afterimage fills it.',
+  'экран обновляется {hz} раз в секунду, диск делает {rps} об/с — {deg}° за кадр. Поворот считается по настоящим меткам времени кадров, поэтому частота экрана влияет на результат.':
+    'your screen refreshes {hz} times a second and the disc turns at {rps} rev/s, {deg}° per frame. The rotation is worked out from the real frame timestamps, so the refresh rate affects what you see.',
+  ' Цвета поменялись местами; какие они, у каждого своё.':
+    ' The colours have swapped places; which colours they are differs from person to person.',
+  'цветные отрезки почти так же темны, как чёрные, и свечение гаснет: окно по контрасту узкое.':
+    'the coloured segments are almost as dark as the black ones, and the glow fades: the contrast window is narrow.',
+  'цветные отрезки почти сливаются с белым фоном, и растекаться почти нечему: окно по контрасту узкое.':
+    'the coloured segments almost merge with the white background, so there is hardly anything left to spread: the contrast window is narrow.',
+  'внутри контура такой же белый, как снаружи, а выглядит чуть оранжевым: это и есть растекание.':
+    'inside the outline the white is exactly the same as outside, yet it looks faintly orange: that is the spreading.',
+  'задано {set} мс, на экране вышло {got} мс. Кадр здесь идёт {ms} мс, точнее интервал не выставить.':
+    'set to {set} ms, measured on screen: {got} ms. A frame here lasts {ms} ms, so the interval can’t be set any more precisely.',
+  'плашка «{name}»: пиксель {px}, краска {paint}. Двигайте освещение: пиксель меняется, краска нет.':
+    'the ‘{name}’ patch: pixel {px}, paint {paint}. Move the lighting slider: the pixel changes, the paint doesn’t.',
+  'фон: пиксель {px}. Наведите на плашку — покажет и пиксель, и краску.':
+    'background: pixel {px}. Point at a patch to see both the pixel and the paint.',
+  'белый': 'white',
+  'серый': 'grey',
+  'вы поставили решётку на {d}° вправо — в ту же сторону, куда была наклонена адаптирующая (+15°). Так и должно быть: настоящая вертикаль после адаптации кажется заваленной влево, и вы это компенсировали.':
+    'you set the grating {d}° to the right, the same way the adapting grating was tilted (+15°). That is what should happen: after adapting, true vertical looks tilted to the left, and you compensated for it.',
+  'вы поставили решётку на {d}° влево. После адаптации к +15° ожидается обратное — сдвиг вправо: если эффект был, он уже прошёл или перекрыт разбросом установки.':
+    'you set the grating {d}° to the left. After adapting to +15° the opposite is expected, a shift to the right: if there was an effect, it has worn off or is lost in the scatter of your setting.',
+  'объём и поясок достались вазе: она стала предметом, а профили — тёмным фоном за ней.':
+    'the shading and the band go to the vase: it has become an object, and the profiles a dark background behind it.',
+  'глаза и тень достались профилям: теперь лица — предметы, а ваза — просвет между ними.':
+    'the eyes and the shading go to the profiles: now the faces are objects, and the vase is just the gap between them.',
+  'ни за кого': 'favours neither',
+  'за чёрные': 'favours black',
+  'за белые': 'favours white',
+  'выпуклость {c}, площадь {a}, симметрия {s}. Каждый признак тянет контур на свою сторону, побеждает сумма.':
+    'convexity {c}, area {a}, symmetry {s}. Each cue pulls the contour towards its own side; the sum wins.',
+  'кругов шестнадцать, и край ни одного не нарисован: внутри круга тот же узор из панелей, только сдвинутый на полпанели. Круги были здесь всё время и просто проиграли прямоугольникам конкуренцию за контур.':
+    'there are sixteen circles, and not one of them has a drawn edge: inside each circle is the same pattern of panels, just shifted by half a panel. The circles were there all along; they simply lost the contest for the contour to the rectangles.',
+  'куб Неккера': 'Necker cube',
+  'лестница Шрёдера': 'Schröder stairs',
+  'кольца': 'rings',
+  'та же гора на снимке 2001 года: камера Mars Global Surveyor различает детали примерно в 30 раз мельче. Лица нет и не было.':
+    'the same hill in the 2001 image: the Mars Global Surveyor camera resolves detail about 30 times finer. There is no face, and there never was.',
 
   /* photo */
-  'клюв встал горизонтально — утка.': 'the beak is horizontal: a duck.',
-  'уши легли назад — кролик.': 'the ears lie back: a rabbit.',
-  'ровно — и переключается само.': 'balanced: it flips on its own.',
+  'клюв опущен вниз, как у птицы, которая клюёт, — утка.': 'the beak points down, like a bird pecking: a duck.',
+  'уши встали торчком — кролик.': 'the ears stand straight up: a rabbit.',
+  'как в оригинале: клюв и уши лежат горизонтально, и прочтение переключается само.':
+    'as in the original: beak and ears lie flat, and the reading flips on its own.',
+  'блоки мельче деталей лица — квантования почти нет, и маскировать нечему.':
+    'the blocks are smaller than the features of the face, so there is hardly any quantisation and nothing to mask it.',
+  'глаза и рот на своих местах: лицо обычное под любым углом.': 'the eyes and mouth are back in place: the face looks normal at any angle.',
   'обведён клюв.': 'the beak is outlined.',
   'те же два отростка — уши, а вмятина справа — рот.': 'the same two protrusions are ears, and the dent on the right is a mouth.',
   'ухо': 'ear',
@@ -280,13 +351,17 @@ export const EN_A: Record<string, string> = {
   'обвести сдвинутую область': 'outline the shifted area',
   'одним глазом в этом прямоугольнике не видно ровным счётом ничего: он отличается только сдвигом между картинками.':
     'with one eye there is nothing whatsoever to see in this rectangle: it differs only in how it is shifted between the two images.',
-  'сведите глаза так, чтобы две красные точки наверху слились в три. Тогда в середине проступит конус.':
-    'cross your eyes until the two red dots at the top merge into three. Then a cone will emerge in the middle.',
-  'периодов: {n}, в среднем {s} с. Сравните с вашим же кубом Неккера — форма распределения у них одинаковая.':
-    'periods: {n}, averaging {s} s. Compare them with your own Necker cube: the distributions have the same shape.',
   'красное': 'red',
   'синее': 'blue',
   'на светлом фоне порядок глубины часто переворачивается. У кого как — спрашивайте у соседа.':
     'on a light background the depth order often reverses. It varies from person to person, so ask whoever is sitting next to you.',
   'на чёрном фоне красное обычно впереди.': 'on a black background the red usually looks nearer.',
+  'сведите глаза к переносице, пока две красные точки наверху не превратятся в три. Тогда в середине проступит конус.':
+    'cross your eyes towards your nose until the two red dots at the top turn into three. Then a cone will emerge in the middle.',
+  'смотрите как бы сквозь экран, вдаль, пока две красные точки наверху не превратятся в три. Тогда в середине проступит конус.':
+    'look as if through the screen, into the distance, until the two red dots at the top turn into three. Then a cone will emerge in the middle.',
+  'периодов: {n}, в среднем {s} с. Столбики — ваши периоды по порядку. Сравните с кубом Неккера: у большинства разброс интервалов там похожей формы.':
+    'periods: {n}, averaging {s} s. The bars are your periods in order. Compare them with the Necker cube: for most people the spread of intervals has a similar shape there.',
+  'щёлкните по картинке, чтобы пробел попадал сюда, и держите его, пока целиком видна одна картинка.':
+    'click the picture so the space bar works here, then hold it down for as long as only one image is visible.',
 };

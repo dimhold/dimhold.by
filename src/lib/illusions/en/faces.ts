@@ -12,7 +12,7 @@ export const FACES: Group = {
       'What is left is working through the parts one by one, the way you read houses and aeroplanes. It is slower and worse.',
     ],
     demo: 'face-inversion',
-    demoNote: 'A matching task: same or different, in both orientations, twenty-four pairs. The faces are five old portraits in the public domain, four from the nineteenth century and Marie Curie’s from about 1920. The control is houses drawn for this page, because photos of buildings with an equally clean licence were not to be had, and a parametric house is more honest than a photo with murky rights. At the bottom you get your own inversion cost, separately for faces and for houses.',
+    demoNote: 'A matching task: same or different, in both orientations, twenty-four pairs. The faces are five old portraits in the public domain, four from the nineteenth century and Marie Curie’s from about 1920. The control is houses drawn for this page, because photos of buildings with an equally clean licence were not to be had, and a parametric house is more honest than a photo with murky rights. Underneath, the page plots your accuracy and response time for upright and inverted faces and houses. It is an easy version, though: a “different” pair is always two different people, so most people score close to the top everywhere, and the inversion cost may barely show.',
     twist: 'Both the Thatcher effect and composite faces rest on this. Yin was first, in 1969.',
   },
 
@@ -57,7 +57,7 @@ export const FACES: Group = {
       'Each face carries one expression in its high spatial frequencies and the other in its low ones. Distance decides which band your vision can still make out.',
     ],
     demo: 'hybrid-image',
-    demoNote: 'This is the hybrid-image demo, and it has no faces in it: a soft blob carries the low frequencies and a fine grating the high ones, with one slider for the cut-off and another for stepping back. The principle is the same; for the two expressions themselves you need Schyns and Oliva’s original.',
+    demoNote: 'This is the hybrid-image demo: Chekhov’s portrait supplies the low spatial frequencies and Marie Curie’s the high ones, with one slider for the cut-off and another for stepping back. Close up you see Curie, from afar Chekhov. The principle is the same, but neither face is angry or smiling; for the two expressions themselves you need Schyns and Oliva’s original.',
     twist: 'The catalogue first dated this work to 1994; a later check corrected it to Schyns and Oliva, 1999.',
   },
 

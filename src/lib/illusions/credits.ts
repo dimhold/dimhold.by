@@ -68,5 +68,7 @@ const QUOTES: Record<'ru' | 'en' | 'be', [string, string]> = { ru: ['«', '»'],
 export const creditLine = (a: Asset, lang: 'ru' | 'en' | 'be' = 'ru', id = ''): string => {
   const x = lang === 'ru' ? {} : (ASSET_TEXT[lang][id] ?? {});
   const [o, c] = QUOTES[lang];
-  return `${x.author ?? a.author}, ${o}${x.title ?? a.title}${c}, ${x.date ?? a.date}. ${x.source ?? a.source}. ${x.rights ?? a.rights}.`;
+  // источник и права идут после точки, поэтому с заглавной: «1915. Журнал Puck»
+  const cap = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
+  return `${x.author ?? a.author}, ${o}${x.title ?? a.title}${c}, ${x.date ?? a.date}. ${cap(x.source ?? a.source)}. ${cap(x.rights ?? a.rights)}.`;
 };

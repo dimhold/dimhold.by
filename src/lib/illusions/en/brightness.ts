@@ -23,7 +23,7 @@ export const BRIGHTNESS: Group = {
     what: 'A grid of white bars on black. Grey blobs appear at the intersections. Look straight at one and it vanishes, while the ones around it show up.',
     how: [
       'The textbook explanation is lateral inhibition in the retina: a receptive field sitting on an intersection gets more light from its surround than one sitting on a bar, so it is inhibited more. Baumgartner, 1960.',
-      'That explanation is wrong, yet it has survived in textbooks for decades. Make the bars wavy and the blobs disappear, even though everything a receptive field would measure stays the same. Concentric receptive fields can’t account for that.',
+      'That explanation is wrong, yet it has survived in textbooks for decades. Make the bars wavy and the blobs disappear, even though a concentric receptive field sitting on a crossing would see much the same thing as before. Concentric receptive fields can’t account for that.',
       'The current suspect is orientation-tuned cells in the cortex. A wavy bar is no longer a straight line, so they have nothing to pick up.',
     ],
     demo: 'hermann-grid',
@@ -40,7 +40,7 @@ export const BRIGHTNESS: Group = {
       'The two traditions have been arguing for a century and a half, and almost every entry in this group is a point made for one side or the other.',
     ],
     demo: 'simultaneous-contrast',
-    demoNote: 'A slider sets the grey, and both squares always get the same value. The button puts a third square of that grey right on the border between the backgrounds. It belongs to both at once and can’t settle on a lightness, though its grey is the same to the last level.',
+    demoNote: 'A slider sets the grey, and both squares always get the same value. The button sends a third square of that grey gliding from one background to the other, and its lightness changes on the way, though its grey stays the same to the last level. You can also drag it across yourself, with the mouse or a finger.',
     twist: 'Chevreul was taken on at the Gobelins tapestry works to deal with a complaint about the dyes: the black wool didn’t look black enough. He found that the dyers weren’t to blame. The neighbouring threads were. Then he wrote a book the Impressionists later read.',
   },
 
@@ -52,7 +52,7 @@ export const BRIGHTNESS: Group = {
       'There is an empirical account too: in nature, profiles like this are mostly produced by edges, so perception reports what such a picture usually turns out to be, not the picture itself.',
     ],
     demo: 'mach-bands',
-    demoNote: 'Check the real luminance profile under the image, computed from the same numbers that draw it. Where your eye insists on a band, the profile is a straight line.',
+    demoNote: 'Check the luminance profile under the image: it is read off the pixels actually drawn on the screen. Where your eye insists on a band, the profile is a straight line.',
     twist: 'Radiologists are specifically warned about Mach bands: at the edge of a dense structure they can read as a fracture or tooth decay that isn’t there.',
   },
 
@@ -103,7 +103,7 @@ export const BRIGHTNESS: Group = {
 
   'benary-cross': {
     lede: 'Two identical triangles on a cross. Same surroundings, different lightness.',
-    what: 'A black cross with two grey triangles. Their immediate neighbours are the same for both. They look different.',
+    what: 'A black cross with two grey triangles: one sits in an inner corner of the cross, the other is set into an arm. Each has its long side against white and its two short sides against black, so their immediate neighbours are the same. They look different.',
     how: [
       'One triangle reads as part of the cross, the other as part of the background. Belonging decides the matter; touching doesn’t.',
       'The objection: coarse spatial filtering reproduces the difference without grouping anything.',
@@ -167,12 +167,12 @@ export const BRIGHTNESS: Group = {
 
   'shaded-diamond': {
     lede: 'Same pixels. Only the outline changes, and the lightness changes with it.',
-    what: 'Two shapes with identical luminance gradients. With curved outlines they read as cylinders and look evenly painted. With straight ones they read as flat facets, and then they look sharply different.',
+    what: 'Two shapes side by side, each with the same luminance gradient from left to right and a step where they meet. With curved outlines they read as two cylinders and look evenly painted. With straight ones they read as two bricks, and then they look painted in two clearly different greys.',
     how: [
       'Perceived shape decides how a gradient gets split between lighting and paint. A curved surface explains the gradient as lighting. A flat one can’t explain it at all, so the gradient is put down to the paint.',
     ],
     demo: 'shaded-diamond',
-    demoNote: 'The switch changes only the outlines. The fill stays the same to the last pixel, and the probe lets you check.',
+    demoNote: 'This is Knill and Kersten’s figure: the switch turns the two bricks into two cylinders by changing only their outlines. The fill stays the same to the last pixel, and the probe lets you check.',
   },
 
   chubb: {

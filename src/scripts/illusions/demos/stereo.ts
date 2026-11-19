@@ -16,16 +16,28 @@ const rdsPair = (cols: number, rows: number, shift: number, seed = 5) => {
   return { left, right, box: [x0, y0, x1, y1] as const };
 };
 
+/* Две картинки рядом для свободного сведения. Между одинаковыми точками двух картинок
+   не больше 240 CSS-пикселей — около 6 см, примерно расстояние между глазами: шире
+   параллельным взглядом не свести. */
+const GAP = 20, MAXW = 220;
+const sideBySide = (w: number) => {
+  const pw = Math.floor(Math.min((w - GAP) / 2, MAXW));
+  const x0 = Math.round((w - 2 * pw - GAP) / 2);
+  return { pw, xs: [x0, x0 + pw + GAP] };
+};
+
 export const randomDotStereogram: Mount = demo((k) => {
   let shift = 8, anaglyph = false, outline = false;
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = PAPER;
     ctx.fillRect(0, 0, w, h);
-    const cell = 3;
-    const pw = anaglyph ? w : (w - 20) / 2;
+    /* Точка — 2 CSS-пикселя, координаты целые: на дробных границах сглаживание рисует
+       полосы, и картинки начинают различаться на глаз уже без всякого сдвига. */
+    const cell = 2;
+    const { pw, xs } = anaglyph ? { pw: Math.floor(w), xs: [0, 0] } : sideBySide(w);
     const cols = Math.floor(pw / cell);
     const rows = Math.floor(h / cell);
-    const { left, right, box } = rdsPair(cols, rows, shift);
+    const { left, right, box } = rdsPair(cols, rows, Math.max(1, Math.round(shift / cell)));
     const paint = (map: number[], x0: number, colour: (v: number) => string) => {
       for (let y = 0; y < rows; y++)
         for (let x = 0; x < cols; x++) {
@@ -40,14 +52,14 @@ export const randomDotStereogram: Mount = demo((k) => {
       paint(right, 0, (v) => (v ? '#00ffff' : '#000'));
       ctx.globalCompositeOperation = 'source-over';
     } else {
-      paint(left, 0, (v) => (v ? '#111' : '#eee'));
-      paint(right, pw + 20, (v) => (v ? '#111' : '#eee'));
+      paint(left, xs[0], (v) => (v ? '#111' : '#eee'));
+      paint(right, xs[1], (v) => (v ? '#111' : '#eee'));
     }
     if (outline) {
       ctx.strokeStyle = MARK;
       ctx.lineWidth = 2;
-      ctx.strokeRect(box[0] * cell, box[1] * cell, (box[2] - box[0]) * cell, (box[3] - box[1]) * cell);
-      if (!anaglyph) ctx.strokeRect(pw + 20 + box[0] * cell, box[1] * cell, (box[2] - box[0]) * cell, (box[3] - box[1]) * cell);
+      for (const x0 of anaglyph ? [0] : xs)
+        ctx.strokeRect(x0 + box[0] * cell, box[1] * cell, (box[2] - box[0]) * cell, (box[3] - box[1]) * cell);
     }
   });
   k.slider('shift', (v) => { shift = v; s.draw(); });
@@ -65,29 +77,30 @@ export const autostereogram: Mount = demo((k) => {
   const s = k.surface(({ ctx, w, h }) => {
     /* Классический алгоритм: период повторения текстуры по горизонтали кодирует
        глубину. Карта глубины своя — конус в середине. */
-    const img = ctx.createImageData(Math.round(w), Math.round(h));
+    /* Считаем в физических пикселях холста: putImageData не знает про setTransform. */
+    const dpr = k.dpr;
+    const W = ctx.canvas.width, H = ctx.canvas.height;
+    const img = ctx.createImageData(W, H);
     const r = rnd(11);
-    const noise: number[] = [];
-    for (let i = 0; i < Math.round(w) * Math.round(h); i++) noise.push(r() > 0.5 ? 235 : 30);
-    const W = Math.round(w), H = Math.round(h);
+    const P = period * dpr;
     const same = new Int32Array(W);
+    const pix = new Uint8Array(W);
     for (let y = 0; y < H; y++) {
+      /* Для каждой точки — пара «левая и правая», которые должны совпасть по цвету. Ссылка
+         всегда смотрит влево, поэтому, раскрашивая слева направо, цвет левой точки
+         уже известен. */
       for (let x = 0; x < W; x++) same[x] = x;
       for (let x = 0; x < W; x++) {
         const dx = (x - W / 2) / (W * 0.22);
         const dy = (y - H / 2) / (H * 0.32);
         const d = Math.max(0, 1 - Math.hypot(dx, dy));
-        const sep = Math.round(period * (1 - (cross ? -d : d) * 0.22));
-        const l = x - sep / 2, rr = l + sep;
-        if (l >= 0 && rr < W) {
-          let a = same[l], b = rr;
-          while (a !== b) { if (a < b) b = a; else a = same[a]; }
-          same[rr] = a;
-        }
+        const sep = Math.round(P * (1 - (cross ? -d : d) * 0.22));
+        const l = x - (sep >> 1), rr = l + sep;
+        if (l >= 0 && rr < W) same[rr] = l;
       }
-      for (let x = W - 1; x >= 0; x--) {
-        const v = same[x] === x ? noise[y * W + x] : noise[y * W + same[x]];
-        noise[y * W + x] = v;
+      for (let x = 0; x < W; x++) {
+        const v = same[x] === x ? (r() > 0.5 ? 235 : 30) : pix[same[x]];
+        pix[x] = v;
         const i = (y * W + x) * 4;
         img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
         img.data[i + 3] = 255;
@@ -103,10 +116,12 @@ export const autostereogram: Mount = demo((k) => {
     }
   });
   k.slider('period', (v) => { period = v; s.draw(); });
+  /* Переключатель вызывается и при запуске — с ним приходит и первая подсказка. */
   k.toggle('cross', (v) => {
     cross = v;
     s.draw();
-    k.say(tr('сведите глаза так, чтобы две красные точки наверху слились в три. Тогда в середине проступит конус.'));
+    k.say(v ? tr('сведите глаза к переносице, пока две красные точки наверху не превратятся в три. Тогда в середине проступит конус.')
+      : tr('смотрите как бы сквозь экран, вдаль, пока две красные точки наверху не превратятся в три. Тогда в середине проступит конус.'));
   });
 });
 
@@ -116,13 +131,17 @@ export const binocularRivalry: Mount = demo((k) => {
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, w, h);
-    const pw = anaglyph ? w : (w - 20) / 2;
+    const { pw, xs } = anaglyph ? { pw: w, xs: [0, 0] } : sideBySide(w);
+    /* Каждая картинка — в своих границах: полосы одного поля не должны заходить в другое. */
     const stripes = (x0: number, vertical: boolean, colour: string) => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x0, 0, pw, h);
+      ctx.clip();
       ctx.fillStyle = colour;
-      for (let i = 0; i < 40; i++) {
-        if (vertical) ctx.fillRect(x0 + i * 12, 0, 6, h);
-        else ctx.fillRect(x0, i * 12, pw, 6);
-      }
+      if (vertical) for (let x = x0; x < x0 + pw; x += 12) ctx.fillRect(x, 0, 6, h);
+      else for (let y = 0; y < h; y += 12) ctx.fillRect(x0, y, pw, 6);
+      ctx.restore();
     };
     if (anaglyph) {
       ctx.globalCompositeOperation = 'source-over';
@@ -131,8 +150,8 @@ export const binocularRivalry: Mount = demo((k) => {
       stripes(0, false, '#00ffff');
       ctx.globalCompositeOperation = 'source-over';
     } else {
-      stripes(0, true, '#d84545');
-      stripes(pw + 20, false, '#3ba05a');
+      stripes(xs[0], true, '#d84545');
+      stripes(xs[1], false, '#3ba05a');
     }
   });
   const hist = k.chart(({ ctx, w, h }) => {
@@ -152,10 +171,11 @@ export const binocularRivalry: Mount = demo((k) => {
       gaps.push((performance.now() - t0) / 1000);
       hist.draw();
       const mean = gaps.reduce((a, b) => a + b, 0) / gaps.length;
-      k.say(tr('периодов: {n}, в среднем {s} с. Сравните с вашим же кубом Неккера — форма распределения у них одинаковая.', { n: gaps.length, s: num(mean) }));
+      k.say(tr('периодов: {n}, в среднем {s} с. Столбики — ваши периоды по порядку. Сравните с кубом Неккера: у большинства разброс интервалов там похожей формы.', { n: gaps.length, s: num(mean) }));
     }
   });
   k.button('reset', () => { gaps.length = 0; hist.draw(); });
+  k.say(tr('щёлкните по картинке, чтобы пробел попадал сюда, и держите его, пока целиком видна одна картинка.'));
 });
 
 export const chromostereopsis: Mount = demo((k) => {
@@ -167,9 +187,11 @@ export const chromostereopsis: Mount = demo((k) => {
     ctx.font = `bold ${Math.round(Math.min(w, h) * 0.2)}px system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = `rgb(${Math.round(255 * S)} 0 0)`;
+    /* Насыщенность — подмешивание серого, а не затемнение: яркость цвета не падает. */
+    const on = Math.round(255 * S + 128 * (1 - S)), off = Math.round(128 * (1 - S));
+    ctx.fillStyle = `rgb(${on} ${off} ${off})`;
     ctx.fillText(tr('красное'), w / 2, h * 0.34);
-    ctx.fillStyle = `rgb(0 0 ${Math.round(255 * S)})`;
+    ctx.fillStyle = `rgb(${off} ${off} ${on})`;
     ctx.fillText(tr('синее'), w / 2, h * 0.7);
   });
   k.slider('bg', (v) => {

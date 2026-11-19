@@ -13,7 +13,7 @@ export const AUDITORY: Group = {
       'Pitch has two dimensions: chroma (which note within the octave) and height (how high overall). Shepard pulled them apart, so the chroma moves while the height stays put. The ear follows the chroma.',
     ],
     demo: 'shepard-tone',
-    demoNote: 'Turn the knobs for speed and envelope width. The spectrum drawn alongside shows the top components fading out just where the bottom ones come in. It takes a click to start, because browsers won’t play sound on their own.',
+    demoNote: 'Sliders set the speed and the width of the envelope. The spectrum drawn underneath shows the top components fading out just where the bottom ones come in. It takes a click to start, because browsers won’t play sound on their own.',
     twist: 'Shepard built these tones in 1964 on an IBM 7090 at Bell Labs. A by-product of the paper matters more than the illusion itself: judgements of pitch turned out to be intransitive. You have heard the trick more often than you think. It’s in The Dark Knight, in Dunkirk and on the endless staircase in Super Mario 64.',
   },
 
@@ -92,17 +92,17 @@ export const AUDITORY: Group = {
       'The steady tone and the glide group into two separate streams, and each is given its location independently: the oboe by where it is, the glide by its pitch.',
     ],
     demo: 'glissando-illusion',
-    demoNote: 'Deutsch and her colleagues played it from two loudspeakers; this page plays it through headphones, one channel to each ear. A buzzy sawtooth tone stands in for the oboe, the glide is a sine that rises in eight pieces and starts again, and once again you can listen to each ear on its own.',
+    demoNote: 'Deutsch and her colleagues played it from two loudspeakers; this page plays it through headphones, one channel to each ear. The oboe is built up from its harmonics. The glide is a sine tone sweeping from 500 to 1,500 Hz and back, cut into quarter-second pieces that always sound in the ear opposite the oboe. A menu lets you listen to each ear on its own.',
   },
 
   'precedence-effect': {
     lede: 'The same sound from two sides is heard from whichever side it reached first. Even if the other is louder.',
-    what: 'Two copies of a sound, a few milliseconds apart. You hear a single sound, coming entirely from where it arrived first, even when the second copy is ten decibels louder.',
+    what: 'Two copies of a sound, a few milliseconds apart. You hear a single sound, coming entirely from where it arrived first, even when the second copy is noticeably louder.',
     how: [
       'Location cues that arrive later are suppressed. Without this, hearing in an ordinary room wouldn’t work at all: every reflection off a wall would announce a new source.',
     ],
     demo: 'precedence-effect',
-    demoNote: 'In headphones: two copies of a click train, a slider for the interaural delay from 0 to 50 ms, and a separate volume for the lagging copy. Take the delay past the echo threshold. The point where one sound becomes two is the whole demonstration.',
+    demoNote: 'In headphones: a click in the left ear and the same click in the right, a slider for the delay between them from 0 to 50 ms, and another for the volume of the lagging copy, up to half as loud again as the leading one. Take the delay past the echo threshold, which for clicks lies somewhere around 5 to 10 ms. The point where one sound becomes two is the whole demonstration.',
     twist: 'Probably the most commercially exploited illusion in the catalogue: it governs how delay speakers are set up in halls, and it is why the sound still seems to come from the stage. Wallach, Newman and Rosenzweig, 1949, and independently Haas in the same year.',
   },
 
@@ -144,7 +144,7 @@ export const AUDITORY: Group = {
       'The cochlea responds non-linearly, and that non-linearity puts energy at the difference frequency. The waves aren’t adding up in the air; the distortion happens inside the ear.',
     ],
     demo: 'tartini-tone',
-    demoNote: 'Set the two oscillators independently and watch the calculated difference frequency on the display. It needs a fair amount of volume, so the page reminds you not to overdo it as soon as it starts.',
+    demoNote: 'Set the two oscillators independently, and the page works out where to listen: the difference tone f2−f1 and the cubic difference tone 2f1−f2, which is often the easier of the two to hear at a moderate volume. It needs a fair amount of volume, so before you press play the page warns you not to overdo it.',
     twist: 'Violinists still use it: a double stop played in tune produces the third tone, and they check their intonation against it. Tartini claimed to have heard it in 1714 but didn’t publish until 1754, and Sorge had already published in 1745.',
   },
 
@@ -166,7 +166,7 @@ export const AUDITORY: Group = {
       'The neighbouring frequency channels adapt and the notched one doesn’t. When the noise stops, the population is out of balance, and the unadapted channel looks active.',
     ],
     demo: 'zwicker-tone',
-    demoNote: 'The page plays notch-filtered noise for eight seconds; then listen to the silence. Sliders set the frequency and width of the notch. The tone is faint, so you need headphones, a moderate volume and a quiet room, and the page tells you so.',
+    demoNote: 'The page plays eight seconds of noise with a band cut out of its spectrum; then listen to the silence. Sliders set the frequency and width of the notch. The tone is faint, so you need headphones, a moderate volume and a quiet room, and the page tells you so.',
     twist: 'A good bridge between the senses: unmistakably the same idea as a visual afterimage, just in another modality.',
   },
 
