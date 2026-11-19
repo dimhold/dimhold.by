@@ -336,13 +336,21 @@ export const EN_A: Record<string, string> = {
   'вверх ногами — почти нормальное лицо.': 'upside down: an almost normal face.',
   'прямо — и это гримаса. Пиксели те же самые.': 'upright, it’s a grimace. The pixels are exactly the same.',
   'где-то здесь у большинства и появляется гримаса.': 'somewhere around here, for most people, the grimace appears.',
-  'лица прямо': 'faces upright',
-  'лица вверх ногами': 'faces inverted',
-  'дома прямо': 'houses upright',
-  'дома вверх ногами': 'houses inverted',
-  '{p} % / {ms} мс': '{p}% / {ms} ms',
-  'цена переворота: у лиц {f} п. п., у домов {h}. Если первое заметно больше второго, вы только что воспроизвели Йина.':
-    'cost of inversion: faces {f} pp, houses {h} pp. If the first is clearly bigger than the second, you have just replicated Yin.',
+  'прямо': 'upright',
+  'вверх ногами': 'upside down',
+  '{c} из {n} · {s} с': '{c} of {n} · {s} s',
+  'прямо — {a} из {n} верно, вверх ногами — {b} из {n}.': 'upright: {a} of {n} correct; upside down: {b} of {n}.',
+  'Переворот стоил {d} п. п.: та же перемена в перевёрнутом лице заметна хуже.':
+    'Turning the faces over cost you {d} percentage points: the same change is harder to spot in an upside-down face.',
+  'Вверх ногами в этот раз вышло даже лучше, на {d} п. п. На двенадцати парах случай может и такое: повторите серию.':
+    'This time you actually did better upside down, by {d} percentage points. With only twelve pairs, chance can do that; try another run.',
+  'Ошибок почти нет ни там, ни там: для вас эти перемены слишком заметны, и точность упёрлась в потолок. Тогда цена переворота может проявиться разве что во времени ответа.':
+    'Hardly any mistakes either way: for you these changes are too easy to spot, and accuracy has hit the ceiling. If inversion costs you anything here, it can only show in how long you took.',
+  'Разницы в этот раз почти нет. На двенадцати парах в каждой ориентации так бывает: повторите серию.':
+    'Hardly any difference this time. With twelve pairs per orientation that happens; try another run.',
+  'В среднем на ответ уходило {u} с прямо и {i} с вверх ногами.': 'An answer took you {u} s on average upright and {i} s upside down.',
+  'двадцать четыре пары: оба снимка — один и тот же портрет, но в половине пар у одного из них чуть сдвинуты глаза или рот. Каждая пара на экране две с половиной секунды, половина пар перевёрнута.':
+    'twenty-four pairs. Both pictures are always the same portrait, but in half the pairs one of them has the eyes or the mouth shifted slightly. Each pair stays on screen for two and a half seconds, and half of them are upside down.',
   'одно и то же или разное?': 'same or different?',
   'одно и то же': 'same',
   'разное': 'different',

@@ -441,21 +441,26 @@ export const faceInversion: Mount = demo((k) => {
   type Trial = { id: string; inverted: boolean; same: boolean; left: Change; right: Change; pose: [Pose, Pose] };
   let trial: Trial | null = null;
   let shown = false, t0 = 0, timer = 0;
-  (window as any).__fi = () => trial; // DEBUG-FI
+  /* Пока серия не идёт, на холсте один и тот же портрет прямо и вверх ногами — что
+     будет на экране, без перемен и без разброса. */
+  const still: Pose = { s: 1, jx: 0, jy: 0 };
+  const PREVIEW: Trial = { id: 'face-curie', inverted: false, same: true, left: 'none', right: 'none', pose: [still, still] };
+  let idle = true;
   const results: Record<'up' | 'inv', [number, number, number]> = { up: [0, 0, 0], inv: [0, 0, 0] };
   const s = k.surface(({ ctx, w, h }) => {
     ctx.fillStyle = PAPER;
     ctx.fillRect(0, 0, w, h);
-    if (!trial) return;
+    const t = trial ?? (idle && imgs[PREVIEW.id] ? PREVIEW : null);
+    if (!t) return;
     const bh = h * 0.94, bw = Math.min(w * 0.46, bh * 0.78);
     const gap = Math.min(w * 0.05, 36);
-    trial.pose.forEach((pose, slot) => {
+    t.pose.forEach((pose, slot) => {
       const x0 = slot ? w / 2 + gap / 2 : w / 2 - gap / 2 - bw;
       const y0 = (h - bh) / 2;
       ctx.save();
       ctx.beginPath();
       ctx.ellipse(x0 + bw / 2, y0 + bh / 2, bw / 2, bh / 2, 0, 0, Math.PI * 2);
-      if (!shown) {
+      if (!shown && t !== PREVIEW) {
         /* Пара убрана, место осталось: видно, что ответ ещё ждут. */
         ctx.strokeStyle = grey(0.8);
         ctx.lineWidth = 1;
@@ -464,12 +469,14 @@ export const faceInversion: Mount = demo((k) => {
         return;
       }
       ctx.clip();
-      const id = trial!.id;
-      const face = look(id, slot ? trial!.right : trial!.left);
+      const id = t.id;
+      const face = look(id, slot ? t.right : t.left);
       /* Масштаб — по межзрачковому расстоянию, середина между глазами чуть выше центра
          овала. Берутся исходные глаза, а не сдвинутые: иначе подгонка съела бы перемену. */
       const [[ax, ay], [bx, by]] = FACES[id].eyes.map(([u, v]) => [u * face.width, v * face.height]);
-      const sc = (bw * 0.36 * pose.s) / Math.hypot(bx - ax, by - ay);
+      /* Не мельче, чем нужно, чтобы кадр закрыл овал целиком: иначе у Теслы и Кюри
+         в овал попадает край снимка. Разброс масштаба множится уже после. */
+      const sc = Math.max((bw * 0.33) / Math.hypot(bx - ax, by - ay), bw / face.width, bh / face.height) * pose.s;
       const mx = (ax + bx) / 2, my = (ay + by) / 2;
       /* Если кадр больше овала, он не должен открывать в овале свой край: у Ковалевской
          и Теслы лицо прижато к краю снимка, и прямой срез читался бы как рамка. */
@@ -480,7 +487,7 @@ export const faceInversion: Mount = demo((k) => {
       const tx = cover(pose.jx * bw, mx, face.width, bw);
       const ty = cover(-bh * 0.08 + pose.jy * bh, my, face.height, bh);
       ctx.translate(x0 + bw / 2, y0 + bh / 2);
-      if (trial!.inverted) ctx.rotate(Math.PI);
+      if (t === PREVIEW ? slot === 1 : t.inverted) ctx.rotate(Math.PI);
       ctx.translate(tx, ty);
       ctx.scale(sc, sc);
       ctx.drawImage(face, -mx, -my);
@@ -553,7 +560,7 @@ export const faceInversion: Mount = demo((k) => {
       const c: Change = i % 2 ? (FACES[id].mouth && r() < 0.3 ? 'mouth-down' : EYE_CHANGES[Math.floor(r() * 4)]) : 'none';
       items.push({ id, same: true, left: c, right: c });
     }
-    const pose = (): Pose => ({ s: 0.92 + r() * 0.14, jx: (r() - 0.5) * 0.1, jy: (r() - 0.5) * 0.08 });
+    const pose = (): Pose => ({ s: 1 + r() * 0.14, jx: (r() - 0.5) * 0.1, jy: (r() - 0.5) * 0.08 });
     const all: Trial[] = [];
     for (const inverted of [false, true]) for (const it of items) all.push({ ...it, inverted, pose: [pose(), pose()] });
     return shuffle(all, r);
@@ -561,6 +568,7 @@ export const faceInversion: Mount = demo((k) => {
   const pct = (a: number) => Math.round((a / PER_SIDE) * 100);
   const finish = () => {
     trial = null;
+    idle = true;
     s.draw();
     stage.innerHTML = '';
     const [a, na, ma] = results.up, [b, nb, mb] = results.inv;
@@ -605,6 +613,7 @@ export const faceInversion: Mount = demo((k) => {
   k.button('start', (el) => {
     if (!FACE_IDS.every((id) => imgs[id])) return;
     el.disabled = true;
+    idle = false;
     results.up = [0, 0, 0];
     results.inv = [0, 0, 0];
     chart.draw();
@@ -624,5 +633,5 @@ export const faceInversion: Mount = demo((k) => {
     stage.append(row);
     show();
   });
-  Promise.all(FACE_IDS.map((id) => load(assets(k)[id]).then((i) => { imgs[id] = i; })));
+  Promise.all(FACE_IDS.map((id) => load(assets(k)[id]).then((i) => { imgs[id] = i; }))).then(() => s.draw());
 });

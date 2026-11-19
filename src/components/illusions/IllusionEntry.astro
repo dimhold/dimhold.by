@@ -69,7 +69,7 @@ const desc = c
 
     <header class="ill-entry-head">
       <h1 class="post-title">{name}</h1>
-      <p class="ill-entry-en">{altNameFor(entry, lang)}</p>
+      {altNameFor(entry, lang) && <p class="ill-entry-en">{altNameFor(entry, lang)}</p>}
       {entry.aka.length > 0 && <p class="ill-entry-aka">{ui.entry.also}: {entry.aka.join(' · ')}</p>}
       <p class="ill-entry-tags">
         <a class="ill-tag" href={`${ui.base}?q=${encodeURIComponent(modLabel(entry.modality, lang))}`}>

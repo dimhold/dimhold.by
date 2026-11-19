@@ -81,7 +81,7 @@ export const nameFor = (e: Entry, lang: IllLang = 'ru') =>
   lang === 'en' ? e.en : lang === 'be' ? (NAMES_BE[e.id] ?? e.ru) : e.ru;
 
 /** The name shown under the title: the English one, or the Russian one on an English page. */
-export const altNameFor = (e: Entry, lang: IllLang = 'ru') => (lang === 'en' ? e.ru : e.en);
+export const altNameFor = (e: Entry, lang: IllLang = 'ru') => (lang === 'en' ? '' : e.en);
 
 /** Copy for an entry in a language, when someone has written it. */
 export const copyFor = (id: string, lang: IllLang = 'ru'): Copy | undefined => COPY[lang][id];
