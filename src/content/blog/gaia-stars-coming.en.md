@@ -1,0 +1,226 @@
+---
+title: "My cuts for stars coming to the Sun threw out Gliese 710 and kept 2 white dwarfs"
+description: "96 stars of Gaia DR3 pass within 1 pc of the Sun on a straight line. My usual quality cuts deleted Gliese 710, HD 7977 and Proxima, and my distances matched the published table only after I turned the velocity by 4 arcminutes."
+date: 2024-06-02
+lang: en
+translationKey: gaia-stars-coming
+tags: ["open-data", "statistics", "numbers"]
+---
+
+The last line of my filter was `rv_nb_transits >= 10`. It left 26 stars of 96 and Gliese 710 was not among them. Gaia DR3 computed its radial velocity from 6 transits, so my rule deleted the star with the closest known future pass by the Sun. Proxima Centauri has 7 transits and went out on the same line. HD 7977, which passed even closer by some estimates, was already gone by then. Its RUWE is 2.015 and I had asked for less than 1.4.
+
+I usually put such cuts into a query before I look at the data, RUWE below 1.4, parallax 5 times above its error, all of it copied from some other query. I never checked what exactly they remove. Stars that pass near the Sun are a good place to check, because part of the answer is known.
+
+Dybczyński and colleagues keep the StePPeD database of such stars. The paper "Stars that approach within one parsec of the Sun" ([arXiv 2207.06258](https://arxiv.org/abs/2207.06258)) gave a DR3 list in 2022, 61 stars, with the suspicious ones marked. Below I call it the paper. I took its table from the arXiv source and used the marks of the author to judge my cuts. There are 13 dubious stars and 8 in wide binaries, one star has both. That leaves 41 unmarked. The abstract says 42 and I went by the marks.
+
+## A straight line for 33 million stars
+
+Distance is 1000 divided by the parallax, the star flies straight, the condition on the closest distance sits in the query itself. The ESA archive cut my anonymous query and I used the copy at IRSA. It stores values rounded to 2, 3 or 4 decimals, the rounding is well below the errors.
+
+Gaia DR3 has 33,812,183 sources with a radial velocity and 33,258,858 of them have a positive parallax. 96 pass closer than 1 pc on a straight line, 47 in the future and 49 in the past.
+
+I expected the noise of small parallaxes to fill this list. It did not. 95 of 96 stars pass the parallax cut. The paper had checked 3.3 million stars with weak parallaxes separately and found none under 1 pc, so I could have known.
+
+<figure class="fig">
+<svg viewBox="0 0 680 222" role="img" aria-label="Bar chart of how many stars remain after each cut applied in order: straight line &lt; 1 pc: 96; parallax / error ≥ 5: 95; |t| ≤ 10 Myr: 71; RUWE &lt; 1.4: 42; RV spectrum S/N ≥ 5: 31; RV transits ≥ 10: 26. HD 7977 is lost at the RUWE cut, Gliese 710 and Proxima at the transits cut.">
+  <text x="190.0" y="29.0" text-anchor="end" class="f-mono f-ink" style="font-size:11px">straight line &lt; 1 pc</text>
+  <rect x="200" y="14" width="270.0" height="22" style="fill:var(--muted);opacity:0.5;stroke:none"/>
+  <text x="478.0" y="29.0" text-anchor="start" class="f-mono f-ink" style="font-size:12px">96</text>
+  <text x="190.0" y="63.0" text-anchor="end" class="f-mono f-ink" style="font-size:11px">parallax / error ≥ 5</text>
+  <rect x="200" y="48" width="267.2" height="22" style="fill:var(--muted);opacity:0.5;stroke:none"/>
+  <text x="475.2" y="63.0" text-anchor="start" class="f-mono f-ink" style="font-size:12px">95</text>
+  <text x="190.0" y="97.0" text-anchor="end" class="f-mono f-ink" style="font-size:11px">|t| ≤ 10 Myr</text>
+  <rect x="200" y="82" width="199.7" height="22" style="fill:var(--muted);opacity:0.5;stroke:none"/>
+  <text x="407.7" y="97.0" text-anchor="start" class="f-mono f-ink" style="font-size:12px">71</text>
+  <text x="190.0" y="131.0" text-anchor="end" class="f-mono f-ink" style="font-size:11px">RUWE &lt; 1.4</text>
+  <rect x="200" y="116" width="118.1" height="22" style="fill:var(--muted);opacity:0.5;stroke:none"/>
+  <text x="326.1" y="131.0" text-anchor="start" class="f-mono f-ink" style="font-size:12px">42</text>
+  <text x="358.1" y="131.0" text-anchor="start" class="f-mono f-accent" style="font-size:11px">lost: HD 7977</text>
+  <text x="190.0" y="165.0" text-anchor="end" class="f-mono f-ink" style="font-size:11px">RV spectrum S/N ≥ 5</text>
+  <rect x="200" y="150" width="87.2" height="22" style="fill:var(--muted);opacity:0.5;stroke:none"/>
+  <text x="295.2" y="165.0" text-anchor="start" class="f-mono f-ink" style="font-size:12px">31</text>
+  <text x="190.0" y="199.0" text-anchor="end" class="f-mono f-ink" style="font-size:11px">RV transits ≥ 10</text>
+  <rect x="200" y="184" width="73.1" height="22" style="fill:var(--accent);opacity:1;stroke:none"/>
+  <text x="281.1" y="199.0" text-anchor="start" class="f-mono f-ink" style="font-size:12px">26</text>
+  <text x="313.1" y="199.0" text-anchor="start" class="f-mono f-accent" style="font-size:11px">lost: Gl 710, Proxima</text>
+</svg>
+<figcaption>Candidates left after each cut, in the order written down before the run.</figcaption>
+</figure>
+
+The time cut removed 24 stars, the longest of those straight lines goes 69.6 million years. The parallax zero point of Lindegren and colleagues (package `gaiadr3-zeropoint` 0.0.5) brought 5 stars in and pushed 0 out. A Monte Carlo with 10,000 draws from the catalogue errors and correlations left 67 of 96 with a median under 1 pc.
+
+## What the cuts do to marked stars
+
+Then I applied the same 5 cuts to the 61 stars of the table.
+
+| cut | unmarked, of 41 | dubious, of 13 | only binary, of 7 |
+|---|---|---|---|
+| parallax / error ≥ 5 | 41 | 13 | 7 |
+| time ≤ 10 Myr | 40 | 13 | 7 |
+| RUWE < 1.4 | 34 | 4 | 6 |
+| RV spectrum S/N ≥ 5 | 33 | 8 | 6 |
+| RV transits ≥ 10 | 32 | 9 | 4 |
+| all | 22 | 2 | 3 |
+
+RUWE does real work, 9 of 13 dubious stars go away for 7 unmarked ones. The number of transits is bad at this, it removes 9 unmarked and 4 dubious. Together the cuts throw out almost half of the unmarked stars.
+
+The 2 dubious stars that survive everything are white dwarfs, UPM J0812-3529 and EGGR 290. Their radial velocities in DR3 are -374 and -414 km/s. The paper says that the DR3 pipeline had no white dwarf templates, so these velocities are probably wrong. RUWE is 1.04 and 0.92, there are 16 and 12 transits. None of my cuts asks which template the spectrum was compared with. A limit of 300 km/s would remove 6 of 13 dubious stars and 0 unmarked. I don't count it as a rule, because I found it after looking at the marks and a suspiciously large velocity is one of the reasons for a mark.
+
+## Gliese 710 did not match
+
+Before the run I wrote that my Gliese 710 has to land inside the published 90% interval, from 0.0595 to 0.0678 pc. If not, I don't publish and look for the error. A straight line gave 0.0512. An orbit in `MWPotential2014` from galpy 1.9.2 gave 0.0519, from 0.0472 to 0.0561. Then I took the Galaxy model and the solar motion from the setup the paper refers to ([arXiv 1412.3648](https://arxiv.org/abs/1412.3648)) and got 0.0505.
+
+So I looked at stars where the Galaxy has no time to do anything. 18 stars of the table pass within 600,000 years. The star in row 19 flies at 885 km/s and needs 242,000 years. From its parallax, proper motion and velocity the straight line gives 0.427 pc, the table says 0.620 with an interval from 0.601 to 0.638. Row 3 needs 29,000 years and it is 0.113 against 0.117. It looked like the velocity was turned by a small angle relative to the position.
+
+I fitted 3 angles of such a turn to the 18 stars. The sum of squared deviations, in units of the published errors, fell from 404 to 2.1. Around 2 axes the turn is zero within the error of 0.3 arcminutes and around the third it is 4.09. In that setup the Sun is 10 pc above the plane and 8 kpc from the center, the arctangent of that is 4.30 arcminutes. With this angle fixed and nothing fitted, in the same Galaxy model, my nominal distances lie inside the published interval for 61 of 61 stars. Without it for 41. Among the 43 stars that took no part in the fit it is 43 against 30. Gliese 710 becomes 0.0637 and the table value is 0.0636.
+
+<figure class="fig">
+<svg viewBox="0 0 680 388" role="img" aria-label="Dot chart for 18 stars that pass within 600 thousand years. For every star the difference between my closest distance and the published one is shown twice. Hollow circles, a straight line, spread from -0.19 to +0.18 pc. Filled circles, the same line after turning the velocity by 4.30 arcminutes, all lie inside the published 90% intervals.">
+  <line x1="236.8" y1="28" x2="236.8" y2="340" class="f-plain"/>
+  <text x="236.8" y="358.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">-0.2</text>
+  <line x1="325.9" y1="28" x2="325.9" y2="340" class="f-plain"/>
+  <text x="325.9" y="358.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">-0.1</text>
+  <line x1="415.0" y1="28" x2="415.0" y2="340" class="f-plain"/>
+  <text x="415.0" y="358.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">0.0</text>
+  <line x1="504.1" y1="28" x2="504.1" y2="340" class="f-plain"/>
+  <text x="504.1" y="358.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">+0.1</text>
+  <line x1="593.2" y1="28" x2="593.2" y2="340" class="f-plain"/>
+  <text x="593.2" y="358.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">+0.2</text>
+  <text x="60.0" y="18.0" text-anchor="end" class="f-mono f-muted" style="font-size:11px">row</text>
+  <text x="150.0" y="18.0" text-anchor="end" class="f-mono f-muted" style="font-size:11px">kyr</text>
+  <text x="60.0" y="46.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">27</text>
+  <text x="150.0" y="46.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">19</text>
+  <rect x="389.2" y="37.5" width="57.9" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="409.0" cy="42.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="416.2" cy="42.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="63.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">56</text>
+  <text x="150.0" y="63.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">27</text>
+  <rect x="408.8" y="54.5" width="12.5" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="414.6" cy="59.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="415.0" cy="59.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="80.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">3</text>
+  <text x="150.0" y="80.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">29</text>
+  <rect x="411.4" y="71.5" width="8.0" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="411.8" cy="76.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="415.4" cy="76.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="97.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">53</text>
+  <text x="150.0" y="97.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">36</text>
+  <rect x="412.3" y="88.5" width="6.2" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="414.3" cy="93.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="415.5" cy="93.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="114.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">16</text>
+  <text x="150.0" y="114.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">83</text>
+  <rect x="413.2" y="105.5" width="3.6" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="415.5" cy="110.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="414.8" cy="110.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="131.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">42</text>
+  <text x="150.0" y="131.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-137</text>
+  <rect x="384.7" y="122.5" width="59.7" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="395.0" cy="127.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="412.6" cy="127.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="148.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">19</text>
+  <text x="150.0" y="148.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">242</text>
+  <rect x="398.1" y="139.5" width="33.0" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="243.1" cy="144.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="420.2" cy="144.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="165.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">41</text>
+  <text x="150.0" y="165.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-285</text>
+  <rect x="407.0" y="156.5" width="14.3" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="407.5" cy="161.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="414.9" cy="161.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="182.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">40</text>
+  <text x="150.0" y="182.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-305</text>
+  <rect x="250.2" y="173.5" width="403.6" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="306.5" cy="178.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="402.6" cy="178.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="199.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">44</text>
+  <text x="150.0" y="199.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-309</text>
+  <rect x="361.5" y="190.5" width="106.0" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="414.7" cy="195.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="410.7" cy="195.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="216.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">20</text>
+  <text x="150.0" y="216.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">311</text>
+  <rect x="383.8" y="207.5" width="66.8" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="331.3" cy="212.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="415.4" cy="212.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="233.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">29</text>
+  <text x="150.0" y="233.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">327</text>
+  <rect x="369.6" y="224.5" width="102.5" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="502.6" cy="229.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="418.0" cy="229.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="250.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">11</text>
+  <text x="150.0" y="250.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-364</text>
+  <rect x="387.4" y="241.5" width="55.2" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="438.4" cy="246.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="416.2" cy="246.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="267.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">54</text>
+  <text x="150.0" y="267.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-455</text>
+  <rect x="338.4" y="258.5" width="155.9" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="467.5" cy="263.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="418.2" cy="263.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="284.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">23</text>
+  <text x="150.0" y="284.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">467</text>
+  <rect x="368.7" y="275.5" width="103.3" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="375.7" cy="280.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="425.7" cy="280.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="301.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">8</text>
+  <text x="150.0" y="301.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-514</text>
+  <rect x="366.9" y="292.5" width="98.0" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="579.0" cy="297.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="372.2" cy="297.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="318.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">47</text>
+  <text x="150.0" y="318.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-522</text>
+  <rect x="407.0" y="309.5" width="15.1" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="435.9" cy="314.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="418.2" cy="314.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="60.0" y="335.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">18</text>
+  <text x="150.0" y="335.5" text-anchor="end" class="f-mono f-muted" style="font-size:11px">-557</text>
+  <rect x="408.8" y="326.5" width="11.6" height="10" style="fill:var(--muted);opacity:0.35;stroke:none"/>
+  <circle cx="398.7" cy="331.5" r="4" style="fill:none;stroke:var(--ink);stroke-width:1.3"/>
+  <circle cx="415.0" cy="331.5" r="3" style="fill:var(--accent);stroke:none"/>
+  <text x="415.0" y="378.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">mine minus table, pc</text>
+</svg>
+<figcaption>My distance minus the table, pc, 18 stars sorted by time. Grey bar: published 90% interval. Hollow: straight line. Filled: the same with the velocity turned by 4.30 arcminutes about one axis.</figcaption>
+</figure>
+
+So I can reproduce the table if I turn the velocity against the position by the tilt that the height of the Sun gives. A straight line does not depend on the choice of axes, so I see no physical reason for such a turn. Maybe one of the 2 vectors went through a conversion and the other did not, but this is a guess. I have not seen the code and I did not ask the author, I might be misreading something. R. and C. de la Fuente Marcos got 0.052 pc from the same DR3 in 2022, from 0.048 to 0.056. The list itself hardly suffers, without the turn 59 of 61 stars stay under 1 pc.
+
+By my own rule the text should have stopped here. I publish it because I can now get both numbers and say what separates them, but the check is still failed and I don't know where the turn comes from.
+
+## After 2 million years the Galaxy decides
+
+I looked at stars that come closer than 2 pc on the line or in one of the models. For those that pass within half a million years the orbit moves the closest distance by 0.0005 pc, this is a median. From 1 to 2 million years it is 0.06 pc, from 2 to 4 it is 0.51, from 4 to 8 it is 1.9. The 2 Galaxy models disagree with each other too, by a median of 0.12 pc from 2 to 4 million years and 0.53 from 4 to 8.
+
+<figure class="fig">
+<svg viewBox="0 0 680 338" role="img" aria-label="Scatter of 512 stars on logarithmic axes. Horizontal: time to the closest approach in million years, from 0.01 to 30. Vertical: how far the closest distance moves when a straight line is replaced by an orbit in the Galaxy, and when one Galaxy model is replaced by another. Both grow steeply with time. The first reaches 1 pc near 4 million years, the second near 8.">
+  <line x1="70" y1="290.0" x2="660" y2="290.0" class="f-plain"/>
+  <text x="62.0" y="294.0" text-anchor="end" class="f-mono f-muted" style="font-size:11px">0.0001</text>
+  <line x1="70" y1="246.7" x2="660" y2="246.7" class="f-plain"/>
+  <text x="62.0" y="250.7" text-anchor="end" class="f-mono f-muted" style="font-size:11px">0.001</text>
+  <line x1="70" y1="203.3" x2="660" y2="203.3" class="f-plain"/>
+  <text x="62.0" y="207.3" text-anchor="end" class="f-mono f-muted" style="font-size:11px">0.01</text>
+  <line x1="70" y1="160.0" x2="660" y2="160.0" class="f-plain"/>
+  <text x="62.0" y="164.0" text-anchor="end" class="f-mono f-muted" style="font-size:11px">0.1</text>
+  <line x1="70" y1="116.7" x2="660" y2="116.7" class="f-line"/>
+  <text x="62.0" y="120.7" text-anchor="end" class="f-mono f-muted" style="font-size:11px">1</text>
+  <line x1="70" y1="73.3" x2="660" y2="73.3" class="f-plain"/>
+  <text x="62.0" y="77.3" text-anchor="end" class="f-mono f-muted" style="font-size:11px">10</text>
+  <line x1="70" y1="30.0" x2="660" y2="30.0" class="f-plain"/>
+  <text x="62.0" y="34.0" text-anchor="end" class="f-mono f-muted" style="font-size:11px">100</text>
+  <text x="86.0" y="308.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">0.01</text>
+  <text x="251.1" y="308.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">0.1</text>
+  <text x="416.2" y="308.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">1</text>
+  <text x="581.2" y="308.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">10</text>
+  <path d="M464.2 191.7h0M417.1 196.3h0M374.2 239.0h0M478.2 169.8h0M454.5 174.3h0M434.6 256.3h0M421.3 203.7h0M432.7 177.9h0M461.4 185.0h0M439.6 177.6h0M373.5 209.5h0M367.2 248.6h0M401.0 231.8h0M352.6 246.7h0M367.2 224.8h0M353.1 253.4h0M369.6 224.2h0M331.8 241.7h0M431.4 169.5h0M410.9 184.0h0M452.7 180.1h0M360.2 235.6h0M424.5 221.1h0M376.8 198.4h0M397.9 235.6h0M399.0 204.1h0M595.8 92.0h0M369.5 213.3h0M335.6 269.3h0M326.0 277.0h0M455.1 173.2h0M425.1 176.8h0M451.5 164.0h0M378.1 203.1h0M401.3 189.4h0M304.0 277.0h0M532.2 127.5h0M368.2 246.7h0M391.8 218.8h0M342.4 214.9h0M356.4 240.3h0M328.2 269.3h0M446.6 185.2h0M396.3 205.5h0M361.8 205.7h0M536.0 112.9h0M265.1 256.3h0M586.6 82.1h0M516.8 110.6h0M571.2 84.7h0M408.3 231.0h0M415.6 164.6h0M408.6 198.5h0M473.9 156.8h0M512.5 143.1h0M448.3 155.9h0M435.8 176.6h0M500.3 158.5h0M386.6 235.6h0M416.7 186.7h0M436.7 160.7h0M336.1 256.3h0M479.9 148.7h0M369.7 221.1h0M489.0 155.0h0M520.4 134.9h0M454.7 188.5h0M435.0 184.4h0M429.0 181.6h0M558.5 96.2h0M467.8 160.5h0M492.8 137.4h0M426.6 173.9h0M533.8 121.3h0M553.2 99.0h0M408.3 195.3h0M459.1 152.5h0M435.1 204.5h0M424.9 185.4h0M477.0 160.9h0M314.3 256.3h0M382.3 221.1h0M524.1 120.0h0M477.9 154.0h0M441.1 167.1h0M325.3 256.3h0M445.0 160.8h0M430.1 154.9h0M449.5 147.9h0M549.9 103.0h0M518.7 117.2h0M497.8 162.8h0M421.0 160.3h0M494.1 122.6h0M479.1 166.9h0M468.8 171.5h0M496.8 148.8h0M489.9 153.4h0M575.8 105.7h0M370.3 199.0h0M446.6 159.3h0M408.0 184.0h0M453.0 151.5h0M389.5 241.7h0M382.4 212.3h0M445.0 187.9h0M392.3 211.4h0M450.4 166.3h0M343.5 223.6h0M447.1 152.4h0M402.5 246.7h0M359.5 213.6h0M465.4 148.1h0M281.1 263.9h0M482.9 131.4h0M332.3 241.7h0M446.8 197.3h0M413.4 177.6h0M450.0 181.6h0M225.1 277.0h0M451.0 161.3h0M547.0 96.8h0M481.6 175.6h0M537.4 129.3h0M442.7 158.8h0M515.8 140.0h0M425.6 216.0h0M506.4 175.0h0M509.4 150.5h0M473.5 127.9h0M445.2 198.3h0M484.8 116.9h0M534.1 108.3h0M474.8 163.7h0M537.3 107.7h0M557.6 84.2h0M519.0 117.1h0M448.0 165.8h0M508.9 167.9h0M330.8 210.3h0M470.7 167.9h0M513.0 121.4h0M461.1 144.5h0M495.7 122.6h0M473.5 159.7h0M490.8 123.8h0M441.7 155.7h0M499.0 141.0h0M563.8 88.8h0M450.8 145.9h0M506.5 112.5h0M508.5 121.7h0M525.3 109.6h0M514.5 129.5h0M341.8 194.8h0M537.5 96.4h0M559.0 90.5h0M462.4 135.0h0M524.5 110.4h0M489.0 134.5h0M516.6 152.0h0M570.7 115.0h0M538.3 104.2h0M501.0 137.5h0M592.9 62.6h0M502.7 144.0h0M416.3 164.7h0M511.4 129.3h0M408.1 160.1h0M533.5 91.4h0M498.3 119.7h0M513.2 121.6h0M518.5 128.4h0M529.2 105.3h0M474.7 121.9h0M470.4 149.5h0M398.5 215.3h0M379.5 208.0h0M463.6 143.8h0M522.8 113.2h0M513.4 115.1h0M500.2 132.3h0M480.1 171.9h0M560.4 92.6h0M530.3 106.7h0M497.8 120.3h0M484.0 125.1h0M289.0 250.9h0M495.1 156.2h0M478.6 140.0h0M509.6 120.6h0M327.0 219.7h0M513.0 101.4h0M570.0 80.2h0M524.8 103.0h0M533.2 105.2h0M315.3 222.6h0M545.4 124.9h0M428.4 187.1h0M324.9 231.0h0M538.0 101.2h0M273.5 241.7h0M478.2 120.1h0M492.2 131.1h0M471.2 141.2h0M543.6 141.1h0M550.4 113.1h0M463.4 169.1h0M461.7 167.3h0M524.5 105.7h0M530.5 138.9h0M446.0 163.1h0M546.1 87.9h0M447.5 161.5h0M532.0 98.2h0M490.2 124.5h0M513.4 129.5h0M592.1 83.5h0M493.8 124.0h0M406.3 211.7h0M465.5 173.3h0M507.0 122.9h0M496.1 134.3h0M498.2 179.8h0M538.4 112.1h0M428.2 168.6h0M525.8 138.1h0M542.6 98.3h0M578.1 83.1h0M429.7 186.2h0M538.6 137.4h0M497.3 118.0h0M486.4 135.8h0M536.6 98.4h0M462.1 151.4h0M422.9 163.9h0M513.8 126.5h0M332.6 211.7h0M476.9 124.4h0M535.6 118.3h0M499.7 187.1h0M453.8 183.6h0M567.1 97.7h0M566.3 94.5h0M553.3 101.4h0M509.8 112.0h0M512.1 144.0h0M521.3 171.9h0M565.3 94.8h0M512.9 131.6h0M547.8 103.4h0M439.3 179.8h0M477.7 137.0h0M534.4 191.3h0M491.8 133.1h0M505.6 144.0h0M340.1 211.4h0M535.0 105.5h0M535.4 147.5h0M497.4 203.5h0M432.4 169.3h0M491.2 178.9h0M322.7 231.8h0M558.8 105.3h0M440.4 229.4h0M406.0 217.9h0M536.6 94.8h0M445.6 150.3h0M514.2 106.9h0M446.5 167.3h0M532.1 137.5h0M517.0 140.1h0M481.3 133.8h0M477.1 141.6h0M487.4 140.6h0M512.7 117.8h0M509.5 129.9h0M494.7 128.4h0M505.1 102.8h0M506.2 155.3h0M484.7 125.3h0M523.8 102.2h0M555.7 77.9h0M446.6 144.3h0M526.7 91.7h0M495.0 119.3h0M503.7 105.4h0M556.0 96.7h0M417.9 175.9h0M564.7 101.0h0M441.2 145.5h0M592.6 61.5h0M513.6 104.6h0M525.4 94.2h0M585.0 71.0h0M487.0 111.5h0M517.1 95.4h0M530.1 101.2h0M503.8 113.5h0M469.5 151.2h0M579.5 84.5h0M630.2 87.2h0M611.6 63.8h0M522.3 102.3h0M486.3 120.1h0M530.6 131.7h0M509.1 118.2h0M497.1 150.8h0M554.3 111.9h0M538.5 102.6h0M559.7 79.8h0M524.8 124.1h0M492.4 138.4h0M540.4 115.9h0M514.7 97.6h0M323.3 210.0h0M519.4 120.8h0M529.9 107.2h0M502.6 125.8h0M513.7 94.9h0M635.1 47.1h0M535.5 110.0h0M542.2 99.6h0M504.7 106.6h0M314.4 222.0h0M508.7 97.2h0M592.4 64.5h0M648.3 30.9h0M483.0 114.6h0M486.3 156.2h0M512.3 138.6h0M503.8 121.5h0M502.7 109.1h0M638.2 41.5h0M568.6 74.2h0M521.2 172.6h0M575.9 98.6h0M544.4 101.3h0M515.1 109.9h0M403.6 156.9h0M578.6 100.8h0M515.5 112.9h0M505.7 125.7h0M476.3 129.1h0M536.1 130.2h0M542.1 190.1h0M545.4 143.8h0M524.4 99.4h0M502.4 124.3h0M483.5 169.6h0M510.2 117.1h0M508.8 132.6h0M613.6 52.5h0M529.8 98.6h0M494.8 127.8h0M604.1 59.2h0M564.5 67.7h0M476.9 124.2h0M493.2 100.5h0M516.5 117.2h0M427.5 173.1h0M355.5 206.6h0M464.4 154.1h0M500.2 139.6h0M512.7 107.0h0M532.7 95.6h0M519.9 107.0h0M348.2 211.2h0M579.9 63.6h0M514.2 118.7h0M524.3 113.1h0M552.7 122.0h0M368.4 172.1h0M516.5 107.9h0M491.1 148.9h0M443.3 158.4h0M562.7 65.0h0M571.3 60.5h0M592.5 83.6h0M561.6 119.7h0M632.3 59.7h0M388.4 216.8h0M534.4 95.7h0M624.9 39.8h0M494.0 154.9h0M519.5 100.9h0M614.7 48.9h0M539.2 115.2h0M535.0 94.7h0M515.1 109.0h0M499.5 127.5h0M614.0 44.0h0M553.4 76.1h0M421.2 169.4h0M601.3 48.0h0M568.8 65.7h0M499.1 122.9h0M567.7 111.2h0M538.9 96.6h0M598.4 56.2h0M554.7 74.0h0M576.6 87.9h0M576.7 76.9h0M546.0 102.3h0M598.0 54.8h0M378.8 176.0h0M552.9 71.0h0M435.0 134.3h0M590.6 54.6h0M534.8 83.9h0M609.5 72.0h0M371.6 223.6h0M604.5 70.9h0M574.5 62.8h0M558.5 81.5h0M518.2 93.1h0M502.6 93.3h0M510.4 137.3h0M605.7 55.5h0M572.1 74.3h0M598.4 45.5h0M543.9 82.0h0M585.0 50.7h0M599.9 60.9h0M633.1 46.3h0M607.2 46.3h0M593.3 52.1h0M568.4 59.3h0M584.0 35.1h0M588.8 68.0h0M592.2 51.0h0M577.5 58.2h0M648.8 39.2h0M606.0 50.3h0M622.1 33.9h0M648.2 35.5h0M590.7 38.7h0M530.6 72.2h0M447.1 125.4h0M632.8 42.1h0M582.9 67.8h0M603.7 33.2h0M626.6 31.1h0M616.7 32.6h0M461.0 149.3h0M450.0 121.1h0M612.9 45.0h0M558.4 87.8h0M619.7 50.0h0M570.9 71.8h0M620.8 38.0h0M498.4 107.7h0M587.8 56.1h0M581.5 63.4h0M579.9 62.5h0M619.2 47.5h0M610.9 53.0h0M609.6 43.5h0M537.7 100.9h0M621.4 31.8h0M592.7 99.8h0M554.8 63.4h0M569.2 55.0h0M550.5 74.2h0M652.6 30.5h0M584.2 45.3h0M610.3 33.2h0M594.0 46.5h0M569.5 60.9h0M605.4 33.3h0M591.7 56.5h0" style="fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;opacity:0.55"/>
+  <path d="M464.2 216.4h0M417.1 210.9h0M374.2 256.3h0M478.2 176.7h0M454.5 203.1h0M434.6 239.0h0M421.3 233.6h0M432.7 199.6h0M461.4 192.9h0M439.6 195.2h0M373.5 236.7h0M367.2 277.0h0M401.0 253.4h0M367.2 243.2h0M353.1 263.9h0M369.6 246.7h0M331.8 256.3h0M431.4 189.7h0M410.9 206.2h0M452.7 189.6h0M360.2 253.4h0M424.5 231.8h0M376.8 221.1h0M397.9 246.7h0M399.0 218.8h0M595.8 120.3h0M369.5 229.4h0M335.6 269.3h0M326.0 290.0h0M455.1 202.1h0M425.1 198.0h0M385.6 263.9h0M451.5 180.8h0M378.1 225.4h0M401.3 206.4h0M350.3 269.3h0M334.7 277.0h0M532.2 184.3h0M391.8 224.2h0M342.4 231.8h0M356.4 259.7h0M446.6 199.0h0M361.8 231.8h0M536.0 140.2h0M586.6 103.6h0M516.8 134.1h0M571.2 109.6h0M408.3 226.6h0M415.6 187.2h0M408.6 253.4h0M473.9 167.3h0M512.5 158.5h0M448.3 179.2h0M435.8 253.4h0M500.3 171.7h0M416.7 230.2h0M436.7 183.3h0M479.9 169.0h0M489.0 213.9h0M520.4 150.4h0M454.7 200.5h0M435.0 198.5h0M429.0 209.5h0M558.5 116.4h0M467.8 180.3h0M492.8 168.7h0M426.6 243.2h0M533.8 194.5h0M553.2 115.4h0M408.3 216.4h0M459.1 175.3h0M435.1 229.4h0M424.9 263.9h0M477.0 196.6h0M314.3 269.3h0M382.3 250.9h0M524.1 130.3h0M477.9 181.1h0M441.1 186.3h0M325.3 253.4h0M445.0 178.8h0M430.1 178.3h0M449.5 168.1h0M549.9 152.4h0M518.7 136.5h0M497.8 169.4h0M421.0 182.5h0M494.1 144.5h0M479.1 197.3h0M468.8 199.7h0M496.8 190.9h0M489.9 246.7h0M575.8 113.8h0M370.3 222.6h0M446.6 182.6h0M408.0 209.3h0M453.0 171.9h0M382.4 233.6h0M445.0 204.1h0M450.4 181.8h0M343.5 241.7h0M447.1 174.9h0M402.5 248.6h0M359.5 237.8h0M465.4 167.4h0M482.9 155.4h0M332.3 269.3h0M446.8 187.1h0M413.4 202.2h0M450.0 195.2h0M451.0 179.8h0M547.0 139.4h0M481.6 198.5h0M537.4 141.4h0M442.7 214.6h0M515.8 188.6h0M425.6 202.1h0M506.4 159.4h0M509.4 186.8h0M473.5 174.7h0M445.2 216.8h0M484.8 150.4h0M534.1 127.1h0M474.8 161.6h0M537.3 128.5h0M557.6 100.2h0M519.0 123.3h0M448.0 231.8h0M508.9 125.9h0M330.8 232.7h0M470.7 208.0h0M513.0 146.6h0M461.1 161.3h0M495.7 170.9h0M473.5 181.8h0M490.8 142.1h0M441.7 191.5h0M499.0 159.6h0M563.8 104.1h0M450.8 162.9h0M506.5 140.0h0M508.5 124.2h0M525.3 121.1h0M514.5 172.4h0M341.8 216.0h0M537.5 195.5h0M559.0 108.1h0M462.4 156.7h0M524.5 116.8h0M489.0 156.4h0M516.6 124.0h0M570.7 119.6h0M538.3 128.4h0M501.0 145.1h0M592.9 89.4h0M502.7 153.0h0M416.3 180.5h0M511.4 148.8h0M408.1 182.7h0M533.5 111.4h0M498.3 144.2h0M513.2 144.6h0M518.5 147.1h0M529.2 113.3h0M474.7 145.8h0M470.4 173.9h0M398.5 230.2h0M379.5 234.6h0M463.6 171.5h0M522.8 131.9h0M513.4 135.4h0M500.2 152.3h0M480.1 194.7h0M560.4 115.4h0M530.3 122.1h0M497.8 140.6h0M484.0 147.7h0M495.1 201.2h0M478.6 200.2h0M509.6 170.4h0M327.0 248.6h0M513.0 125.8h0M570.0 102.0h0M524.8 126.1h0M533.2 148.4h0M315.3 237.8h0M545.4 143.4h0M428.4 188.9h0M538.0 115.0h0M273.5 259.7h0M478.2 143.3h0M492.2 148.5h0M471.2 154.4h0M543.6 151.5h0M550.4 184.9h0M463.4 219.7h0M461.7 195.6h0M524.5 121.3h0M530.5 114.8h0M446.0 199.6h0M546.1 108.8h0M447.5 187.9h0M532.0 113.4h0M490.2 198.5h0M513.4 189.3h0M592.1 101.8h0M493.8 159.4h0M406.3 263.9h0M465.5 202.2h0M507.0 164.6h0M496.1 144.6h0M498.2 192.8h0M538.4 142.0h0M428.2 190.9h0M525.8 152.0h0M542.6 142.5h0M578.1 100.3h0M429.7 202.8h0M538.6 135.4h0M497.3 136.2h0M486.4 166.3h0M536.6 124.4h0M462.1 174.7h0M422.9 188.8h0M513.8 131.7h0M332.6 226.6h0M476.9 148.8h0M535.6 136.6h0M499.7 183.7h0M453.8 196.3h0M567.1 122.1h0M566.3 136.7h0M553.3 123.4h0M509.8 148.2h0M442.6 263.9h0M512.1 138.6h0M521.3 162.5h0M565.3 118.9h0M512.9 143.5h0M547.8 148.7h0M439.3 208.5h0M477.7 207.3h0M534.4 185.6h0M491.8 168.5h0M505.6 147.7h0M340.1 232.7h0M535.0 141.3h0M535.4 117.1h0M497.4 201.5h0M432.4 190.6h0M491.2 146.4h0M322.7 248.6h0M558.8 195.5h0M440.4 209.5h0M406.0 269.3h0M536.6 110.9h0M445.6 171.4h0M514.2 127.9h0M446.5 269.3h0M452.4 182.5h0M532.1 165.1h0M517.0 198.1h0M481.3 159.1h0M477.1 162.9h0M395.9 239.0h0M487.4 168.3h0M512.7 143.1h0M509.5 220.6h0M494.7 154.4h0M505.1 124.9h0M506.2 177.9h0M484.7 134.3h0M523.8 109.9h0M555.7 99.5h0M446.6 164.7h0M526.7 113.6h0M495.0 141.8h0M503.7 126.9h0M556.0 205.5h0M417.9 206.6h0M564.7 128.6h0M441.2 170.4h0M592.6 89.2h0M513.6 128.8h0M525.4 115.6h0M585.0 111.4h0M487.0 135.1h0M517.1 169.9h0M530.1 126.0h0M503.8 121.5h0M469.5 164.3h0M579.5 119.2h0M630.2 131.0h0M611.6 99.8h0M522.3 128.6h0M486.3 166.0h0M530.6 158.0h0M509.1 139.7h0M497.1 185.4h0M554.3 151.9h0M538.5 112.2h0M559.7 101.5h0M524.8 114.1h0M492.4 161.1h0M540.4 193.5h0M514.7 115.6h0M323.3 237.8h0M519.4 115.3h0M529.9 142.3h0M502.6 135.3h0M513.7 118.2h0M635.1 116.3h0M535.5 147.5h0M542.2 112.3h0M504.7 162.7h0M314.4 236.7h0M508.7 121.9h0M592.4 91.0h0M648.3 77.3h0M483.0 139.0h0M486.3 168.0h0M512.3 148.0h0M503.8 126.2h0M502.7 131.4h0M638.2 79.4h0M568.6 94.3h0M521.2 117.1h0M575.9 177.3h0M544.4 112.1h0M515.1 138.2h0M403.6 175.7h0M578.6 142.4h0M515.5 135.1h0M505.7 145.0h0M476.3 211.2h0M536.1 149.5h0M542.1 174.5h0M545.4 158.6h0M524.4 139.8h0M502.4 177.3h0M483.5 163.7h0M510.2 157.5h0M508.8 132.9h0M613.6 93.8h0M529.8 178.9h0M494.8 147.7h0M604.1 79.8h0M564.5 89.9h0M476.9 151.9h0M493.2 134.5h0M516.5 133.3h0M427.5 189.1h0M355.5 235.6h0M464.4 171.5h0M500.2 153.0h0M512.7 140.6h0M532.7 116.3h0M519.9 135.1h0M348.2 259.7h0M579.9 90.3h0M514.2 185.4h0M524.3 156.1h0M552.7 160.5h0M368.4 198.7h0M516.5 135.0h0M491.1 174.5h0M443.3 214.2h0M562.7 91.4h0M571.3 89.7h0M592.5 104.8h0M561.6 142.7h0M632.3 104.9h0M388.4 206.4h0M534.4 135.8h0M624.9 73.8h0M494.0 163.7h0M519.5 130.1h0M614.7 80.6h0M539.2 121.9h0M535.0 128.6h0M515.1 123.4h0M499.5 141.8h0M614.0 77.6h0M553.4 105.9h0M421.2 182.2h0M601.3 80.0h0M568.8 91.2h0M499.1 157.6h0M567.7 138.2h0M538.9 153.0h0M598.4 97.4h0M554.7 92.1h0M576.6 109.1h0M576.7 105.3h0M546.0 137.7h0M598.0 74.4h0M378.8 190.6h0M552.9 93.9h0M435.0 157.6h0M590.6 83.6h0M534.8 104.3h0M609.5 92.9h0M371.6 208.0h0M604.5 131.6h0M574.5 90.0h0M558.5 102.8h0M518.2 110.0h0M502.6 120.6h0M510.4 178.3h0M605.7 76.5h0M572.1 109.8h0M598.4 80.6h0M543.9 108.8h0M622.8 69.5h0M585.0 83.7h0M599.9 143.8h0M633.1 110.0h0M607.2 86.8h0M593.3 87.2h0M568.4 81.8h0M638.3 64.3h0M622.9 66.1h0M584.0 71.0h0M588.8 114.0h0M592.2 84.9h0M577.5 79.4h0M636.9 64.3h0M648.8 67.0h0M606.0 82.9h0M622.1 69.5h0M648.2 120.9h0M590.7 75.9h0M530.6 99.9h0M447.1 153.3h0M646.9 70.2h0M632.8 91.3h0M582.9 84.8h0M603.7 65.4h0M622.3 66.9h0M626.6 76.4h0M616.7 63.5h0M461.0 188.0h0M629.4 54.4h0M450.0 140.7h0M628.0 58.6h0M612.9 80.3h0M558.4 104.4h0M619.7 82.2h0M622.9 65.8h0M570.9 113.4h0M645.6 92.4h0M620.8 102.2h0M498.4 193.3h0M587.8 73.2h0M581.5 144.3h0M579.9 89.5h0M619.2 129.1h0M610.9 127.3h0M609.6 65.7h0M537.7 127.0h0M621.4 66.8h0M592.7 151.4h0M554.8 93.4h0M569.2 83.3h0M639.4 117.9h0M550.5 102.8h0M652.6 98.6h0M584.2 76.4h0M610.3 68.9h0M636.6 62.4h0M621.5 64.4h0M594.0 76.3h0M569.5 85.8h0M605.4 66.9h0M643.4 60.3h0M591.7 122.0h0M655.2 47.0h0" style="fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round;opacity:0.75"/>
+  <text x="10.0" y="16.0" text-anchor="start" class="f-mono f-muted" style="font-size:11px">change of closest distance, pc</text>
+  <text x="365.0" y="328.0" text-anchor="middle" class="f-mono f-muted" style="font-size:11px">time from now, million years</text>
+</svg>
+<figcaption>Dark: orbit in the galpy model against the straight line. Accent: orbit in the galpy model against the other model. Each star is drawn twice, changes below 0.0001 pc and above 100 pc are left out.</figcaption>
+</figure>
+
+A median under 1 pc on a straight line is reached by 68 stars. In the galpy model it is 53, of them 27 in the future. In the model of the paper it is 58. 49 stars are common to both models and 41 are in all 3 lists. HD 7977 goes from 0.146 pc on the line to a median of 0.035 pc on the orbit, from 0.010 to 0.077. In both orbit lists it is the closest pass and I would not like to lose it to RUWE.
+
+## What I didn't check
+
+My query took only stars within 5 pc on a straight line. For 4 stars of the table the line passes at 5.7 to 6.8 pc, so I could not have found them. I did not model binary orbits, gravitational redshift or masses. Each orbit has 300 draws in each model, so a star at 0.99 pc can end up on either side. For the cuts I took the marks of one author as the right answer. A large RUWE is one of his reasons, for 2 stars he also mentions a weak spectrum, so the table is too kind to the RUWE cut and a little to the S/N cut. Stars without a radial velocity are not here at all.
